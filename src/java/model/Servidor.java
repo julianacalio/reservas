@@ -45,10 +45,12 @@ public class Servidor extends Pessoa implements Serializable {
         this.matricula = matricula;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

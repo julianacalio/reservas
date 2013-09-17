@@ -12,10 +12,10 @@
         <property name="hibernate.use_sql_comments">true</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
         <mapping class="model.Docente"/>
-        <mapping class="model.Sala"/>
+        <mapping class="model.Servidor"/>
         <mapping class="model.Aluno"/>
         <mapping class="model.Centro"/>
-        <mapping class="model.Equipamento"/>
+  
         <mapping class="model.Operador"/>
         <mapping class="model.Pessoa"/>
         <mapping class="model.Recurso"/>
