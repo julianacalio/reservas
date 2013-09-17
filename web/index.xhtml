@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        Hello from Facelets
+        <br />
+        <!--h:link outcome="/view/docente/List" value="Página de boas-vindas do Primefaces" /-->
+        <br/>
+        <h:form>
+
+            <p:layout fullPage="true">  
+
+                <p:layoutUnit position="north" size="100" header=" UFABC - CMCC - Centro de Matemática Computação e Cognição" resizable="true" closable="true" collapsible="true" >  
+                    <div style="text-align: center " ><h:outputText value="Controle de Docentes, Disciplinas e Turmas" style ="font-weight:bold"  /></div>  
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">  
+                    <h:outputText value="South unit content." />  
+                    
+                    <p:commandLink id="linkCadastrarSala" action="/view/sala/List"  style="margin-right:20px;">  
+                        <h:outputText value="Gerenciar Recursos" />  
+                    </p:commandLink> 
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="west" size="200" header="Left" resizable="true" closable="true" collapsible="true">  
+                    <h:outputText value="West unit content." />  
+                    <p:commandLink id="ajax3" action="/view/docente/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Docentes" />  
+                    </p:commandLink> 
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="east" size="200" header="Right" resizable="false" closable="true" collapsible="true" effect="drop">  
+                    <h:outputText value="Right unit content." />  
+                    <p:commandLink id="ajax4" action="/view/docente/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Docentes" />  
+                    </p:commandLink> 
+                </p:layoutUnit> 
+
+                <p:layoutUnit position="center">  
+
+                    <p:commandLink id="ajax7" action="/view/docente/List" style="margin-right:20px;" >  
+                        <h:outputText value="Lista de Docentes" />  
+                    </p:commandLink> 
+                    <br/>
+                    
+                    <br/>
+                    <p:commandLink id="ajax10" action="/Calendario" style="margin-right:20px;" >  
+                        <h:outputText value="Calendario" />  
+                    </p:commandLink>
+
+                    <!--                    <p:commandButton  action="/view/docente/List" id="iconOnly"  icon="ui-icon-disk" title="Icon Only"/>  -->
+
+                </p:layoutUnit>  
+
+            </p:layout>  
+
+
+
+        </h:form>
+    </h:body>
+</html>
+

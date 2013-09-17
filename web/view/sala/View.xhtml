@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="View sala"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+
+            <h:form>
+                <p:growl id="messages" showDetail="true" />  
+
+                <h:panelGrid columns="2">
+                    <h:outputText value="tamanho"/>
+                    <h:outputText value="#{salaController.selected.tamanho_m2}" title="tamanho"/>
+                    <h:outputText value="numero"/>
+                    <h:outputText value="#{salaController.selected.numero}" title="numero"/>
+                    <h:outputText value="id"/>
+                    <h:outputText value="#{salaController.selected.id}" title="id"/>
+                    <h:outputText value="centro"/>
+                    <h:outputText value="#{salaController.selected.centro}" title="centro"/>
+                    <h:outputText value="id"/>
+                    <h:outputText value="#{salaController.selected.id}" title="id"/>
+                </h:panelGrid>
+
+                <p:schedule view="agendaWeek" minTime="6"  maxTime="23" axisFormat="H:mm" timeFormat="H:mm{ - H:mm}" id="schedule" value="#{recursoController.eventModel}" widgetVar="myschedule" locale="br">  
+
+                    <p:ajax event="dateSelect" listener="#{recursoController.onDateSelect}" update="eventDetails" oncomplete="eventDialog.show()" />  
+                    <p:ajax event="eventSelect" listener="#{recursoController.onReservaSelect}" update="eventDetails" oncomplete="eventDialog.show()" />  
+                    <p:ajax event="eventMove" listener="#{recursoController.onReservaMove}" update="messages" />  
+                    <p:ajax event="eventResize" listener="#{recursoController.onEventResize}" update="messages" />  
+
+                </p:schedule>  
+
+
+                <p:dialog widgetVar="eventDialog" header="Detalhes da reserva"  >  
+                    <h:panelGrid id="eventDetails" columns="2">  
+
+                        <h:outputLabel value="Reservante*: " for="ac_reservante"/>  
+                        <p:autoComplete value="#{recursoController.reserva.reservante}" id="ac_reservante" completeMethod="#{recursoController.completeReservante}"  
+                                        var="p" itemLabel="#{p.nome}" itemValue="#{p}" forceSelection="true" required="true" queryDelay="0" />  
+
+                        <h:outputLabel for="from" value="Inicio*:" />  
+                        <p:calendar value="#{recursoController.reserva.inicio}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15" locale="br" required="true"/>  
+
+                        <h:outputLabel for="to" value="Fim*:" />  
+                        <p:calendar value="#{recursoController.reserva.fim}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" required="true"/>  
+
+                        <h:outputLabel for="title" value="Motivo:" />  
+                        <p:inputText id="title" value="#{recursoController.reserva.motivo}" />  
+
+                        <p:commandButton id="addButton"  value="Salvar" actionListener="#{recursoController.addReserva}" oncomplete="myschedule.update();eventDialog.hide();"/>   
+                        <p:commandButton id="remButton"  value="Remover" actionListener="#{recursoController.remReserva}" oncomplete="myschedule.update();eventDialog.hide();" rendered="#{recursoController.reserva.id != null}"/>  
+                        <p:commandButton id="cancelButton"  value="Cancelar"  oncomplete="eventDialog.hide();"  rendered="#{recursoController.reserva.id == null}"/> 
+                    </h:panelGrid>  
+                </p:dialog>  
+
+
+
+                <br />
+                <h:commandLink action="#{salaController.destroyAndView}" value="Destroy"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="Edit"/>
+                <br />
+                <h:commandLink action="#{salaController.prepareCreate}" value="Create" />
+                <br />
+                <h:commandLink action="#{salaController.prepareList}" value="View"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="index"/>
+
+            </h:form>
+
+            <script type="text/javascript">
+                PrimeFaces.locales['pt'] = {
+                    closeText: 'Fechar',
+                    prevText: 'Anterior',
+                    nextText: 'Proximo',
+                    currentText: 'Comeco',
+                    monthNames: ['Janeiro', 'Fevereiro', 'Marco', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+                    dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+                    weekHeader: 'Semana',
+                    firstDay: 0,
+                    isRTL: false,
+                    showMonthAfterYear: false,
+                    yearSuffix: '',
+                    timeOnlyTitle: 'So Horas',
+                    timeText: 'Tempo',
+                    hourText: 'Hora',
+                    minuteText: 'Minuto',
+                    secondText: 'Segundo',
+                    ampm: false,
+                    month: 'Mês',
+                    week: 'Semana',
+                    day: 'Dia',
+                    allDayText: 'Todo o Dia'
+                };
+            </script>
+        </ui:define>
+    </ui:composition>
+
+</html>

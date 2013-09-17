@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">  
+
+            <p:layoutUnit position="north" size="100" header="Top" resizable="true" closable="true" collapsible="true">  
+
+                <p:commandLink id="linkCadastrarSala" action="/view/sala/CadastrarSala"  ajax="true" style="margin-right:20px;">  
+                    <h:outputText value="Gerenciar Recursos" />  
+                </p:commandLink> 
+
+            </p:layoutUnit>  
+
+            <!--            <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">  
+                            <h:outputText value="South unit content." />  
+                        </p:layoutUnit>  -->
+
+            <p:layoutUnit position="west" size="200" header="Left" resizable="true" closable="true" collapsible="true">  
+                <h:outputText value="West unit content." />  
+                <p:commandLink id="linkCadastrarSala2" action="/view/sala/CadastrarSala" style="margin-right:20px;">  
+                    <h:outputText value="Gerenciar Recursos" />  
+                </p:commandLink> 
+            </p:layoutUnit>  
+
+            <!--            <p:layoutUnit  position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true" effect="drop">  
+                            <h:outputText value="Right unit content." />  
+                        </p:layoutUnit>  -->
+
+            <p:layoutUnit position="center">  
+                <h:form id="form">  
+
+                    <p:growl id="messages" showDetail="true" />  
+
+                    <p:schedule view="agendaWeek" minTime="7"  maxTime="22" axisFormat="H:mm" timeFormat="H:mm{ - H:mm}" id="schedule" value="#{scheduleController.eventModel}" widgetVar="myschedule" locale="br">  
+
+                        <p:ajax event="dateSelect" listener="#{scheduleController.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show()" />  
+                        <p:ajax event="eventSelect" listener="#{scheduleController.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show()" />  
+                        <p:ajax event="eventMove" listener="#{scheduleController.onEventMove}" update="messages" />  
+                        <p:ajax event="eventResize" listener="#{scheduleController.onEventResize}" update="messages" />  
+
+                    </p:schedule>  
+
+                    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">  
+                        <h:panelGrid id="eventDetails" columns="2">  
+                            <h:outputLabel for="title" value="Title:" />  
+                            <p:inputText id="title" value="#{scheduleController.event.title}" required="true"/>  
+
+                            <h:outputLabel for="from" value="From:" />  
+                            <p:inputMask id="from" value="#{scheduleController.event.startDate}" mask="99/99/9999">  
+                                <f:convertDateTime pattern="dd/MM/yyyy" />  
+                            </p:inputMask>  
+
+                            <h:outputLabel for="to" value="To:" />  
+                            <p:inputMask id="to" value="#{scheduleController.event.endDate}" mask="99/99/9999">  
+                                <f:convertDateTime pattern="dd/MM/yyyy" />  
+                            </p:inputMask>  
+
+                            <h:outputLabel for="allDay" value="All Day:" />  
+                            <h:selectBooleanCheckbox id="allDay" value="#{scheduleController.event.allDay}" />  
+
+                            <p:commandButton type="reset" value="Reset" />  
+                            <p:commandButton id="addButton" value="Save" actionListener="#{scheduleController.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>  
+                        </h:panelGrid>  
+                    </p:dialog>  
+
+                </h:form>  
+
+
+                <h:link outcome="/index" value="index"/>
+
+            </p:layoutUnit>  
+
+        </p:layout>  
+        <script type="text/javascript">
+            PrimeFaces.locales['br'] = {
+                closeText: 'Fechar',
+                prevText: 'Anterior',
+                nextText: 'Próximo',
+                currentText: 'Hoje',
+                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+                dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+                weekHeader: 'Semana',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Só Horas',
+                timeText: 'Tempo',
+                hourText: 'Hora',
+                minuteText: 'Minuto',
+                secondText: 'Segundo',
+                ampm: false,
+                month: 'Mês',
+                week: 'Semana',
+                day: 'Dia',
+                allDayText: 'Hora'
+            };
+        </script>
+        <br/>
+        <h:link outcome="/index" value="index"/>
+
+
+    </h:body>
+</html>
+

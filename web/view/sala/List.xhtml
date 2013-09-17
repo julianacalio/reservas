@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        Hello from Facelets
+        <h:form >
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:outputText escape="false" value="Lista Vazia" rendered="#{salaController.items.rowCount == 0}"/>
+            <h:panelGroup rendered="#{salaController.items.rowCount > 0}">
+                <h:outputText value="#{salaController.pagination.pageFirstItem + 1}..#{salaController.pagination.pageLastItem + 1}/#{salaController.pagination.itemsCount}"/>&nbsp;
+                <h:commandLink action="#{salaController.previous}" value="Previous #{salaController.pagination.pageSize}" rendered="#{salaController.pagination.hasPreviousPage}"/>&nbsp;
+                <h:commandLink action="#{salaController.next}" value="Next #{salaController.pagination.pageSize}" rendered="#{salaController.pagination.hasNextPage}"/>&nbsp;
+                <h:dataTable value="#{salaController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="tamanho"/>
+                        </f:facet>
+                        <h:outputText value="#{item.tamanho_m2}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="numero"/>
+                        </f:facet>
+                        <h:outputText value="#{item.numero}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="id"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="centro"/>
+                        </f:facet>
+                        <h:outputText value="#{item.centro}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="id"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="&nbsp;"/>
+                        </f:facet>
+                        <h:commandLink action="#{recursoController.prepareView}" value="view"/>
+                        <h:outputText value=" "/>
+                        <h:commandLink action="#{recursoController.prepareEdit}" value="edit"/>
+                        <h:outputText value=" "/>
+                        <h:commandLink action="#{recursoController.destroy}" value="destroy"/>
+                    </h:column>
+                </h:dataTable>
+            </h:panelGroup>
+            <br />
+            <h:commandLink action="#{salaController.prepareCreate}" value="Criar Sala"/>
+            <br />
+            <br />
+            <h:link outcome="/index" value="#{bundle.ListSalaIndexLink}"/>
+        </h:form>
+    </h:body>
+
+</html>
