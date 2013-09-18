@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+
+        <h:outputText value="Listar Centros"></h:outputText>
+
+
+        <h:form >
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:outputText escape="false" value="Lista Vazia" rendered="#{centroController.items.rowCount == 0}"/>
+            <h:panelGroup rendered="#{centroController.items.rowCount > 0}">
+                <h:outputText value="#{centroController.pagination.pageFirstItem + 1}..#{centroController.pagination.pageLastItem + 1}/#{centroController.pagination.itemsCount}"/>&nbsp;
+                <h:commandLink action="#{centroController.previous}" value="previous #{centroController.pagination.pageSize}" rendered="#{centroController.pagination.hasPreviousPage}"/>&nbsp;
+                <h:commandLink action="#{centroController.next}" value="next #{centroController.pagination.pageSize}" rendered="#{centroController.pagination.hasNextPage}"/>&nbsp;
+                <h:dataTable value="#{centroController.items}" var="item"  >
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="nome"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nome}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="id"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="&nbsp;"/>
+                        </f:facet>
+                        <h:commandLink action="#{centroController.prepareView}" value="view"/>
+                        <h:outputText value=" "/>
+                        <h:commandLink action="#{centroController.prepareEdit}" value="edit"/>
+                        <h:outputText value=" "/>
+                        <h:commandLink action="#{centroController.destroy}" value="destroy"/>
+                    </h:column>
+                </h:dataTable>
+            </h:panelGroup>
+            <br />
+            <h:commandLink action="#{centroController.prepareCreate}" value="Criar Centro"/>
+            <br />
+            <br />
+            <h:link outcome="/index" value="index"/>
+        </h:form>
+
+    </h:body>
+
+</html>

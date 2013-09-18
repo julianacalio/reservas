@@ -21,7 +21,7 @@
 
                 <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">  
                     <h:outputText value="South unit content." />  
-                    
+
                     <p:commandLink id="linkCadastrarSala" action="/view/sala/List"  style="margin-right:20px;">  
                         <h:outputText value="Gerenciar Recursos" />  
                     </p:commandLink> 
@@ -39,6 +39,10 @@
                     <p:commandLink id="ajax4" action="/view/docente/List" style="margin-right:20px;">  
                         <h:outputText value="Lista de Docentes" />  
                     </p:commandLink> 
+                    <br/>
+                    <p:commandLink id="ajax12" action="/view/centro/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Centros" />  
+                    </p:commandLink> 
                 </p:layoutUnit> 
 
                 <p:layoutUnit position="center">  
@@ -47,7 +51,7 @@
                         <h:outputText value="Lista de Docentes" />  
                     </p:commandLink> 
                     <br/>
-                    
+
                     <br/>
                     <p:commandLink id="ajax10" action="/Calendario" style="margin-right:20px;" >  
                         <h:outputText value="Calendario" />  

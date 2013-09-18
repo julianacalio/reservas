@@ -9,84 +9,87 @@
     </h:head>
     <h:body>
 
-        <p:layout fullPage="true">  
+        <h:form >
 
-            <p:layoutUnit position="north" size="100" header=" UFABC - CMCC - Centro de Matemática Computação e Cognição" resizable="true" closable="true" collapsible="true" >  
-                <div style="text-align: center " ><h:outputText value="Controle de Docentes, Disciplinas e Turmas" style ="font-weight:bold"  /></div>  
-            </p:layoutUnit>  
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
 
-            <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">  
-                <h:outputText value="South unit content." />  
-                <p:commandLink id="ajax2" action="/view/docente/List" style="margin-right:20px;">  
-                    <h:outputText value="Lista de Docentes" />  
-                </p:commandLink> 
-            </p:layoutUnit>  
+            <h:outputText escape="false" value="Lista de Docentes Vazia" rendered="#{docenteController.items.rowCount==0}"/>
 
-            <p:layoutUnit position="west" size="200" header="Left" resizable="true" closable="true" collapsible="true">  
-                <h:outputText value="West unit content." />  
-                <p:commandLink id="ajax3" action="/view/docente/List" style="margin-right:20px;">  
-                    <h:outputText value="Lista de Docentes" />  
-                </p:commandLink> 
-            </p:layoutUnit>  
+            <h:panelGroup rendered="#{docenteController.items.rowCount > 0}"><!-- mostra o calculo da quantidade de itens mostrados  -->
+                <h:outputText value="#{docenteController.pagination.pageFirstItem + 1}..#{docenteController.pagination.pageLastItem + 1}/#{docenteController.pagination.itemsCount}"/>&nbsp;
+                <p:commandLink action="#{docenteController.previous}" value="Anterior #{docenteController.pagination.pageSize}" rendered="#{docenteController.pagination.hasPreviousPage}"/>&nbsp;
+                <p:commandLink action="#{docenteController.next}" value="Proximo #{docenteController.pagination.pageSize}" rendered="#{docenteController.pagination.hasNextPage}" />&nbsp;
+                <br/>
+                <br/>
+                <h:form>
+                    <h:dataTable id="tabela" var="item" value="#{docenteController.items}">  
 
-            <p:layoutUnit position="east" size="200" header="Right" resizable="false" closable="true" collapsible="true" effect="drop">  
-                <h:outputText value="Right unit content." />  
-                <p:commandLink id="ajax4" action="/view/docente/List" style="margin-right:20px;">  
-                    <h:outputText value="Lista de Docentes" />  
-                </p:commandLink> 
-            </p:layoutUnit> 
+                       <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="id"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="centro"/>
+                            </f:facet>
+                            <h:outputText value="#{item.centro}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="matricula"/>
+                            </f:facet>
+                            <h:outputText value="#{item.matricula}"/>
+                        </h:column>
+<!--                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="id"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </h:column>-->
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="email"/>
+                            </f:facet>
+                            <h:outputText value="#{item.email}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="nome"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nome}"/>
+                        </h:column>
+<!--                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="id"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </h:column>-->
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{docenteController.prepareView}" value="view"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{docenteController.prepareEdit}" value="edit"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{docenteController.destroy}" value="destroy"/>
+                        </h:column>
 
-            <p:layoutUnit position="center">  
-
-                <h:form >
-
-                    <h:panelGroup id="messagePanel" layout="block">
-                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                    </h:panelGroup>
-
-                    <h:outputText escape="false" value="Lista de Docentes Vazia" rendered="#{docenteController.items.rowCount==0}"/>
-
-                    <h:panelGroup rendered="#{docenteController.items.rowCount > 0}"><!-- mostra o calculo da quantidade de itens mostrados  -->
-                        <h:outputText value="#{docenteController.pagination.pageFirstItem + 1}..#{docenteController.pagination.pageLastItem + 1}/#{docenteController.pagination.itemsCount}"/>&nbsp;
-                        <p:commandLink action="#{docenteController.previous}" value="Anterior #{docenteController.pagination.pageSize}" rendered="#{docenteController.pagination.hasPreviousPage}"/>&nbsp;
-                        <p:commandLink action="#{docenteController.next}" value="Proximo #{docenteController.pagination.pageSize}" rendered="#{docenteController.pagination.hasNextPage}" />&nbsp;
-                        <br/>
-                        <br/>
-                        <h:form>
-                            <p:dataTable id="tabela" var="item" value="#{docenteController.items}">  
-
-                                <p:column headerText="id">  
-                                    <h:outputText value="#{item.id}" />  
-                                </p:column>  
-
-                                <p:column headerText="Nome">  
-                                    <h:outputText value="#{item.nome}" />  
-                                </p:column> 
-
-                                <p:column headerText="Centro">  
-                                    <h:outputText value="#{item.centro}" />  
-                                </p:column> 
-
-                                <p:column headerText="Controle">
-                                    <p:commandLink action="#{docenteController.prepareView}" value="Visualizar" ></p:commandLink>
-                                    <h:outputText value=" "/>
-                                    <p:commandLink action="#{docenteController.prepareEdit}" value="Editar" > </p:commandLink>
-                                    <h:outputText value=" "/>
-                                    <p:commandLink action="#{docenteController.destroy}" value="Apagar" update="tabela"></p:commandLink>
-                                    <h:outputText value=" "/>
-                                </p:column>
-                                
-                            </p:dataTable>  
-                        </h:form>
-                    </h:panelGroup>
-                    <br />
-                    <h:commandLink action="#{docenteController.prepareCreate}" value="Criar Docente"/>
-                    <br />
-                    <br />
-                    <h:link outcome="/index" value="index"/>
+                    </h:dataTable>  
                 </h:form>
-            </p:layoutUnit>  
-        </p:layout>  
+            </h:panelGroup>
+            <br />
+            <h:commandLink action="#{docenteController.prepareCreate}" value="Criar Docente"/>
+            <br />
+            <br />
+            <h:link outcome="/index" value="index"/>
+        </h:form>
+
+
     </h:body>
 </html>
 
