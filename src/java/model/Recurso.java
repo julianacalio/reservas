@@ -6,6 +6,8 @@ package model;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,10 +24,11 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "RECURSO_DETAILS_TYPE",discriminatorType = DiscriminatorType.STRING)
 public class Recurso implements Serializable {
 
     @OneToMany(mappedBy = "recurso", fetch = FetchType.EAGER)
-    private List<Reserva> reservas;
+    protected List<Reserva> reservas;
 
     
     public List<Reserva> getReservas() {
@@ -48,9 +51,9 @@ public class Recurso implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    protected Long id;
     @ManyToOne
-    private Centro centro;
+    protected Centro centro;
 
     public Centro getCentro() {
         return centro;

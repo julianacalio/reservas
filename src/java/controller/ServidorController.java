@@ -16,8 +16,13 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.persistence.AttributeOverride;
 
-@Named("servidorController")
+/**
+ *
+ * @author charles
+ */
+@Named(value = "servidorController")
 @SessionScoped
 public class ServidorController implements Serializable {
 

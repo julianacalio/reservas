@@ -5,6 +5,7 @@
 package model;
 
 import java.io.Serializable;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,16 +19,14 @@ import javax.persistence.ManyToOne;
  * @author charles
  */
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue("S")
 public class Servidor extends Pessoa implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String matricula;
+   
+    protected String matricula;
     @ManyToOne
-    private Centro centro;
+    protected Centro centro;
 
     public Centro getCentro() {
         return centro;
@@ -45,15 +44,7 @@ public class Servidor extends Pessoa implements Serializable {
         this.matricula = matricula;
     }
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+   
 
     @Override
     public int hashCode() {

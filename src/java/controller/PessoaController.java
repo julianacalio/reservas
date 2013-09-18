@@ -16,13 +16,15 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.persistence.MappedSuperclass;
 
-@Named("pessoaController")
+@Named(value = "pessoaController")
 @SessionScoped
 public class PessoaController implements Serializable {
 
     private Pessoa current;
     private DataModel items = null;
+    
     @EJB
     private facade.PessoaFacade ejbFacade;
     private PaginationHelper pagination;

@@ -6,10 +6,8 @@ package model;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 /**
@@ -17,6 +15,7 @@ import javax.persistence.OneToMany;
  * @author charles
  */
 @Entity
+@DiscriminatorValue("O")
 public class Operador extends Servidor implements Serializable {
 
     @OneToMany(mappedBy = "operador")
@@ -31,25 +30,9 @@ public class Operador extends Servidor implements Serializable {
         this.senha = senha;
     }
 
-    public List<Reserva> getReservas() {
-        return reservas;
-    }
-
-    public void setReservas(List<Reserva> reservas) {
-        this.reservas = reservas;
-    }
+   
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+   
 
     @Override
     public int hashCode() {

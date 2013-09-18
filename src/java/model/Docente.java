@@ -7,6 +7,7 @@ package model;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,12 +19,11 @@ import javax.persistence.OneToMany;
  * @author charles
  */
 @Entity
-public class Docente implements Serializable {
+@DiscriminatorValue("D")
+public class Docente extends Servidor implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+   
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "docente")
 //    private List<Turma> turmas;
 //
@@ -35,32 +35,10 @@ public class Docente implements Serializable {
 //        this.turmas = turmas;
 //    }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-    private String nome;
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
     
-    private String centro;
-
-    public String getCentro() {
-        return centro;
-    }
-
-    public void setCentro(String centro) {
-        this.centro = centro;
-    }
+    
+    
+   
     
       
     @Override

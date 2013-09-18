@@ -6,12 +6,15 @@ package model;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
 /**
@@ -19,12 +22,13 @@ import javax.persistence.OneToMany;
  * @author charles
  */
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "PESSOA_DETAILS_TYPE",discriminatorType = DiscriminatorType.STRING)
 public class Pessoa implements Serializable {
 
     @OneToMany(mappedBy = "reservante")
     private List<Reserva> reservas;
-    private String email;
+    protected String email;
 
     public String getEmail() {
         return email;
@@ -44,8 +48,8 @@ public class Pessoa implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String nome;
+    protected Long id;
+    protected String nome;
 
     public String getNome() {
         return nome;
