@@ -17,6 +17,7 @@
         <mapping class="model.Centro"/>
         <mapping class="model.Sala"/>
         <mapping class="model.Operador"/>
+        <mapping class="model.Equipamento"/>
         <mapping class="model.Pessoa"/>
         <mapping class="model.Recurso"/>
         <mapping class="model.Reserva"/>

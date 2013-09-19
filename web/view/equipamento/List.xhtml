@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:outputText value="Listar Equipamentos"></h:outputText>
+
+
+        <h:form >
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:outputText escape="false" value="Lista de equipamentos vazia" rendered="#{equipamentoController.items.rowCount == 0}"/>
+            <h:panelGroup rendered="#{equipamentoController.items.rowCount > 0}">
+                <h:outputText value="#{equipamentoController.pagination.pageFirstItem + 1}..#{equipamentoController.pagination.pageLastItem + 1}/#{equipamentoController.pagination.itemsCount}"/>&nbsp;
+                <h:commandLink action="#{equipamentoController.previous}" value="Previous #{equipamentoController.pagination.pageSize}" rendered="#{equipamentoController.pagination.hasPreviousPage}"/>&nbsp;
+                <h:commandLink action="#{equipamentoController.next}" value="Next #{equipamentoController.pagination.pageSize}" rendered="#{equipamentoController.pagination.hasNextPage}"/>&nbsp;
+                <h:dataTable value="#{equipamentoController.items}" var="item" >
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="patrimonio"/>
+                        </f:facet>
+                        <h:outputText value="#{item.patrimonio}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="descricao"/>
+                        </f:facet>
+                        <h:outputText value="#{item.descricao}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="id"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="centro"/>
+                        </f:facet>
+                        <h:outputText value="#{item.centro}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="&nbsp;"/>
+                        </f:facet>
+                        <h:commandLink action="#{equipamentoController.prepareView}" value="Visualizar todos os equipamentos"/>
+                        <h:outputText value=" "/>
+                        <h:commandLink action="#{equipamentoController.prepareEdit}" value="editar"/>
+                        <h:outputText value=" "/>
+                        <h:commandLink action="#{equipamentoController.destroy}" value="destroy"/>
+                    </h:column>
+                </h:dataTable>
+            </h:panelGroup>
+            <br />
+            <h:commandLink action="#{equipamentoController.prepareCreate}" value="Criar equipamento"/>
+            <br />
+            <br />
+            <h:link outcome="/index" value="index"/>
+        </h:form>
+    </h:body>
+
+</html>

@@ -5,7 +5,6 @@ import model.Equipamento;
 
 
 import java.io.Serializable;
-import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -17,7 +16,7 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
-@Named("equipamentoController")
+@Named(value = "equipamentoController")
 @SessionScoped
 public class EquipamentoController implements Serializable {
 
@@ -80,10 +79,10 @@ public class EquipamentoController implements Serializable {
     public String create() {
         try {
             getFacade().save(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EquipamentoCreated"));
+            JsfUtil.addSuccessMessage("EquipamentoCreated");
             return prepareCreate();
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e,"PersistenceErrorOccured");
             return null;
         }
     }
@@ -97,10 +96,10 @@ public class EquipamentoController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EquipamentoUpdated"));
+            JsfUtil.addSuccessMessage("EquipamentoUpdated");
             return "View";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
             return null;
         }
     }
@@ -130,9 +129,9 @@ public class EquipamentoController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EquipamentoDeleted"));
+            JsfUtil.addSuccessMessage("EquipamentoDeleted");
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
         }
     }
 

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:outputText value="Editar TA"></h:outputText>
+
+        <h:panelGroup id="messagePanel" layout="block">
+            <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+        </h:panelGroup>
+        <h:form>
+            <h:panelGrid columns="2">
+                <h:outputLabel value="id" for="id" />
+                <h:inputText id="id" value="#{tAController.selected.id}" title="id" />
+                <h:outputLabel value="#{bundle.EditTALabel_centro}" for="centro" />
+                <h:selectOneMenu id="centro" value="#{tAController.selected.centro}" title="centro" >
+                    <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
+                </h:selectOneMenu>
+                <h:outputLabel value="matricula" for="matricula" />
+                <h:inputText id="matricula" value="#{tAController.selected.matricula}" title="matricula" />
+               
+                <h:outputLabel value="email" for="email" />
+                <h:inputText id="email" value="#{tAController.selected.email}" title="email" />
+                <h:outputLabel value="nome" for="nome" />
+                <h:inputText id="nome" value="#{tAController.selected.nome}" title="nome" />
+                
+            </h:panelGrid>
+            <h:commandLink action="#{tAController.update}" value="save"/>
+            <br />
+            <br />
+            <h:link outcome="View" value="View"/>
+            <br />
+            <h:commandLink action="#{tAController.prepareList}" value="mostrar todos os TAs" immediate="true"/>
+            <br />
+            <br />
+            <h:link outcome="/index" value="index" />
+        </h:form>
+
+    </h:body>
+
+</html>

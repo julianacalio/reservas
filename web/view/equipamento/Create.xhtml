@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:outputText value="#{bundle.CreateEquipamentoTitle}"></h:outputText>
+
+
+        <h:panelGroup id="messagePanel" layout="block">
+            <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+        </h:panelGroup>
+        <h:form>
+            <h:panelGrid columns="2">
+                <h:outputLabel value="patrimonio" for="patrimonio" />
+                <h:inputText id="patrimonio" value="#{equipamentoController.selected.patrimonio}" title="patrimonio" />
+                <h:outputLabel value="descricao" for="descricao" />
+                <h:inputText id="descricao" value="#{equipamentoController.selected.descricao}" title="descricao" />
+                <h:outputLabel value="id" for="id" />
+                <h:inputText id="id" value="#{equipamentoController.selected.id}" title="#{bundle.CreateEquipamentoTitle_id}" />
+                <h:outputLabel value="centro" for="centro" />
+                <h:selectOneMenu id="centro" value="#{equipamentoController.selected.centro}" title="centro" >
+                    <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
+                </h:selectOneMenu>
+<!--                <h:outputLabel value="id" for="id" />
+                <h:inputText id="id" value="#{equipamentoController.selected.id}" title="id" />-->
+            </h:panelGrid>
+            <br />
+            <h:commandLink action="#{equipamentoController.create}" value="save" />
+            <br />
+            <br />
+            <h:commandLink action="#{equipamentoController.prepareList}" value="mostrar todos os equipamentos" immediate="true"/>
+            <br />
+            <br />
+            <h:link outcome="/index" value="index"/>
+        </h:form>
+
+    </h:body>
+
+</html>
