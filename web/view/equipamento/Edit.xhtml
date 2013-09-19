@@ -27,8 +27,7 @@
                 <h:selectOneMenu id="centro" value="#{equipamentoController.selected.centro}" title="centro" >
                     <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
                 </h:selectOneMenu>
-                <h:outputLabel value="id" for="id" />
-                <h:inputText id="id" value="#{equipamentoController.selected.id}" title="id" />
+               
             </h:panelGrid>
             <h:commandLink action="#{equipamentoController.update}" value="update"/>
             <br />

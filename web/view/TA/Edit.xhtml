@@ -16,8 +16,7 @@
         </h:panelGroup>
         <h:form>
             <h:panelGrid columns="2">
-                <h:outputLabel value="id" for="id" />
-                <h:inputText id="id" value="#{tAController.selected.id}" title="id" />
+                
                 <h:outputLabel value="#{bundle.EditTALabel_centro}" for="centro" />
                 <h:selectOneMenu id="centro" value="#{tAController.selected.centro}" title="centro" >
                     <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>

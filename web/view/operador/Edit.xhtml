@@ -19,22 +19,17 @@
             <h:panelGrid columns="2">
                 <h:outputLabel value="senha" for="senha" />
                 <h:inputText id="senha" value="#{operadorController.selected.senha}" title="senha" />
-                <h:outputLabel value="id" for="id" />
-                <h:inputText id="id" value="#{operadorController.selected.id}" title="#{bundle.EditOperadorTitle_id}" />
                 <h:outputLabel value="centro" for="centro" />
                 <h:selectOneMenu id="centro" value="#{operadorController.selected.centro}" title="centro" >
                     <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
                 </h:selectOneMenu>
                 <h:outputLabel value="matricula" for="matricula" />
                 <h:inputText id="matricula" value="#{operadorController.selected.matricula}" title="matricula" />
-                <h:outputLabel value="id" for="id" />
-                <h:inputText id="id" value="#{operadorController.selected.id}" title="id" />
                 <h:outputLabel value="email" for="email" />
                 <h:inputText id="email" value="#{operadorController.selected.email}" title="email" />
                 <h:outputLabel value="nome" for="nome" />
                 <h:inputText id="nome" value="#{operadorController.selected.nome}" title="nome" />
-                <h:outputLabel value="id" for="id" />
-                <h:inputText id="id" value="#{operadorController.selected.id}" title="id" />
+
             </h:panelGrid>
             <h:commandLink action="#{operadorController.update}" value="save"/>
             <br />

@@ -40,10 +40,9 @@
                     <h:inputText id="realizacao" value="#{reservaController.selected.realizacao}" title="realizacao">
                         <f:convertDateTime pattern="MM/dd/yyyy" timeZone="UTC"/>
                     </h:inputText>
-                    <h:outputLabel value="id" for="id" />
-                    <h:inputText id="id" value="#{reservaController.selected.id}" title="id" />
+                   
                 </h:panelGrid>
-                <h:commandLink action="#{reservaController.update}" value="#{bundle.EditReservaSaveLink}"/>
+                <h:commandLink action="#{reservaController.update}" value="editar"/>
                 <br />
                 <br />
                 <h:link outcome="View" value="view"/>

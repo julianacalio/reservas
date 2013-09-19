@@ -19,8 +19,7 @@
             <h:panelGrid columns="2">
                 <h:outputLabel value="nome" for="nome" />
                 <h:inputText id="nome" value="#{centroController.selected.nome}" title="nome" />
-                <h:outputLabel value="#{bundle.EditCentroLabel_id}" for="id" />
-                <h:inputText id="id" value="#{centroController.selected.id}" title="id" />
+                
             </h:panelGrid>
             <h:commandLink action="#{centroController.update}" value="update"/>
             <br />

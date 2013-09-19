@@ -19,7 +19,7 @@ import javax.persistence.ManyToOne;
  * @author charles
  */
 @Entity
-@DiscriminatorValue("S")
+@DiscriminatorValue("Servidor")
 public class Servidor extends Pessoa implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -68,7 +68,7 @@ public class Servidor extends Pessoa implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Servidor[ id=" + id + " ]";
+      return "Servidor[ "+ nome + " ]";
     }
 }
 

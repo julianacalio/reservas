@@ -13,7 +13,7 @@ import javax.persistence.Entity;
  * @author charles
  */
 @Entity
-@DiscriminatorValue("E")
+@DiscriminatorValue("Equipamento")
 public class Equipamento extends Recurso implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,7 +61,7 @@ public class Equipamento extends Recurso implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Equipamento[ id=" + id + " ]";
+        return "Equipamento[ " + descricao + " ]";
     }
 }
 

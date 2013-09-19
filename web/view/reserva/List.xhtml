@@ -20,7 +20,7 @@
                     <h:outputText value="#{reservaController.pagination.pageFirstItem + 1}..#{reservaController.pagination.pageLastItem + 1}/#{reservaController.pagination.itemsCount}"/>&nbsp;
                     <h:commandLink action="#{reservaController.previous}" value="Previous #{reservaController.pagination.pageSize}" rendered="#{reservaController.pagination.hasPreviousPage}"/>&nbsp;
                     <h:commandLink action="#{reservaController.next}" value="Next #{reservaController.pagination.pageSize}" rendered="#{reservaController.pagination.hasNextPage}"/>&nbsp;
-                    <h:dataTable value="#{reservaController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                    <h:dataTable value="#{reservaController.items}" var="item" >
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="operador"/>

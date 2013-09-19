@@ -17,8 +17,7 @@
             <h:panelGrid columns="2">
                 <h:outputLabel value="Nome" for="nome"/>
                 <h:inputText id="nome" value="#{docenteController.selected.nome}" title="Nome"/>
-                <h:outputLabel value="Id" for="id"/>
-                <h:inputText id="id" value="#{docenteController.selected.id}" title="id"/>
+               
             </h:panelGrid>
 
             <p:commandLink action="#{docenteController.update()}" value="Atualizar Docente" update="msgs"/>

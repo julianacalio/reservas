@@ -25,20 +25,16 @@
                 <h:outputText value="#{operadorController.selected.centro}" title="centro"/>
                 <h:outputText value="matricula"/>
                 <h:outputText value="#{operadorController.selected.matricula}" title="matricula"/>
-                <h:outputText value="id"/>
-                <h:outputText value="#{operadorController.selected.id}" title="id"/>
                 <h:outputText value="email"/>
                 <h:outputText value="#{operadorController.selected.email}" title="email"/>
                 <h:outputText value="nome"/>
                 <h:outputText value="#{operadorController.selected.nome}" title="nome"/>
-                <h:outputText value="id"/>
-                <h:outputText value="#{operadorController.selected.id}" title="id"/>
             </h:panelGrid>
             <br />
             <h:commandLink action="#{operadorController.destroyAndView}" value="destroy and view"/>
             <br />
             <br />
-            <h:link outcome="Edit" value="#{bundle.ViewOperadorEditLink}"/>
+            <h:link outcome="Edit" value="view"/>
             <br />
             <h:commandLink action="#{operadorController.prepareCreate}" value="criar" />
             <br />

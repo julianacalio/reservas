@@ -15,11 +15,14 @@ import javax.persistence.OneToMany;
  * @author charles
  */
 @Entity
-@DiscriminatorValue("O")
+@DiscriminatorValue("Operador")
 public class Operador extends Servidor implements Serializable {
 
-    @OneToMany(mappedBy = "operador")
-    private List<Reserva> reservas;
+//    @OneToMany(mappedBy = "operador")
+//    private List<Reserva> reservas;
+    
+   
+    
     private String senha;
 
     public String getSenha() {
@@ -33,6 +36,7 @@ public class Operador extends Servidor implements Serializable {
    
     private static final long serialVersionUID = 1L;
    
+    
 
     @Override
     public int hashCode() {
@@ -56,7 +60,7 @@ public class Operador extends Servidor implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Operador[ id=" + id + " ]";
+        return "Operador[ "+ nome + " ]";
     }
 }
 

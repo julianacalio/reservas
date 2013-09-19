@@ -19,7 +19,7 @@ import javax.persistence.OneToMany;
  * @author charles
  */
 @Entity
-@DiscriminatorValue("D")
+@DiscriminatorValue("Docente")
 public class Docente extends Servidor implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -63,6 +63,6 @@ public class Docente extends Servidor implements Serializable {
 
     @Override
     public String toString() {
-        return nome;
+        return "Docente[ "+ nome + " ]";
     }
 }

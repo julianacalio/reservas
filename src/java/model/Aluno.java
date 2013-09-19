@@ -58,7 +58,7 @@ public class Aluno extends Pessoa implements Serializable{
 
     @Override
     public String toString() {
-        return "modelo.Aluno[ id=" + id + " ]";
+        return "Aluno[ "+ nome + " ]";
     }
 
 }

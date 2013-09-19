@@ -44,7 +44,7 @@ public class TA extends Servidor implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.TA[ id=" + id + " ]";
+        return "TA[ "+ nome + " ]";
     }
 }
 

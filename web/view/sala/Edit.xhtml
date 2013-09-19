@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
 
@@ -11,35 +11,31 @@
     <h:body>
         <h:outputText value="Edit Sala"></h:outputText>
 
-    
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
-            <h:form>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="tamanho" for="tamanho_m2" />
-                    <h:inputText id="tamanho_m2" value="#{salaController.selected.tamanho_m2}" title="tamanho" />
-                    <h:outputLabel value="numero" for="numero" />
-                    <h:inputText id="numero" value="#{salaController.selected.numero}" title="numero" />
-                    <h:outputLabel value="id" for="id" />
-                    <h:inputText id="id" value="#{salaController.selected.id}" title="id" />
-                    <h:outputLabel value="centro" for="centro" />
-                    <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro" >
-                        <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu>
-                    <h:outputLabel value="id" for="id" />
-                    <h:inputText id="id" value="#{salaController.selected.id}" title="id" />
-                </h:panelGrid>
-                <h:commandLink action="#{salaController.update}" value="update"/>
-                <br />
-                <br />
-                <h:link outcome="View" value="view"/>
-                <br />
-                <h:commandLink action="#{salaController.prepareList}" value="List" immediate="true"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.EditSalaIndexLink}" />
-            </h:form>
+
+        <h:panelGroup id="messagePanel" layout="block">
+            <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+        </h:panelGroup>
+        <h:form>
+            <h:panelGrid columns="2">
+                <h:outputLabel value="tamanho" for="tamanho_m2" />
+                <h:inputText id="tamanho_m2" value="#{salaController.selected.tamanho_m2}" title="tamanho" />
+                <h:outputLabel value="numero" for="numero" />
+                <h:inputText id="numero" value="#{salaController.selected.numero}" title="numero" />
+                <h:outputLabel value="centro" for="centro" />
+                <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro" >
+                    <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
+                </h:selectOneMenu>
+            </h:panelGrid>
+            <h:commandLink action="#{salaController.update}" value="update"/>
+            <br />
+            <br />
+            <h:link outcome="View" value="view"/>
+            <br />
+            <h:commandLink action="#{salaController.prepareList}" value="List" immediate="true"/>
+            <br />
+            <br />
+            <h:link outcome="/index" value="index" />
+        </h:form>
     </h:body>
 
 </html>
