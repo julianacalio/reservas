@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:h="http://java.sun.com/jsf/html"
+       xmlns:p="http://primefaces.org/ui"
+       xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:outputText value="Editar Operador"></h:outputText>
+
+        <h:panelGroup id="messagePanel" layout="block">
+            <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+        </h:panelGroup>
+        <h:form>
+            <h:panelGrid columns="2">
+                <h:outputLabel value="senha" for="senha" />
+                <h:inputText id="senha" value="#{operadorController.selected.senha}" title="senha" />
+                <h:outputLabel value="id" for="id" />
+                <h:inputText id="id" value="#{operadorController.selected.id}" title="#{bundle.EditOperadorTitle_id}" />
+                <h:outputLabel value="centro" for="centro" />
+                <h:selectOneMenu id="centro" value="#{operadorController.selected.centro}" title="centro" >
+                    <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
+                </h:selectOneMenu>
+                <h:outputLabel value="matricula" for="matricula" />
+                <h:inputText id="matricula" value="#{operadorController.selected.matricula}" title="matricula" />
+                <h:outputLabel value="id" for="id" />
+                <h:inputText id="id" value="#{operadorController.selected.id}" title="id" />
+                <h:outputLabel value="email" for="email" />
+                <h:inputText id="email" value="#{operadorController.selected.email}" title="email" />
+                <h:outputLabel value="nome" for="nome" />
+                <h:inputText id="nome" value="#{operadorController.selected.nome}" title="nome" />
+                <h:outputLabel value="id" for="id" />
+                <h:inputText id="id" value="#{operadorController.selected.id}" title="id" />
+            </h:panelGrid>
+            <h:commandLink action="#{operadorController.update}" value="save"/>
+            <br />
+            <br />
+            <h:link outcome="View" value="view"/>
+            <br />
+            <h:commandLink action="#{operadorController.prepareList}" value="mostrar todos os links" immediate="true"/>
+            <br />
+            <br />
+            <h:link outcome="/index" value="index" />
+        </h:form>
+
+    </h:body>
+</html>

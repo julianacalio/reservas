@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:outputText value="Vizualizar Operador"></h:outputText>
+
+
+        <h:panelGroup id="messagePanel" layout="block">
+            <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+        </h:panelGroup>
+        <h:form>
+            <h:panelGrid columns="2">
+                <h:outputText value="senha"/>
+                <h:outputText value="#{operadorController.selected.senha}" title="senha"/>
+                <h:outputText value="id"/>
+                <h:outputText value="#{operadorController.selected.id}" title="id"/>
+                <h:outputText value="centro"/>
+                <h:outputText value="#{operadorController.selected.centro}" title="centro"/>
+                <h:outputText value="matricula"/>
+                <h:outputText value="#{operadorController.selected.matricula}" title="matricula"/>
+                <h:outputText value="id"/>
+                <h:outputText value="#{operadorController.selected.id}" title="id"/>
+                <h:outputText value="email"/>
+                <h:outputText value="#{operadorController.selected.email}" title="email"/>
+                <h:outputText value="nome"/>
+                <h:outputText value="#{operadorController.selected.nome}" title="nome"/>
+                <h:outputText value="id"/>
+                <h:outputText value="#{operadorController.selected.id}" title="id"/>
+            </h:panelGrid>
+            <br />
+            <h:commandLink action="#{operadorController.destroyAndView}" value="destroy and view"/>
+            <br />
+            <br />
+            <h:link outcome="Edit" value="#{bundle.ViewOperadorEditLink}"/>
+            <br />
+            <h:commandLink action="#{operadorController.prepareCreate}" value="criar" />
+            <br />
+            <h:commandLink action="#{operadorController.prepareList}" value="mostrar todos os operadores"/>
+            <br />
+            <br />
+            <h:link outcome="/index" value="index"/>
+
+        </h:form>
+
+
+    </h:body>
+</html>

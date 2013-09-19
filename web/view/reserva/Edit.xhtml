@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+            <h:outputText value="Editar Reserva"></h:outputText>
+     
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="operador" for="operador" />
+                    <h:selectOneMenu id="operador" value="#{reservaController.selected.operador}" title="operador" >
+                        <f:selectItems value="#{operadorController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="recurso" for="recurso" />
+                    <h:selectOneMenu id="recurso" value="#{reservaController.selected.recurso}" title="recurso" >
+                        <f:selectItems value="#{recursoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="reservante" for="reservante" />
+                    <h:selectOneMenu id="reservante" value="#{reservaController.selected.reservante}" title="reservante" >
+                        <f:selectItems value="#{pessoaController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="inicio" for="inicio" />
+                    <h:inputText id="inicio" value="#{reservaController.selected.inicio}" title="inicio" >
+                        <f:convertDateTime pattern="MM/dd/yyyy" timeZone="UTC" />
+                    </h:inputText>
+                    <h:outputLabel value="fim" for="fim" />
+                    <h:inputText id="fim" value="#{reservaController.selected.fim}" title="fim" >
+                        <f:convertDateTime pattern="MM/dd/yyyy" timeZone="UTC"/>
+                    </h:inputText>
+                    <h:outputLabel value="realizacao" for="realizacao" />
+                    <h:inputText id="realizacao" value="#{reservaController.selected.realizacao}" title="realizacao">
+                        <f:convertDateTime pattern="MM/dd/yyyy" timeZone="UTC"/>
+                    </h:inputText>
+                    <h:outputLabel value="id" for="id" />
+                    <h:inputText id="id" value="#{reservaController.selected.id}" title="id" />
+                </h:panelGrid>
+                <h:commandLink action="#{reservaController.update}" value="#{bundle.EditReservaSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="view"/>
+                <br />
+                <h:commandLink action="#{reservaController.prepareList}" value="mostrar todas as reservas" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="editar reservas" />
+            </h:form>
+        </h:body>
+
+</html>

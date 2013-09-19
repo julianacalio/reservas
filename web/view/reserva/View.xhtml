@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+            <h:outputText value="Visualizar Reserva"></h:outputText>
+        
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="operador"/>
+                    <h:outputText value="#{reservaController.selected.operador}" title="operador"/>
+                    <h:outputText value="recurso"/>
+                    <h:outputText value="#{reservaController.selected.recurso}" title="recurso"/>
+                    <h:outputText value="reservante"/>
+                    <h:outputText value="#{reservaController.selected.reservante}" title="reservante"/>
+                    <h:outputText value="inicio"/>
+                    <h:outputText value="#{reservaController.selected.inicio}" title="inicio">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="fim"/>
+                    <h:outputText value="#{reservaController.selected.fim}" title="fim">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="realizacao"/>
+                    <h:outputText value="#{reservaController.selected.realizacao}" title="realizacao">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="id"/>
+                    <h:outputText value="#{reservaController.selected.id}" title="id"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{reservaController.destroyAndView}" value="destroy"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="edit"/>
+                <br />
+                <h:commandLink action="#{reservaController.prepareCreate}" value="criar" />
+                <br />
+                <h:commandLink action="#{reservaController.prepareList}" value="mostrar todas as reservas"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="index"/>
+
+            </h:form>
+       
+<h:body>
+</html>
