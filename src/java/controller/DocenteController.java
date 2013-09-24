@@ -89,7 +89,8 @@ public class DocenteController implements Serializable {
     public String create() {
 
         try {
-            ejbFacade.save(docente);
+            //ejbFacade.save(docente);
+            ejbFacade.merge(docente);
             JsfUtil.addSuccessMessage("Docente Criado");
             return prepareCreate();
         } catch (Exception e) {

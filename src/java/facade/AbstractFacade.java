@@ -36,7 +36,7 @@ public abstract class AbstractFacade<T> {
     public T merge(T entity) {
         Session session = getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        session.merge(entity);
+        //session.merge(entity);
         T entidade = (T) session.merge(entity);
         transaction.commit();
         session.close();

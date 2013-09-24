@@ -11,15 +11,13 @@
         <p:layout fullPage="true">  
 
             <p:layoutUnit position="north" size="100" header="Top" resizable="true" closable="true" collapsible="true">  
+                <h:form id ="f2">
+                    <p:messages id="msgs" showDetail="true"/> 
+                    <h:link outcome="/index" value="index"/>
+                </h:form>
+            </p:layoutUnit> 
 
-                <p:commandLink id="linkCadastrarSala" action="/view/sala/CadastrarSala"  ajax="true" style="margin-right:20px;">  
-                    <h:outputText value="Gerenciar Recursos" />  
-                </p:commandLink> 
-                 <p:commandLink id="linkCadastrarSala" action="/index"  ajax="true" style="margin-right:20px;">  
-                    <h:outputText value="index" />  
-                </p:commandLink> 
 
-            </p:layoutUnit>  
 
             <!--            <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">  
                             <h:outputText value="South unit content." />  
@@ -27,9 +25,22 @@
 
             <p:layoutUnit position="west" size="200" header="Left" resizable="true" closable="true" collapsible="true">  
                 <h:outputText value="West unit content." />  
-                <p:commandLink id="linkCadastrarSala2" action="/view/sala/CadastrarSala" style="margin-right:20px;">  
-                    <h:outputText value="Gerenciar Recursos" />  
-                </p:commandLink> 
+
+                <h:form id="form1">
+
+                    <p:dataTable id="salas" var="sala" value="#{calendarioController.salaDataModel}"   
+                                 selection="#{calendarioController.novaescolha}" selectionMode="single" >  
+
+                        <p:ajax event="rowSelect" update=":form:schedule" listener="#{calendarioController.escolheRecurso}"/>  
+
+                        <p:column headerText="Sala">  
+                            #{sala.numero} 
+
+                        </p:column>  
+
+                    </p:dataTable>  
+
+                </h:form>  
             </p:layoutUnit>  
 
             <!--            <p:layoutUnit  position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true" effect="drop">  
@@ -41,37 +52,36 @@
 
                     <p:growl id="messages" showDetail="true" />  
 
-                    <p:schedule view="agendaWeek" minTime="7"  maxTime="22" axisFormat="H:mm" timeFormat="H:mm{ - H:mm}" id="schedule" value="#{scheduleController.eventModel}" widgetVar="myschedule" locale="br">  
+                    <p:schedule view="agendaWeek" minTime="7"  maxTime="22" axisFormat="H:mm" timeFormat="H:mm{ - H:mm}" id="schedule" value="#{calendarioController.eventModel}" widgetVar="myschedule" locale="br"  >  
+                        <p:ajax event="dateSelect" listener="#{calendarioController.onDateSelect}" update="eventDetails" oncomplete="eventDialog.show()" />  
+                        <p:ajax event="eventSelect" listener="#{calendarioController.onReservaSelect}" update="eventDetails" oncomplete="eventDialog.show()" />  
+                        <p:ajax event="eventMove" listener="#{calendarioController.onReservaMove}" update="messages" />  
+                        <p:ajax event="eventResize" listener="#{calendarioController.onEventResize}" update="messages" />  
+                    </p:schedule> 
 
-                        <p:ajax event="dateSelect" listener="#{scheduleController.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show()" />  
-                        <p:ajax event="eventSelect" listener="#{scheduleController.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show()" />  
-                        <p:ajax event="eventMove" listener="#{scheduleController.onEventMove}" update="messages" />  
-                        <p:ajax event="eventResize" listener="#{scheduleController.onEventResize}" update="messages" />  
 
-                    </p:schedule>  
 
-                    <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">  
-                        <h:panelGrid id="eventDetails" columns="2">  
-                            <h:outputLabel for="title" value="Title:" />  
-                            <p:inputText id="title" value="#{scheduleController.event.title}" required="true"/>  
+                    <p:dialog  widgetVar="eventDialog" header="Detalhes da reserva">
+                        <h:panelGrid id="eventDetails" columns="2"> 
 
-                            <h:outputLabel for="from" value="From:" />  
-                            <p:inputMask id="from" value="#{scheduleController.event.startDate}" mask="99/99/9999">  
-                                <f:convertDateTime pattern="dd/MM/yyyy" />  
-                            </p:inputMask>  
+                            <h:outputLabel value="Reservante*: " for="ac_reservante"/>  
+                            <p:autoComplete value="#{calendarioController.reserva.reservante}" id="ac_reservante" completeMethod="#{calendarioController.completeReservante}"  
+                                            var="p" itemLabel="#{p.nome}" itemValue="#{p}" forceSelection="true" required="true" queryDelay="0" />  
 
-                            <h:outputLabel for="to" value="To:" />  
-                            <p:inputMask id="to" value="#{scheduleController.event.endDate}" mask="99/99/9999">  
-                                <f:convertDateTime pattern="dd/MM/yyyy" />  
-                            </p:inputMask>  
+                            <h:outputLabel for="from" value="Inicio*:" />  
+                            <p:calendar id="from" value="#{calendarioController.reserva.inicio}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15" locale="br" required="true"/>  
 
-                            <h:outputLabel for="allDay" value="All Day:" />  
-                            <h:selectBooleanCheckbox id="allDay" value="#{scheduleController.event.allDay}" />  
+                            <h:outputLabel for="to" value="Fim*:" />  
+                            <p:calendar id="to" value="#{calendarioController.reserva.fim}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" required="true"/>  
 
-                            <p:commandButton type="reset" value="Reset" />  
-                            <p:commandButton id="addButton" value="Save" actionListener="#{scheduleController.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>  
+                            <h:outputLabel for="title" value="Motivo:" />  
+                            <p:inputText id="title" value="#{calendarioController.reserva.motivo}" />  
+
+                            <p:commandButton id="addButton"  value="Salvar" actionListener="#{calendarioController.addReserva}" oncomplete="myschedule.update();eventDialog.hide();" />   
+                            <p:commandButton id="remButton"  value="Remover" actionListener="#{calendarioController.remReserva}" oncomplete="myschedule.update();eventDialog.hide();" rendered="#{calendarioController.reserva.id != null}"/>  
+                            <p:commandButton id="cancelButton"  value="Cancelar"  oncomplete="eventDialog.hide();"  rendered="#{calendarioController.reserva.id == null}"/> 
                         </h:panelGrid>  
-                    </p:dialog>  
+                    </p:dialog>
 
                 </h:form>  
 
