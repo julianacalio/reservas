@@ -4,6 +4,9 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
+
+
+
     <h:head>
         <title>Facelet Title</title>
     </h:head>
@@ -23,10 +26,10 @@
                 <p:commandLink action="#{docenteController.next}" value="Proximo #{docenteController.pagination.pageSize}" rendered="#{docenteController.pagination.hasNextPage}" />&nbsp;
                 <br/>
                 <br/>
-                <h:form>
+               
                     <h:dataTable id="tabela" var="item" value="#{docenteController.items}">  
 
-                       <h:column>
+                        <h:column>
                             <f:facet name="header">
                                 <h:outputText value="id"/>
                             </f:facet>
@@ -44,12 +47,7 @@
                             </f:facet>
                             <h:outputText value="#{item.matricula}"/>
                         </h:column>
-<!--                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="id"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </h:column>-->
+
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="email"/>
@@ -62,25 +60,23 @@
                             </f:facet>
                             <h:outputText value="#{item.nome}"/>
                         </h:column>
-<!--                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="id"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </h:column>-->
+
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="&nbsp;"/>
                             </f:facet>
-                            <h:commandLink action="#{docenteController.prepareView}" value="view"/>
+                            <h:commandLink action="#{docenteController.prepareView}" value="Visualizar"/>
                             <h:outputText value=" "/>
-                            <h:commandLink action="#{docenteController.prepareEdit}" value="edit"/>
+                            <h:commandLink action="#{docenteController.prepareEdit}" value="Editar"/>
                             <h:outputText value=" "/>
-                            <h:commandLink action="#{docenteController.destroy}" value="destroy"/>
+                            <h:commandLink action="#{docenteController.destroy}" value="Destroy"/>
+                            <h:outputText value=" "/>
+                           
+
                         </h:column>
 
                     </h:dataTable>  
-                </h:form>
+           
             </h:panelGroup>
             <br />
             <h:commandLink action="#{docenteController.prepareCreate}" value="Criar Docente"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
 
@@ -11,62 +11,148 @@
     <h:body>
         Hello from Facelets
         <h:form >
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
-            <h:outputText escape="false" value="Lista Vazia" rendered="#{salaController.items.rowCount == 0}"/>
-            <h:panelGroup rendered="#{salaController.items.rowCount > 0}">
-                <h:outputText value="#{salaController.pagination.pageFirstItem + 1}..#{salaController.pagination.pageLastItem + 1}/#{salaController.pagination.itemsCount}"/>&nbsp;
-                <h:commandLink action="#{salaController.previous}" value="Previous #{salaController.pagination.pageSize}" rendered="#{salaController.pagination.hasPreviousPage}"/>&nbsp;
-                <h:commandLink action="#{salaController.next}" value="Next #{salaController.pagination.pageSize}" rendered="#{salaController.pagination.hasNextPage}"/>&nbsp;
-                <h:dataTable value="#{salaController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="tamanho"/>
-                        </f:facet>
-                        <h:outputText value="#{item.tamanho_m2}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="numero"/>
-                        </f:facet>
-                        <h:outputText value="#{item.numero}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="id"/>
-                        </f:facet>
-                        <h:outputText value="#{item.id}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="centro"/>
-                        </f:facet>
-                        <h:outputText value="#{item.centro}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="id"/>
-                        </f:facet>
-                        <h:outputText value="#{item.id}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="&nbsp;"/>
-                        </f:facet>
-                        <h:commandLink action="#{recursoController.prepareView}" value="view"/>
-                        <h:outputText value=" "/>
-                        <h:commandLink action="#{recursoController.prepareEdit}" value="edit"/>
-                        <h:outputText value=" "/>
-                        <h:commandLink action="#{recursoController.destroy}" value="destroy"/>
-                    </h:column>
-                </h:dataTable>
-            </h:panelGroup>
-            <br />
-            <h:commandLink action="#{salaController.prepareCreate}" value="Criar Sala"/>
-            <br />
-            <br />
-            <h:link outcome="/index" value="index"/>
+            <p:layout fullPage="true">  
+
+                <p:layoutUnit position="north" size="100" header="Top" resizable="true" closable="true" collapsible="true">  
+
+                    <p:messages id="msgs" showDetail="true"/> 
+
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="south" size="100"  resizable="true" closable="true" collapsible="true"  >  
+                    <h:outputText value="South unit content."  />  
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="east" size="200" header="Left" resizable="true" closable="true" collapsible="true">  
+                    <h:outputText value="east unit content." />  
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop">  
+                    <p:commandLink id="ajax2" action="/view/docente/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Docentes" />  
+                    </p:commandLink> 
+                    <br/>
+                    <p:commandLink id="ajax3" action="/view/centro/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Centros" />  
+                    </p:commandLink> 
+                    <br/>
+                    <p:commandLink id="ajax5" action="/view/equipamento/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Equipamentos" />  
+                    </p:commandLink>
+                    <br/>
+                    <p:commandLink id="ajax6" action="/view/TA/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de TAs" />  
+                    </p:commandLink>
+                    <br/>
+                    <p:commandLink id="ajax7" action="/view/operador/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Operadores" />  
+                    </p:commandLink>
+                    <br/>
+                    <p:commandLink id="ajax8" action="/view/reserva/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Reservas" />  
+                    </p:commandLink>
+                    <br/>
+                    <p:panel >
+                        <h:link outcome="/index" value="index" style="margin-right:50px;margin-left: 50px" />
+                    </p:panel>
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="center">  
+                    <!--<h:form>-->  
+                    <!--                This fullPage layout consists of five different layoutUnits which are resizable and closable by default.  -->
+
+
+                    <h:outputText escape="false" value="Lista Vazia" rendered="#{salaController.items.rowCount == 0}"/>
+                    <p:panel rendered="#{salaController.items.rowCount > 0}">
+                        <h:outputText value="#{salaController.pagination.pageFirstItem + 1}..#{salaController.pagination.pageLastItem + 1}/#{salaController.pagination.itemsCount}"/>&nbsp;
+                        <h:commandLink action="#{salaController.previous}" value="Anterior #{salaController.pagination.pageSize}" rendered="#{salaController.pagination.hasPreviousPage}"/>&nbsp;
+                        <h:commandLink action="#{salaController.next}" value="Proximo #{salaController.pagination.pageSize}" rendered="#{salaController.pagination.hasNextPage}"/>&nbsp;
+                        <p:dataTable value="#{salaController.items}" var="item"  >
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="id"/>
+                                </f:facet>
+                                <h:outputText value="#{item.id}"/>
+                            </p:column>
+
+                            <p:column headerText="tamanho_m2">  
+                                <f:facet name="header">
+                                    <h:outputText value="Tamanho (m2)"/>
+                                </f:facet>
+                                <h:outputText value="#{item.tamanho_m2}"/>
+                            </p:column>  
+
+                            <p:column headerText="numero">  
+                                <f:facet name="header">
+                                    <h:outputText value="Número"/>
+                                </f:facet>
+                                <h:outputText value="#{item.numero}"/>
+                            </p:column>  
+
+                            <p:column headerText="centro">  
+                                <f:facet name="header">
+                                    <h:outputText value="Centro"/>
+                                </f:facet>
+                                <h:outputText value="#{item.centro}"/>
+                            </p:column>  
+
+
+                            <p:column headerText="Controle">
+                                <f:facet name="header">
+                                    <h:outputText value="Controle"/>
+                                </f:facet>
+                                <p:commandLink action="#{salaController.prepareEdit}" value="Editar" />
+                            </p:column>
+
+                            <p:column headerText="Controle">
+                                <f:facet name="header">
+                                    <h:outputText value="Controle"/>
+                                </f:facet>
+                                <p:commandLink action="#{salaController.destroy}" value="Deletar" immediate="true"/>
+                            </p:column>
+
+                        </p:dataTable> 
+                    </p:panel>
+                    <p:panel>
+
+                        <p:panelGrid columns="6">
+                            <f:facet name="header">
+                                <h:outputText value="Criar Sala"/>
+                            </f:facet>
+                            <h:outputLabel value="Tamanho" for="tamanho_m2" style="margin-right:42.5px;margin-left: 42.5px;" />
+                            <h:inputText id="tamanho_m2" value="#{salaController.selected.tamanho_m2}" title="tamanho" />
+                            <h:outputLabel value="Número" for="numero" style="margin-right:42.5px;margin-left: 42.5px;"/>
+                            <h:inputText id="numero" value="#{salaController.selected.numero}" title="numero" />
+                            <h:outputLabel value="Centro" for="centro" style="margin-right:42.5px;margin-left: 42.5px;" />
+                            <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro"  style="margin-right:42.5px;margin-left: 42.5px;">
+                                <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
+                            </h:selectOneMenu>
+                        </p:panelGrid>
+
+                        <p:panelGrid columns="2">
+                            
+                            <p:commandLink action="#{salaController.create()}"   update="msgs" style="margin-right:195px;margin-left: 195px;" > 
+                                <p:commandButton value="Salvar" id="ajax21" style="width: 180px"/>
+                            </p:commandLink>
+
+                            <p:commandLink action="#{salaController.prepareList}" immediate="true" style="margin-right:195px;margin-left: 195px;">
+                                <p:commandButton value="Mostrar todos" id="ajax22" style="width: 180px"/>
+                            </p:commandLink>
+
+                        </p:panelGrid>
+
+
+                        <!--                         <p:commandLink id="ajax102" action="/index"   style="margin-right:300px;margin-left: 300px;"  >  
+                                                    <p:commandButton value="index" id="ajax189" />
+                                                </p:commandLink>-->
+
+
+                        <!--                        <h:link outcome="/index" value="index"/>-->
+                    </p:panel>
+                    <!--                </h:form>  -->
+                </p:layoutUnit>  
+
+            </p:layout>  
         </h:form>
     </h:body>
 

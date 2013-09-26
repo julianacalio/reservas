@@ -5,7 +5,9 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Subqueries;
 
 public abstract class AbstractFacade<T> {
 
@@ -61,6 +63,7 @@ public abstract class AbstractFacade<T> {
     public List<T> findAll() {
         Session session = getSessionFactory().openSession();
         Criteria crit = session.createCriteria(entityClass);
+        crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
         crit.setMaxResults(50);
         List results = crit.list();
         session.close();
@@ -70,6 +73,7 @@ public abstract class AbstractFacade<T> {
     public List<T> findRange(int[] range) {
         Session session = getSessionFactory().openSession();
         Criteria crit = session.createCriteria(entityClass);
+        crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
         crit.setMaxResults(range[1] - range[0]);
         crit.setFirstResult(range[0]);
         List results = crit.list();

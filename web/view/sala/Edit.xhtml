@@ -9,33 +9,60 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <h:outputText value="Edit Sala"></h:outputText>
+
+        <p:layout fullPage="true">  
+
+            <p:layoutUnit position="north" size="100" header="Top" resizable="true" closable="true" collapsible="true">  
+                <h:outputText value="North unit content." />  
+            </p:layoutUnit>  
+
+            <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">  
+                <h:outputText value="South unit content." />  
+            </p:layoutUnit>  
+
+            <p:layoutUnit position="west" size="200" header="Left" resizable="true" closable="true" collapsible="true">  
+                <h:outputText value="West unit content." />  
+            </p:layoutUnit>  
+
+            <p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true" effect="drop">  
+                <h:outputText value="Right unit content." />  
+            </p:layoutUnit>  
+
+            <p:layoutUnit position="center">  
+                <h:form>  
+                    This fullPage layout consists of five different layoutUnits which are resizable and closable by default.  
+                    <h:outputText value="Edit Sala"></h:outputText>
 
 
-        <h:panelGroup id="messagePanel" layout="block">
-            <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-        </h:panelGroup>
-        <h:form>
-            <h:panelGrid columns="2">
-                <h:outputLabel value="tamanho" for="tamanho_m2" />
-                <h:inputText id="tamanho_m2" value="#{salaController.selected.tamanho_m2}" title="tamanho" />
-                <h:outputLabel value="numero" for="numero" />
-                <h:inputText id="numero" value="#{salaController.selected.numero}" title="numero" />
-                <h:outputLabel value="centro" for="centro" />
-                <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro" >
-                    <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
-                </h:selectOneMenu>
-            </h:panelGrid>
-            <h:commandLink action="#{salaController.update}" value="update"/>
-            <br />
-            <br />
-            <h:link outcome="View" value="view"/>
-            <br />
-            <h:commandLink action="#{salaController.prepareList}" value="List" immediate="true"/>
-            <br />
-            <br />
-            <h:link outcome="/index" value="index" />
-        </h:form>
+                    <h:panelGroup id="messagePanel" layout="block">
+                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                    </h:panelGroup>
+                   
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="tamanho" for="tamanho_m2" />
+                            <h:inputText id="tamanho_m2" value="#{salaController.selected.tamanho_m2}" title="tamanho" />
+                            <h:outputLabel value="numero" for="numero" />
+                            <h:inputText id="numero" value="#{salaController.selected.numero}" title="numero" />
+                            <h:outputLabel value="centro" for="centro" />
+                            <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro" >
+                                <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
+                            </h:selectOneMenu>
+                        </h:panelGrid>
+                        <h:commandLink action="#{salaController.update}" value="update"/>
+                        <br />
+                        <br />
+                        <h:link outcome="View" value="view"/>
+                        <br />
+                        <h:commandLink action="#{salaController.prepareList}" value="List" immediate="true"/>
+                        <br />
+                        <br />
+                        <h:link outcome="/index" value="index" />
+                    
+                </h:form>  
+            </p:layoutUnit>  
+
+        </p:layout>  
+
     </h:body>
 
 </html>

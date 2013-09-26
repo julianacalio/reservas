@@ -20,16 +20,31 @@ import javax.persistence.OneToMany;
 
 /**
  *
- * @author charles
+ * @author
+ * charles
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "RECURSO_DETAILS_TYPE",discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "RECURSO_DETAILS_TYPE", discriminatorType = DiscriminatorType.STRING)
 public class Recurso implements Serializable {
 
+//    @ManyToOne
+//    private Recurso reserva;
+//
+//    public Recurso getReserva() {
+//        return reserva;
+//    }
+//
+//    public void setReserva(Recurso reserva) {
+//        this.reserva = reserva;
+//    }
+    
+    
+    
     @OneToMany(mappedBy = "recurso", fetch = FetchType.EAGER)
     protected List<Reserva> reservas;
 
+ 
     
     public List<Reserva> getReservas() {
         return reservas;
@@ -43,11 +58,10 @@ public class Recurso implements Serializable {
         reservas.add(reserva);
         reserva.setRecurso(this);
     }
-    
+
     public void remReserva(Reserva reserva) {
         reservas.remove(reserva);
     }
-    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

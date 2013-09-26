@@ -16,6 +16,8 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import model.Centro;
+import model.Sala;
 
 @Named("reservaController")
 @SessionScoped
@@ -228,4 +230,9 @@ public class ReservaController implements Serializable {
             }
         }
     }
+    
+    
+    
+     
+    
 }

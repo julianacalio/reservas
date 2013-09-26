@@ -6,19 +6,22 @@ package model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import org.primefaces.model.ScheduleEvent;
 
 /**
  *
- * @author charles
+ * @author
+ * charles
  */
 @Entity
 public class Reserva implements Serializable, ScheduleEvent {
@@ -35,11 +38,17 @@ public class Reserva implements Serializable, ScheduleEvent {
     private Pessoa reservante;
     @ManyToOne
     private Centro centro;
-    
-    
-    
     String motivo;
-    
+
+//    @OneToMany(mappedBy = "reserva", fetch = FetchType.EAGER)
+//    protected List<Recurso> recursos;
+//    public List<Recurso> getRecursos() {
+//        return recursos;
+//    }
+//
+//    public void setRecursos(List<Recurso> recursos) {
+//        this.recursos = recursos;
+//    }
     public String getMotivo() {
         return motivo;
     }
@@ -47,7 +56,6 @@ public class Reserva implements Serializable, ScheduleEvent {
     public void setMotivo(String motivo) {
         this.motivo = motivo;
     }
-    
     @Transient
     String id = null;
 
@@ -196,5 +204,6 @@ public class Reserva implements Serializable, ScheduleEvent {
     public boolean isEditable() {
         return true;
     }
-}
 
+   
+}

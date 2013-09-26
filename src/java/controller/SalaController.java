@@ -77,13 +77,15 @@ public class SalaController implements Serializable {
         current = new Sala();
         selectedItemIndex = -1;
         return "Create";
+       // return create();
     }
 
     public String create() {
         try {
             getFacade().save(current);
             JsfUtil.addSuccessMessage("SalaCreated");
-            return prepareCreate();
+            //return prepareCreate();
+            return prepareList();
         } catch (Exception e) {
             JsfUtil.addErrorMessage("PersistenceErrorOccured");
             return null;

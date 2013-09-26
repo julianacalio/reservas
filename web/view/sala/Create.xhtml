@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
 
@@ -9,35 +9,90 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        Hello from Facelets
-        <h:outputText value="Criar Sala"></h:outputText>
-
-
-        <h:panelGroup id="messagePanel" layout="block">
-            <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-        </h:panelGroup>
         <h:form>
-            <h:panelGrid columns="2">
-                <h:outputLabel value="tamanho" for="tamanho_m2" />
-                <h:inputText id="tamanho_m2" value="#{salaController.selected.tamanho_m2}" title="tamanho" />
-                <h:outputLabel value="numero" for="numero" />
-                <h:inputText id="numero" value="#{salaController.selected.numero}" title="numero" />
 
-                <h:outputLabel value="centro" for="centro" />
-                <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro" >
-                    <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
-                </h:selectOneMenu>
+            <h:outputText value="Criar Sala"></h:outputText>
 
-            </h:panelGrid>
-            <br />
-            <h:commandLink action="#{salaController.create}" value="save" />
-            <br />
-            <br />
-            <h:commandLink action="#{salaController.prepareList}" value="todas as salas" immediate="true"/>
-            <br />
-            <br />
-            <h:link outcome="/index" value="index"/>
+            <p:layout fullPage="true">
+                <p:layoutUnit position="north" size="100" header="Top" resizable="true" closable="true" collapsible="true">  
+
+                    <p:messages id="msgs" showDetail="true"/> 
+
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="south" size="100" resizable="true" closable="true" collapsible="true">  
+                    <h:outputText value="South unit content." />  
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true">  
+                    <!--<h:outputText value="West unit content." />-->  
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop">  
+                    <p:commandLink id="ajax2" action="/view/docente/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Docentes" />  
+                    </p:commandLink> 
+                    <br/>
+                    <p:commandLink id="ajax3" action="/view/centro/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Centros" />  
+                    </p:commandLink> 
+
+                    <br/>
+                    <p:commandLink id="ajax5" action="/view/equipamento/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Equipamentos" />  
+                    </p:commandLink>
+                    <br/>
+                    <p:commandLink id="ajax6" action="/view/TA/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de TAs" />  
+                    </p:commandLink>
+                    <br/>
+                    <p:commandLink id="ajax7" action="/view/operador/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Operadores" />  
+                    </p:commandLink>
+                    <br/>
+                    <p:commandLink id="ajax8" action="/view/reserva/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Reservas" />  
+                    </p:commandLink>
+                    <br/>
+                    <p:panel >
+                        <h:link outcome="/index" value="index" style="margin-right:50px;margin-left: 50px"/>
+                    </p:panel>
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="center">  
+                    <!--                <h:form>  -->
+                    <!--                    This fullPage layout consists of five different layoutUnits which are resizable and closable by default.  -->
+
+                    <p:panelGrid columns="6">
+                        <h:outputLabel value="Tamanho" for="tamanho_m2" style="margin-right:42.5px;margin-left: 42.5px;" />
+                        <h:inputText id="tamanho_m2" value="#{salaController.selected.tamanho_m2}" title="tamanho" />
+                        <h:outputLabel value="Número" for="numero" style="margin-right:42.5px;margin-left: 42.5px;"/>
+                        <h:inputText id="numero" value="#{salaController.selected.numero}" title="numero" />
+                        <h:outputLabel value="Centro" for="centro" style="margin-right:42.5px;margin-left: 42.5px;" />
+                        <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro"  style="margin-right:42.5px;margin-left: 42.5px;">
+                            <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
+                        </h:selectOneMenu>
+                    </p:panelGrid>
+                    
+                    <p:panelGrid columns="2">
+
+                        <p:commandLink action="#{salaController.create}"   update="msgs" style="margin-right:195px;margin-left: 195px;" > 
+                            <p:commandButton value="Salvar" id="ajax21" style="width: 180px"/>
+                        </p:commandLink>
+
+                        <p:commandLink action="#{salaController.prepareList}" immediate="true" style="margin-right:195px;margin-left: 195px;">
+                            <p:commandButton value="Mostrar todos" id="ajax22" style="width: 180px"/>
+                        </p:commandLink>
+
+                    </p:panelGrid>
+
+
+                    <!--                </h:form>  -->
+                </p:layoutUnit> 
+            </p:layout>
         </h:form>
+
+
     </h:body>
 
 </html>
