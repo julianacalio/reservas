@@ -9,49 +9,116 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-
-        <h:outputText value="Listar Centros"></h:outputText>
-
-
         <h:form >
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
-            <h:outputText escape="false" value="Lista Vazia" rendered="#{centroController.items.rowCount == 0}"/>
-            <h:panelGroup rendered="#{centroController.items.rowCount > 0}">
-                <h:outputText value="#{centroController.pagination.pageFirstItem + 1}..#{centroController.pagination.pageLastItem + 1}/#{centroController.pagination.itemsCount}"/>&nbsp;
-                <h:commandLink action="#{centroController.previous}" value="previous #{centroController.pagination.pageSize}" rendered="#{centroController.pagination.hasPreviousPage}"/>&nbsp;
-                <h:commandLink action="#{centroController.next}" value="next #{centroController.pagination.pageSize}" rendered="#{centroController.pagination.hasNextPage}"/>&nbsp;
-                <h:dataTable value="#{centroController.items}" var="item"  >
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="nome"/>
-                        </f:facet>
-                        <h:outputText value="#{item.nome}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="id"/>
-                        </f:facet>
-                        <h:outputText value="#{item.id}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="&nbsp;"/>
-                        </f:facet>
-                        <h:commandLink action="#{centroController.prepareView}" value="view"/>
-                        <h:outputText value=" "/>
-                        <h:commandLink action="#{centroController.prepareEdit}" value="edit"/>
-                        <h:outputText value=" "/>
-                        <h:commandLink action="#{centroController.destroy}" value="destroy"/>
-                    </h:column>
-                </h:dataTable>
-            </h:panelGroup>
-            <br />
-            <h:commandLink action="#{centroController.prepareCreate}" value="Criar Centro"/>
-            <br />
-            <br />
-            <h:link outcome="/index" value="index"/>
+            <p:layout fullPage="true">  
+
+                <p:layoutUnit position="north" style="text-align:center" size="100"  header=" UFABC - CMCC - Centro de Matemática Computação e Cognição" resizable="true" closable="true" collapsible="true">  
+                    
+                     <p:messages id="msgs" showDetail="true"/> 
+                     
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">  
+                    <h:outputText value="South unit content." />  
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop">  
+                    <p:commandLink id="ajax2" action="/view/docente/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Docentes" />  
+                    </p:commandLink> 
+                    <br/>
+                    <p:commandLink id="ajax3" action="/view/centro/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Centros" />  
+                    </p:commandLink> 
+                    <br/>
+                    <p:commandLink id="ajax5" action="/view/equipamento/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Equipamentos" />  
+                    </p:commandLink>
+                    <br/>
+                    <p:commandLink id="ajax6" action="/view/TA/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de TAs" />  
+                    </p:commandLink>
+                    <br/>
+                    <p:commandLink id="ajax7" action="/view/operador/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Operadores" />  
+                    </p:commandLink>
+                    <br/>
+                    <p:commandLink id="ajax8" action="/view/reserva/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Reservas" />  
+                    </p:commandLink>
+                    <br/>
+                    <p:panel >
+                        <h:link outcome="/index" value="index" style="margin-right:50px;margin-left: 50px" />
+                    </p:panel>
+                </p:layoutUnit>   
+
+                <p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true" effect="drop">  
+                    <h:outputText value="Right unit content." />  
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="center">  
+                    
+                        <h:outputText escape="false" value="Lista Vazia" rendered="#{centroController.items.rowCount == 0}"/>
+                        <p:panel rendered="#{centroController.items.rowCount > 0}">
+                            <h:outputText value="#{centroController.pagination.pageFirstItem + 1}..#{centroController.pagination.pageLastItem + 1}/#{centroController.pagination.itemsCount}"/>&nbsp;
+                            <h:commandLink action="#{centroController.previous}" value="Anterior #{centroController.pagination.pageSize}" rendered="#{centroController.pagination.hasPreviousPage}"/>&nbsp;
+                            <h:commandLink action="#{centroController.next}" value="Proximo #{centroController.pagination.pageSize}" rendered="#{centroController.pagination.hasNextPage}"/>&nbsp;
+                            <p:dataTable id="db" var="item"  value="#{centroController.items}"   >
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="id"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.id}"/>
+                                </p:column>
+
+                                <p:column headerText="nome">  
+                                    <f:facet name="header">
+                                        <h:outputText value="Nome"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.nome}"/>
+                                </p:column>  
+
+                                <p:column headerText="Controle">
+                                    <f:facet name="header">
+                                        <h:outputText value="Controle"/>
+                                    </f:facet>
+                                    <p:commandLink action="#{centroController.prepareEdit}" value="Editar" />
+                                </p:column>
+
+                                <p:column headerText="Controle">
+                                    <f:facet name="header">
+                                        <h:outputText value="Controle"/>
+                                    </f:facet>
+                                    <p:commandLink action="#{centroController.destroy}" value="Deletar" immediate="true" update="db"/>
+                                </p:column>
+
+                            </p:dataTable> 
+                        </p:panel>
+
+                        <p:panel>
+
+                            <p:panelGrid columns="2">
+                                <f:facet name="header">
+                                    <h:outputText value="Criar Sala"/>
+                                </f:facet>
+                                <h:outputLabel value="Nome" for="nome" style="margin-right:36px;margin-left: 36px;" />
+                                <h:inputText id="tamanho_m2" value="#{centroController.selected.nome}" title="tamanho" />
+                            </p:panelGrid>
+                            
+                            <p:panel>
+                                <p:commandLink action="#{centroController.create()}"   update="msgs,db" style="margin-right:495px;margin-left: 495px;" > 
+                                    <p:commandButton value="Salvar" id="ajax21" style="width: 180px"/>
+                                </p:commandLink>
+                            </p:panel>
+                            
+                        </p:panel>
+
+                    
+                </p:layoutUnit>  
+
+            </p:layout>  
+
+
         </h:form>
 
     </h:body>

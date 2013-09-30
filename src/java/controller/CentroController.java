@@ -80,8 +80,9 @@ public class CentroController implements Serializable {
     public String create() {
         try {
             getFacade().save(current);
-            JsfUtil.addSuccessMessage("CentroCreated");
-            return prepareCreate();
+            JsfUtil.addSuccessMessage("Centro Criado");
+             //return prepareCreate();
+            return prepareList();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e,"PersistenceErrorOccured");
             return null;
@@ -97,7 +98,7 @@ public class CentroController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage("CentroUpdated");
+            JsfUtil.addSuccessMessage("Centro Atualizado");
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
@@ -130,7 +131,7 @@ public class CentroController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage("CentroDeleted");
+            JsfUtil.addSuccessMessage("Centro Deletado");
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
         }

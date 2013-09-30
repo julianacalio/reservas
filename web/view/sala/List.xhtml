@@ -10,10 +10,10 @@
     </h:head>
     <h:body>
         Hello from Facelets
-        <h:form >
+       <h:form>
             <p:layout fullPage="true">  
 
-                <p:layoutUnit position="north" size="100" header="Top" resizable="true" closable="true" collapsible="true">  
+                <p:layoutUnit position="north" style="text-align:center" size="100"  header=" UFABC - CMCC - Centro de Matemática Computação e Cognição" resizable="true" closable="true" collapsible="true">  
 
                     <p:messages id="msgs" showDetail="true"/> 
 
@@ -105,7 +105,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="Controle"/>
                                 </f:facet>
-                                <p:commandLink action="#{salaController.destroy}" value="Deletar" immediate="true" update="db"/>
+                                <p:commandLink id ="cmlDestroy" action="#{salaController.destroy}" value="Deletar" immediate="true" update="db"/>
                             </p:column>
 
                         </p:dataTable> 
@@ -126,14 +126,13 @@
                             </h:selectOneMenu>
                         </p:panelGrid>
 
-                        <p:panelGrid columns="2">
-                            
+                        <p:panel>
+                           
                             <p:commandLink action="#{salaController.create()}"   update="msgs,db" style="margin-right:495px;margin-left: 495px;" > 
                                 <p:commandButton value="Salvar" id="ajax21" style="width: 180px"/>
                             </p:commandLink>
 
-
-                        </p:panelGrid>
+                        </p:panel>
 
                     </p:panel>
                     <!--                </h:form>  -->

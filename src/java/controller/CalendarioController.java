@@ -78,7 +78,7 @@ public class CalendarioController implements Serializable {
     private ScheduleModel eventModel;
     private Reserva reserva = new Reserva();
     List<Pessoa> pessoas;
-    List<Recurso> recursos;
+    
     
     private EquipamentoDataModel equipamentoDataModel;
 

@@ -61,7 +61,7 @@ public class Equipamento extends Recurso implements Serializable {
 
     @Override
     public String toString() {
-        return "Equipamento[ " + descricao + " ]";
+        return  descricao ;
     }
 }
 

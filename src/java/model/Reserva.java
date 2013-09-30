@@ -49,6 +49,9 @@ public class Reserva implements Serializable, ScheduleEvent {
 //    public void setRecursos(List<Recurso> recursos) {
 //        this.recursos = recursos;
 //    }
+    
+    
+    
     public String getMotivo() {
         return motivo;
     }

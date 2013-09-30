@@ -91,7 +91,8 @@ public class DocenteController implements Serializable {
             ejbFacade.save(docente);
             //ejbFacade.merge(docente);
             JsfUtil.addSuccessMessage("Docente Criado");
-            return prepareCreate();
+            //return prepareCreate();
+            return prepareList();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Ocorreu um erro de persistência");
             return null;
