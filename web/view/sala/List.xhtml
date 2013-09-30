@@ -58,16 +58,13 @@
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="center">  
-                    <!--<h:form>-->  
-                    <!--                This fullPage layout consists of five different layoutUnits which are resizable and closable by default.  -->
-
-
+            
                     <h:outputText escape="false" value="Lista Vazia" rendered="#{salaController.items.rowCount == 0}"/>
                     <p:panel rendered="#{salaController.items.rowCount > 0}">
                         <h:outputText value="#{salaController.pagination.pageFirstItem + 1}..#{salaController.pagination.pageLastItem + 1}/#{salaController.pagination.itemsCount}"/>&nbsp;
                         <h:commandLink action="#{salaController.previous}" value="Anterior #{salaController.pagination.pageSize}" rendered="#{salaController.pagination.hasPreviousPage}"/>&nbsp;
                         <h:commandLink action="#{salaController.next}" value="Proximo #{salaController.pagination.pageSize}" rendered="#{salaController.pagination.hasNextPage}"/>&nbsp;
-                        <p:dataTable value="#{salaController.items}" var="item"  >
+                        <p:dataTable id="db" var="item"  value="#{salaController.items}"   >
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="id"/>
@@ -108,7 +105,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="Controle"/>
                                 </f:facet>
-                                <p:commandLink action="#{salaController.destroy}" value="Deletar" immediate="true"/>
+                                <p:commandLink action="#{salaController.destroy}" value="Deletar" immediate="true" update="db"/>
                             </p:column>
 
                         </p:dataTable> 
@@ -119,35 +116,25 @@
                             <f:facet name="header">
                                 <h:outputText value="Criar Sala"/>
                             </f:facet>
-                            <h:outputLabel value="Tamanho" for="tamanho_m2" style="margin-right:42.5px;margin-left: 42.5px;" />
+                            <h:outputLabel value="Tamanho" for="tamanho_m2" style="margin-right:36px;margin-left: 36px;" />
                             <h:inputText id="tamanho_m2" value="#{salaController.selected.tamanho_m2}" title="tamanho" />
-                            <h:outputLabel value="Número" for="numero" style="margin-right:42.5px;margin-left: 42.5px;"/>
+                            <h:outputLabel value="Número" for="numero" style="margin-right:36px;margin-left: 36px;"/>
                             <h:inputText id="numero" value="#{salaController.selected.numero}" title="numero" />
-                            <h:outputLabel value="Centro" for="centro" style="margin-right:42.5px;margin-left: 42.5px;" />
-                            <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro"  style="margin-right:42.5px;margin-left: 42.5px;">
+                            <h:outputLabel value="Centro" for="centro" style="margin-right:36px;margin-left: 36px;" />
+                            <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro"  style="margin-right:36px;margin-left: 36px;">
                                 <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
                             </h:selectOneMenu>
                         </p:panelGrid>
 
                         <p:panelGrid columns="2">
                             
-                            <p:commandLink action="#{salaController.create()}"   update="msgs" style="margin-right:195px;margin-left: 195px;" > 
+                            <p:commandLink action="#{salaController.create()}"   update="msgs,db" style="margin-right:495px;margin-left: 495px;" > 
                                 <p:commandButton value="Salvar" id="ajax21" style="width: 180px"/>
                             </p:commandLink>
 
-                            <p:commandLink action="#{salaController.prepareList}" immediate="true" style="margin-right:195px;margin-left: 195px;">
-                                <p:commandButton value="Mostrar todos" id="ajax22" style="width: 180px"/>
-                            </p:commandLink>
 
                         </p:panelGrid>
 
-
-                        <!--                         <p:commandLink id="ajax102" action="/index"   style="margin-right:300px;margin-left: 300px;"  >  
-                                                    <p:commandButton value="index" id="ajax189" />
-                                                </p:commandLink>-->
-
-
-                        <!--                        <h:link outcome="/index" value="index"/>-->
                     </p:panel>
                     <!--                </h:form>  -->
                 </p:layoutUnit>  

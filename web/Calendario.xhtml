@@ -55,7 +55,7 @@
                 <h:form id="form">  
                     <p:growl id="messages" showDetail="true" />  
 
-                    <p:schedule showWeekends="false" view="month" minTime="7"  maxTime="22" axisFormat="H:mm" timeFormat="H:mm{ - H:mm}" id="schedule" value="#{calendarioController.eventModel}" widgetVar="myschedule" locale="br"  >  
+                    <p:schedule showWeekends="false" view="month" minTime="0"  maxTime="18" axisFormat="H:mm" timeFormat="H:mm{ - H:mm}" id="schedule" value="#{calendarioController.eventModel}" widgetVar="myschedule" locale="br"  >  
                         <p:ajax event="dateSelect" listener="#{calendarioController.onDateSelect}" update="eventDetails" oncomplete="eventDialog.show()" />  
                         <p:ajax event="eventSelect" listener="#{calendarioController.onReservaSelect}" update="eventDetails" oncomplete="eventDialog.show()" />  
                         <p:ajax event="eventMove" listener="#{calendarioController.onReservaMove}" update="messages" />  

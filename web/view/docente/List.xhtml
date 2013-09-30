@@ -11,79 +11,102 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
+        <h:form> 
+            <p:layout fullPage="true">  
 
-        <h:form >
+                <p:layoutUnit position="north" size="100" header="Top" resizable="true" closable="true" collapsible="true">  
+                    <h:outputText value="North unit content." />  
+                </p:layoutUnit>  
 
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
+                <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">  
+                    <h:outputText value="South unit content." />  
+                </p:layoutUnit>  
 
-            <h:outputText escape="false" value="Lista de Docentes Vazia" rendered="#{docenteController.items.rowCount==0}"/>
+                <p:layoutUnit position="west" size="200" header="Left" resizable="true" closable="true" collapsible="true">  
+                    <h:outputText value="West unit content." />  
+                </p:layoutUnit>  
 
-            <h:panelGroup rendered="#{docenteController.items.rowCount > 0}"><!-- mostra o calculo da quantidade de itens mostrados  -->
-                <h:outputText value="#{docenteController.pagination.pageFirstItem + 1}..#{docenteController.pagination.pageLastItem + 1}/#{docenteController.pagination.itemsCount}"/>&nbsp;
-                <p:commandLink action="#{docenteController.previous}" value="Anterior #{docenteController.pagination.pageSize}" rendered="#{docenteController.pagination.hasPreviousPage}"/>&nbsp;
-                <p:commandLink action="#{docenteController.next}" value="Proximo #{docenteController.pagination.pageSize}" rendered="#{docenteController.pagination.hasNextPage}" />&nbsp;
-                <br/>
-                <br/>
-               
-                    <h:dataTable id="tabela" var="item" value="#{docenteController.items}">  
+                <p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true" effect="drop">  
+                    <h:outputText value="Right unit content." />  
+                </p:layoutUnit>  
 
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="id"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="centro"/>
-                            </f:facet>
-                            <h:outputText value="#{item.centro}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="matricula"/>
-                            </f:facet>
-                            <h:outputText value="#{item.matricula}"/>
-                        </h:column>
+                <p:layoutUnit position="center">  
 
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="email"/>
-                            </f:facet>
-                            <h:outputText value="#{item.email}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="nome"/>
-                            </f:facet>
-                            <h:outputText value="#{item.nome}"/>
-                        </h:column>
 
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
-                            <h:commandLink action="#{docenteController.prepareView}" value="Visualizar"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{docenteController.prepareEdit}" value="Editar"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{docenteController.destroy}" value="Destroy"/>
-                            <h:outputText value=" "/>
-                           
 
-                        </h:column>
+                    <h:panelGroup id="messagePanel" layout="block">
+                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                    </h:panelGroup>
 
-                    </h:dataTable>  
-           
-            </h:panelGroup>
-            <br />
-            <h:commandLink action="#{docenteController.prepareCreate}" value="Criar Docente"/>
-            <br />
-            <br />
-            <h:link outcome="/index" value="index"/>
-        </h:form>
+                    <h:outputText escape="false" value="Lista de Docentes Vazia" rendered="#{docenteController.items.rowCount==0}"/>
+
+                    <h:panelGroup rendered="#{docenteController.items.rowCount > 0}"><!-- mostra o calculo da quantidade de itens mostrados  -->
+                        <h:outputText value="#{docenteController.pagination.pageFirstItem + 1}..#{docenteController.pagination.pageLastItem + 1}/#{docenteController.pagination.itemsCount}"/>&nbsp;
+                        <p:commandLink action="#{docenteController.previous}" value="Anterior #{docenteController.pagination.pageSize}" rendered="#{docenteController.pagination.hasPreviousPage}"/>&nbsp;
+                        <p:commandLink action="#{docenteController.next}" value="Proximo #{docenteController.pagination.pageSize}" rendered="#{docenteController.pagination.hasNextPage}" />&nbsp;
+                        <br/>
+                        <br/>
+
+                        <h:dataTable id="tabela" var="item" value="#{docenteController.items}">  
+
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="id"/>
+                                </f:facet>
+                                <h:outputText value="#{item.id}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="centro"/>
+                                </f:facet>
+                                <h:outputText value="#{item.centro}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="matricula"/>
+                                </f:facet>
+                                <h:outputText value="#{item.matricula}"/>
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="email"/>
+                                </f:facet>
+                                <h:outputText value="#{item.email}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="nome"/>
+                                </f:facet>
+                                <h:outputText value="#{item.nome}"/>
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="&nbsp;"/>
+                                </f:facet>
+                                <h:commandLink action="#{docenteController.prepareView}" value="Visualizar"/>
+                                <h:outputText value=" "/>
+                                <h:commandLink action="#{docenteController.prepareEdit}" value="Editar"/>
+                                <h:outputText value=" "/>
+                                <h:commandLink action="#{docenteController.destroy}" value="Destroy"/>
+                                <h:outputText value=" "/>
+                            </h:column>
+                        </h:dataTable>  
+
+                    </h:panelGroup>
+                    <br />
+                    <h:commandLink action="#{docenteController.prepareCreate}" value="Criar Docente"/>
+                    <br />
+                    <br />
+                    <h:link outcome="/index" value="index"/>
+
+
+                </p:layoutUnit>  
+
+            </p:layout>  
+
+        </h:form> 
 
 
     </h:body>
