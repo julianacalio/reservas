@@ -13,16 +13,42 @@
             <p:layout fullPage="true">  
 
                 <p:layoutUnit position="north" style="text-align:center" size="100"  header=" UFABC - CMCC - Centro de Matemática Computação e Cognição" resizable="true" closable="true" collapsible="true">  
-                    <h:outputText value="North unit content." />  
+                     <p:messages id="msgs" showDetail="true"/> 
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">  
                     <h:outputText value="South unit content." />  
                 </p:layoutUnit>  
 
-                <p:layoutUnit position="west" size="200" header="Left" resizable="true" closable="true" collapsible="true">  
-                    <h:outputText value="West unit content." />  
-                </p:layoutUnit>  
+                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop">  
+                    <p:commandLink id="ajax2" action="/view/docente/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Docentes" />  
+                    </p:commandLink> 
+                    <br/>
+                    <p:commandLink id="ajax3" action="/view/centro/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Centros" />  
+                    </p:commandLink> 
+                    <br/>
+                    <p:commandLink id="ajax5" action="/view/equipamento/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Equipamentos" />  
+                    </p:commandLink>
+                    <br/>
+                    <p:commandLink id="ajax6" action="/view/TA/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de TAs" />  
+                    </p:commandLink>
+                    <br/>
+                    <p:commandLink id="ajax7" action="/view/operador/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Operadores" />  
+                    </p:commandLink>
+                    <br/>
+                    <p:commandLink id="ajax8" action="/view/reserva/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Reservas" />  
+                    </p:commandLink>
+                    <br/>
+                    <p:panel >
+                        <h:link outcome="/index" value="index" style="margin-right:50px;margin-left: 50px" />
+                    </p:panel>
+                </p:layoutUnit>   
 
                 <p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true" effect="drop">  
                     <h:outputText value="Right unit content." />  
@@ -30,58 +56,83 @@
 
                 <p:layoutUnit position="center">  
 
-                    <h:outputText value="Listar Equipamentos"></h:outputText>
-
-                    <h:panelGroup id="messagePanel" layout="block">
-                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                    </h:panelGroup>
-                    <h:outputText escape="false" value="Lista de equipamentos vazia" rendered="#{equipamentoController.items.rowCount == 0}"/>
-                    <h:panelGroup rendered="#{equipamentoController.items.rowCount > 0}">
+                  
+                    <h:outputText escape="false" value="Lista Vazia" rendered="#{equipamentoController.items.rowCount == 0}"/>
+                    <p:panel rendered="#{equipamentoController.items.rowCount > 0}">
                         <h:outputText value="#{equipamentoController.pagination.pageFirstItem + 1}..#{equipamentoController.pagination.pageLastItem + 1}/#{equipamentoController.pagination.itemsCount}"/>&nbsp;
-                        <h:commandLink action="#{equipamentoController.previous}" value="Previous #{equipamentoController.pagination.pageSize}" rendered="#{equipamentoController.pagination.hasPreviousPage}"/>&nbsp;
-                        <h:commandLink action="#{equipamentoController.next}" value="Next #{equipamentoController.pagination.pageSize}" rendered="#{equipamentoController.pagination.hasNextPage}"/>&nbsp;
-                        <h:dataTable value="#{equipamentoController.items}" var="item" >
-                            <h:column>
+                        <h:commandLink action="#{equipamentoController.previous()}" value="Anterior #{equipamentoController.pagination.pageSize}" rendered="#{equipamentoController.pagination.hasPreviousPage}"/>&nbsp;
+                        <h:commandLink action="#{equipamentoController.next()}" value="Proximo #{equipamentoController.pagination.pageSize}" rendered="#{equipamentoController.pagination.hasNextPage}"/>&nbsp;
+                        <p:dataTable id="db" var="item"  value="#{equipamentoController.items}"   >
+                            <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="patrimonio"/>
                                 </f:facet>
                                 <h:outputText value="#{item.patrimonio}"/>
-                            </h:column>
-                            <h:column>
+                            </p:column>
+
+                            <p:column headerText="descricao">  
                                 <f:facet name="header">
                                     <h:outputText value="descricao"/>
                                 </f:facet>
                                 <h:outputText value="#{item.descricao}"/>
-                            </h:column>
-                            <h:column>
+                            </p:column>  
+
+                            <p:column headerText="numero">  
                                 <f:facet name="header">
                                     <h:outputText value="id"/>
                                 </f:facet>
                                 <h:outputText value="#{item.id}"/>
-                            </h:column>
-                            <h:column>
+                            </p:column>  
+
+                            <p:column headerText="centro">  
                                 <f:facet name="header">
-                                    <h:outputText value="centro"/>
+                                    <h:outputText value="Centro"/>
                                 </f:facet>
                                 <h:outputText value="#{item.centro}"/>
-                            </h:column>
-                            <h:column>
+                            </p:column>  
+
+
+                            <p:column headerText="Controle">
                                 <f:facet name="header">
-                                    <h:outputText value="&nbsp;"/>
+                                    <h:outputText value="Controle"/>
                                 </f:facet>
-                                <h:commandLink action="#{equipamentoController.prepareView}" value="Visualizar todos os equipamentos"/>
-                                <h:outputText value=" "/>
-                                <h:commandLink action="#{equipamentoController.prepareEdit}" value="editar"/>
-                                <h:outputText value=" "/>
-                                <h:commandLink action="#{equipamentoController.destroy}" value="destroy"/>
-                            </h:column>
-                        </h:dataTable>
-                    </h:panelGroup>
-                    <br />
-                    <h:commandLink action="#{equipamentoController.prepareCreate}" value="Criar equipamento"/>
-                    <br />
-                    <br />
-                    <h:link outcome="/index" value="index"/>
+                                <p:commandLink action="#{equipamentoController.prepareEdit}" value="Editar" />
+                            </p:column>
+
+                            <p:column headerText="Controle">
+                                <f:facet name="header">
+                                    <h:outputText value="Controle"/>
+                                </f:facet>
+                                <p:commandLink id ="cmlDestroy" action="#{equipamentoController.destroy}" value="Deletar" immediate="true" update="db"/>
+                            </p:column>
+
+                        </p:dataTable> 
+                    </p:panel>
+                    <p:panel>
+
+                        <p:panelGrid columns="6">
+                            <f:facet name="header">
+                                <h:outputText value="Criar Sala"/>
+                            </f:facet>
+                            <h:outputLabel value="Patrimonio" for="patrimonio" style="margin-right:36px;margin-left: 36px;" />
+                            <h:inputText id="patrimonio" value="#{equipamentoController.selected.patrimonio}" title="tamanho" />
+                            <h:outputLabel value="Descrição" for="descricao" style="margin-right:36px;margin-left: 36px;"/>
+                            <h:inputText id="descricao" value="#{equipamentoController.selected.descricao}" title="numero" />
+                            <h:outputLabel value="Centro" for="centro" style="margin-right:36px;margin-left: 36px;" />
+                            <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro"  style="margin-right:36px;margin-left: 36px;">
+                                <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
+                            </h:selectOneMenu>
+                        </p:panelGrid>
+
+                        <p:panel>
+
+                            <p:commandLink action="#{equipamentoController.create()}"   update="msgs,db" style="margin-right:495px;margin-left: 495px;" > 
+                                <p:commandButton value="Salvar" id="ajax21" style="width: 180px"/>
+                            </p:commandLink>
+
+                        </p:panel>
+
+                    </p:panel>
 
                 </p:layoutUnit>  
 

@@ -7,7 +7,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 
 
@@ -26,10 +28,12 @@ import model.Equipamento;
 import model.Pessoa;
 import model.Reserva;
 import model.Sala;
+import org.primefaces.component.picklist.PickList;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.DualListModel;
 
 
 import org.primefaces.model.ScheduleModel;
@@ -45,7 +49,11 @@ import outros.SalaDataModel;
 @SessionScoped
 public class CalendarioController implements Serializable {
 
+    private List<Equipamento> selectedEquipamentos;
+    private Map<Equipamento, Equipamento> equips;
     private Recurso current, novaescolha;
+    private List<Equipamento> currents;
+    private DualListModel<Equipamento> cities;
 
     public Recurso getNovaescolha() {
         return novaescolha;
@@ -78,8 +86,6 @@ public class CalendarioController implements Serializable {
     private ScheduleModel eventModel;
     private Reserva reserva = new Reserva();
     List<Pessoa> pessoas;
-    
-    
     private EquipamentoDataModel equipamentoDataModel;
 
     public EquipamentoDataModel getEquipamentoDataModel() {
@@ -93,7 +99,6 @@ public class CalendarioController implements Serializable {
     public void setEquipamentoDataModel(EquipamentoDataModel equipamentoDataModel) {
         this.equipamentoDataModel = equipamentoDataModel;
     }
-    
     private SalaDataModel salaDataModel;
 
     public SalaDataModel getSalaDataModel() {
@@ -119,8 +124,68 @@ public class CalendarioController implements Serializable {
         return suggestions;
     }
 
-    
+    public List<Equipamento> getSelectedEquipamentos() {
+        return selectedEquipamentos;
+    }
 
+    public void setSelectedEquipamentos(List<Equipamento> selectedEquipamentos) {
+        this.selectedEquipamentos = selectedEquipamentos;
+    }
+
+    public Map<Equipamento, Equipamento> getEquipamentos() {
+
+        //ArrayList<SelectItem> listaSelect = new ArrayList<SelectItem>();
+        equips = new HashMap<Equipamento, Equipamento>();
+        List<Equipamento> e = equipamentoFacade.findAll();
+
+        for (int i = 0; i < e.size(); i++) {
+            equips.put(e.get(i), e.get(i));
+        }
+
+        return equips;
+    }
+
+//    public ArrayList<SelectItem> getEquipamentos() {
+//
+//        ArrayList<SelectItem> listaSelect = new ArrayList<SelectItem>();
+//        equips = new HashMap<Equipamento, Equipamento>();
+//        List<Equipamento> e = equipamentoFacade.findAll();
+//
+//        for (int i = 0; i < e.size(); i++) {
+//           listaSelect.add(new SelectItem(e.get(i)));
+//        }
+//
+//        return listaSelect;
+//    }
+//    public void ListarEquipamentos() {
+//        List<Equipamento> citiesSource = new ArrayList<Equipamento>();
+//        List<Equipamento> citiesTarget = new ArrayList<Equipamento>();
+//
+//        List<Equipamento> e = equipamentoFacade.findAll();
+//
+//        for (int i = 0; i < e.size(); i++) {
+//            citiesSource.add(e.get(i));
+//        }
+//
+////        citiesSource.add("Istanbul");
+////        citiesSource.add("Ankara");
+////        citiesSource.add("Izmir");
+////        citiesSource.add("Antalya");
+////        citiesSource.add("Bursa");
+//
+//        cities = new DualListModel<Equipamento>(citiesSource, citiesTarget);
+//
+//    }
+//    public DualListModel<Equipamento> getCities() {
+//        if (cities == null) {
+//            ListarEquipamentos();
+//        }
+//        return cities;
+//    }
+//
+//    public void setCities(DualListModel<Equipamento> cities) {
+//        this.cities = cities;
+//    }
     public Reserva getReserva() {
         return reserva;
     }
@@ -161,6 +226,9 @@ public class CalendarioController implements Serializable {
     }
 
     public void addReserva(ActionEvent actionEvent) {
+        if (selectedEquipamentos != null) {
+            criaReservasAdicionais(selectedEquipamentos, reserva);
+        }
         //reserva = reservaFacade.edit(reserva);
         reserva = reservaFacade.merge(reserva);
         current.addReserva(reserva);
@@ -170,6 +238,28 @@ public class CalendarioController implements Serializable {
             eventModel.updateEvent(reserva);
         }
 
+    }
+
+    public void criaReservasAdicionais(List<Equipamento> equipamentos, Reserva reserva) {
+        Reserva[] reservas = new Reserva[equipamentos.size()];
+        for (int i = 0; i < reservas.length; i++) {
+            reservas[i] = new Reserva();
+            reservas[i].setCentro(reserva.getCentro());
+            reservas[i].setFim(reserva.getFim());
+            reservas[i].setInicio(reserva.getInicio());
+            reservas[i].setMotivo(reserva.getMotivo());
+            reservas[i].setRealizacao(reserva.getRealizacao());
+            reservas[i].setReservante(reserva.getReservante());
+            reservas[i].setRecurso(equipamentos.get(i));
+            reservas[i] = reservaFacade.merge(reservas[i]);
+            equipamentos.get(i).addReserva(reservas[i]);
+//            if (reservas[i].getId() == null) {
+//                eventModel.addEvent(reservas[i]);
+//            } else {
+//                eventModel.updateEvent(reservas[i]);
+//            }
+        }
+        equipamentoDataModel = null;
     }
 
     public void remReserva(ActionEvent actionEvent) {
@@ -219,6 +309,9 @@ public class CalendarioController implements Serializable {
     public CalendarioController() {
         eventModel = null;
         pessoas = null;
+        equipamentoDataModel = null;
+        salaDataModel = null;
+
     }
 
     public Recurso getSelected() {
@@ -229,6 +322,12 @@ public class CalendarioController implements Serializable {
         return current;
     }
 
+//    public List<Equipamento> getSelectedEqui(){
+//        if(currents == null){
+//            currents = new ArrayList<Equipamento>();
+//        }
+//        return currents;
+//    }
     private RecursoFacade getFacade() {
         return recursoFacade;
     }
@@ -429,6 +528,45 @@ public class CalendarioController implements Serializable {
                 return getStringKey(o.getId());
             } else {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Recurso.class.getName());
+            }
+        }
+    }
+
+    @FacesConverter(forClass = Equipamento.class, value = "equi")
+    public static class EquipamentoControllerConverter implements Converter {
+
+        @Override
+        public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
+            if (value == null || value.length() == 0) {
+                return null;
+            }
+            EquipamentoController controller = (EquipamentoController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "equipamentoController");
+            return controller.getEquipamento(getKey(value));
+        }
+
+        java.lang.Long getKey(String value) {
+            java.lang.Long key;
+            key = Long.valueOf(value);
+            return key;
+        }
+
+        String getStringKey(java.lang.Long value) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(value);
+            return sb.toString();
+        }
+
+        @Override
+        public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
+            if (object == null) {
+                return null;
+            }
+            if (object instanceof Equipamento) {
+                Equipamento o = (Equipamento) object;
+                return getStringKey(o.getId());
+            } else {
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Equipamento.class.getName());
             }
         }
     }

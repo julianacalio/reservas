@@ -11,44 +11,44 @@
         <p:layout fullPage="true">  
 
             <p:layoutUnit position="north" style="text-align:center" size="100"  header=" UFABC - CMCC - Centro de Matemática Computação e Cognição" resizable="true" closable="true" collapsible="true"  >  
-<!--                <h3>Default Menubar</h3>  -->
-<!--header=" UFABC - CMCC - Centro de Matemática Computação e Cognição"-->
-<!--                <p:menubar>  
-                    <p:submenu label="Docente" icon="ui-icon-document">  
-                        <p:submenu label="Criar" icon="ui-icon-contact">  
-                        </p:submenu>
-                         <p:submenu label="Listar todos" icon="ui-icon-contact">  
-                        </p:submenu> 
-                    </p:submenu>  
+                <!--                <h3>Default Menubar</h3>  -->
+                <!--header=" UFABC - CMCC - Centro de Matemática Computação e Cognição"-->
+                <!--                <p:menubar>  
+                                    <p:submenu label="Docente" icon="ui-icon-document">  
+                                        <p:submenu label="Criar" icon="ui-icon-contact">  
+                                        </p:submenu>
+                                         <p:submenu label="Listar todos" icon="ui-icon-contact">  
+                                        </p:submenu> 
+                                    </p:submenu>  
+                
+                                     <p:submenu label="Sala" icon="ui-icon-document">  
+                                        <p:submenu label="Criar" icon="ui-icon-contact">  
+                                        </p:submenu>
+                                         <p:submenu label="Listar todos" icon="ui-icon-contact">  
+                                        </p:submenu> 
+                                    </p:submenu>  
+                
+                                    <p:submenu label="Equipamento" icon="ui-icon-document">  
+                                        <p:submenu label="Criar" icon="ui-icon-contact">  
+                                        </p:submenu>
+                                         <p:submenu label="Listar todos" icon="ui-icon-contact">  
+                                        </p:submenu> 
+                                    </p:submenu>  
+                
+                                    <p:submenu label="Centro" icon="ui-icon-document">  
+                                        <p:submenu label="Criar" icon="ui-icon-contact">  
+                                        </p:submenu>
+                                         <p:submenu label="Listar todos" icon="ui-icon-contact">  
+                                        </p:submenu> 
+                                    </p:submenu>  -->
 
-                     <p:submenu label="Sala" icon="ui-icon-document">  
-                        <p:submenu label="Criar" icon="ui-icon-contact">  
-                        </p:submenu>
-                         <p:submenu label="Listar todos" icon="ui-icon-contact">  
-                        </p:submenu> 
-                    </p:submenu>  
 
-                    <p:submenu label="Equipamento" icon="ui-icon-document">  
-                        <p:submenu label="Criar" icon="ui-icon-contact">  
-                        </p:submenu>
-                         <p:submenu label="Listar todos" icon="ui-icon-contact">  
-                        </p:submenu> 
-                    </p:submenu>  
 
-                    <p:submenu label="Centro" icon="ui-icon-document">  
-                        <p:submenu label="Criar" icon="ui-icon-contact">  
-                        </p:submenu>
-                         <p:submenu label="Listar todos" icon="ui-icon-contact">  
-                        </p:submenu> 
-                    </p:submenu>  -->
-
-                    
-
-<!--                    <f:facet name="options">  
-                        <p:inputText style="margin-right:10px"/>  
-                        <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />  
-                    </f:facet>  -->
-                </p:menubar>  
+                <!--                    <f:facet name="options">  
+                                        <p:inputText style="margin-right:10px"/>  
+                                        <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />  
+                                    </f:facet>  -->
+                <!--                </p:menubar>  -->
                 <h:form id ="f2">
 
                     <h:link outcome="/index" value="index"/>
@@ -61,19 +61,18 @@
 
                 <h:form id="form1">
 
-                    <p:dataTable id="sala" var="sala" value="#{calendarioController.salaDataModel}"   
+                    <p:dataTable id="dtSala" var="sala" value="#{calendarioController.salaDataModel}"   
                                  selection="#{calendarioController.novaescolha}" selectionMode="single" >  
 
                         <p:ajax event="rowSelect" update=":form:schedule" listener="#{calendarioController.escolheRecurso}"/>  
 
                         <p:column headerText="Salas">  
                             #{sala.numero} 
-
                         </p:column>  
 
                     </p:dataTable>  
                     <br/>
-                    <p:dataTable id="equipamento" var="equipamento" value="#{calendarioController.equipamentoDataModel}"   
+                    <p:dataTable id="dtEquipamento" var="equipamento" value="#{calendarioController.equipamentoDataModel}"   
                                  selection="#{calendarioController.novaescolha}" selectionMode="single" >  
 
                         <p:ajax event="rowSelect" update=":form:schedule" listener="#{calendarioController.escolheRecurso}"/>  
@@ -86,6 +85,7 @@
                     </p:dataTable>  
 
                 </h:form>  
+
             </p:layoutUnit>  
 
 
@@ -114,19 +114,24 @@
                             <h:outputLabel for="to" value="Fim*:" />  
                             <p:calendar id="to" value="#{calendarioController.reserva.fim}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" required="true"/>  
 
+
                             <h:outputLabel for="title" value="Motivo:" />  
                             <p:inputText id="title" value="#{calendarioController.reserva.motivo}" />  
+                            <br/>
 
-                            <h:outputLabel for="title" value="Equipamento" />  
-                            <h:selectOneMenu id="centro"  title="equipamento" >
-                                <f:selectItems value="#{equipamentoController.itemsAvailableSelectOne}"/>
-                            </h:selectOneMenu>
+                            <h:outputLabel for="ck" value="equipamentos"/>
+                            <p:selectCheckboxMenu id="ck" value="#{calendarioController.selectedEquipamentos}" converter="equi" label="Adicionar" filter="true" filterMatchMode="startsWith" panelStyle="width:220px">  
+                                <f:selectItems value="#{calendarioController.equipamentos}" var ="t"/>  
+                            </p:selectCheckboxMenu>  
 
-                            <p:commandButton id="addButton"  value="Salvar" actionListener="#{calendarioController.addReserva}" oncomplete="myschedule.update();eventDialog.hide();" />   
+
+
+                            <p:commandButton id="addButton"  value="Salvar" actionListener="#{calendarioController.addReserva}" oncomplete="myschedule.update();eventDialog.hide();" update=":form1:dtEquipamento" />   
                             <p:commandButton id="remButton"  value="Remover" actionListener="#{calendarioController.remReserva}" oncomplete="myschedule.update();eventDialog.hide();" rendered="#{calendarioController.reserva.id != null}"/>  
                             <p:commandButton id="cancelButton"  value="Cancelar"  oncomplete="eventDialog.hide();"  rendered="#{calendarioController.reserva.id == null}"/> 
                         </h:panelGrid>  
                     </p:dialog>
+
 
                 </h:form>  
 

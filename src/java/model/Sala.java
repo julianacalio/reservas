@@ -61,7 +61,7 @@ public class Sala extends Recurso implements Serializable {
 
     @Override
     public String toString() {
-        return "Sala[ " + numero + " ]";
+        return numero;
     }
 }
 

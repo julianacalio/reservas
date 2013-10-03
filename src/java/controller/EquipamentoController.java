@@ -80,7 +80,8 @@ public class EquipamentoController implements Serializable {
         try {
             getFacade().save(current);
             JsfUtil.addSuccessMessage("EquipamentoCreated");
-            return prepareCreate();
+            //return prepareCreate();
+            return prepareList();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e,"PersistenceErrorOccured");
             return null;
