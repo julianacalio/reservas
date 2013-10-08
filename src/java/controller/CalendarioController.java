@@ -50,23 +50,7 @@ public class CalendarioController implements Serializable {
 
     private List<Equipamento> selectedEquipamentos;
     private Map<Equipamento, Equipamento> equips;
-    private Recurso current, novaescolha;
-
-    public Recurso getNovaescolha() {
-        return novaescolha;
-    }
-
-    public void setNovaescolha(Recurso novaescolha) {
-        this.novaescolha = novaescolha;
-    }
-
-    public Recurso getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(Recurso current) {
-        this.current = current;
-    }
+    private Recurso current, novaescolha,novaSala,novoEquipamento;
     private DataModel items = null;
     @EJB
     private facade.RecursoFacade recursoFacade;
@@ -84,6 +68,52 @@ public class CalendarioController implements Serializable {
     private Reserva reserva = new Reserva();
     List<Pessoa> pessoas;
     private EquipamentoDataModel equipamentoDataModel;
+    private SalaDataModel salaDataModel;
+
+    public CalendarioController() {
+        eventModel = null;
+        pessoas = null;
+      
+    }
+
+    
+    public void limparVariaveis(){
+      
+    }
+    
+    public Recurso getNovaescolha() {
+        return novaescolha;
+    }
+
+    public void setNovaescolha(Recurso novaescolha) {
+        this.novaescolha = novaescolha;
+    }
+
+    public Recurso getNovaSala() {
+        return novaSala;
+    }
+
+    public void setNovaSala(Recurso novaSala) {
+        this.novaSala = novaSala;
+    }
+
+    public Recurso getNovoEquipamento() {
+        return novoEquipamento;
+    }
+
+    public void setNovoEquipamento(Recurso novoEquipamento) {
+        this.novoEquipamento = novoEquipamento;
+    }
+
+    
+    
+    public Recurso getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Recurso current) {
+        this.current = current;
+    }
 
     public EquipamentoDataModel getEquipamentoDataModel() {
         if (equipamentoDataModel == null) {
@@ -96,7 +126,6 @@ public class CalendarioController implements Serializable {
     public void setEquipamentoDataModel(EquipamentoDataModel equipamentoDataModel) {
         this.equipamentoDataModel = equipamentoDataModel;
     }
-    private SalaDataModel salaDataModel;
 
     public SalaDataModel getSalaDataModel() {
         if (salaDataModel == null) {
@@ -142,7 +171,6 @@ public class CalendarioController implements Serializable {
         return equips;
     }
 
-
     public Reserva getReserva() {
         return reserva;
     }
@@ -177,6 +205,24 @@ public class CalendarioController implements Serializable {
         current = novaescolha;
         eventModel = null;
     }
+    
+     public void escolheSala() {
+        if (novaSala == current) {
+            return;
+        }
+        current = novaSala;
+        eventModel = null;
+    }
+     
+      public void escolheEquipamento() {
+        if (novoEquipamento == current) {
+            return;
+        }
+        current = novoEquipamento;
+        eventModel = null;
+    }
+    
+    
 
     public void setEventModel(ScheduleModel eventModel) {
         this.eventModel = eventModel;
@@ -306,12 +352,6 @@ public class CalendarioController implements Serializable {
 
     private void addMessage(FacesMessage message) {
         FacesContext.getCurrentInstance().addMessage(null, message);
-    }
-
-    public CalendarioController() {
-        eventModel = null;
-        pessoas = null;
-
     }
 
     public void clearSelection() {

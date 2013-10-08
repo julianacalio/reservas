@@ -15,7 +15,7 @@
 
                 <h:form id ="f2">
 
-                    <h:link outcome="/index" value="index" />
+                    <h:link outcome="/index" value="index" onclick="#{calendarioController.limparVariaveis()}"/>
                 </h:form>
             </p:layoutUnit> 
 
@@ -25,10 +25,11 @@
 
                 <h:form id="form1">
 
-                    <p:dataTable  id="dtSala" var="sala" value="#{calendarioController.salaDataModel}" widgetVar="wdgListSala" 
-                                  selection="#{calendarioController.novaescolha}"  selectionMode="single" >  
 
-                        <p:ajax event="rowSelect"  update=":form:schedule" listener="#{calendarioController.escolheRecurso}"/>  
+                    <p:dataTable  id="dtSala" var="sala" value="#{calendarioController.salaDataModel}" widgetVar="wdgListSala" 
+                                  selection="#{calendarioController.novaSala}"  selectionMode="single" >  
+
+                        <p:ajax event="rowSelect"  update=":form:schedule" listener="#{calendarioController.escolheSala()}"/>  
 
                         <p:column headerText="Salas">  
                             #{sala.numero} 
@@ -36,10 +37,15 @@
 
                     </p:dataTable>  
                     <br/>
-                    <p:dataTable   id="dtEquipamento" var="equipamento" value="#{calendarioController.equipamentoDataModel}" widgetVar="wdgListEquipamento" 
-                                   selection="#{calendarioController.novaescolha}" selectionMode="single"  >  
 
-                        <p:ajax event="rowSelect"  update=":form:schedule" listener="#{calendarioController.escolheRecurso}"/>  
+                </h:form>
+
+
+                <h:form id="form2">
+                    <p:dataTable   id="dtEquipamento" var="equipamento" value="#{calendarioController.equipamentoDataModel}" widgetVar="wdgListEquipamento" 
+                                   selection="#{calendarioController.novoEquipamento}" selectionMode="single"  >  
+
+                        <p:ajax event="rowSelect"  update=":form:schedule" listener="#{calendarioController.escolheEquipamento()}"/>  
 
                         <p:column headerText="Equipamentos">  
                             #{equipamento.descricao} 
@@ -49,6 +55,11 @@
                     </p:dataTable>  
 
                 </h:form>  
+
+
+
+
+
 
             </p:layoutUnit>  
 
@@ -90,8 +101,8 @@
 
 
 
-                            <p:commandButton id="addButton"  value="Salvar" actionListener="#{calendarioController.addReserva}" oncomplete="myschedule.update();eventDialog.hide();" update=":form1:dtEquipamento" />   
-                            <p:commandButton id="remButton"  value="Remover" actionListener="#{calendarioController.remReserva}" oncomplete="myschedule.update();eventDialog.hide();" rendered="#{calendarioController.reserva.id != null}" update=":form1:dtEquipamento,:form1:dtSala"/>  
+                            <p:commandButton id="addButton"  value="Salvar" actionListener="#{calendarioController.addReserva}" oncomplete="myschedule.update();eventDialog.hide();" update=":form2:dtEquipamento" />   
+                            <p:commandButton id="remButton"  value="Remover" actionListener="#{calendarioController.remReserva}" oncomplete="myschedule.update();eventDialog.hide();" rendered="#{calendarioController.reserva.id != null}" update=":form2:dtEquipamento,:form1:dtSala"/>  
                             <p:commandButton id="cancelButton"  value="Cancelar"  oncomplete="eventDialog.hide();"  rendered="#{calendarioController.reserva.id == null}"/> 
                         </h:panelGrid>  
                     </p:dialog>
