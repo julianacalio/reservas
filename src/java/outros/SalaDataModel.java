@@ -4,10 +4,6 @@
  */
 package outros;
 
-/**
- *
- * @author André
- */
 
   
  

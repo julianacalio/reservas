@@ -28,12 +28,11 @@ import model.Equipamento;
 import model.Pessoa;
 import model.Reserva;
 import model.Sala;
-import org.primefaces.component.picklist.PickList;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleModel;
-import org.primefaces.model.DualListModel;
 
 
 import org.primefaces.model.ScheduleModel;
@@ -52,8 +51,6 @@ public class CalendarioController implements Serializable {
     private List<Equipamento> selectedEquipamentos;
     private Map<Equipamento, Equipamento> equips;
     private Recurso current, novaescolha;
-    private List<Equipamento> currents;
-    private DualListModel<Equipamento> cities;
 
     public Recurso getNovaescolha() {
         return novaescolha;
@@ -145,47 +142,7 @@ public class CalendarioController implements Serializable {
         return equips;
     }
 
-//    public ArrayList<SelectItem> getEquipamentos() {
-//
-//        ArrayList<SelectItem> listaSelect = new ArrayList<SelectItem>();
-//        equips = new HashMap<Equipamento, Equipamento>();
-//        List<Equipamento> e = equipamentoFacade.findAll();
-//
-//        for (int i = 0; i < e.size(); i++) {
-//           listaSelect.add(new SelectItem(e.get(i)));
-//        }
-//
-//        return listaSelect;
-//    }
-//    public void ListarEquipamentos() {
-//        List<Equipamento> citiesSource = new ArrayList<Equipamento>();
-//        List<Equipamento> citiesTarget = new ArrayList<Equipamento>();
-//
-//        List<Equipamento> e = equipamentoFacade.findAll();
-//
-//        for (int i = 0; i < e.size(); i++) {
-//            citiesSource.add(e.get(i));
-//        }
-//
-////        citiesSource.add("Istanbul");
-////        citiesSource.add("Ankara");
-////        citiesSource.add("Izmir");
-////        citiesSource.add("Antalya");
-////        citiesSource.add("Bursa");
-//
-//        cities = new DualListModel<Equipamento>(citiesSource, citiesTarget);
-//
-//    }
-//    public DualListModel<Equipamento> getCities() {
-//        if (cities == null) {
-//            ListarEquipamentos();
-//        }
-//        return cities;
-//    }
-//
-//    public void setCities(DualListModel<Equipamento> cities) {
-//        this.cities = cities;
-//    }
+
     public Reserva getReserva() {
         return reserva;
     }
@@ -226,6 +183,24 @@ public class CalendarioController implements Serializable {
     }
 
     public void addReserva(ActionEvent actionEvent) {
+        List<Reserva> reservasOcupadas = getReservasOcupadas(reserva);
+        if (reservasOcupadas != null) {
+            String nomeRecurso = "";
+            for (int i = 0; i < reservasOcupadas.size(); i++) {
+                Recurso recurso = reservasOcupadas.get(i).getRecurso();
+                if (recurso instanceof Equipamento) {
+                    Equipamento e = (Equipamento) recurso;
+                    nomeRecurso += "Equipamento: " + e.getDescricao() + "\n";
+                } else {
+                    Sala s = (Sala) recurso;
+                    nomeRecurso += "Sala: " + s.getNumero() + "\n";
+                }
+
+            }
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", nomeRecurso);
+            addMessage(message);
+        }
+
         if (selectedEquipamentos != null) {
             criaReservasAdicionais(selectedEquipamentos, reserva);
         }
@@ -253,24 +228,51 @@ public class CalendarioController implements Serializable {
             reservas[i].setRecurso(equipamentos.get(i));
             reservas[i] = reservaFacade.merge(reservas[i]);
             equipamentos.get(i).addReserva(reservas[i]);
-//            if (reservas[i].getId() == null) {
-//                eventModel.addEvent(reservas[i]);
-//            } else {
-//                eventModel.updateEvent(reservas[i]);
-//            }
         }
         equipamentoDataModel = null;
     }
 
+    public List<Reserva> getReservasOcupadas(Reserva reserva) {
+        List<Reserva> reservas = reservaFacade.findAllBetween(reserva.getInicio(), reserva.getFim());
+        return reservas;
+    }
+
+    public void removerReservasAdicionais(Reserva reserva) {
+        List<Reserva> reservas = reservaFacade.findAll(reserva.getInicio(), reserva.getFim(), reserva.getRealizacao());
+        for (int i = 0; i < reservas.size(); i++) {
+            reservas.get(i).getRecurso().remReserva(reservas.get(i));
+            reservaFacade.remove(reservas.get(i));
+        }
+        equipamentoDataModel = null;
+        salaDataModel = null;
+    }
+
     public void remReserva(ActionEvent actionEvent) {
+        if (selectedEquipamentos != null) {
+            removerReservasAdicionais(reserva);
+        }
         eventModel.deleteEvent(reserva);
-        current.remReserva(reserva);
-        reservaFacade.remove(reserva);
+        // current.remReserva(reserva);
+        //  reservaFacade.remove(reserva);
         reserva = null;
     }
 
     public void onReservaSelect(SelectEvent selectEvent) {
         reserva = (Reserva) selectEvent.getObject();
+
+        //busca as reservas associadas com a reserva selecionada
+        List<Reserva> reservas = reservaFacade.findAll(reserva.getInicio(), reserva.getFim(), reserva.getRealizacao());
+        if (selectedEquipamentos != null) {
+            selectedEquipamentos.clear();
+        } else {
+            selectedEquipamentos = new ArrayList<Equipamento>();
+        }
+        // atualiza a lista de equipamentos associados com aquela reserva no selectCheckBoxMenu
+        for (int i = 0; i < reservas.size(); i++) {
+            if (reservas.get(i).getRecurso() instanceof Equipamento) {
+                selectedEquipamentos.add((Equipamento) reservas.get(i).getRecurso());
+            }
+        }
     }
 
     public void onDateSelect(SelectEvent selectEvent) {
@@ -309,9 +311,13 @@ public class CalendarioController implements Serializable {
     public CalendarioController() {
         eventModel = null;
         pessoas = null;
-        equipamentoDataModel = null;
-        salaDataModel = null;
 
+    }
+
+    public void clearSelection() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("wdgListSala.clearSelection()");
+        context.execute("wdgListEquipamento.clearSelection()");
     }
 
     public Recurso getSelected() {
