@@ -23,8 +23,8 @@
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop">  
-                    <p:commandLink id="ajax2" action="/view/docente/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de Docentes" />  
+                    <p:commandLink id="ajax2" action="/view/sala/List" style="margin-right:20px;">  
+                        <h:outputText value="Lista de Salas" />  
                     </p:commandLink> 
                     <br/>
                     <p:commandLink id="ajax3" action="/view/centro/List" style="margin-right:20px;">  
@@ -59,16 +59,11 @@
                 <p:layoutUnit position="center">  
 
 
-
-                    <h:panelGroup id="messagePanel" layout="block">
-                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                    </h:panelGroup>
-
                     <h:outputText escape="false" value="Lista Vazia" rendered="#{docenteController.items.rowCount == 0}"/>
                     <p:panel rendered="#{docenteController.items.rowCount > 0}">
                         <h:outputText value="#{docenteController.pagination.pageFirstItem + 1}..#{salaController.pagination.pageLastItem + 1}/#{docenteController.pagination.itemsCount}"/>&nbsp;
-                        <h:commandLink action="#{docenteController.previous}" value="Anterior #{docenteController.pagination.pageSize}" rendered="#{docenteController.pagination.hasPreviousPage}"/>&nbsp;
-                        <h:commandLink action="#{docenteController.next}" value="Proximo #{docenteController.pagination.pageSize}" rendered="#{docenteController.pagination.hasNextPage}"/>&nbsp;
+                        <h:commandLink action="#{docenteController.previous()}" value="Anterior #{docenteController.pagination.pageSize}" rendered="#{docenteController.pagination.hasPreviousPage}"/>&nbsp;
+                        <h:commandLink action="#{docenteController.next()}" value="Proximo #{docenteController.pagination.pageSize}" rendered="#{docenteController.pagination.hasNextPage}"/>&nbsp;
                         <p:dataTable id="db" var="item"  value="#{docenteController.items}"   >
                             <p:column>
                                 <f:facet name="header">
@@ -109,14 +104,14 @@
                                 <f:facet name="header">
                                     <h:outputText value="Controle"/>
                                 </f:facet>
-                                <p:commandLink action="#{docenteController.prepareEdit}" value="Editar" />
+                                <p:commandLink action="#{docenteController.prepareEdit()}" value="Editar" />
                             </p:column>
 
                             <p:column headerText="Controle">
                                 <f:facet name="header">
                                     <h:outputText value="Controle"/>
                                 </f:facet>
-                                <p:commandLink action="#{docenteController.destroy}" value="Deletar" immediate="true" update="db"/>
+                                <p:commandLink action="#{docenteController.destroy()}" value="Deletar" immediate="true" update="db"/>
                             </p:column>
 
                         </p:dataTable> 
@@ -130,9 +125,9 @@
                                 <h:outputText value="Criar Docente"/>
                             </f:facet>
                             <h:outputLabel value="Nome" for="nome" />
-                            <h:inputText id="tamanho_m2" value="#{docenteController.selected.nome}" title="nome" />
+                            <h:inputText id="nome" value="#{docenteController.selected.nome}" title="nome" />
                             <h:outputLabel value="Matrícula" for="matricula" style="margin-right:4px;margin-left: 4px;"/>
-                            <h:inputText id="numero" value="#{docenteController.selected.matricula}" title="matricula" />
+                            <h:inputText id="matricula" value="#{docenteController.selected.matricula}" title="matricula" />
                             <h:outputLabel value="Centro" for="centro"  />
                             <h:selectOneMenu id="centro" value="#{docenteController.selected.centro}" title="centro"  >
                                 <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>

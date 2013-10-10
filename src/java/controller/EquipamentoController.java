@@ -79,7 +79,7 @@ public class EquipamentoController implements Serializable {
     public String create() {
         try {
             getFacade().save(current);
-            JsfUtil.addSuccessMessage("EquipamentoCreated");
+            JsfUtil.addSuccessMessage("Equipamento Criado");
             //return prepareCreate();
             return prepareList();
         } catch (Exception e) {
@@ -97,7 +97,7 @@ public class EquipamentoController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage("EquipamentoUpdated");
+            JsfUtil.addSuccessMessage("Equipamento Atualizado");
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");

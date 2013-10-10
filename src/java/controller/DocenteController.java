@@ -1,6 +1,6 @@
-
 package controller;
 
+import facade.DocenteFacade;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -14,21 +14,19 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import model.Docente;
 
-
 /**
  *
- * @author charles
+ * @author
+ * charles
  */
 @Named(value = "docenteController")
 @SessionScoped
 public class DocenteController implements Serializable {
 
-    
     Docente docente;
     private DataModel items = null;
     private PaginationHelper pagination;
     private int selectedItemIndex;
-   
     @EJB
     private facade.DocenteFacade ejbFacade;
 
@@ -57,14 +55,14 @@ public class DocenteController implements Serializable {
         recreateModel();
         return "List";
     }
-    
+
     private void recreateModel() {
         items = null;
     }
 
     private void performDestroy() {
         try {
-            ejbFacade.remove(docente);
+            getFacade().remove(docente);
             JsfUtil.addSuccessMessage("Docente deletado");
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Ocorreu um erro de persistência");
@@ -78,6 +76,10 @@ public class DocenteController implements Serializable {
         }
         return docente;
     }
+    
+    private DocenteFacade getFacade() {
+        return ejbFacade;
+    }
 
     public String prepareCreate() {
         docente = new Docente();
@@ -88,7 +90,11 @@ public class DocenteController implements Serializable {
     public String create() {
 
         try {
-            ejbFacade.save(docente);
+           // Docente docente2 = new Docente();
+           // docente2.setNome("TesteDocente");
+           // ejbFacade.save(docente2);
+           getFacade().save(docente);
+
             //ejbFacade.merge(docente);
             JsfUtil.addSuccessMessage("Docente Criado");
             //return prepareCreate();
@@ -104,11 +110,10 @@ public class DocenteController implements Serializable {
         return "List";
     }
 
-
     public String update() {
 
         try {
-            ejbFacade.edit(docente);
+            getFacade().edit(docente);
             JsfUtil.addSuccessMessage("Docente Atualizado");
             return "View";
         } catch (Exception e) {
@@ -139,7 +144,7 @@ public class DocenteController implements Serializable {
     }
 
     private void updateCurrentItem() {
-        int count = ejbFacade.count();
+        int count = getFacade().count();
         if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
@@ -149,7 +154,7 @@ public class DocenteController implements Serializable {
             }
         }
         if (selectedItemIndex >= 0) {
-            docente = ejbFacade.findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+            docente = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
 
@@ -158,19 +163,18 @@ public class DocenteController implements Serializable {
             pagination = new PaginationHelper(10) {
                 @Override
                 public int getItemsCount() {
-                    return ejbFacade.count();
+                    return getFacade().count();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(ejbFacade.findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
                 }
             };
 
         }
         return pagination;
     }
-
 
     public DataModel getItems() {
         if (items == null) {
@@ -197,15 +201,14 @@ public class DocenteController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-       
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+
+        return JsfUtil.getSelectItems(getFacade().findAll(), true);
     }
 
     public Docente getDocente(java.lang.Long id) {
-    
-        return ejbFacade.find(id);
-    }
 
+        return getFacade().find(id);
+    }
 
     @FacesConverter(forClass = Docente.class)
     public static class DocenteControllerConverter implements Converter {

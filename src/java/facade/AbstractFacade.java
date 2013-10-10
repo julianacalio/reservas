@@ -1,16 +1,14 @@
 package facade;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import model.Pessoa;
+import model.Recurso;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.SimpleExpression;
 
 public abstract class AbstractFacade<T> {
 
@@ -85,6 +83,7 @@ public abstract class AbstractFacade<T> {
         //criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
 
         criteria.add(Restrictions.or(Restrictions.between("fim", inicio, fim), Restrictions.between("inicio", inicio, fim)));
+       // criteria.add(Restrictions.eq("recurso",recurso));
         List results = criteria.list();
 //        criteria.add(Restrictions.between("fim", inicio, fim));
 //        List results = criteria.list();
@@ -93,6 +92,19 @@ public abstract class AbstractFacade<T> {
         session.close();
         return results;
     }
+    
+     public List<T> findBetween(Date inicio, Date fim, Recurso recurso) {
+        Session session = getSessionFactory().openSession();
+        Criteria criteria = session.createCriteria(entityClass);
+      
+        criteria.add(Restrictions.or(Restrictions.between("fim", inicio, fim), Restrictions.between("inicio", inicio, fim)));
+        criteria.add(Restrictions.eq("recurso",recurso));
+        List results = criteria.list();
+
+        session.close();
+        return results;
+    }
+    
 
     public List<T> findAll() {
         Session session = getSessionFactory().openSession();

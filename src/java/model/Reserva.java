@@ -5,6 +5,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
@@ -39,6 +40,17 @@ public class Reserva implements Serializable, ScheduleEvent {
     @ManyToOne
     private Centro centro;
     String motivo;
+    
+    @javax.persistence.Transient 
+    private List<String> equipamentosAssociados = new ArrayList<String>();
+
+    public List<String> getEquipamentosAssociados() {
+        return equipamentosAssociados;
+    }
+
+    public void setEquipamentosAssociados(List<String> equipamentosAssociados) {
+        this.equipamentosAssociados = equipamentosAssociados;
+    }
 
 //    @OneToMany(mappedBy = "reserva", fetch = FetchType.EAGER)
 //    protected List<Recurso> recursos;
@@ -49,9 +61,6 @@ public class Reserva implements Serializable, ScheduleEvent {
 //    public void setRecursos(List<Recurso> recursos) {
 //        this.recursos = recursos;
 //    }
-    
-    
-    
     public String getMotivo() {
         return motivo;
     }
@@ -180,7 +189,14 @@ public class Reserva implements Serializable, ScheduleEvent {
 
     @Override
     public String getTitle() {
-        return reservante.getNome() + (motivo == null || motivo.isEmpty() ? "" : " \n :: " + motivo);
+        if (equipamentosAssociados != null && !equipamentosAssociados.isEmpty()) {
+            String title = "";
+            for (int i = 0; i < equipamentosAssociados.size(); i++) {
+                title += reservante.getNome() + (motivo == null || motivo.isEmpty() ? "\n :: nao especificado" : " \n :: " + motivo) + "\n" + equipamentosAssociados.get(i);
+            }
+            return title;
+        }
+        return reservante.getNome() + (motivo == null || motivo.isEmpty() ? "\n :: nao especificado" : " \n :: " + motivo) ;
     }
 
     @Override
@@ -207,6 +223,4 @@ public class Reserva implements Serializable, ScheduleEvent {
     public boolean isEditable() {
         return true;
     }
-
-   
 }

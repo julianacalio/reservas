@@ -5,14 +5,8 @@
 package model;
 
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 /**
  *
@@ -35,12 +29,7 @@ public class Docente extends Servidor implements Serializable {
 //        this.turmas = turmas;
 //    }
 
-    
-    
-    
-   
-    
-      
+  
     @Override
     public int hashCode() {
         int hash = 0;

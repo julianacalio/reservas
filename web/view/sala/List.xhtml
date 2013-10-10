@@ -59,8 +59,8 @@
 
                 <p:layoutUnit position="center">  
             
-                    <h:outputText escape="false" value="Lista Vazia" rendered="#{salaController.items.rowCount == 0}"/>
-                    <p:panel rendered="#{salaController.items.rowCount > 0}">
+                    <h:outputText id="txtNumeroSalas" escape="false" value="Lista Vazia" rendered="#{salaController.items.rowCount == 0}"/>
+                    <p:panel id="painel" rendered="#{salaController.items.rowCount > 0}">
                         <h:outputText value="#{salaController.pagination.pageFirstItem + 1}..#{salaController.pagination.pageLastItem + 1}/#{salaController.pagination.itemsCount}"/>&nbsp;
                         <h:commandLink action="#{salaController.previous}" value="Anterior #{salaController.pagination.pageSize}" rendered="#{salaController.pagination.hasPreviousPage}"/>&nbsp;
                         <h:commandLink action="#{salaController.next}" value="Proximo #{salaController.pagination.pageSize}" rendered="#{salaController.pagination.hasNextPage}"/>&nbsp;
@@ -128,14 +128,14 @@
 
                         <p:panel>
                            
-                            <p:commandLink action="#{salaController.create()}"   update="msgs,db" style="margin-right:495px;margin-left: 495px;" > 
-                                <p:commandButton value="Salvar" id="ajax21" style="width: 180px"/>
+                            <p:commandLink action="#{salaController.create()}"   update="msgs,painel,db,txtNumeroSalas" style="margin-right:495px;margin-left: 495px;" > 
+                                <p:commandButton value="Salvar" id="ajax21" style="width: 180px" update="db"/>
                             </p:commandLink>
 
                         </p:panel>
 
                     </p:panel>
-                    <!--                </h:form>  -->
+                
                 </p:layoutUnit>  
 
             </p:layout>  
