@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
@@ -29,7 +30,6 @@ import model.Equipamento;
 import model.Pessoa;
 import model.Reserva;
 import model.Sala;
-import org.primefaces.component.slider.Slider;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
@@ -162,16 +162,11 @@ public class CalendarioController implements Serializable {
 
     public Map<Equipamento, Equipamento> getEquipamentos() {
 
-        // List<Equipamento> eq = getEquipamentoslivres();
-
-        //ArrayList<SelectItem> listaSelect = new ArrayList<SelectItem>();
         equips = new HashMap<Equipamento, Equipamento>();
         List<Equipamento> e;
         //verifica se existe alguma reserva antes de procurar os equipamentos livres
         if (reserva.getInicio() != null && reserva.getFim() != null) {
-            // e = getEquipamentosLivres();
-            e = equipamentoFacade.findAll();
-
+            e = getEquipamentosLivres();
         } else {
             e = equipamentoFacade.findAll();
         }
@@ -219,6 +214,7 @@ public class CalendarioController implements Serializable {
     }
 
     public void escolheSala() {
+        limparSelecaoTabelaEquipamento();
         if (novaSala == current) {
             return;
         }
@@ -227,6 +223,7 @@ public class CalendarioController implements Serializable {
     }
 
     public void escolheEquipamento() {
+        limparSelecaoTabelaSala();
         if (novoEquipamento == current) {
             return;
         }
@@ -255,6 +252,7 @@ public class CalendarioController implements Serializable {
             }
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", nomeRecurso);
             addMessage(message);
+            showConfirmDialog();
             return;
         }
 
@@ -292,10 +290,13 @@ public class CalendarioController implements Serializable {
     }
 
     public List<Reserva> getReservasOcupadas(Reserva reserva, List<Equipamento> equipamentos) {
+
         // Verifica Disponibilidade da reserva principal
         List<Reserva> reservas = reservaFacade.findBetween(reserva.getInicio(), reserva.getFim(), reserva.getRecurso());
 
-
+        if (equipamentos == null) {
+            equipamentos = new ArrayList<Equipamento>();
+        }
         // Verifica disponibilidade das reservas adicionais
         for (int i = 0; i < equipamentos.size(); i++) {
             List<Reserva> reservasEquipamentos = reservaFacade.findBetween(reserva.getInicio(), reserva.getFim(), equipamentos.get(i));
@@ -346,8 +347,13 @@ public class CalendarioController implements Serializable {
         if (selectedEquipamentos != null) {
             selectedEquipamentos.clear();
         }
-        org.primefaces.component.calendar.Calendar c = new org.primefaces.component.calendar.Calendar();
-        Collection<String> eventos = c.getEventNames();
+//        org.primefaces.component.calendar.Calendar c = new org.primefaces.component.calendar.Calendar();
+//        Collection<String> eventos = c.getEventNames();
+//
+//        org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu s = new org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu();
+//        Collection<String> eventos2 = s.getEventNames();
+//        
+//        org.primefaces.component.datatable.DataTable d = new org.primefaces.component.datatable.DataTable();
 
         reserva = new Reserva();
         reserva.setRecurso(current);
@@ -358,20 +364,62 @@ public class CalendarioController implements Serializable {
         reserva.setInicio(inicio);
         reserva.setFim(fim.getTime());
         reserva.setRealizacao(new Date());
+
+        if (isValidDate(reserva.getInicio())) {
+            showDialog();
+        }
     }
 
-    public void onValueChange() {
+    public void showDialog() {
+        RequestContext.getCurrentInstance().execute("eventDialog.show()");
+    }
+
+    public boolean isValidDate(Date data) {
+
+        Calendar dataReserva = Calendar.getInstance();
+        dataReserva.setTime(data);
+        int diaDaReserva = dataReserva.get(Calendar.DAY_OF_YEAR);
+        
+        Calendar dataAtual = Calendar.getInstance();
+        int diaAtual = dataAtual.get(Calendar.DAY_OF_YEAR);
+       
+        if (diaDaReserva < diaAtual) {
+            return false;
+        }
+        return true;
+    }
+
+    public void showConfirmDialog() {
+        RequestContext.getCurrentInstance().execute("eventDialog2.show()");
+    }
+
+    public void limparSelecaoTabelaSala() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("wdgListSala.unselectAllRows()");
+    }
+
+    public void limparSelecaoTabelaEquipamento() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("wdgListEquipamento.unselectAllRows()");
+    }
+
+    public void onValueChangeHoraInicio() {
         Calendar fim = Calendar.getInstance();
         fim.setTime(reserva.getInicio());
         fim.add(Calendar.HOUR, 2);
         reserva.setFim(fim.getTime());
     }
 
-    public void handleDateSelect(SelectEvent event) {
+    public void onValueChangeHoraFim() {
+    }
 
-        int a = 0;
-
-//Add facesmessage
+    public boolean possuiEquipamentosReservados() {
+        List<Reserva> reservasOcupadas = getReservasOcupadas(reserva, selectedEquipamentos);
+        if (reservasOcupadas != null && !reservasOcupadas.isEmpty()) {
+            return true;
+        } else {
+        }
+        return false;
     }
 
     public void onReservaMove(ScheduleEntryMoveEvent event) {
@@ -389,10 +437,6 @@ public class CalendarioController implements Serializable {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Reserva redimensionada", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());
 
         addMessage(message);
-    }
-
-    public void onSlideEnd() {
-        int a = 2;
     }
 
     private void addMessage(FacesMessage message) {
@@ -582,11 +626,13 @@ public class CalendarioController implements Serializable {
 
         List<Equipamento> e = equipamentoFacade.findAll();
         List<Reserva> reservas = getReservasOcupadas(reserva, e);
-        for (int i = 0; i < reservas.size(); i++) {
-            if (reservas.get(i).getRecurso() instanceof Equipamento) {
-                e.remove((Equipamento) reservas.get(i).getRecurso());
+      
+        for (Reserva res : reservas) {
+            if (res.getRecurso() instanceof Equipamento) {
+                e.remove((Equipamento) res.getRecurso());
             }
         }
+
         return e;
     }
 

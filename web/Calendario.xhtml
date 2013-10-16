@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
@@ -66,47 +67,55 @@
                     <p:growl id="messages" showDetail="true" />  
 
                     <p:schedule showWeekends="true" allDaySlot="true" view="month" minTime="0"  maxTime="23" axisFormat="H:mm" timeFormat="H:mm{ - H:mm}" id="schedule" value="#{calendarioController.eventModel}" widgetVar="myschedule" locale="br"   >  
-                        <p:ajax event="dateSelect" listener="#{calendarioController.onDateSelect}" update="eventDetails" oncomplete="eventDialog.show()" />  
+
+                        <p:ajax  event="dateSelect" listener="#{calendarioController.onDateSelect}"  update="eventDetails"   /> 
                         <p:ajax event="eventSelect" listener="#{calendarioController.onReservaSelect}" update="eventDetails" oncomplete="eventDialog.show()" />  
                         <p:ajax event="eventMove" listener="#{calendarioController.onReservaMove}" update="messages" />  
                         <p:ajax event="eventResize" listener="#{calendarioController.onEventResize}" update="messages" />  
                     </p:schedule> 
 
 
-                    <p:dialog  widgetVar="eventDialog" header="Detalhes da reserva">
+                    <p:dialog id="janela" widgetVar="eventDialog" header="Detalhes da reserva"   >
                         <h:panelGrid id="eventDetails" columns="2"> 
 
                             <h:outputLabel value="Reservante*: " for="ac_reservante"/>  
                             <p:autoComplete value="#{calendarioController.reserva.reservante}" id="ac_reservante" completeMethod="#{calendarioController.completeReservante}"  
-                                            var="p" itemLabel="#{p.nome}" itemValue="#{p}" forceSelection="true" required="true" queryDelay="0" />  
+                                            var="p" itemLabel="#{p.nome}" itemValue="#{p}" forceSelection="true" required="true" queryDelay="0" requiredMessage="Por favor especifique o nome do reservante" />  
 
                             <h:outputLabel for="from" value="Inicio*:" />  
                             <p:calendar id="from" value="#{calendarioController.reserva.inicio}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15" locale="br" required="true">  
-                                <p:ajax event="valueChange" listener="#{calendarioController.onValueChange()}" update="to"/>
+                                <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraInicio()}" update="to,ck"/>
                             </p:calendar>
-
 
                             <h:outputLabel for="to" value="Fim*:" />  
                             <p:calendar id="to" value="#{calendarioController.reserva.fim}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" required="true" widgetVar="w">
-                               
+                                <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraFim()}" update="ck"/>
                             </p:calendar>
 
                             <h:outputLabel for="title" value="Motivo:" />  
                             <p:inputText id="title" value="#{calendarioController.reserva.motivo}" />  
 
-                            <h:outputLabel for="ck" value="equipamentos"/>
+                            <h:outputLabel for="ck" value="Equipamentos:" />
                             <p:selectCheckboxMenu id="ck" value="#{calendarioController.selectedEquipamentos}"  converter="equi" label="Adicionar" filter="true" filterMatchMode="startsWith" panelStyle="width:220px">  
                                 <f:selectItems value="#{calendarioController.equipamentos}" var ="t" />  
                             </p:selectCheckboxMenu>  
 
-                            <p:commandButton id="addButton"  value="Salvar" actionListener="#{calendarioController.addReserva}" oncomplete="myschedule.update();eventDialog.hide();" update=":form2:dtEquipamento,messages" />   
+                            <p:commandButton id="addButton"  value="Salvar" actionListener="#{calendarioController.addReserva}" oncomplete="myschedule.update();eventDialog.hide();" update=":form2:dtEquipamento,messages" />
                             <p:commandButton id="remButton"  value="Remover" actionListener="#{calendarioController.remReserva}" oncomplete="myschedule.update();eventDialog.hide();" rendered="#{calendarioController.reserva.id != null}" update=":form2:dtEquipamento,:form1:dtSala"/>  
                             <p:commandButton id="cancelButton"  value="Cancelar"  oncomplete="eventDialog.hide();"  rendered="#{calendarioController.reserva.id == null}"/> 
 
-                            <!--                            <p:dialog  widgetVar="eventDialog2" header="Aviso">
-                                                            
-                                                        </p:dialog>-->
                         </h:panelGrid>  
+                    </p:dialog>
+
+                    <p:dialog id="janela2" widgetVar="eventDialog2" header="Sala Ocupada"   >
+
+                        <h:outputLabel value="Esta sala esta ocupada neste horário." />
+                        <br/>
+                        <h:outputLabel value="Favor selecionar outro horario" />
+                        <br/>
+                        <br/>
+                        <p:commandButton id="okButton"  value="OK" oncomplete="eventDialog2.hide();"  style="position: " />  
+
                     </p:dialog>
 
                 </h:form>  
@@ -114,6 +123,9 @@
             </p:layoutUnit>  
 
         </p:layout>  
+
+
+
         <script type="text/javascript">
             PrimeFaces.locales['br'] = {
                 closeText: 'Fechar',
