@@ -1,21 +1,17 @@
 package controller;
 
 import facade.RecursoFacade;
-import java.io.InputStream;
 
 import model.Recurso;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
-
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -37,19 +33,14 @@ import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleModel;
-import org.primefaces.model.DefaultStreamedContent;
-
-
 
 import org.primefaces.model.ScheduleModel;
-import org.primefaces.model.StreamedContent;
 import outros.EquipamentoDataModel;
 import outros.SalaDataModel;
 
 /**
  *
- * @author
- * André
+ * @author André
  */
 @Named("calendarioController")
 @SessionScoped
@@ -78,7 +69,7 @@ public class CalendarioController implements Serializable {
     private SalaDataModel salaDataModel;
 
     public CalendarioController() {
-      
+
         eventModel = null;
         pessoas = null;
 
@@ -309,7 +300,6 @@ public class CalendarioController implements Serializable {
                 nomeRecursos.add("Sala: " + s.getNumero());
             }
 
-
         }
         return nomeRecursos;
     }
@@ -341,12 +331,17 @@ public class CalendarioController implements Serializable {
     }
 
     public void remReserva(ActionEvent actionEvent) {
-        if (selectedEquipamentos != null) {
-            removerReservasAdicionais(reserva);
+        if (reserva.getRecurso() instanceof Sala) {
+            if (selectedEquipamentos != null) {
+                removerReservasAdicionais(reserva);
+            }
+        } else {
+            current.remReserva(reserva);
+            reservaFacade.remove(reserva);
         }
         eventModel.deleteEvent(reserva);
         // current.remReserva(reserva);
-        //  reservaFacade.remove(reserva);
+        // reservaFacade.remove(reserva);
         reserva = null;
     }
 
@@ -660,7 +655,6 @@ public class CalendarioController implements Serializable {
 
         return e;
     }
-    
 
     @FacesConverter(forClass = Recurso.class)
     public static class RecursoControllerConverter implements Converter {

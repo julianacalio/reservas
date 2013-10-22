@@ -6,8 +6,11 @@
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title>Facelet Title</title>
+        <title>JSF Tutorial!</title>
+        
     </h:head>
     <h:body>
+        <h:outputStylesheet library="css" name="style.css"  />
         Hello from Facelets
         <br />
         <!--h:link outcome="/view/docente/List" value="Página de boas-vindas do Primefaces" /-->
@@ -16,12 +19,17 @@
 
             <p:layout fullPage="true">  
 
-                <p:layoutUnit style="text-align:center" position="north" size="100" header=" UFABC - CMCC - Centro de Matemática Computação e Cognição" resizable="true" closable="true" collapsible="true" >  
-                    <div style="text-align: center " ><h:outputText value="Gerenciamento de Recursos" style ="font-weight:bold"  /></div>  
+                <p:layoutUnit style="text-align:center" position="north" size="100"  resizable="true" closable="true" collapsible="true" >  
+                    <!--                    <div style="text-align: center " ><h:outputText value="Gerenciamento de Recursos" style ="font-weight:bold"  /></div>-->
+                    <h:graphicImage value="resources/images/cmcc.png" />
+
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="south" size="100"  resizable="true" closable="true" collapsible="true">  
-                    <h:outputText value="South unit content." />  
+                    <h:outputText id="teste" value="South unit content." />
+                    <h3 id="abc">
+                        tedfadfafad
+                    </h3>
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true">  
@@ -29,7 +37,7 @@
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="false" closable="true" collapsible="true" effect="drop">  
-                 
+
                 </p:layoutUnit> 
 
                 <p:layoutUnit position="center">  
@@ -70,7 +78,7 @@
                 </p:layoutUnit>  
 
             </p:layout>  
-           
+
 
 
         </h:form>
