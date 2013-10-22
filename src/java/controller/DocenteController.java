@@ -95,7 +95,7 @@ public class DocenteController implements Serializable {
            // docente2.setNome("TesteDocente");
            // ejbFacade.save(docente2);
            getFacade().save(docente);
-           docente = null;
+           docente = null; // iniciala a variavel para limpar os dados dos componentes
             //ejbFacade.merge(docente);
             JsfUtil.addSuccessMessage("Docente Criado");
             //return prepareCreate();
