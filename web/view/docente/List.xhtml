@@ -11,11 +11,12 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <h:form> 
+        <h:form id="form1"> 
             <p:layout fullPage="true">  
 
                 <p:layoutUnit position="north" style="text-align:center" size="100"  header=" UFABC - CMCC - Centro de Matemática Computação e Cognição" resizable="true" closable="true" collapsible="true">  
                     <p:messages id="msgs" showDetail="true"/>  
+                    <h:link outcome="/index" value="index" style="margin-right:50px;margin-left: 50px" />
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">  
@@ -111,7 +112,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="Controle"/>
                                 </f:facet>
-                                <p:commandLink action="#{docenteController.destroy()}" value="Deletar" immediate="true" update="db"/>
+                                <p:commandLink action="#{docenteController.destroy()}" value="Deletar" immediate="true" update="db,:form1:msgs"/>
                             </p:column>
 
                         </p:dataTable> 
@@ -120,7 +121,7 @@
                     </p:panel>
                     <p:panel>
 
-                        <p:panelGrid columns="8">
+                        <p:panelGrid columns="8" id="pnGrCriarDocente">
                             <f:facet name="header">
                                 <h:outputText value="Criar Docente"/>
                             </f:facet>
@@ -129,16 +130,16 @@
                             <h:outputLabel value="Matrícula" for="matricula" style="margin-right:4px;margin-left: 4px;"/>
                             <h:inputText id="matricula" value="#{docenteController.selected.matricula}" title="matricula" />
                             <h:outputLabel value="Centro" for="centro"  />
-                            <h:selectOneMenu id="centro" value="#{docenteController.selected.centro}" title="centro"  >
+                            <h:selectOneMenu id="centro" value="#{docenteController.selected.centro}" title="centro" required="true" requiredMessage="Selecione um Centro para este Docente"  >
                                 <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
                             </h:selectOneMenu>
                             <h:outputLabel value="email" for="email"  />
                             <h:inputText id="email" value="#{docenteController.selected.email}" title="email" />
                         </p:panelGrid>
 
-                        <p:panel>
+                        <p:panel >
 
-                            <p:commandLink action="#{docenteController.create()}"   update="msgs,db" style="margin-right:495px;margin-left: 495px;" > 
+                            <p:commandLink action="#{docenteController.create()}"   update="msgs,db,pnGrCriarDocente" style="margin-right:495px;margin-left: 495px;" > 
                                 <p:commandButton value="Salvar" id="ajax21" style="width: 180px"/>
                             </p:commandLink>
 

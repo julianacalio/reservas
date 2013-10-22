@@ -40,16 +40,15 @@ public class Reserva implements Serializable, ScheduleEvent {
     @ManyToOne
     private Centro centro;
     String motivo;
-    
-    @javax.persistence.Transient 
-    private List<String> equipamentosAssociados = new ArrayList<String>();
+    @javax.persistence.Transient
+    private List<String> recursosAssociados = new ArrayList<String>();
 
-    public List<String> getEquipamentosAssociados() {
-        return equipamentosAssociados;
+    public List<String> getRecursosAssociados() {
+        return recursosAssociados;
     }
 
-    public void setEquipamentosAssociados(List<String> equipamentosAssociados) {
-        this.equipamentosAssociados = equipamentosAssociados;
+    public void setRecursosAssociados(List<String> equipamentosAssociados) {
+        this.recursosAssociados = equipamentosAssociados;
     }
 
 //    @OneToMany(mappedBy = "reserva", fetch = FetchType.EAGER)
@@ -189,14 +188,16 @@ public class Reserva implements Serializable, ScheduleEvent {
 
     @Override
     public String getTitle() {
-        if (equipamentosAssociados != null && !equipamentosAssociados.isEmpty()) {
-            String title = "";
-            for (int i = 0; i < equipamentosAssociados.size(); i++) {
-                title += reservante.getNome() + (motivo == null || motivo.isEmpty() ? "\n :: nao especificado" : " \n :: " + motivo) + "\n" + equipamentosAssociados.get(i);
+        if (recursosAssociados != null && !recursosAssociados.isEmpty()) {
+            String title = " " + reservante.getNome() + (motivo == null || motivo.isEmpty() ? "\n :: nao especificado" : " \n :: " + motivo);
+
+            for (String equipamentoAssociado : recursosAssociados) {
+                title += "\n" + equipamentoAssociado;
             }
+//           
             return title;
         }
-        return reservante.getNome() + (motivo == null || motivo.isEmpty() ? "\n :: nao especificado" : " \n :: " + motivo) ;
+        return " " + reservante.getNome() + (motivo == null || motivo.isEmpty() ? "\n :: nao especificado" : " \n :: " + motivo);
     }
 
     @Override

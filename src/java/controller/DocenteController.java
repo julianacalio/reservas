@@ -63,6 +63,7 @@ public class DocenteController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(docente);
+            docente = null;
             JsfUtil.addSuccessMessage("Docente deletado");
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Ocorreu um erro de persistência");
@@ -94,7 +95,7 @@ public class DocenteController implements Serializable {
            // docente2.setNome("TesteDocente");
            // ejbFacade.save(docente2);
            getFacade().save(docente);
-
+           docente = null;
             //ejbFacade.merge(docente);
             JsfUtil.addSuccessMessage("Docente Criado");
             //return prepareCreate();

@@ -81,6 +81,7 @@ public class CentroController implements Serializable {
         try {
             getFacade().save(current);
             JsfUtil.addSuccessMessage("Centro Criado");
+            current = null;
              //return prepareCreate();
             return prepareList();
         } catch (Exception e) {
@@ -131,6 +132,7 @@ public class CentroController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
+            current = null;
             JsfUtil.addSuccessMessage("Centro Deletado");
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");

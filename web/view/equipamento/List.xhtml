@@ -9,7 +9,7 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <h:form>
+        <h:form id="form1">
             <p:layout fullPage="true">  
 
                 <p:layoutUnit position="north" style="text-align:center" size="100"  header=" UFABC - CMCC - Centro de Matemática Computação e Cognição" resizable="true" closable="true" collapsible="true">  
@@ -103,14 +103,14 @@
                                 <f:facet name="header">
                                     <h:outputText value="Controle"/>
                                 </f:facet>
-                                <p:commandLink id ="cmlDestroy" action="#{equipamentoController.destroy}" value="Deletar" immediate="true" update="db"/>
+                                <p:commandLink id ="cmlDestroy" action="#{equipamentoController.destroy}" value="Deletar" immediate="true" update="db,:form1:msgs"/>
                             </p:column>
 
                         </p:dataTable> 
                     </p:panel>
 
                     <p:panel>
-                        <p:panelGrid columns="6">
+                        <p:panelGrid columns="6" id="pnGrCriarEquipamento">
                             <f:facet name="header">
                                 <h:outputText value="Criar Sala"/>
                             </f:facet>
@@ -125,7 +125,7 @@
                         </p:panelGrid>
                         
                         <p:panel>
-                            <p:commandLink action="#{equipamentoController.create()}"   update="msgs,db" style="margin-right:495px;margin-left: 495px;" > 
+                            <p:commandLink action="#{equipamentoController.create()}"   update="msgs,db,pnGrCriarEquipamento" style="margin-right:495px;margin-left: 495px;" > 
                                 <p:commandButton value="Salvar" id="ajax21" style="width: 180px"/>
                             </p:commandLink>
                         </p:panel>

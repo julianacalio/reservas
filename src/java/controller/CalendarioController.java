@@ -1,6 +1,8 @@
 package controller;
 
 import facade.RecursoFacade;
+import java.io.InputStream;
+
 import model.Recurso;
 
 import java.io.Serializable;
@@ -35,10 +37,12 @@ import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.DefaultStreamedContent;
 
 
 
 import org.primefaces.model.ScheduleModel;
+import org.primefaces.model.StreamedContent;
 import outros.EquipamentoDataModel;
 import outros.SalaDataModel;
 
@@ -74,6 +78,7 @@ public class CalendarioController implements Serializable {
     private SalaDataModel salaDataModel;
 
     public CalendarioController() {
+      
         eventModel = null;
         pessoas = null;
 
@@ -198,6 +203,7 @@ public class CalendarioController implements Serializable {
 
             eventModel = new DefaultScheduleModel();
             for (Reserva res : current.getReservas()) {
+                res.setRecursosAssociados(getRecursosAssociados(res));
                 eventModel.addEvent(res);
             }
         }
@@ -263,6 +269,7 @@ public class CalendarioController implements Serializable {
         reserva = reservaFacade.merge(reserva);
         current.addReserva(reserva);
         if (reserva.getId() == null) {
+            reserva.setRecursosAssociados(getRecursosAssociados(reserva));
             eventModel.addEvent(reserva);
         } else {
             eventModel.updateEvent(reserva);
@@ -284,9 +291,27 @@ public class CalendarioController implements Serializable {
             reservas[i] = reservaFacade.merge(reservas[i]);
             equipamentosAssociados.get(i).addReserva(reservas[i]);
             // Atualiza a lista de equipamentos associados com este reserva para ser mostrado no calendario
-            reserva.getEquipamentosAssociados().add(equipamentosAssociados.get(i).getDescricao());
+            reserva.getRecursosAssociados().add(equipamentosAssociados.get(i).getDescricao());
         }
         equipamentoDataModel = null;
+    }
+
+    public List<String> getRecursosAssociados(Reserva reserva) {
+
+        List<Reserva> reservas = reservaFacade.findAllBetween(reserva.getInicio(), reserva.getFim());
+        List<String> nomeRecursos = new ArrayList<String>();
+        for (Reserva res : reservas) {
+            if (res.getRecurso() instanceof Equipamento) {
+                Equipamento e = (Equipamento) res.getRecurso();
+                nomeRecursos.add(e.getDescricao());
+            } else {
+                Sala s = (Sala) res.getRecurso();
+                nomeRecursos.add("Sala: " + s.getNumero());
+            }
+
+
+        }
+        return nomeRecursos;
     }
 
     public List<Reserva> getReservasOcupadas(Reserva reserva, List<Equipamento> equipamentos) {
@@ -379,10 +404,10 @@ public class CalendarioController implements Serializable {
         Calendar dataReserva = Calendar.getInstance();
         dataReserva.setTime(data);
         int diaDaReserva = dataReserva.get(Calendar.DAY_OF_YEAR);
-        
+
         Calendar dataAtual = Calendar.getInstance();
         int diaAtual = dataAtual.get(Calendar.DAY_OF_YEAR);
-       
+
         if (diaDaReserva < diaAtual) {
             return false;
         }
@@ -560,7 +585,7 @@ public class CalendarioController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage("RecursoDeleted");
+            JsfUtil.addSuccessMessage("Recurso Apagado");
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
         }
@@ -626,7 +651,7 @@ public class CalendarioController implements Serializable {
 
         List<Equipamento> e = equipamentoFacade.findAll();
         List<Reserva> reservas = getReservasOcupadas(reserva, e);
-      
+
         for (Reserva res : reservas) {
             if (res.getRecurso() instanceof Equipamento) {
                 e.remove((Equipamento) res.getRecurso());
@@ -635,6 +660,7 @@ public class CalendarioController implements Serializable {
 
         return e;
     }
+    
 
     @FacesConverter(forClass = Recurso.class)
     public static class RecursoControllerConverter implements Converter {

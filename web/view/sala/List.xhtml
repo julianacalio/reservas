@@ -112,7 +112,7 @@
                     </p:panel>
                     <p:panel>
 
-                        <p:panelGrid columns="6">
+                        <p:panelGrid columns="6" id="pnGrCriarSala">
                             <f:facet name="header">
                                 <h:outputText value="Criar Sala"/>
                             </f:facet>
@@ -128,7 +128,7 @@
 
                         <p:panel>
                            
-                            <p:commandLink action="#{salaController.create()}"   update="msgs,painel,db,txtNumeroSalas" style="margin-right:495px;margin-left: 495px;" > 
+                            <p:commandLink action="#{salaController.create()}"   update="msgs,painel,db,txtNumeroSalas,pnGrCriarSala" style="margin-right:495px;margin-left: 495px;" > 
                                 <p:commandButton value="Salvar" id="ajax21" style="width: 180px" update="db"/>
                             </p:commandLink>
 

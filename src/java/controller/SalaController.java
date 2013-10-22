@@ -84,6 +84,7 @@ public class SalaController implements Serializable {
         try {
             getFacade().save(current);
             JsfUtil.addSuccessMessage("Sala Criada");
+            current = null;
             //return prepareCreate();
             return prepareList();
         } catch (Exception e) {
@@ -134,6 +135,7 @@ public class SalaController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
+            current = null;
             JsfUtil.addSuccessMessage("Sala Apagada");
         } catch (Exception e) {
             JsfUtil.addErrorMessage("PersistenceErrorOccured");

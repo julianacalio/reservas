@@ -97,16 +97,16 @@
 
                         <p:panel>
 
-                            <p:panelGrid columns="2">
+                            <p:panelGrid columns="2" id="pnGrCriarCentro">
                                 <f:facet name="header">
                                     <h:outputText value="Criar Sala"/>
                                 </f:facet>
-                                <h:outputLabel value="Nome" for="nome" style="margin-right:36px;margin-left: 36px;" />
-                                <h:inputText id="tamanho_m2" value="#{centroController.selected.nome}" title="tamanho" />
+                                <h:outputLabel value="Nome" for="tamanho_m2" style="margin-right:36px;margin-left: 36px;" />
+                                <h:inputText id="tamanho_m2" value="#{centroController.selected.nome}" title="tamanho" required="true" requiredMessage="Por favor digite um nome para o Centro"/>
                             </p:panelGrid>
                             
                             <p:panel>
-                                <p:commandLink action="#{centroController.create()}"   update="msgs,db" style="margin-right:495px;margin-left: 495px;" > 
+                                <p:commandLink action="#{centroController.create()}"   update="msgs,db,pnGrCriarCentro" style="margin-right:495px;margin-left: 495px;" > 
                                     <p:commandButton value="Salvar" id="ajax21" style="width: 180px"/>
                                 </p:commandLink>
                             </p:panel>
