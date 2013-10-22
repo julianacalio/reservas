@@ -161,7 +161,7 @@ public class CalendarioController implements Serializable {
         equips = new HashMap<Equipamento, Equipamento>();
         List<Equipamento> e;
         //verifica se existe alguma reserva antes de procurar os equipamentos livres
-        if (reserva.getInicio() != null && reserva.getFim() != null) {
+        if (reserva != null && reserva.getInicio() != null && reserva.getFim() != null) {
             e = getEquipamentosLivres();
         } else {
             e = equipamentoFacade.findAll();
@@ -253,7 +253,7 @@ public class CalendarioController implements Serializable {
             return;
         }
 
-        if (selectedEquipamentos != null) {
+        if (selectedEquipamentos != null && !selectedEquipamentos.isEmpty()) {
             criaReservasAdicionais(selectedEquipamentos, reserva);
         }
         //reserva = reservaFacade.edit(reserva);
@@ -289,7 +289,8 @@ public class CalendarioController implements Serializable {
 
     public List<String> getRecursosAssociados(Reserva reserva) {
 
-        List<Reserva> reservas = reservaFacade.findAllBetween(reserva.getInicio(), reserva.getFim());
+        // List<Reserva> reservas = reservaFacade.findAllBetween(reserva.getInicio(), reserva.getFim());
+        List<Reserva> reservas = reservaFacade.findAll(reserva.getInicio(), reserva.getFim(), reserva.getRealizacao());
         List<String> nomeRecursos = new ArrayList<String>();
         for (Reserva res : reservas) {
             if (res.getRecurso() instanceof Equipamento) {
@@ -402,11 +403,7 @@ public class CalendarioController implements Serializable {
 
         Calendar dataAtual = Calendar.getInstance();
         int diaAtual = dataAtual.get(Calendar.DAY_OF_YEAR);
-
-        if (diaDaReserva < diaAtual) {
-            return false;
-        }
-        return true;
+        return diaDaReserva >= diaAtual;
     }
 
     public void showConfirmDialog() {
