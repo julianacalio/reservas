@@ -43,7 +43,9 @@ public abstract class AbstractFacade<T> {
         T entidade = (T) session.merge(entity);
         transaction.commit();
         session.close();
-        return entidade;
+        //return entidade;
+        return entity;
+
     }
 
     public void remove(T entity) {
@@ -83,7 +85,7 @@ public abstract class AbstractFacade<T> {
         //criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
 
         criteria.add(Restrictions.or(Restrictions.between("fim", inicio, fim), Restrictions.between("inicio", inicio, fim)));
-       // criteria.add(Restrictions.eq("recurso",recurso));
+        // criteria.add(Restrictions.eq("recurso",recurso));
         List results = criteria.list();
 //        criteria.add(Restrictions.between("fim", inicio, fim));
 //        List results = criteria.list();
@@ -92,19 +94,18 @@ public abstract class AbstractFacade<T> {
         session.close();
         return results;
     }
-    
-     public List<T> findBetween(Date inicio, Date fim, Recurso recurso) {
+
+    public List<T> findBetween(Date inicio, Date fim, Recurso recurso) {
         Session session = getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(entityClass);
-      
+
         criteria.add(Restrictions.or(Restrictions.between("fim", inicio, fim), Restrictions.between("inicio", inicio, fim)));
-        criteria.add(Restrictions.eq("recurso",recurso));
+        criteria.add(Restrictions.eq("recurso", recurso));
         List results = criteria.list();
 
         session.close();
         return results;
     }
-    
 
     public List<T> findAll() {
         Session session = getSessionFactory().openSession();

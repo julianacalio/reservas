@@ -233,33 +233,35 @@ public class CalendarioController implements Serializable {
     }
 
     public void addReserva(ActionEvent actionEvent) {
-        List<Reserva> reservasOcupadas = getReservasOcupadas(reserva, selectedEquipamentos);
-        if (reservasOcupadas != null && !reservasOcupadas.isEmpty()) {
-            String nomeRecurso = "";
-            for (int i = 0; i < reservasOcupadas.size(); i++) {
-                Recurso recurso = reservasOcupadas.get(i).getRecurso();
-                if (recurso instanceof Equipamento) {
-                    Equipamento e = (Equipamento) recurso;
-                    nomeRecurso += "Equipamento: " + e.getDescricao() + "\n";
-                } else {
-                    Sala s = (Sala) recurso;
-                    nomeRecurso += "Sala: " + s.getNumero() + "\n";
-                }
+        if (reserva.getId() == null) {//se for uma nova reserva
+            List<Reserva> reservasOcupadas = getReservasOcupadas(reserva, selectedEquipamentos);
+            if (reservasOcupadas != null && !reservasOcupadas.isEmpty()) {
+                String nomeRecurso = "";
+                for (int i = 0; i < reservasOcupadas.size(); i++) {
+                    Recurso recurso = reservasOcupadas.get(i).getRecurso();
+                    if (recurso instanceof Equipamento) {
+                        Equipamento e = (Equipamento) recurso;
+                        nomeRecurso += "Equipamento: " + e.getDescricao() + "\n";
+                    } else {
+                        Sala s = (Sala) recurso;
+                        nomeRecurso += "Sala: " + s.getNumero() + "\n";
+                    }
 
+                }
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", nomeRecurso);
+                addMessage(message);
+                showConfirmDialog();
+                return;
             }
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", nomeRecurso);
-            addMessage(message);
-            showConfirmDialog();
-            return;
         }
 
+        //reserva = reservaFacade.edit(reserva);
+        reserva = reservaFacade.merge(reserva);
         if (selectedEquipamentos != null && !selectedEquipamentos.isEmpty()) {
             criaReservasAdicionais(selectedEquipamentos, reserva);
         }
-        //reserva = reservaFacade.edit(reserva);
-        reserva = reservaFacade.merge(reserva);
         current.addReserva(reserva);
-        if (reserva.getId() == null) {
+        if (reserva.getId() == null) {//ser for igual a null significa que eh uma nova reserva
             reserva.setRecursosAssociados(getRecursosAssociados(reserva));
             eventModel.addEvent(reserva);
         } else {
