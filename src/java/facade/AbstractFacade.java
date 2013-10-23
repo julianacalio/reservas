@@ -63,49 +63,7 @@ public abstract class AbstractFacade<T> {
         return entity;
     }
 
-    public List<T> findAll(Date inicio, Date fim, Date realizacao) {
-        Session session = getSessionFactory().openSession();
-//        String atributoTabela = "inicio";
-//        Calendar c = Calendar.getInstance();
-//        c.add(Calendar.DATE, -1);
-
-        Criteria criteria = session.createCriteria(entityClass);
-        criteria.add(Restrictions.eq("inicio", inicio));
-        criteria.add(Restrictions.eq("fim", fim));
-        criteria.add(Restrictions.eq("realizacao", realizacao));
-
-        List results = criteria.list();
-        session.close();
-        return results;
-    }
-
-    public List<T> findAllBetween(Date inicio, Date fim) {
-        Session session = getSessionFactory().openSession();
-        Criteria criteria = session.createCriteria(entityClass);
-        //criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
-
-        criteria.add(Restrictions.or(Restrictions.between("fim", inicio, fim), Restrictions.between("inicio", inicio, fim)));
-        // criteria.add(Restrictions.eq("recurso",recurso));
-        List results = criteria.list();
-//        criteria.add(Restrictions.between("fim", inicio, fim));
-//        List results = criteria.list();
-//        criteria.add(Restrictions.between("inicio", inicio, fim));
-//        List results1 = criteria.list();
-        session.close();
-        return results;
-    }
-
-    public List<T> findBetween(Date inicio, Date fim, Recurso recurso) {
-        Session session = getSessionFactory().openSession();
-        Criteria criteria = session.createCriteria(entityClass);
-
-        criteria.add(Restrictions.or(Restrictions.between("fim", inicio, fim), Restrictions.between("inicio", inicio, fim)));
-        criteria.add(Restrictions.eq("recurso", recurso));
-        List results = criteria.list();
-
-        session.close();
-        return results;
-    }
+    
 
     public List<T> findAll() {
         Session session = getSessionFactory().openSession();

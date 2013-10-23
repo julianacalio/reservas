@@ -10,6 +10,7 @@
 
     </h:head>
     <h:body>
+       
         <h:outputStylesheet library="css" name="style.css"  />
         <p:layout fullPage="true">  
 
@@ -85,12 +86,14 @@
                                             var="p" itemLabel="#{p.nome}" itemValue="#{p}" forceSelection="true" required="true" queryDelay="0" requiredMessage="Por favor especifique o nome do reservante" />  
 
                             <h:outputLabel for="from" value="Inicio*:" />  
-                            <p:calendar id="from" value="#{calendarioController.reserva.inicio}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15" locale="br" required="true">  
+
+                            <p:calendar id="from"  value="#{calendarioController.reserva.inicio}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15" locale="br" required="true">  
                                 <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraInicio()}" update="to,ck"/>
                             </p:calendar>
 
                             <h:outputLabel for="to" value="Fim*:" />  
-                            <p:calendar id="to" value="#{calendarioController.reserva.fim}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" required="true" widgetVar="w">
+                            <p:calendar id="to"  value="#{calendarioController.reserva.fim}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" required="true" widgetVar="w">
+
                                 <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraFim()}" update="ck"/>
                             </p:calendar>
 
@@ -128,6 +131,7 @@
 
 
 
+
         <script type="text/javascript">
             PrimeFaces.locales['br'] = {
                 closeText: 'Fechar',
@@ -154,6 +158,7 @@
                 week: 'Semana',
                 day: 'Dia',
                 allDayText: 'Hora'
+
             };
         </script>
         <br/>

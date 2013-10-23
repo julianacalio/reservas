@@ -233,41 +233,49 @@ public class CalendarioController implements Serializable {
     }
 
     public void addReserva(ActionEvent actionEvent) {
-        if (reserva.getId() == null) {//se for uma nova reserva
+        if (isNovaReserva(reserva)) {
             List<Reserva> reservasOcupadas = getReservasOcupadas(reserva, selectedEquipamentos);
             if (reservasOcupadas != null && !reservasOcupadas.isEmpty()) {
-                String nomeRecurso = "";
-                for (int i = 0; i < reservasOcupadas.size(); i++) {
-                    Recurso recurso = reservasOcupadas.get(i).getRecurso();
-                    if (recurso instanceof Equipamento) {
-                        Equipamento e = (Equipamento) recurso;
-                        nomeRecurso += "Equipamento: " + e.getDescricao() + "\n";
-                    } else {
-                        Sala s = (Sala) recurso;
-                        nomeRecurso += "Sala: " + s.getNumero() + "\n";
-                    }
-
-                }
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", nomeRecurso);
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", getNomeReservasOcupadas(reservasOcupadas));
                 addMessage(message);
                 showConfirmDialog();
                 return;
             }
+
         }
 
         //reserva = reservaFacade.edit(reserva);
         reserva = reservaFacade.merge(reserva);
-        if (selectedEquipamentos != null && !selectedEquipamentos.isEmpty()) {
+        if (selectedEquipamentos!= null && !selectedEquipamentos.isEmpty()) {
             criaReservasAdicionais(selectedEquipamentos, reserva);
         }
+
         current.addReserva(reserva);
-        if (reserva.getId() == null) {//ser for igual a null significa que eh uma nova reserva
+
+        if (isNovaReserva(reserva)) {
             reserva.setRecursosAssociados(getRecursosAssociados(reserva));
             eventModel.addEvent(reserva);
         } else {
             eventModel.updateEvent(reserva);
         }
 
+    }
+
+    public String getNomeReservasOcupadas(List<Reserva> reservasOcupadas) {
+
+        String nomeRecurso = "";
+        for (int i = 0; i < reservasOcupadas.size(); i++) {
+            Recurso recurso = reservasOcupadas.get(i).getRecurso();
+            if (recurso instanceof Equipamento) {
+                Equipamento e = (Equipamento) recurso;
+                nomeRecurso += "Equipamento: " + e.getDescricao() + "\n";
+            } else {
+                Sala s = (Sala) recurso;
+                nomeRecurso += "Sala: " + s.getNumero() + "\n";
+            }
+
+        }
+        return nomeRecurso;
     }
 
     public void criaReservasAdicionais(List<Equipamento> equipamentosAssociados, Reserva reserva) {
@@ -287,6 +295,10 @@ public class CalendarioController implements Serializable {
             reserva.getRecursosAssociados().add(equipamentosAssociados.get(i).getDescricao());
         }
         equipamentoDataModel = null;
+    }
+
+    public boolean isNovaReserva(Reserva reserva) {
+        return reserva.getId() == null;
     }
 
     public List<String> getRecursosAssociados(Reserva reserva) {
@@ -653,6 +665,7 @@ public class CalendarioController implements Serializable {
         }
 
         return e;
+
     }
 
     @FacesConverter(forClass = Recurso.class)
