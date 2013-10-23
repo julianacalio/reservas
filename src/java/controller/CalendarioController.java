@@ -75,9 +75,11 @@ public class CalendarioController implements Serializable {
 
     }
 
-    public void limparVariaveis() {
+    public void inicializarVariaveis() {
         salaDataModel = null;
         equipamentoDataModel = null;
+        eventModel = null;
+        pessoas = null;
     }
 
     public Recurso getNovaescolha() {

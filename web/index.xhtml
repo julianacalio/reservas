@@ -7,7 +7,7 @@
     <h:head>
         <title>Facelet Title</title>
         <title>JSF Tutorial!</title>
-        
+
     </h:head>
     <h:body>
         <h:outputStylesheet library="css" name="style.css"  />
@@ -44,35 +44,35 @@
 
                     <p:panelGrid columns="3">  
 
-                        <p:commandLink id="ajax10" action= "/view/docente/List"  style="margin-right:110px;margin-left: 110px;" >  
-                            <p:commandButton value="Docente" id="ajax19" style="width: 160px"/>
+                        <p:commandLink id="linkDocente" action= "/view/docente/List"   >  
+                            <p:commandButton value="Docente" id="btnDocente" style="width: 160px"/>
                         </p:commandLink>
 
-                        <p:commandLink id="ajax100" action= "/view/TA/List"   style="margin-right:110px;margin-left: 110px;"  >  
-                            <p:commandButton value="TAs" id="ajax199" style="width: 160px"/>
+                        <p:commandLink id="linkTA" action= "/view/TA/List"    >  
+                            <p:commandButton value="TAs" id="btnTA" style="width: 160px"/>
                         </p:commandLink>
 
-                        <p:commandLink id="ajax11" action= "/view/operador/List"  style="margin-right:110px;margin-left: 110px;"  >  
-                            <p:commandButton value="Operadores" id="ajax20" style="width: 160px" />
+                        <p:commandLink id="linkOperador" action= "/view/operador/List"    >  
+                            <p:commandButton value="Operadores" id="btnOperador" style="width: 160px" />
                         </p:commandLink> 
 
-                        <p:commandLink id="ajax14" action= "/view/centro/List"  style="margin-right:110px;margin-left: 110px;" >  
-                            <p:commandButton value="Centros" id="ajax22" style="width: 160px"/>
+                        <p:commandLink id="linkCentro" action= "/view/centro/List"  style="margin-right:110px;margin-left: 110px;" >  
+                            <p:commandButton value="Centros" id="btnCentro" style="width: 160px"/>
                         </p:commandLink> 
 
-                        <p:commandLink id="ajax12" action= "/view/sala/List"  style="margin-right:110px;margin-left: 110px;" >  
-                            <p:commandButton value="Salas" id="ajax" style="width: 160px"/>
+                        <p:commandLink id="linkSala" action= "/view/sala/List"  style="margin-right:110px;margin-left: 110px;" >  
+                            <p:commandButton value="Salas" id="btnSala" style="width: 160px"/>
                         </p:commandLink> 
 
-                        <p:commandLink id="ajax13" action= "/view/equipamento/List"  style="margin-right:110px;margin-left: 110px;" >  
-                            <p:commandButton value="Equipamentos" id="ajax21" style="width: 160px"/>
+                        <p:commandLink id="linkEquipamento" action= "/view/equipamento/List"  style="margin-right:110px;margin-left: 110px;" >  
+                            <p:commandButton value="Equipamentos" id="btnEquipamento" style="width: 160px"/>
                         </p:commandLink> 
 
                     </p:panelGrid>  
 
                     <p:panel>
-                        <p:commandLink id="ajax29" action="/Calendario" style="margin-right:495px;margin-left: 495px; "  >  
-                            <p:commandButton value="Calendario" id="ajax23" style="width: 160px" /> 
+                        <p:commandLink id="linkCalendario" action="/Calendario" style="margin-right:495px;margin-left: 495px; "  >  
+                            <p:commandButton value="Calendario" id="btnCalendario" style="width: 160px" /> 
                         </p:commandLink>
                     </p:panel>
                 </p:layoutUnit>  

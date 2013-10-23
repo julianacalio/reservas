@@ -1,14 +1,11 @@
 package facade;
 
-import java.util.Date;
 import java.util.List;
-import model.Recurso;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 
 public abstract class AbstractFacade<T> {
 
@@ -63,8 +60,7 @@ public abstract class AbstractFacade<T> {
         return entity;
     }
 
-    
-
+  
     public List<T> findAll() {
         Session session = getSessionFactory().openSession();
         Criteria crit = session.createCriteria(entityClass);

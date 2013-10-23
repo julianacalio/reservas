@@ -28,9 +28,13 @@ body {
 #panelCentro{
     alignment-adjust: central;
     alignment-baseline: central;
-    
+    text-align: center;
 }
 
 #ck{
+    
+}
+
+#cancelButton{
     
 }
