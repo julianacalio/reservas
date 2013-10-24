@@ -38,10 +38,7 @@ import org.primefaces.model.ScheduleModel;
 import outros.EquipamentoDataModel;
 import outros.SalaDataModel;
 
-/**
- *
- * @author André
- */
+
 @Named("calendarioController")
 @SessionScoped
 public class CalendarioController implements Serializable {
@@ -104,7 +101,6 @@ public class CalendarioController implements Serializable {
 
     public void setNovoEquipamento(Recurso novoEquipamento) {
         this.novoEquipamento = novoEquipamento;
-
     }
 
     public Recurso getCurrent() {
@@ -268,6 +264,7 @@ public class CalendarioController implements Serializable {
         String nomeRecurso = "";
         for (int i = 0; i < reservasOcupadas.size(); i++) {
             Recurso recurso = reservasOcupadas.get(i).getRecurso();
+           
             if (recurso instanceof Equipamento) {
                 Equipamento e = (Equipamento) recurso;
                 nomeRecurso += "Equipamento: " + e.getDescricao() + "\n";

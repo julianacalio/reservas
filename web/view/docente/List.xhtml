@@ -11,40 +11,47 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
+
+        <h:outputStylesheet library="css" name="style.css"  />
+
         <h:form id="form1"> 
             <p:layout fullPage="true">  
 
-                <p:layoutUnit position="north" style="text-align:center" size="100"  header=" UFABC - CMCC - Centro de Matemática Computação e Cognição" resizable="true" closable="true" collapsible="true">  
-                    <p:messages id="msgs" showDetail="true"/>  
+                <p:layoutUnit position="north" style="text-align:center" size="100"  resizable="true" closable="true" collapsible="true">  
+                    <h:graphicImage value="resources/images/cmcc.png" >
+                                       <!--<h:link outcome="/index" value="Gerenciar Recursos" onclick="#{calendarioController.inicializarVariaveis()}"/>-->
+                    </h:graphicImage>
+
+
                     <!--                    <h:link outcome="/index" value="index" style="margin-right:50px;margin-left: 50px" />-->
                 </p:layoutUnit>  
 
-                <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">  
-                    <h:outputText value="South unit content." />  
+                <p:layoutUnit position="south" style="text-align:center" size="100"  resizable="true" closable="true" collapsible="true">  
+                    <p:messages id="msgs" showDetail="true"/>   
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop">  
-                    <p:commandLink id="ajax2" action="/view/sala/List" style="margin-right:20px;">  
+                    <p:commandLink id="linkListSala" action="/view/sala/List" style="margin-right:20px;">  
                         <h:outputText value="Lista de Salas" />  
                     </p:commandLink> 
                     <br/>
-                    <p:commandLink id="ajax3" action="/view/centro/List" style="margin-right:20px;">  
+                    <p:commandLink id="linkListCentro" action="/view/centro/List" style="margin-right:20px;">  
                         <h:outputText value="Lista de Centros" />  
                     </p:commandLink> 
                     <br/>
-                    <p:commandLink id="ajax5" action="/view/equipamento/List" style="margin-right:20px;">  
+                    <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" style="margin-right:20px;">  
                         <h:outputText value="Lista de Equipamentos" />  
                     </p:commandLink>
                     <br/>
-                    <p:commandLink id="ajax6" action="/view/TA/List" style="margin-right:20px;">  
+                    <p:commandLink id="linkListTA" action="/view/TA/List" style="margin-right:20px;">  
                         <h:outputText value="Lista de TAs" />  
                     </p:commandLink>
                     <br/>
-                    <p:commandLink id="ajax7" action="/view/operador/List" style="margin-right:20px;">  
+                    <p:commandLink id="linkListOperador" action="/view/operador/List" style="margin-right:20px;">  
                         <h:outputText value="Lista de Operadores" />  
                     </p:commandLink>
                     <br/>
-                    <p:commandLink id="ajax8" action="/view/reserva/List" style="margin-right:20px;">  
+                    <p:commandLink id="linkListReserva" action="/view/reserva/List" style="margin-right:20px;">  
                         <h:outputText value="Lista de Reservas" />  
                     </p:commandLink>
                     <br/>
@@ -59,13 +66,13 @@
 
                 <p:layoutUnit position="center">  
 
-
-                    <h:outputText escape="false" value="Lista Vazia" rendered="#{docenteController.items.rowCount == 0}"/>
-                    <p:panel rendered="#{docenteController.items.rowCount > 0}">
-                        <h:outputText value="#{docenteController.pagination.pageFirstItem + 1}..#{salaController.pagination.pageLastItem + 1}/#{docenteController.pagination.itemsCount}"/>&nbsp;
-                        <h:commandLink action="#{docenteController.previous()}" value="Anterior #{docenteController.pagination.pageSize}" rendered="#{docenteController.pagination.hasPreviousPage}"/>&nbsp;
-                        <h:commandLink action="#{docenteController.next()}" value="Proximo #{docenteController.pagination.pageSize}" rendered="#{docenteController.pagination.hasNextPage}"/>&nbsp;
-                        <p:dataTable id="db" var="item"  value="#{docenteController.items}"   >
+                    <p:panel >
+                        <p:dataTable id="db" var="item"  value="#{docenteController.docenteDataModel}" selectionMode="single"  paginator="true" rows="10"  
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                     rowsPerPageTemplate="5,10,15">  
+                            <f:facet name="header">  
+                                Lista de Docentes  
+                            </f:facet>   >
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="id"/>
@@ -101,16 +108,16 @@
                                 <h:outputText value="#{item.email}"/>
                             </p:column>
 
-                            <p:column headerText="Controle">
+                            <p:column headerText="">
                                 <f:facet name="header">
-                                    <h:outputText value="Controle"/>
+                                    <h:outputText value=""/>
                                 </f:facet>
-                                <p:commandLink action="#{docenteController.prepareEdit()}" value="Editar" />
+                                <p:commandLink action="#{docenteController.prepareEdit()}" value="Editar" immediate="true"  />
                             </p:column>
 
-                            <p:column headerText="Controle">
+                            <p:column headerText="">
                                 <f:facet name="header">
-                                    <h:outputText value="Controle"/>
+                                    <h:outputText value=""/>
                                 </f:facet>
                                 <p:commandLink action="#{docenteController.destroy()}" value="Deletar" immediate="true" update="db,:form1:msgs"/>
                             </p:column>
@@ -119,32 +126,27 @@
                         <br/>
                         <br/>
                     </p:panel>
-                    <p:panel >
-
-                        <p:panelGrid columns="8" id="pnGrCriarDocente">
-                            <f:facet name="header">
-                                <h:outputText value="Criar Docente"/>
-                            </f:facet>
-                            <h:outputLabel value="Nome" for="nome" />
-                            <h:inputText id="nome" value="#{docenteController.selected.nome}" title="nome" />
-                            <h:outputLabel value="Matrícula" for="matricula" style="margin-right:4px;margin-left: 4px;"/>
-                            <h:inputText id="matricula" value="#{docenteController.selected.matricula}" title="matricula" />
-                            <h:outputLabel value="Centro" for="centro"  />
-                            <h:selectOneMenu id="centro" value="#{docenteController.selected.centro}" title="centro" required="true" requiredMessage="Selecione um Centro para este Docente"  >
-                                <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
-                            </h:selectOneMenu>
-                            <h:outputLabel value="email" for="email"  />
-                            <h:inputText id="email" value="#{docenteController.selected.email}" title="email" />
-                        </p:panelGrid>
-
-                        <p:panel >
-
-                            <p:commandLink action="#{docenteController.create()}"   update="msgs,db,pnGrCriarDocente" style="margin-right:495px;margin-left: 495px;" > 
-                                <p:commandButton value="Salvar" id="ajax21" style="width: 180px"/>
-                            </p:commandLink>
-
+                    <p:panel header="Criar Novo Docente" style="display: block; text-align: center">
+                        <p:panel style="display: block; text-align: center">
+                            <p:panelGrid columns="4" id="pnGrCriarDocente" style="display: block; text-align: center">
+                                <h:outputLabel value="Nome" for="nome" />
+                                <h:inputText id="nome" value="#{docenteController.selected.nome}" title="nome" />
+                                <h:outputLabel value="Matrícula" for="matricula" />
+                                <h:inputText id="matricula" value="#{docenteController.selected.matricula}" title="matricula" />
+                                <h:outputLabel value="Centro" for="centro"  />
+                                <h:selectOneMenu id="centro" value="#{docenteController.selected.centro}" title="centro" required="true" requiredMessage="Selecione um Centro para este Docente"  >
+                                    <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
+                                </h:selectOneMenu>
+                                <h:outputLabel value="email" for="email"  />
+                                <h:inputText id="email" value="#{docenteController.selected.email}" title="email" />
+                            </p:panelGrid>
                         </p:panel>
 
+                        <p:panel style="display: block; text-align: center">
+                            <p:commandLink action="#{docenteController.create()}"   update="msgs,db,pnGrCriarDocente"  > 
+                                <p:commandButton value="Salvar" id="linkSalvar" style="width: 180px"/>
+                            </p:commandLink>
+                        </p:panel>
                     </p:panel>
 
                 </p:layoutUnit>  

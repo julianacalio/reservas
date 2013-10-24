@@ -45,6 +45,8 @@ public abstract class AbstractFacade<T> {
 
     }
 
+    
+    
     public void remove(T entity) {
         Session session = getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();

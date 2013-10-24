@@ -4,6 +4,7 @@ import facade.DocenteFacade;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -13,11 +14,13 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import model.Docente;
+import model.Sala;
+import outros.DocenteDataModel;
+import outros.SalaDataModel;
 
 /**
  *
- * @author
- * charles
+ * @author charles
  */
 @Named(value = "docenteController")
 @SessionScoped
@@ -29,9 +32,22 @@ public class DocenteController implements Serializable {
     private int selectedItemIndex;
     @EJB
     private facade.DocenteFacade ejbFacade;
+    private DocenteDataModel docenteDataModel;
 
     public DocenteController() {
         docente = new Docente();
+    }
+
+    public DocenteDataModel getDocenteDataModel() {
+        if (docenteDataModel == null) {
+            List<Docente> docentes = ejbFacade.findAll();
+            docenteDataModel = new DocenteDataModel(docentes);
+        }
+        return docenteDataModel;
+    }
+
+    public void setDocenteDataModel(DocenteDataModel docenteDataModel) {
+        this.docenteDataModel = docenteDataModel;
     }
 
     public String prepareView() {
@@ -42,14 +58,16 @@ public class DocenteController implements Serializable {
     }
 
     public String prepareEdit() {
-        docente = (Docente) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        docente = (Docente) docenteDataModel.getRowData();
+        //docente = (Docente) getItems().getRowData();
+        // selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
 
     public String destroy() {
-        docente = (Docente) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        docente = (Docente) docenteDataModel.getRowData();
+        // docente = (Docente) getItems().getRowData();
+        //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
         recreateModel();
@@ -58,6 +76,7 @@ public class DocenteController implements Serializable {
 
     private void recreateModel() {
         items = null;
+        docenteDataModel = null;
     }
 
     private void performDestroy() {
@@ -67,6 +86,7 @@ public class DocenteController implements Serializable {
             JsfUtil.addSuccessMessage("Docente deletado");
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Ocorreu um erro de persistência");
+
         }
     }
 
@@ -77,7 +97,7 @@ public class DocenteController implements Serializable {
         }
         return docente;
     }
-    
+
     private DocenteFacade getFacade() {
         return ejbFacade;
     }
@@ -91,11 +111,11 @@ public class DocenteController implements Serializable {
     public String create() {
 
         try {
-           // Docente docente2 = new Docente();
-           // docente2.setNome("TesteDocente");
-           // ejbFacade.save(docente2);
-           getFacade().save(docente);
-           docente = null; // iniciala a variavel para limpar os dados dos componentes
+            // Docente docente2 = new Docente();
+            // docente2.setNome("TesteDocente");
+            // ejbFacade.save(docente2);
+            getFacade().save(docente);
+            docente = null; // iniciala a variavel para limpar os dados dos componentes
             //ejbFacade.merge(docente);
             JsfUtil.addSuccessMessage("Docente Criado");
             //return prepareCreate();
@@ -116,7 +136,8 @@ public class DocenteController implements Serializable {
         try {
             getFacade().edit(docente);
             JsfUtil.addSuccessMessage("Docente Atualizado");
-            return "View";
+            //return "View";
+            return "Edit";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Ocorreu um erro de persistência");
             return null;
@@ -187,6 +208,7 @@ public class DocenteController implements Serializable {
 
     private void recreatePagination() {
         pagination = null;
+
     }
 
     public String next() {
