@@ -61,7 +61,7 @@
                     <p:layoutUnit position="center">  
 
                         <p:panel header="Editar Dados do Docente" style=" text-align: center">
-                            <p:panelGrid columns="2" id="pnGrCriarDocente" style="text-align: left"  >
+                            <h:panelGrid columns="2" id="pnGrCriarDocente" style="text-align: left"  >
                                 <h:outputLabel value="Nome" for="nome" />
                                 <h:inputText id="nome" value="#{docenteController.selected.nome}" title="nome" />
                                 <h:outputLabel value="Matrícula" for="matricula" />
@@ -72,7 +72,7 @@
                                 </h:selectOneMenu>
                                 <h:outputLabel value="email" for="email"  />
                                 <h:inputText id="email" value="#{docenteController.selected.email}" title="email" />
-                            </p:panelGrid>
+                            </h:panelGrid>
                         </p:panel>
 
                         <p:panel style="display: block; text-align: center">

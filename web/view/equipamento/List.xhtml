@@ -119,7 +119,7 @@
 
                     <p:panel header="Criar Novo Docente" style="display: block; text-align: center ">
                         <p:panel >
-                            <p:panelGrid columns="6" id="pnGrCriarEquipamento" style="display: block; text-align: left">
+                            <h:panelGrid columns="6" id="pnGrCriarEquipamento" style="display: block; text-align: left">
 
                                 <h:outputLabel value="Patrimonio" for="patrimonio"  />
                                 <h:inputText id="patrimonio" value="#{equipamentoController.selected.patrimonio}" title="tamanho" />
@@ -129,7 +129,7 @@
                                 <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro" >
                                     <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
                                 </h:selectOneMenu>
-                            </p:panelGrid>
+                            </h:panelGrid>
 
                             <p:panel>
                                 <p:commandLink action="#{equipamentoController.create()}"   update="msgs,db,pnGrCriarEquipamento"  > 

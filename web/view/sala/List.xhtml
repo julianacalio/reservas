@@ -114,7 +114,7 @@
                     </p:panel>
                     <p:panel header="Criar Nova Sala">
 
-                        <p:panelGrid columns="6" id="pnGrCriarSala">
+                        <h:panelGrid columns="6" id="pnGrCriarSala">
                           
                             <h:outputLabel value="Tamanho" for="tamanho_m2" />
                             <h:inputText id="tamanho_m2" value="#{salaController.selected.tamanho_m2}" title="tamanho" />
@@ -124,7 +124,7 @@
                             <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro"  >
                                 <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
                             </h:selectOneMenu>
-                        </p:panelGrid>
+                        </h:panelGrid>
 
                         <p:panel>
 
