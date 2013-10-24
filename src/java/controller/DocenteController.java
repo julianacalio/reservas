@@ -128,9 +128,14 @@ public class DocenteController implements Serializable {
 
     public String prepareList() {
         recreateModel();
+        recreatDocente();
         return "List";
     }
 
+    public void recreatDocente(){
+        docente = null;
+    }
+    
     public String update() {
 
         try {

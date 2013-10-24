@@ -24,35 +24,35 @@
                         <p:messages id="msgs" showDetail="true"/>   
                     </p:layoutUnit>  
 
-                      <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop">  
-                    <p:commandLink id="linkListSala" action="/view/sala/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de Salas" />  
-                    </p:commandLink> 
-                    <br/>
-                    <p:commandLink id="linkListCentro" action="/view/centro/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de Centros" />  
-                    </p:commandLink> 
-                    <br/>
-                    <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de Equipamentos" />  
-                    </p:commandLink>
-                    <br/>
-                    <p:commandLink id="linkListTA" action="/view/TA/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de TAs" />  
-                    </p:commandLink>
-                    <br/>
-                    <p:commandLink id="linkListOperador" action="/view/operador/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de Operadores" />  
-                    </p:commandLink>
-                    <br/>
-                    <p:commandLink id="linkListReserva" action="/view/reserva/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de Reservas" />  
-                    </p:commandLink>
-                    <br/>
-                    <p:panel >
-                        <h:link outcome="/index" value="index" style="margin-right:50px;margin-left: 50px" />
-                    </p:panel>
-                </p:layoutUnit>    
+                    <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop">  
+                        <p:commandLink id="linkListSala" action="/view/sala/List" style="margin-right:20px;">  
+                            <h:outputText value="Lista de Salas" />  
+                        </p:commandLink> 
+                        <br/>
+                        <p:commandLink id="linkListCentro" action="/view/centro/List" style="margin-right:20px;">  
+                            <h:outputText value="Lista de Centros" />  
+                        </p:commandLink> 
+                        <br/>
+                        <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" style="margin-right:20px;">  
+                            <h:outputText value="Lista de Equipamentos" />  
+                        </p:commandLink>
+                        <br/>
+                        <p:commandLink id="linkListTA" action="/view/TA/List" style="margin-right:20px;">  
+                            <h:outputText value="Lista de TAs" />  
+                        </p:commandLink>
+                        <br/>
+                        <p:commandLink id="linkListOperador" action="/view/operador/List" style="margin-right:20px;">  
+                            <h:outputText value="Lista de Operadores" />  
+                        </p:commandLink>
+                        <br/>
+                        <p:commandLink id="linkListReserva" action="/view/reserva/List" style="margin-right:20px;">  
+                            <h:outputText value="Lista de Reservas" />  
+                        </p:commandLink>
+                        <br/>
+                        <p:panel >
+                            <h:link outcome="/index" value="index" style="margin-right:50px;margin-left: 50px" />
+                        </p:panel>
+                    </p:layoutUnit>    
 
                     <p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true" effect="drop">  
 
@@ -79,24 +79,23 @@
                             <p:commandLink action="#{docenteController.update()}" value="Atualizar Docente" update="msgs">
                                 <p:commandButton value="Salvar" id="linkUpdate" style="width: 180px"/>
                             </p:commandLink>
-                            
+
+                        </p:panel>
+                     
+                        
+                        <!--                        <h:link outcome="View" value="Visualizar"/>-->
+                 
+                        <p:panel style="display: block; text-align: center">
+                            <p:commandLink action="#{docenteController.prepareList()}" value="Mostrar todos docentes" immediate="true" update="msgs"/>
                         </p:panel>
                         <br/>
                         <br/>
-<!--                        <h:link outcome="View" value="Visualizar"/>-->
-                        <br/>
-                        <p:commandLink action="#{docenteController.prepareList()}" value="Mostrar todos docentes" immediate="true" update="msgs"/>
-                        <br/>
-                        <br/>
-<!--                        <h:link outcome="/index" value="index"/>-->
+                        <!--                        <h:link outcome="/index" value="index"/>-->
 
                     </p:layoutUnit>  
 
                 </p:layout>  
-                <!--                <h:panelGroup id="messagePanel" layout="block">
-                                                            <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                        
-                                    </h:panelGroup>-->
+                
 
             </h:form>
 

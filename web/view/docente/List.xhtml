@@ -26,9 +26,7 @@
                     <!--                    <h:link outcome="/index" value="index" style="margin-right:50px;margin-left: 50px" />-->
                 </p:layoutUnit>  
 
-                <p:layoutUnit position="south" style="text-align:center" size="100"  resizable="true" closable="true" collapsible="true">  
-                    <p:messages id="msgs" showDetail="true"/>   
-                </p:layoutUnit>  
+               
 
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop">  
                     <p:commandLink id="linkListSala" action="/view/sala/List" style="margin-right:20px;">  
@@ -69,7 +67,7 @@
                     <p:panel >
                         <p:dataTable id="db" var="item"  value="#{docenteController.docenteDataModel}" selectionMode="single"  paginator="true" rows="10"  
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-                                     rowsPerPageTemplate="5,10,15">  
+                                     rowsPerPageTemplate="5,10,15" style="text-align: center">  
                             <f:facet name="header">  
                                 Lista de Docentes  
                             </f:facet>   >
@@ -126,29 +124,33 @@
                         <br/>
                         <br/>
                     </p:panel>
-                    <p:panel header="Criar Novo Docente" style="display: block; text-align: center">
-                        <p:panel style="display: block; text-align: center">
-                            <p:panelGrid columns="4" id="pnGrCriarDocente" style="display: block; text-align: center">
+                    <p:panel header="Criar Novo Docente" style="display: block; text-align: center ">
+                        <p:panel footer="">
+                            <h:panelGrid columns="5" id="pnGrCriarDocente" style="display: block; text-align: left">
                                 <h:outputLabel value="Nome" for="nome" />
                                 <h:inputText id="nome" value="#{docenteController.selected.nome}" title="nome" />
                                 <h:outputLabel value="Matrícula" for="matricula" />
                                 <h:inputText id="matricula" value="#{docenteController.selected.matricula}" title="matricula" />
+                                <br/>
                                 <h:outputLabel value="Centro" for="centro"  />
                                 <h:selectOneMenu id="centro" value="#{docenteController.selected.centro}" title="centro" required="true" requiredMessage="Selecione um Centro para este Docente"  >
                                     <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
                                 </h:selectOneMenu>
                                 <h:outputLabel value="email" for="email"  />
                                 <h:inputText id="email" value="#{docenteController.selected.email}" title="email" />
-                            </p:panelGrid>
+                                <p:commandLink action="#{docenteController.create()}"   update="msgs,db,pnGrCriarDocente"  > 
+                                    <p:commandButton value="Salvar" id="linkSalvar" style="width: 180px;margin-left: 30px;margin-bottom: 5px"/>
+                                </p:commandLink>
+                            </h:panelGrid>
                         </p:panel>
 
-                        <p:panel style="display: block; text-align: center">
-                            <p:commandLink action="#{docenteController.create()}"   update="msgs,db,pnGrCriarDocente"  > 
-                                <p:commandButton value="Salvar" id="linkSalvar" style="width: 180px"/>
-                            </p:commandLink>
-                        </p:panel>
+                       
                     </p:panel>
 
+                </p:layoutUnit>  
+                
+                 <p:layoutUnit position="south" style="text-align:center" size="100"  resizable="true" closable="true" collapsible="true">  
+                    <p:messages id="msgs" showDetail="true"/>   
                 </p:layoutUnit>  
 
             </p:layout>  

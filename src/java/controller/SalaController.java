@@ -5,6 +5,7 @@ import model.Sala;
 
 
 import java.io.Serializable;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -15,6 +16,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import outros.SalaDataModel;
 
 @Named(value = "salaController")
 @SessionScoped
@@ -27,10 +29,24 @@ public class SalaController implements Serializable {
     
     @EJB
     private facade.SalaFacade ejbFacade;
+    private SalaDataModel salaDataModel;
     
     
     public SalaController() {
         current = new Sala();
+    }
+    
+    
+    public SalaDataModel getSalaDataModel() {
+        if (salaDataModel == null) {
+            List<Sala> salas = getFacade().findAll();
+            salaDataModel = new SalaDataModel(salas);
+        }
+        return salaDataModel;
+    }
+
+    public void setSalaDataModel(SalaDataModel salaDaraModel) {
+        this.salaDataModel = salaDaraModel;
     }
 
     public Sala getSelected() {

@@ -9,15 +9,21 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
+        
+        <h:outputStylesheet library="css" name="style.css"  />
+        
         <h:form id="form1">
             <p:layout fullPage="true">  
 
-                <p:layoutUnit position="north" style="text-align:center" size="100"  header=" UFABC - CMCC - Centro de Matemática Computação e Cognição" resizable="true" closable="true" collapsible="true">  
-                    <p:messages id="msgs" showDetail="true"/> 
+                <p:layoutUnit position="north" style="text-align:center" size="100"   resizable="true" closable="true" collapsible="true">  
+                     <h:graphicImage value="resources/images/cmcc.png" >
+                                       <!--<h:link outcome="/index" value="Gerenciar Recursos" onclick="#{calendarioController.inicializarVariaveis()}"/>-->
+                    </h:graphicImage>
+                    
                 </p:layoutUnit>  
 
-                <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">  
-                    <h:outputText value="South unit content." />  
+                <p:layoutUnit position="south" size="100"  resizable="true" closable="true" collapsible="true">  
+                  <p:messages id="msgs" showDetail="true"/>   
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop">  
@@ -56,17 +62,19 @@
 
                 <p:layoutUnit position="center">  
 
+                    <p:panel >
+                        <p:dataTable id="db" var="item"  value="#{equipamentoController.equipamentoDataModel}" selectionMode="single"  paginator="true" rows="10"  
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                     rowsPerPageTemplate="5,10,15" style="text-align: center">  
 
-                    <h:outputText escape="false" value="Lista Vazia" rendered="#{equipamentoController.items.rowCount == 0}"/>
-                    <p:panel rendered="#{equipamentoController.items.rowCount > 0}">
-                        <h:outputText value="#{equipamentoController.pagination.pageFirstItem + 1}..#{equipamentoController.pagination.pageLastItem + 1}/#{equipamentoController.pagination.itemsCount}"/>&nbsp;
-                        <h:commandLink action="#{equipamentoController.previous()}" value="Anterior #{equipamentoController.pagination.pageSize}" rendered="#{equipamentoController.pagination.hasPreviousPage}"/>&nbsp;
-                        <h:commandLink action="#{equipamentoController.next()}" value="Proximo #{equipamentoController.pagination.pageSize}" rendered="#{equipamentoController.pagination.hasNextPage}"/>&nbsp;
-                        <p:dataTable id="db" var="item"  value="#{equipamentoController.items}"   >
-                            <p:column>
+                            <f:facet name="header">  
+                                Lista de Equipamentos  
+                            </f:facet>   >
+
+                            <p:column headerText="Patrimônio">
                                 <f:facet name="header">
                                     <h:outputText value="patrimonio"/>
-                                </f:facet>
+                                </f:facet> 
                                 <h:outputText value="#{item.patrimonio}"/>
                             </p:column>
 
@@ -94,12 +102,12 @@
 
                             <p:column headerText="Controle">
                                 <f:facet name="header">
-                                    <h:outputText value="Controle"/>
+                                    <h:outputText value=""/>
                                 </f:facet>
                                 <p:commandLink action="#{equipamentoController.prepareEdit}" value="Editar" />
                             </p:column>
 
-                            <p:column headerText="Controle">
+                            <p:column headerText="">
                                 <f:facet name="header">
                                     <h:outputText value="Controle"/>
                                 </f:facet>
@@ -109,28 +117,27 @@
                         </p:dataTable> 
                     </p:panel>
 
-                    <p:panel>
-                        <p:panelGrid columns="6" id="pnGrCriarEquipamento">
-                            <f:facet name="header">
-                                <h:outputText value="Criar Sala"/>
-                            </f:facet>
-                            <h:outputLabel value="Patrimonio" for="patrimonio" style="margin-right:36px;margin-left: 36px;" />
-                            <h:inputText id="patrimonio" value="#{equipamentoController.selected.patrimonio}" title="tamanho" />
-                            <h:outputLabel value="Descrição" for="descricao" style="margin-right:36px;margin-left: 36px;"/>
-                            <h:inputText id="descricao" value="#{equipamentoController.selected.descricao}" title="numero" />
-                            <h:outputLabel value="Centro" for="centro" style="margin-right:36px;margin-left: 36px;" />
-                            <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro"  style="margin-right:36px;margin-left: 36px;">
-                                <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
-                            </h:selectOneMenu>
-                        </p:panelGrid>
-                        
-                        <p:panel>
-                            <p:commandLink action="#{equipamentoController.create()}"   update="msgs,db,pnGrCriarEquipamento" style="margin-right:495px;margin-left: 495px;" > 
-                                <p:commandButton value="Salvar" id="ajax21" style="width: 180px"/>
-                            </p:commandLink>
+                    <p:panel header="Criar Novo Docente" style="display: block; text-align: center ">
+                        <p:panel >
+                            <p:panelGrid columns="6" id="pnGrCriarEquipamento" style="display: block; text-align: left">
+
+                                <h:outputLabel value="Patrimonio" for="patrimonio"  />
+                                <h:inputText id="patrimonio" value="#{equipamentoController.selected.patrimonio}" title="tamanho" />
+                                <h:outputLabel value="Descrição" for="descricao" />
+                                <h:inputText id="descricao" value="#{equipamentoController.selected.descricao}" title="numero" />
+                                <h:outputLabel value="Centro" for="centro" />
+                                <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro" >
+                                    <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
+                                </h:selectOneMenu>
+                            </p:panelGrid>
+
+                            <p:panel>
+                                <p:commandLink action="#{equipamentoController.create()}"   update="msgs,db,pnGrCriarEquipamento"  > 
+                                    <p:commandButton value="Salvar" id="ajax21" style="width: 180px"/>
+                                </p:commandLink>
+                            </p:panel>
                         </p:panel>
                     </p:panel>
-
                 </p:layoutUnit>  
 
             </p:layout>  

@@ -30,35 +30,41 @@
 
             <p:layoutUnit position="center">  
                 <h:form>  
-                    This fullPage layout consists of five different layoutUnits which are resizable and closable by default.  
-                    <h:outputText value="Edit Sala"></h:outputText>
 
+                    <!--                    <h:outputText value="Edit Sala"></h:outputText>-->
 
-                    <h:panelGroup id="messagePanel" layout="block">
-                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                    </h:panelGroup>
-                   
-                        <h:panelGrid columns="2">
-                            <h:outputLabel value="tamanho" for="tamanho_m2" />
-                            <h:inputText id="tamanho_m2" value="#{salaController.selected.tamanho_m2}" title="tamanho" />
-                            <h:outputLabel value="numero" for="numero" />
-                            <h:inputText id="numero" value="#{salaController.selected.numero}" title="numero" />
-                            <h:outputLabel value="centro" for="centro" />
-                            <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro" >
-                                <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
-                            </h:selectOneMenu>
-                        </h:panelGrid>
-                        <h:commandLink action="#{salaController.update}" value="update"/>
-                        <br />
-                        <br />
-                        <h:link outcome="View" value="view"/>
-                        <br />
-                        <h:commandLink action="#{salaController.prepareList}" value="List" immediate="true"/>
-                        <br />
-                        <br />
-                        <h:link outcome="/index" value="index" />
-                    
+                    <p:panel header="Editar Sala">
+                        <h:panelGroup id="messagePanel" layout="block">
+                            <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                        </h:panelGroup>
+                        <p:panel>
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="tamanho" for="tamanho_m2" />
+                                <h:inputText id="tamanho_m2" value="#{salaController.selected.tamanho_m2}" title="tamanho" />
+                                <h:outputLabel value="numero" for="numero" />
+                                <h:inputText id="numero" value="#{salaController.selected.numero}" title="numero" />
+                                <h:outputLabel value="centro" for="centro" />
+                                <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro" >
+                                    <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
+                                </h:selectOneMenu>
+                            </h:panelGrid>
+                        </p:panel>
+                        <p:panel>
+                            <h:commandLink action="#{salaController.update}" value="update"/>
+                        </p:panel>
+
+                        <p:panel>
+                            <h:commandLink action="#{salaController.prepareList}" value="List" immediate="true"/>
+                        </p:panel>
+                        <!--                    <h:link outcome="View" value="view"/>
+                                            <br />-->
+
+                        <!--                    <br />
+                                            <br />
+                                            <h:link outcome="/index" value="index" />-->
+                    </p:panel>
                 </h:form>  
+
             </p:layoutUnit>  
 
         </p:layout>  

@@ -10,17 +10,17 @@
     </h:head>
     <h:body>
         Hello from Facelets
-       <h:form>
+        <h:form>
+
+            <h:outputStylesheet library="css" name="style.css"  />
             <p:layout fullPage="true">  
 
-                <p:layoutUnit position="north" style="text-align:center" size="100"  header=" UFABC - CMCC - Centro de Matemática Computação e Cognição" resizable="true" closable="true" collapsible="true">  
-
-                    <p:messages id="msgs" showDetail="true"/> 
-
+                <p:layoutUnit position="north" style="text-align:center" size="100"  resizable="true" closable="true" collapsible="true">  
+                    <h:graphicImage value="resources/images/cmcc.png" />
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="south" size="100"  resizable="true" closable="true" collapsible="true"  >  
-                    <h:outputText value="South unit content."  />  
+                    <p:messages id="msgs" showDetail="true"/>  
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="east" size="200" header="Left" resizable="true" closable="true" collapsible="true">  
@@ -58,13 +58,15 @@
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="center">  
-            
-                    <h:outputText id="txtNumeroSalas" escape="false" value="Lista Vazia" rendered="#{salaController.items.rowCount == 0}"/>
-                    <p:panel id="painel" rendered="#{salaController.items.rowCount > 0}">
-                        <h:outputText value="#{salaController.pagination.pageFirstItem + 1}..#{salaController.pagination.pageLastItem + 1}/#{salaController.pagination.itemsCount}"/>&nbsp;
-                        <h:commandLink action="#{salaController.previous}" value="Anterior #{salaController.pagination.pageSize}" rendered="#{salaController.pagination.hasPreviousPage}"/>&nbsp;
-                        <h:commandLink action="#{salaController.next}" value="Proximo #{salaController.pagination.pageSize}" rendered="#{salaController.pagination.hasNextPage}"/>&nbsp;
-                        <p:dataTable id="db" var="item"  value="#{salaController.items}"   >
+
+
+                    <p:panel id="painel" >
+                        <p:dataTable id="db" var="item"  value="#{salaController.salaDataModel}" selectionMode="single"  paginator="true" rows="10"  
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                     rowsPerPageTemplate="5,10,15" style="text-align: center"> 
+                            <f:facet name="header">  
+                                Lista de Salas  
+                            </f:facet>   >
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="id"/>
@@ -94,48 +96,46 @@
                             </p:column>  
 
 
-                            <p:column headerText="Controle">
+                            <p:column headerText="">
                                 <f:facet name="header">
-                                    <h:outputText value="Controle"/>
+                                    <h:outputText value=""/>
                                 </f:facet>
                                 <p:commandLink action="#{salaController.prepareEdit}" value="Editar" />
                             </p:column>
 
-                            <p:column headerText="Controle">
+                            <p:column headerText="">
                                 <f:facet name="header">
-                                    <h:outputText value="Controle"/>
+                                    <h:outputText value=""/>
                                 </f:facet>
                                 <p:commandLink id ="cmlDestroy" action="#{salaController.destroy}" value="Deletar" immediate="true" update="db"/>
                             </p:column>
 
                         </p:dataTable> 
                     </p:panel>
-                    <p:panel>
+                    <p:panel header="Criar Nova Sala">
 
                         <p:panelGrid columns="6" id="pnGrCriarSala">
-                            <f:facet name="header">
-                                <h:outputText value="Criar Sala"/>
-                            </f:facet>
-                            <h:outputLabel value="Tamanho" for="tamanho_m2" style="margin-right:36px;margin-left: 36px;" />
+                          
+                            <h:outputLabel value="Tamanho" for="tamanho_m2" />
                             <h:inputText id="tamanho_m2" value="#{salaController.selected.tamanho_m2}" title="tamanho" />
-                            <h:outputLabel value="Número" for="numero" style="margin-right:36px;margin-left: 36px;"/>
+                            <h:outputLabel value="Número" for="numero" />
                             <h:inputText id="numero" value="#{salaController.selected.numero}" title="numero" />
-                            <h:outputLabel value="Centro" for="centro" style="margin-right:36px;margin-left: 36px;" />
-                            <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro"  style="margin-right:36px;margin-left: 36px;">
+                            <h:outputLabel value="Centro" for="centro" />
+                            <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro"  >
                                 <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
                             </h:selectOneMenu>
                         </p:panelGrid>
 
                         <p:panel>
-                           
-                            <p:commandLink action="#{salaController.create()}"   update="msgs,painel,db,txtNumeroSalas,pnGrCriarSala" style="margin-right:495px;margin-left: 495px;" > 
+
+                            <p:commandLink action="#{salaController.create()}"   update="msgs,painel,db,pnGrCriarSala" style="margin-right:495px;margin-left: 495px;" > 
                                 <p:commandButton value="Salvar" id="ajax21" style="width: 180px" update="db"/>
                             </p:commandLink>
 
                         </p:panel>
 
                     </p:panel>
-                
+
                 </p:layoutUnit>  
 
             </p:layout>  

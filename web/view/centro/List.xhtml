@@ -13,9 +13,9 @@
             <p:layout fullPage="true">  
 
                 <p:layoutUnit position="north" style="text-align:center" size="100"  header=" UFABC - CMCC - Centro de Matemática Computação e Cognição" resizable="true" closable="true" collapsible="true">  
-                    
-                     <p:messages id="msgs" showDetail="true"/> 
-                     
+
+                    <p:messages id="msgs" showDetail="true"/> 
+
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">  
@@ -57,63 +57,60 @@
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="center">  
-                    
-                        <h:outputText escape="false" value="Lista Vazia" rendered="#{centroController.items.rowCount == 0}"/>
-                        <p:panel rendered="#{centroController.items.rowCount > 0}">
-                            <h:outputText value="#{centroController.pagination.pageFirstItem + 1}..#{centroController.pagination.pageLastItem + 1}/#{centroController.pagination.itemsCount}"/>&nbsp;
-                            <h:commandLink action="#{centroController.previous}" value="Anterior #{centroController.pagination.pageSize}" rendered="#{centroController.pagination.hasPreviousPage}"/>&nbsp;
-                            <h:commandLink action="#{centroController.next}" value="Proximo #{centroController.pagination.pageSize}" rendered="#{centroController.pagination.hasNextPage}"/>&nbsp;
-                            <p:dataTable id="db" var="item"  value="#{centroController.items}"   >
-                                <p:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="id"/>
-                                    </f:facet>
-                                    <h:outputText value="#{item.id}"/>
-                                </p:column>
 
-                                <p:column headerText="nome">  
-                                    <f:facet name="header">
-                                        <h:outputText value="Nome"/>
-                                    </f:facet>
-                                    <h:outputText value="#{item.nome}"/>
-                                </p:column>  
-
-                                <p:column headerText="Controle">
-                                    <f:facet name="header">
-                                        <h:outputText value="Controle"/>
-                                    </f:facet>
-                                    <p:commandLink action="#{centroController.prepareEdit}" value="Editar" />
-                                </p:column>
-
-                                <p:column headerText="Controle">
-                                    <f:facet name="header">
-                                        <h:outputText value="Controle"/>
-                                    </f:facet>
-                                    <p:commandLink action="#{centroController.destroy}" value="Deletar" immediate="true" update="db"/>
-                                </p:column>
-
-                            </p:dataTable> 
-                        </p:panel>
-
-                        <p:panel id="panelCentro">
-
-                            <p:panelGrid columns="2" id="pnGrCriarCentro">
+                    <h:outputText escape="false" value="Lista Vazia" rendered="#{centroController.items.rowCount == 0}"/>
+                    <p:panel rendered="#{centroController.items.rowCount > 0}">
+                        <h:outputText value="#{centroController.pagination.pageFirstItem + 1}..#{centroController.pagination.pageLastItem + 1}/#{centroController.pagination.itemsCount}"/>&nbsp;
+                        <h:commandLink action="#{centroController.previous}" value="Anterior #{centroController.pagination.pageSize}" rendered="#{centroController.pagination.hasPreviousPage}"/>&nbsp;
+                        <h:commandLink action="#{centroController.next}" value="Proximo #{centroController.pagination.pageSize}" rendered="#{centroController.pagination.hasNextPage}"/>&nbsp;
+                        <p:dataTable id="db" var="item"  value="#{centroController.items}"   >
+                            <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="Criar Sala"/>
+                                    <h:outputText value="id"/>
                                 </f:facet>
-                                <h:outputLabel value="Nome" for="tamanho_m2" style="margin-right:36px;margin-left: 36px;" />
+                                <h:outputText value="#{item.id}"/>
+                            </p:column>
+
+                            <p:column headerText="nome">  
+                                <f:facet name="header">
+                                    <h:outputText value="Nome"/>
+                                </f:facet>
+                                <h:outputText value="#{item.nome}"/>
+                            </p:column>  
+
+                            <p:column headerText="Controle">
+                                <f:facet name="header">
+                                    <h:outputText value="Controle"/>
+                                </f:facet>
+                                <p:commandLink action="#{centroController.prepareEdit}" value="Editar" />
+                            </p:column>
+
+                            <p:column headerText="Controle">
+                                <f:facet name="header">
+                                    <h:outputText value="Controle"/>
+                                </f:facet>
+                                <p:commandLink action="#{centroController.destroy}" value="Deletar" immediate="true" update="db"/>
+                            </p:column>
+
+                        </p:dataTable> 
+                    </p:panel>
+
+                    <p:panel id="panelCentro" header="Criar Novo Centro" style="display: block; text-align: center">
+                        <p:panel style="text-align: left">
+                            <p:panelGrid columns="2" id="pnGrCriarCentro">
+                                <h:outputLabel value="Nome" for="tamanho_m2"  />
                                 <h:inputText id="tamanho_m2" value="#{centroController.selected.nome}" title="tamanho" required="true" requiredMessage="Por favor digite um nome para o Centro"/>
                             </p:panelGrid>
-                            
-                            <p:panel>
-                                <p:commandLink action="#{centroController.create()}"   update="msgs,db,pnGrCriarCentro" style="margin-right:495px;margin-left: 495px;" > 
-                                    <p:commandButton value="Salvar" id="ajax21" style="width: 180px"/>
-                                </p:commandLink>
-                            </p:panel>
-                            
+                        </p:panel>
+                        <p:panel>
+                            <p:commandLink action="#{centroController.create()}"   update="msgs,db,pnGrCriarCentro"  > 
+                                <p:commandButton value="Salvar" id="linkSalvarCentro" style="width: 180px"/>
+                            </p:commandLink>
                         </p:panel>
 
-                    
+                    </p:panel>
+
+
                 </p:layoutUnit>  
 
             </p:layout>  
