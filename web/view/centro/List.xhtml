@@ -9,6 +9,8 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
+
+        <h:outputStylesheet library="css" name="style.css"  />
         <h:form >
             <p:layout fullPage="true">  
 
@@ -22,7 +24,7 @@
                     <h:outputText value="South unit content." />  
                 </p:layoutUnit>  
 
-                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop">  
+                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
                     <p:commandLink id="linkDocente" action="/view/docente/List" style="margin-right:20px;">  
                         <h:outputText value="Lista de Docentes" />  
                     </p:commandLink> 
@@ -46,7 +48,7 @@
 
                 <p:layoutUnit position="center">  
 
-                    
+
                     <p:panel >
                         <p:dataTable id="db" var="item"  value="#{centroController.centroDataModel}" selectionMode="single"  paginator="true" rows="10"  
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
@@ -55,7 +57,7 @@
                             <f:facet name="header">  
                                 Lista de Centros  
                             </f:facet>   >
-                            
+
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="id"/>
@@ -70,16 +72,16 @@
                                 <h:outputText value="#{item.nome}"/>
                             </p:column>  
 
-                            <p:column headerText="Controle">
+                            <p:column headerText="">
                                 <f:facet name="header">
-                                    <h:outputText value="Controle"/>
+                                    <h:outputText value=""/>
                                 </f:facet>
                                 <p:commandLink action="#{centroController.prepareEdit}" value="Editar" />
                             </p:column>
 
-                            <p:column headerText="Controle">
+                            <p:column headerText="">
                                 <f:facet name="header">
-                                    <h:outputText value="Controle"/>
+                                    <h:outputText value=""/>
                                 </f:facet>
                                 <p:commandLink action="#{centroController.destroy}" value="Deletar" immediate="true" update="db"/>
                             </p:column>
@@ -87,16 +89,16 @@
                         </p:dataTable> 
                     </p:panel>
 
-                    <p:panel id="panelCentro" header="Criar Novo Centro" style="display: block; text-align: center">
-                        <p:panel style="text-align: left">
-                            <p:panelGrid columns="2" id="pnGrCriarCentro">
+                    <p:panel id="panelCentro" header="Criar Novo Centro" style="display: block; text-align: left" >
+                        <p:panel footer="">
+                            <h:panelGrid columns="2" id="pnGrCriarCentro">
                                 <h:outputLabel value="Nome" for="tamanho_m2"  />
                                 <h:inputText id="tamanho_m2" value="#{centroController.selected.nome}" title="tamanho" required="true" requiredMessage="Por favor digite um nome para o Centro"/>
-                            </p:panelGrid>
-                        </p:panel>
-                        <p:panel>
-                            <p:commandLink action="#{centroController.create()}"   update="msgs,db,pnGrCriarCentro"  > 
-                                <p:commandButton value="Salvar" id="linkSalvarCentro" style="width: 180px"/>
+                            </h:panelGrid>
+
+
+                            <p:commandLink action="#{centroController.create()}"  value="Salvar" update="msgs,db,pnGrCriarCentro"  > 
+                                <!--                                <p:commandButton value="Salvar" id="linkSalvarCentro" style="width: 180px"/>-->
                             </p:commandLink>
                         </p:panel>
 

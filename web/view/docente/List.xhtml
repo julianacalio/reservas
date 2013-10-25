@@ -22,7 +22,7 @@
                 </p:layoutUnit>  
 
                 
-                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop">  
+                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
                     <p:commandLink id="linkListSala" action="/view/sala/List" style="margin-right:20px;">  
                         <h:outputText value="Lista de Salas" />  
                     </p:commandLink> 
@@ -35,15 +35,15 @@
                         <h:outputText value="Lista de Equipamentos" />  
                     </p:commandLink>
                     <br/>
-                    <p:panel >
-                        <h:link outcome="/index" value="index" style="margin-right:50px;margin-left: 50px" />
+                    <p:panel style="text-align: center">
+                        <h:link outcome="/index" value="index" onclick="#{docenteController.recreatDocente()}" />
                     </p:panel>
                 </p:layoutUnit>   
 
                 
-                <p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true" effect="drop">  
+<!--                <p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true" effect="drop">  
                     <h:outputText value="Right unit content." />  
-                </p:layoutUnit>  
+                </p:layoutUnit>  -->
 
                 
                 <p:layoutUnit position="center">  
@@ -109,7 +109,7 @@
                         <br/>
                     </p:panel>
                     <p:panel header="Criar Novo Docente" >
-                        <p:panel footer="" style="display: block; text-align: center ">
+                        <p:panel footer="" style="display: block; text-align: left ">
                             <h:panelGrid columns="5" id="pnGrCriarDocente" style="display: block; text-align: left">
                                 <h:outputLabel value="Nome" for="nome" />
                                 <h:inputText id="nome" value="#{docenteController.selected.nome}" title="nome" />
@@ -125,8 +125,8 @@
 
                             </h:panelGrid>
                             <p:separator/>
-                            <p:commandLink action="#{docenteController.create()}"   update="msgs,db,pnGrCriarDocente"  > 
-                                <p:commandButton value="Salvar" id="linkSalvar" style="width: 180px;margin-left: 30px;margin-bottom: 5px"/>
+                            <p:commandLink action="#{docenteController.create()}" value="Salvar"  update="msgs,db,pnGrCriarDocente"  > 
+<!--                                <p:commandButton value="Salvar" id="linkSalvar" style="width: 180px;margin-left: 30px;margin-bottom: 5px"/>-->
                             </p:commandLink>
                         </p:panel>
                     </p:panel>

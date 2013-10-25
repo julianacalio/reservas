@@ -5,99 +5,77 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+
     </h:head>
     <h:body>
-        <h:form>  
-            <h:form>
-                <p:layout fullPage="true">  
 
-                    <h:outputStylesheet library="css" name="style.css"  />
+        <h:form>
 
-                    <p:layoutUnit style="text-align:center" position="north" size="100"  resizable="true" closable="true" collapsible="true" >  
-                        <!--                    <div style="text-align: center " ><h:outputText value="Gerenciamento de Recursos" style ="font-weight:bold"  /></div>-->
-                        <h:graphicImage value="resources/images/cmcc.png" />
+            <h:outputStylesheet library="css" name="style.css"  />
+            <p:layout fullPage="true">  
 
-                    </p:layoutUnit>  
+                <p:layoutUnit style="text-align:center" position="north" size="100"  resizable="true" closable="true" collapsible="true" >  
+                    <!--                    <div style="text-align: center " ><h:outputText value="Gerenciamento de Recursos" style ="font-weight:bold"  /></div>-->
+                    <h:graphicImage value="resources/images/cmcc.png" />
 
-                    <p:layoutUnit position="south" style="text-align:center" size="100"  resizable="true" closable="true" collapsible="true">  
-                        <p:messages id="msgs" showDetail="true"/>   
-                    </p:layoutUnit>  
+                </p:layoutUnit>  
 
-                    <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop">  
-                        <p:commandLink id="linkListSala" action="/view/sala/List" style="margin-right:20px;">  
-                            <h:outputText value="Lista de Salas" />  
-                        </p:commandLink> 
-                        <br/>
-                        <p:commandLink id="linkListCentro" action="/view/centro/List" style="margin-right:20px;">  
-                            <h:outputText value="Lista de Centros" />  
-                        </p:commandLink> 
-                        <br/>
-                        <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" style="margin-right:20px;">  
-                            <h:outputText value="Lista de Equipamentos" />  
-                        </p:commandLink>
-                        <br/>
-                        <p:commandLink id="linkListTA" action="/view/TA/List" style="margin-right:20px;">  
-                            <h:outputText value="Lista de TAs" />  
-                        </p:commandLink>
-                        <br/>
-                        <p:commandLink id="linkListOperador" action="/view/operador/List" style="margin-right:20px;">  
-                            <h:outputText value="Lista de Operadores" />  
-                        </p:commandLink>
-                        <br/>
-                        <p:commandLink id="linkListReserva" action="/view/reserva/List" style="margin-right:20px;">  
-                            <h:outputText value="Lista de Reservas" />  
-                        </p:commandLink>
-                        <br/>
-                        <p:panel >
-                            <h:link outcome="/index" value="index" style="margin-right:50px;margin-left: 50px" />
-                        </p:panel>
-                    </p:layoutUnit>    
+                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
+                    <p:commandLink id="linkListSala" action="/view/sala/List" >  
+                        <h:outputText value="Lista de Salas" />  
+                    </p:commandLink> 
+                    <br/>
+                    <p:commandLink id="linkListCentro" action="/view/centro/List" >  
+                        <h:outputText value="Lista de Centros" />  
+                    </p:commandLink> 
+                    <br/>
+                    <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" >  
+                        <h:outputText value="Lista de Equipamentos" />  
+                    </p:commandLink>
+                    <br/>
+                    <p:panel style="text-align: center">
+                        <h:link outcome="/index" value="index"   />
+                    </p:panel>
+                </p:layoutUnit>    
 
-                    <p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true" effect="drop">  
-
-                    </p:layoutUnit>  
-
-                    <p:layoutUnit position="center">  
-
-                        <p:panel header="Editar Dados do Docente" style=" text-align: center">
-                            <h:panelGrid columns="2" id="pnGrCriarDocente" style="text-align: left"  >
-                                <h:outputLabel value="Nome" for="nome" />
-                                <h:inputText id="nome" value="#{docenteController.selected.nome}" title="nome" />
-                                <h:outputLabel value="Matrícula" for="matricula" />
-                                <h:inputText id="matricula" value="#{docenteController.selected.matricula}" title="matricula"  />
-                                <h:outputLabel value="Centro" for="centro"  />
-                                <h:selectOneMenu id="centro" value="#{docenteController.selected.centro}" title="centro" required="true" requiredMessage="Selecione um Centro para este Docente"  >
-                                    <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
-                                </h:selectOneMenu>
-                                <h:outputLabel value="email" for="email"  />
-                                <h:inputText id="email" value="#{docenteController.selected.email}" title="email" />
-                            </h:panelGrid>
-                        </p:panel>
-
-                        <p:panel style="display: block; text-align: center">
-                            <p:commandLink action="#{docenteController.update()}" value="Atualizar Docente" update="msgs">
-                                <p:commandButton value="Salvar" id="linkUpdate" style="width: 180px"/>
-                            </p:commandLink>
-
-                        </p:panel>
-                     
-                        
-                        <!--                        <h:link outcome="View" value="Visualizar"/>-->
-                 
-                        <p:panel style="display: block; text-align: center">
-                            <p:commandLink action="#{docenteController.prepareList()}" value="Mostrar todos docentes" immediate="true" update="msgs"/>
-                        </p:panel>
-                        <br/>
-                        <br/>
-                        <!--                        <h:link outcome="/index" value="index"/>-->
-
-                    </p:layoutUnit>  
-
-                </p:layout>  
+                <!--                <p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true" effect="drop">  
                 
+                                </p:layoutUnit>  -->
 
-            </h:form>
+                <p:layoutUnit position="center">  
+
+                    <p:panel header="Editar Dados do Docente" style=" text-align: left">
+                        <h:panelGrid columns="2" id="pnGrCriarDocente" style="text-align: left"  >
+                            <h:outputLabel value="Nome" for="nome" />
+                            <h:inputText id="nome" value="#{docenteController.selected.nome}" title="nome" />
+                            <h:outputLabel value="Matrícula" for="matricula" />
+                            <h:inputText id="matricula" value="#{docenteController.selected.matricula}" title="matricula"  />
+                            <h:outputLabel value="Centro" for="centro"  />
+                            <h:selectOneMenu id="centro" value="#{docenteController.selected.centro}" title="centro" required="true" requiredMessage="Selecione um Centro para este Docente"  >
+                                <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
+                            </h:selectOneMenu>
+                            <h:outputLabel value="email" for="email"  />
+                            <h:inputText id="email" value="#{docenteController.selected.email}" title="email" />
+                        </h:panelGrid>
+
+                        <p:separator/>
+
+                        <p:commandLink action="#{docenteController.update()}" value="Atualizar Docente" update="msgs">
+                            <p:commandButton value="Salvar" id="linkUpdate" style="width: 180px"/>
+                        </p:commandLink>
+
+                        <p:separator/>
+
+                        <p:commandLink action="#{docenteController.prepareList()}" value="Mostrar todos docentes" immediate="true" update="msgs"/>
+                    </p:panel>
+
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="south" style="text-align:center" size="80"  resizable="true" closable="true" collapsible="true">  
+                    <p:messages id="msgs" showDetail="true"/>   
+                </p:layoutUnit>  
+
+            </p:layout>  
 
         </h:form>
     </h:body>

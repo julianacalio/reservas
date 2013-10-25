@@ -40,48 +40,39 @@
 
                 </p:layoutUnit> 
 
-                <p:layoutUnit position="center" style="display: block; text-align: center">  
+                <p:layoutUnit position="center" >  
+                    <p:panel style="display: block; text-align: center">
+                        <p:commandLink id="linkDocente" action= "/view/docente/List"   >  
+                            <p:commandButton value="Docente" id="btnDocente" style="width: 160px">
+                                <!--  <h:graphicImage value="resources/images/book2.png" />  -->
+                            </p:commandButton>
+                        </p:commandLink>
 
-<!--                    <p:panelGrid columns="3" style="display:block; text-align:center; margin: 0 auto" >-->
+                        <p:separator/>
 
-                        <p:panel>
-                            <p:commandLink id="linkDocente" action= "/view/docente/List"   >  
-                                <p:commandButton value="Docente" id="btnDocente" style="width: 160px">
-                                    <!--  <h:graphicImage value="resources/images/book2.png" />  -->
-                                </p:commandButton>
-                            </p:commandLink>
-                        </p:panel>
-<!--                        <p:panel>
-                            <p:commandLink id="linkTA" action= "/view/TA/List"    >  
-                                <p:commandButton value="TAs" id="btnTA" style="width: 160px"/>
-                            </p:commandLink>
-                        </p:panel>
-                        <p:panel>
-                            <p:commandLink id="linkOperador" action= "/view/operador/List"    >  
-                                <p:commandButton value="Operadores" id="btnOperador" style="width: 160px" />
-                            </p:commandLink> 
-                        </p:panel>-->
-                        <p:panel>
-                            <p:commandLink id="linkCentro" action= "/view/centro/List"   >  
-                                <p:commandButton value="Centros" id="btnCentro" style="width: 160px"/>
-                            </p:commandLink> 
-                        </p:panel>
-                        <p:panel>
-                            <p:commandLink id="linkSala" action= "/view/sala/List"   >  
-                                <p:commandButton value="Salas" id="btnSala" style="width: 160px"/>
-                            </p:commandLink> 
-                        </p:panel>
-                        <p:panel>
-                            <p:commandLink id="linkEquipamento" action= "/view/equipamento/List"   >  
-                                <p:commandButton value="Equipamentos" id="btnEquipamento" style="width: 160px"/>
-                            </p:commandLink> 
-                        </p:panel>
-<!--                    </p:panelGrid>  -->
-                    <p:panel style="display:block; text-align:center">
+                        <p:commandLink id="linkCentro" action= "/view/centro/List"   >  
+                            <p:commandButton value="Centros" id="btnCentro" style="width: 160px"/>
+                        </p:commandLink>
+
+                        <p:separator/>
+
+                        <p:commandLink id="linkSala" action= "/view/sala/List"   >  
+                            <p:commandButton value="Salas" id="btnSala" style="width: 160px"/>
+                        </p:commandLink> 
+
+                        <p:separator/>
+
+                        <p:commandLink id="linkEquipamento" action= "/view/equipamento/List"   >  
+                            <p:commandButton value="Equipamentos" id="btnEquipamento" style="width: 160px"/>
+                        </p:commandLink> 
+
+                        <p:separator/>
+
                         <p:commandLink id="linkCalendario" action="/Calendario"    >  
                             <p:commandButton value="Calendario" id="btnCalendario" style="width: 160px" /> 
                         </p:commandLink>
                     </p:panel>
+
                 </p:layoutUnit>  
 
             </p:layout>  

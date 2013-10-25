@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
 
@@ -10,35 +10,72 @@
     </h:head>
     <h:body>
         <h:outputText value="Editar Equipamento"></h:outputText>
-
-
-        <h:panelGroup id="messagePanel" layout="block">
-            <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-        </h:panelGroup>
         <h:form>
-            <h:panelGrid columns="2">
-                <h:outputLabel value="patrimonio" for="patrimonio" />
-                <h:inputText id="patrimonio" value="#{equipamentoController.selected.patrimonio}" title="patrimonio" />
-                <h:outputLabel value="#{bundle.EditEquipamentoLabel_descricao}" for="descricao" />
-                <h:inputText id="descricao" value="#{equipamentoController.selected.descricao}" title="descrcao" />
-                <h:outputLabel value="id" for="id" />
-                <h:inputText id="id" value="#{equipamentoController.selected.id}" title="id" />
-                <h:outputLabel value="centro" for="centro" />
-                <h:selectOneMenu id="centro" value="#{equipamentoController.selected.centro}" title="centro" >
-                    <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
-                </h:selectOneMenu>
-               
-            </h:panelGrid>
-            <h:commandLink action="#{equipamentoController.update}" value="update"/>
-            <br />
-            <br />
-            <h:link outcome="View" value="#{bundle.EditEquipamentoViewLink}"/>
-            <br />
-            <h:commandLink action="#{equipamentoController.prepareList}" value="mostrar todos os equipamentos" immediate="true"/>
-            <br />
-            <br />
-            <h:link outcome="/index" value="index" />
+            <p:layout fullPage="true"> 
+
+
+                <p:layoutUnit style="text-align:center" position="north" size="100"  resizable="true" closable="true" collapsible="true" >  
+                    <!--                    <div style="text-align: center " ><h:outputText value="Gerenciamento de Recursos" style ="font-weight:bold"  /></div>-->
+                    <h:graphicImage value="resources/images/cmcc.png" />
+
+                </p:layoutUnit> 
+
+
+
+                <p:layoutUnit position="west" size="200" header="Links Rápidos"  resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
+                    <p:commandLink id="linkListSala" action="/view/sala/List" >  
+                        <h:outputText value="Lista de Salas" />  
+                    </p:commandLink> 
+                    <br/>
+                    <p:commandLink id="linkListCentro" action="/view/centro/List" style="text-align: left" >  
+                        <h:outputText value="Lista de Centros" />  
+                    </p:commandLink> 
+                    <br/>
+                    <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" >  
+                        <h:outputText value="Lista de Equipamentos" />  
+                    </p:commandLink>
+                    <br/>
+                    
+                    <p:separator/>
+                    
+                        <h:link outcome="/index" value="Gerenciar Recursos"  style="text-align: center" />
+                        
+                    
+                </p:layoutUnit> 
+
+                <p:layoutUnit position="center"> 
+                    <p:panel header="Editar dados do equipamento" style="text-align: left">
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="patrimonio" for="patrimonio" />
+                            <h:inputText id="patrimonio" value="#{equipamentoController.selected.patrimonio}" title="patrimonio" />
+                            <h:outputLabel value="#{bundle.EditEquipamentoLabel_descricao}" for="descricao" />
+                            <h:inputText id="descricao" value="#{equipamentoController.selected.descricao}" title="descrcao" />
+                            <h:outputLabel value="id" for="id" />
+                            <h:inputText id="id" value="#{equipamentoController.selected.id}" title="id" />
+                            <h:outputLabel value="centro" for="centro" />
+                            <h:selectOneMenu id="centro" value="#{equipamentoController.selected.centro}" title="centro" >
+                                <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
+                            </h:selectOneMenu>
+                        </h:panelGrid>
+                        
+                        <p:separator/>
+                        
+                        <h:commandLink action="#{equipamentoController.update}" value="Atualizar Equipamento"/>
+                      
+                        <p:separator/>
+                        
+                        <h:commandLink action="#{equipamentoController.prepareList}" value="Mostrar todos os equipamentos" immediate="true"/>
+                    </p:panel>
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="south" style="text-align:center" size="80"  resizable="true" closable="true" collapsible="true">  
+                    <p:messages id="msgs" showDetail="true"/>   
+                </p:layoutUnit>  
+
+            </p:layout> 
+
         </h:form>
+
     </h:body>
 
 </html>

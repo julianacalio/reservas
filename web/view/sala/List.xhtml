@@ -25,7 +25,7 @@
                     <h:outputText value="east unit content." />  
                 </p:layoutUnit>  
 
-                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop">  
+                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
                     <p:commandLink id="ajax2" action="/view/docente/List" style="margin-right:20px;">  
                         <h:outputText value="Lista de Docentes" />  
                     </p:commandLink> 
@@ -99,7 +99,7 @@
                         </p:dataTable> 
                     </p:panel>
                     <p:panel header="Criar Nova Sala">
-                        <p:panel style="display: block;text-align: center" footer="">
+                        <p:panel style="display: block;text-align: left" footer="">
                             <h:panelGrid columns="6" id="pnGrCriarSala" >
                                 <h:outputLabel value="Tamanho" for="tamanho_m2" />
                                 <h:inputText id="tamanho_m2" value="#{salaController.selected.tamanho_m2}" title="tamanho" />
@@ -111,8 +111,8 @@
                                 </h:selectOneMenu>
                             </h:panelGrid>
                             <p:separator id="separator"/>
-                            <p:commandLink action="#{salaController.create()}"    update="msgs,db,pnGrCriarSala" > 
-                                <p:commandButton value="Salvar" id="linkSalvar" style="width: 180px" update="db"/>
+                            <p:commandLink action="#{salaController.create()}"  value="Salvar"  update="msgs,db,pnGrCriarSala" > 
+<!--                                <p:commandButton value="Salvar" id="linkSalvar" style="width: 180px" update="db"/>-->
                             </p:commandLink>
 
                         </p:panel>

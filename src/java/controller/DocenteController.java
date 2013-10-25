@@ -14,9 +14,7 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import model.Docente;
-import model.Sala;
 import outros.DocenteDataModel;
-import outros.SalaDataModel;
 
 /**
  *
@@ -26,21 +24,21 @@ import outros.SalaDataModel;
 @SessionScoped
 public class DocenteController implements Serializable {
 
-    Docente docente;
+    Docente current;
     private DataModel items = null;
     private PaginationHelper pagination;
     private int selectedItemIndex;
     @EJB
-    private facade.DocenteFacade ejbFacade;
+    private facade.DocenteFacade docenteFacade;
     private DocenteDataModel docenteDataModel;
 
     public DocenteController() {
-        docente = new Docente();
+        current = new Docente();
     }
 
     public DocenteDataModel getDocenteDataModel() {
         if (docenteDataModel == null) {
-            List<Docente> docentes = ejbFacade.findAll();
+            List<Docente> docentes = docenteFacade.findAll();
             docenteDataModel = new DocenteDataModel(docentes);
         }
         return docenteDataModel;
@@ -51,21 +49,21 @@ public class DocenteController implements Serializable {
     }
 
     public String prepareView() {
-        docente = (Docente) getItems().getRowData();
+        current = (Docente) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
 
         return "View";
     }
 
     public String prepareEdit() {
-        docente = (Docente) docenteDataModel.getRowData();
+        current = (Docente) docenteDataModel.getRowData();
         //docente = (Docente) getItems().getRowData();
         // selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
 
     public String destroy() {
-        docente = (Docente) docenteDataModel.getRowData();
+        current = (Docente) docenteDataModel.getRowData();
         // docente = (Docente) getItems().getRowData();
         //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
@@ -81,8 +79,8 @@ public class DocenteController implements Serializable {
 
     private void performDestroy() {
         try {
-            getFacade().remove(docente);
-            docente = null;
+            getFacade().remove(current);
+            current = null;
             JsfUtil.addSuccessMessage("Docente deletado");
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Ocorreu um erro de persistência");
@@ -91,19 +89,19 @@ public class DocenteController implements Serializable {
     }
 
     public Docente getSelected() {
-        if (docente == null) {
-            docente = new Docente();
+        if (current == null) {
+            current = new Docente();
             selectedItemIndex = -1;
         }
-        return docente;
+        return current;
     }
 
     private DocenteFacade getFacade() {
-        return ejbFacade;
+        return docenteFacade;
     }
 
     public String prepareCreate() {
-        docente = new Docente();
+        current = new Docente();
         selectedItemIndex = -1;
         return "Create";
     }
@@ -111,11 +109,9 @@ public class DocenteController implements Serializable {
     public String create() {
 
         try {
-            // Docente docente2 = new Docente();
-            // docente2.setNome("TesteDocente");
-            // ejbFacade.save(docente2);
-            getFacade().save(docente);
-            docente = null; // iniciala a variavel para limpar os dados dos componentes
+            
+            getFacade().save(current);
+            current = null; // iniciala a variavel para limpar os dados dos componentes
             //ejbFacade.merge(docente);
             JsfUtil.addSuccessMessage("Docente Criado");
             //return prepareCreate();
@@ -133,13 +129,13 @@ public class DocenteController implements Serializable {
     }
 
     public void recreatDocente(){
-        docente = null;
+        current = null;
     }
     
     public String update() {
 
         try {
-            getFacade().edit(docente);
+            getFacade().edit(current);
             JsfUtil.addSuccessMessage("Docente Atualizado");
             //return "View";
             return "Edit";
@@ -154,7 +150,7 @@ public class DocenteController implements Serializable {
     }
 
     public Docente getDocente() {
-        return this.docente;
+        return this.current;
     }
 
     public String destroyAndView() {
@@ -181,7 +177,7 @@ public class DocenteController implements Serializable {
             }
         }
         if (selectedItemIndex >= 0) {
-            docente = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
 
