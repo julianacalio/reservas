@@ -3,7 +3,6 @@ package controller;
 import facade.SalaFacade;
 import model.Sala;
 
-
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
@@ -16,6 +15,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import model.Docente;
 import outros.SalaDataModel;
 
 @Named(value = "salaController")
@@ -23,20 +23,18 @@ import outros.SalaDataModel;
 public class SalaController implements Serializable {
 
     private Sala current;
-    private DataModel items = null; 
+    private DataModel items = null;
     private PaginationHelper pagination;
     private int selectedItemIndex;
-    
+
     @EJB
     private facade.SalaFacade ejbFacade;
     private SalaDataModel salaDataModel;
-    
-    
+
     public SalaController() {
         current = new Sala();
     }
-    
-    
+
     public SalaDataModel getSalaDataModel() {
         if (salaDataModel == null) {
             List<Sala> salas = getFacade().findAll();
@@ -93,7 +91,7 @@ public class SalaController implements Serializable {
         current = new Sala();
         selectedItemIndex = -1;
         return "Create";
-       // return create();
+        // return create();
     }
 
     public String create() {
@@ -110,8 +108,9 @@ public class SalaController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Sala) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        current = (Sala) salaDataModel.getRowData();
+//        current = (Sala) getItems().getRowData();
+//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
 
@@ -127,8 +126,9 @@ public class SalaController implements Serializable {
     }
 
     public String destroy() {
-        current = (Sala) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        current = (Sala) salaDataModel.getRowData();
+//        current = (Sala) getItems().getRowData();
+//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
         recreateModel();
@@ -182,6 +182,7 @@ public class SalaController implements Serializable {
 
     private void recreateModel() {
         items = null;
+        salaDataModel = null;
     }
 
     private void recreatePagination() {

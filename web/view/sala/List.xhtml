@@ -19,9 +19,7 @@
                     <h:graphicImage value="resources/images/cmcc.png" />
                 </p:layoutUnit>  
 
-                <p:layoutUnit position="south" size="100"  resizable="true" closable="true" collapsible="true"  >  
-                    <p:messages id="msgs" showDetail="true"/>  
-                </p:layoutUnit>  
+
 
                 <p:layoutUnit position="east" size="200" header="Left" resizable="true" closable="true" collapsible="true">  
                     <h:outputText value="east unit content." />  
@@ -38,18 +36,6 @@
                     <br/>
                     <p:commandLink id="ajax5" action="/view/equipamento/List" style="margin-right:20px;">  
                         <h:outputText value="Lista de Equipamentos" />  
-                    </p:commandLink>
-                    <br/>
-                    <p:commandLink id="ajax6" action="/view/TA/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de TAs" />  
-                    </p:commandLink>
-                    <br/>
-                    <p:commandLink id="ajax7" action="/view/operador/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de Operadores" />  
-                    </p:commandLink>
-                    <br/>
-                    <p:commandLink id="ajax8" action="/view/reserva/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de Reservas" />  
                     </p:commandLink>
                     <br/>
                     <p:panel >
@@ -113,23 +99,20 @@
                         </p:dataTable> 
                     </p:panel>
                     <p:panel header="Criar Nova Sala">
-
-                        <h:panelGrid columns="6" id="pnGrCriarSala">
-                          
-                            <h:outputLabel value="Tamanho" for="tamanho_m2" />
-                            <h:inputText id="tamanho_m2" value="#{salaController.selected.tamanho_m2}" title="tamanho" />
-                            <h:outputLabel value="Número" for="numero" />
-                            <h:inputText id="numero" value="#{salaController.selected.numero}" title="numero" />
-                            <h:outputLabel value="Centro" for="centro" />
-                            <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro"  >
-                                <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
-                            </h:selectOneMenu>
-                        </h:panelGrid>
-
-                        <p:panel>
-
-                            <p:commandLink action="#{salaController.create()}"   update="msgs,painel,db,pnGrCriarSala" style="margin-right:495px;margin-left: 495px;" > 
-                                <p:commandButton value="Salvar" id="ajax21" style="width: 180px" update="db"/>
+                        <p:panel style="display: block;text-align: center" footer="">
+                            <h:panelGrid columns="6" id="pnGrCriarSala" >
+                                <h:outputLabel value="Tamanho" for="tamanho_m2" />
+                                <h:inputText id="tamanho_m2" value="#{salaController.selected.tamanho_m2}" title="tamanho" />
+                                <h:outputLabel value="Número" for="numero" />
+                                <h:inputText id="numero" value="#{salaController.selected.numero}" title="numero" />
+                                <h:outputLabel value="Centro" for="centro" />
+                                <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro"  >
+                                    <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
+                                </h:selectOneMenu>
+                            </h:panelGrid>
+                            <p:separator id="separator"/>
+                            <p:commandLink action="#{salaController.create()}"    update="msgs,db,pnGrCriarSala" > 
+                                <p:commandButton value="Salvar" id="linkSalvar" style="width: 180px" update="db"/>
                             </p:commandLink>
 
                         </p:panel>
@@ -137,7 +120,9 @@
                     </p:panel>
 
                 </p:layoutUnit>  
-
+                <p:layoutUnit position="south" size="80" style="text-align: center"  resizable="true" closable="true" collapsible="true"  >  
+                    <p:messages id="msgs" showDetail="true"/>  
+                </p:layoutUnit> 
             </p:layout>  
         </h:form>
     </h:body>

@@ -23,28 +23,16 @@
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop">  
-                    <p:commandLink id="ajax2" action="/view/docente/List" style="margin-right:20px;">  
+                    <p:commandLink id="linkDocente" action="/view/docente/List" style="margin-right:20px;">  
                         <h:outputText value="Lista de Docentes" />  
                     </p:commandLink> 
                     <br/>
-                    <p:commandLink id="ajax3" action="/view/sala/List" style="margin-right:20px;">  
+                    <p:commandLink id="linkSala" action="/view/sala/List" style="margin-right:20px;">  
                         <h:outputText value="Lista de Salas" />  
                     </p:commandLink> 
                     <br/>
-                    <p:commandLink id="ajax5" action="/view/equipamento/List" style="margin-right:20px;">  
+                    <p:commandLink id="linkEquipamento" action="/view/equipamento/List" style="margin-right:20px;">  
                         <h:outputText value="Lista de Equipamentos" />  
-                    </p:commandLink>
-                    <br/>
-                    <p:commandLink id="ajax6" action="/view/TA/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de TAs" />  
-                    </p:commandLink>
-                    <br/>
-                    <p:commandLink id="ajax7" action="/view/operador/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de Operadores" />  
-                    </p:commandLink>
-                    <br/>
-                    <p:commandLink id="ajax8" action="/view/reserva/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de Reservas" />  
                     </p:commandLink>
                     <br/>
                     <p:panel >
@@ -58,12 +46,16 @@
 
                 <p:layoutUnit position="center">  
 
-                    <h:outputText escape="false" value="Lista Vazia" rendered="#{centroController.items.rowCount == 0}"/>
-                    <p:panel rendered="#{centroController.items.rowCount > 0}">
-                        <h:outputText value="#{centroController.pagination.pageFirstItem + 1}..#{centroController.pagination.pageLastItem + 1}/#{centroController.pagination.itemsCount}"/>&nbsp;
-                        <h:commandLink action="#{centroController.previous}" value="Anterior #{centroController.pagination.pageSize}" rendered="#{centroController.pagination.hasPreviousPage}"/>&nbsp;
-                        <h:commandLink action="#{centroController.next}" value="Proximo #{centroController.pagination.pageSize}" rendered="#{centroController.pagination.hasNextPage}"/>&nbsp;
-                        <p:dataTable id="db" var="item"  value="#{centroController.items}"   >
+                    
+                    <p:panel >
+                        <p:dataTable id="db" var="item"  value="#{centroController.centroDataModel}" selectionMode="single"  paginator="true" rows="10"  
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                     rowsPerPageTemplate="3,5,10,15" style="text-align: center">  
+
+                            <f:facet name="header">  
+                                Lista de Centros  
+                            </f:facet>   >
+                            
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="id"/>

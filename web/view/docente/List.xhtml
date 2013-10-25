@@ -18,16 +18,10 @@
             <p:layout fullPage="true">  
 
                 <p:layoutUnit position="north" style="text-align:center" size="100"  resizable="true" closable="true" collapsible="true">  
-                    <h:graphicImage value="resources/images/cmcc.png" >
-                                       <!--<h:link outcome="/index" value="Gerenciar Recursos" onclick="#{calendarioController.inicializarVariaveis()}"/>-->
-                    </h:graphicImage>
-
-
-                    <!--                    <h:link outcome="/index" value="index" style="margin-right:50px;margin-left: 50px" />-->
+                    <h:graphicImage value="resources/images/cmcc.png" >  </h:graphicImage>
                 </p:layoutUnit>  
 
-               
-
+                
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop">  
                     <p:commandLink id="linkListSala" action="/view/sala/List" style="margin-right:20px;">  
                         <h:outputText value="Lista de Salas" />  
@@ -41,27 +35,17 @@
                         <h:outputText value="Lista de Equipamentos" />  
                     </p:commandLink>
                     <br/>
-                    <p:commandLink id="linkListTA" action="/view/TA/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de TAs" />  
-                    </p:commandLink>
-                    <br/>
-                    <p:commandLink id="linkListOperador" action="/view/operador/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de Operadores" />  
-                    </p:commandLink>
-                    <br/>
-                    <p:commandLink id="linkListReserva" action="/view/reserva/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de Reservas" />  
-                    </p:commandLink>
-                    <br/>
                     <p:panel >
                         <h:link outcome="/index" value="index" style="margin-right:50px;margin-left: 50px" />
                     </p:panel>
                 </p:layoutUnit>   
 
+                
                 <p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true" effect="drop">  
                     <h:outputText value="Right unit content." />  
                 </p:layoutUnit>  
 
+                
                 <p:layoutUnit position="center">  
 
                     <p:panel >
@@ -124,8 +108,8 @@
                         <br/>
                         <br/>
                     </p:panel>
-                    <p:panel header="Criar Novo Docente" style="display: block; text-align: center ">
-                        <p:panel footer="">
+                    <p:panel header="Criar Novo Docente" >
+                        <p:panel footer="" style="display: block; text-align: center ">
                             <h:panelGrid columns="5" id="pnGrCriarDocente" style="display: block; text-align: left">
                                 <h:outputLabel value="Nome" for="nome" />
                                 <h:inputText id="nome" value="#{docenteController.selected.nome}" title="nome" />
@@ -138,18 +122,18 @@
                                 </h:selectOneMenu>
                                 <h:outputLabel value="email" for="email"  />
                                 <h:inputText id="email" value="#{docenteController.selected.email}" title="email" />
-                                <p:commandLink action="#{docenteController.create()}"   update="msgs,db,pnGrCriarDocente"  > 
-                                    <p:commandButton value="Salvar" id="linkSalvar" style="width: 180px;margin-left: 30px;margin-bottom: 5px"/>
-                                </p:commandLink>
-                            </h:panelGrid>
-                        </p:panel>
 
-                       
+                            </h:panelGrid>
+                            <p:separator/>
+                            <p:commandLink action="#{docenteController.create()}"   update="msgs,db,pnGrCriarDocente"  > 
+                                <p:commandButton value="Salvar" id="linkSalvar" style="width: 180px;margin-left: 30px;margin-bottom: 5px"/>
+                            </p:commandLink>
+                        </p:panel>
                     </p:panel>
 
                 </p:layoutUnit>  
-                
-                 <p:layoutUnit position="south" style="text-align:center" size="100"  resizable="true" closable="true" collapsible="true">  
+
+                <p:layoutUnit position="south" style="text-align:center" size="80"  resizable="true" closable="true" collapsible="true">  
                     <p:messages id="msgs" showDetail="true"/>   
                 </p:layoutUnit>  
 

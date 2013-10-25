@@ -4,7 +4,7 @@ import model.Centro;
 import facade.CentroFacade;
 
 import java.io.Serializable;
-import java.util.ResourceBundle;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -15,6 +15,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import outros.CentroDataModel;
 
 @Named("centroController")
 @SessionScoped
@@ -27,10 +28,23 @@ public class CentroController implements Serializable {
     private facade.CentroFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private CentroDataModel centroDataModel;
 
     public CentroController() {
     }
 
+     public CentroDataModel getCentroDataModel() {
+        if (centroDataModel == null) {
+            List<Centro> centros = getFacade().findAll();
+            centroDataModel = new CentroDataModel(centros);
+        }
+        return centroDataModel;
+    }
+
+    public void setSalaDataModel(CentroDataModel centroDataModel) {
+        this.centroDataModel = centroDataModel;
+    }
+    
     public Centro getSelected() {
         if (current == null) {
             current = new Centro();
@@ -91,8 +105,9 @@ public class CentroController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Centro) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        current = (Centro) centroDataModel.getRowData();
+//        current = (Centro) getItems().getRowData();
+//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
 
@@ -108,8 +123,9 @@ public class CentroController implements Serializable {
     }
 
     public String destroy() {
-        current = (Centro) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        current = (Centro) centroDataModel.getRowData();
+//        current = (Centro) getItems().getRowData();
+//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
         recreateModel();
@@ -163,6 +179,7 @@ public class CentroController implements Serializable {
 
     private void recreateModel() {
         items = null;
+        centroDataModel = null;
     }
 
     private void recreatePagination() {
