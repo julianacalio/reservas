@@ -26,21 +26,24 @@
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
-                    <p:commandLink id="ajax2" action="/view/docente/List" style="margin-right:20px;">  
+                    <p:commandLink id="ajax2" action="/view/docente/List" immediate="true">  
                         <h:outputText value="Lista de Docentes" />  
                     </p:commandLink> 
                     <br/>
-                    <p:commandLink id="ajax3" action="/view/centro/List" style="margin-right:20px;">  
+                    <p:commandLink id="ajax3" action="/view/centro/List" immediate="true">  
                         <h:outputText value="Lista de Centros" />  
                     </p:commandLink> 
                     <br/>
-                    <p:commandLink id="ajax5" action="/view/equipamento/List" style="margin-right:20px;">  
+                    <p:commandLink id="ajax5" action="/view/equipamento/List" immediate="true">  
                         <h:outputText value="Lista de Equipamentos" />  
                     </p:commandLink>
                     <br/>
-                    <p:panel >
-                        <h:link outcome="/index" value="index" style="margin-right:50px;margin-left: 50px" />
-                    </p:panel>
+                    <p:separator/>
+                    <h:link outcome="/index" value="Gerenciar Dados"  />
+
+                    <p:separator/>
+                    <h:link outcome="/Calendario" value="Calendario"  />
+                    <p:separator/>
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="center">  

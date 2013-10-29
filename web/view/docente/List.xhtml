@@ -23,27 +23,24 @@
 
                 
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
-                    <p:commandLink id="linkListSala" action="/view/sala/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de Salas" />  
-                    </p:commandLink> 
+                    <p:commandLink id="linkListSala" action="/view/sala/List"  value="Lista de Salas" immediate="true"/>  
+                  
                     <br/>
-                    <p:commandLink id="linkListCentro" action="/view/centro/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de Centros" />  
-                    </p:commandLink> 
+                    <p:commandLink id="linkListCentro" action="/view/centro/List" immediate="true" value="Lista de Centros"/>  
+                      
                     <br/>
-                    <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de Equipamentos" />  
-                    </p:commandLink>
+                    <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" immediate="true" value="Lista de Equipamentos"/>  
+                     
                     <br/>
-                    <p:panel style="text-align: center">
-                        <h:link outcome="/index" value="index" onclick="#{docenteController.recreatDocente()}" />
-                    </p:panel>
+                    <p:separator/>
+                    <h:link outcome="/index" value="Gerenciar Dados"  />
+
+                    <p:separator/>
+                    <h:link outcome="/Calendario" value="Calendario"  />
+                    <p:separator/>
                 </p:layoutUnit>   
 
                 
-<!--                <p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true" effect="drop">  
-                    <h:outputText value="Right unit content." />  
-                </p:layoutUnit>  -->
 
                 
                 <p:layoutUnit position="center">  

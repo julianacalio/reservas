@@ -2,34 +2,67 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
 
     <h:head>
-        <title>Facelet Title</title>
+
     </h:head>
     <h:body>
-        <h:outputText value="Editar Centro"></h:outputText>
-
-
-        <h:panelGroup id="messagePanel" layout="block">
-            <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-        </h:panelGroup>
         <h:form>
-            <h:panelGrid columns="2">
-                <h:outputLabel value="nome" for="nome" />
-                <h:inputText id="nome" value="#{centroController.selected.nome}" title="nome" />
-                
-            </h:panelGrid>
-            <h:commandLink action="#{centroController.update}" value="update"/>
-            <br />
-            <br />
-            <h:link outcome="View" value="#{bundle.EditCentroViewLink}"/>
-            <br />
-            <h:commandLink action="#{centroController.prepareList}" value="mostrar todos os centros" immediate="true"/>
-            <br />
-            <br />
-            <h:link outcome="/index" value="index" />
+
+            <h:outputStylesheet library="css" name="style.css"  />
+            <p:layout fullPage="true">  
+
+                <p:layoutUnit style="text-align:center" position="north" size="100"  resizable="true" closable="true" collapsible="true" >  
+                    <!--                    <div style="text-align: center " ><h:outputText value="Gerenciamento de Recursos" style ="font-weight:bold"  /></div>-->
+                    <h:graphicImage value="resources/images/cmcc.png" />
+
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
+                    <p:commandLink id="linkListSala" action="/view/sala/List" >  
+                        <h:outputText value="Lista de Salas" />  
+                    </p:commandLink> 
+                    <br/>
+                    <p:commandLink id="linkListCentro" action="/view/docente/List" >  
+                        <h:outputText value="Lista de Docentes" />  
+                    </p:commandLink> 
+                    <br/>
+                    <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" >  
+                        <h:outputText value="Lista de Equipamentos" />  
+                    </p:commandLink>
+                    <br/>
+
+                    <p:separator/>
+                    <h:link outcome="/index" value="Gerenciar Dados"  />
+
+                    <p:separator/>
+                    <h:link outcome="/Calendario" value="Calendario"  />
+                    <p:separator/>
+                </p:layoutUnit>    
+
+                <p:layoutUnit position="center"> 
+
+                    <h:panelGrid columns="2">
+
+                        <h:outputLabel value="nome" for="nome" />
+                        <h:inputText id="nome" value="#{centroController.selected.nome}" title="nome" />
+
+                    </h:panelGrid>
+                    <p:separator/>
+                    <h:commandLink action="#{centroController.update}" value="Atualizar centro"/>
+                    <p:separator/>
+
+                    <h:commandLink action="#{centroController.prepareList}" value="Mostrar todos os centros" immediate="true"/>
+
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" style="text-align:center" size="80"  resizable="true" closable="true" collapsible="true">  
+                    <p:messages id="msgs" showDetail="true"/>   
+                </p:layoutUnit>
+
+            </p:layout>
         </h:form>
     </h:body>
 

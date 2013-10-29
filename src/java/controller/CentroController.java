@@ -111,6 +111,10 @@ public class CentroController implements Serializable {
         return "Edit";
     }
 
+    public String teste(){
+        return "Edit";
+    }
+    
     public String update() {
         try {
             getFacade().edit(current);

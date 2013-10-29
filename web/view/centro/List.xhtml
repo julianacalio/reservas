@@ -14,10 +14,8 @@
         <h:form >
             <p:layout fullPage="true">  
 
-                <p:layoutUnit position="north" style="text-align:center" size="100"  header=" UFABC - CMCC - Centro de Matemática Computação e Cognição" resizable="true" closable="true" collapsible="true">  
-
-                    <p:messages id="msgs" showDetail="true"/> 
-
+                <p:layoutUnit position="north" style="text-align:center" size="100"  resizable="true" closable="true" collapsible="true">  
+                    <h:graphicImage value="resources/images/cmcc.png" />
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">  
@@ -25,32 +23,27 @@
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
-                    <p:commandLink id="linkDocente" action="/view/docente/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de Docentes" />  
-                    </p:commandLink> 
+                    <p:commandLink id="cmlDocente" action="/view/docente/List" immediate="true" value="Lista de Docentes"/>   
                     <br/>
-                    <p:commandLink id="linkSala" action="/view/sala/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de Salas" />  
-                    </p:commandLink> 
+                    <p:commandLink id="cmlSala" action="/view/sala/List" immediate="true" value="Lista de Salas"/> 
                     <br/>
-                    <p:commandLink id="linkEquipamento" action="/view/equipamento/List" style="margin-right:20px;">  
-                        <h:outputText value="Lista de Equipamentos" />  
-                    </p:commandLink>
+                    <p:commandLink id="cmlEquipamento" action="/view/equipamento/List" immediate="true" value="Lista de Equipamentos"/>  
                     <br/>
-                    <p:panel >
-                        <h:link outcome="/index" value="index" style="margin-right:50px;margin-left: 50px" />
-                    </p:panel>
+                    <p:separator/>
+                    <h:link outcome="/index" value="Gerenciar Dados"  />
+                    <p:separator/>
+                    <h:link outcome="/Calendario" value="Calendario"  />
+                    <p:separator/>
+                    
                 </p:layoutUnit>   
 
-                <p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true" effect="drop">  
-                    <h:outputText value="Right unit content." />  
-                </p:layoutUnit>  
+
 
                 <p:layoutUnit position="center">  
 
 
                     <p:panel >
-                        <p:dataTable id="db" var="item"  value="#{centroController.centroDataModel}" selectionMode="single"  paginator="true" rows="10"  
+                        <p:dataTable id="db" var="item"  value="#{centroController.centroDataModel}" selectionMode="single"  paginator="true" rows="3"  
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                      rowsPerPageTemplate="3,5,10,15" style="text-align: center">  
 
@@ -76,7 +69,8 @@
                                 <f:facet name="header">
                                     <h:outputText value=""/>
                                 </f:facet>
-                                <p:commandLink action="#{centroController.prepareEdit}" value="Editar" />
+
+                                <p:commandLink action="#{centroController.prepareEdit()}" value="Editar" immediate="true" />
                             </p:column>
 
                             <p:column headerText="">
@@ -84,6 +78,8 @@
                                     <h:outputText value=""/>
                                 </f:facet>
                                 <p:commandLink action="#{centroController.destroy}" value="Deletar" immediate="true" update="db"/>
+
+
                             </p:column>
 
                         </p:dataTable> 
@@ -96,16 +92,20 @@
                                 <h:inputText id="tamanho_m2" value="#{centroController.selected.nome}" title="tamanho" required="true" requiredMessage="Por favor digite um nome para o Centro"/>
                             </h:panelGrid>
 
+                            <p:separator/>
+                            <p:commandLink action="#{centroController.create()}"  value="Salvar" update="msgs,db,pnGrCriarCentro"  /> 
 
-                            <p:commandLink action="#{centroController.create()}"  value="Salvar" update="msgs,db,pnGrCriarCentro"  > 
-                                <!--                                <p:commandButton value="Salvar" id="linkSalvarCentro" style="width: 180px"/>-->
-                            </p:commandLink>
                         </p:panel>
 
                     </p:panel>
 
-
                 </p:layoutUnit>  
+
+
+                <p:layoutUnit position="south" style="text-align:center" size="80"  resizable="true" closable="true" collapsible="true">  
+                    <p:messages id="msgs" showDetail="true"/>   
+                </p:layoutUnit>
+
 
             </p:layout>  
 

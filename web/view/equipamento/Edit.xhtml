@@ -15,7 +15,7 @@
 
 
                 <p:layoutUnit style="text-align:center" position="north" size="100"  resizable="true" closable="true" collapsible="true" >  
-                    <!--                    <div style="text-align: center " ><h:outputText value="Gerenciamento de Recursos" style ="font-weight:bold"  /></div>-->
+                 
                     <h:graphicImage value="resources/images/cmcc.png" />
 
                 </p:layoutUnit> 
@@ -23,23 +23,25 @@
 
 
                 <p:layoutUnit position="west" size="200" header="Links Rápidos"  resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
-                    <p:commandLink id="linkListSala" action="/view/sala/List" >  
+                    <p:commandLink id="linkListSala" action="/view/sala/List" immediate="true">  
                         <h:outputText value="Lista de Salas" />  
                     </p:commandLink> 
                     <br/>
-                    <p:commandLink id="linkListCentro" action="/view/centro/List" style="text-align: left" >  
+                    <p:commandLink id="linkListCentro" action="/view/centro/List" immediate="true" >  
                         <h:outputText value="Lista de Centros" />  
                     </p:commandLink> 
                     <br/>
-                    <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" >  
+                    <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" immediate="true">  
                         <h:outputText value="Lista de Equipamentos" />  
                     </p:commandLink>
                     <br/>
                     
                     <p:separator/>
-                    
-                        <h:link outcome="/index" value="Gerenciar Recursos"  style="text-align: center" />
-                        
+                    <h:link outcome="/index" value="Gerenciar Dados"  />
+
+                    <p:separator/>
+                    <h:link outcome="/Calendario" value="Calendario"  />
+                    <p:separator/>
                     
                 </p:layoutUnit> 
 
