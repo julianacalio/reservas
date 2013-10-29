@@ -5,8 +5,11 @@
 package model;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  *
@@ -17,7 +20,7 @@ import javax.persistence.Entity;
 public class Sala extends Recurso implements Serializable {
 
     private static final long serialVersionUID = 1L;
-   
+    @Column(unique = true)
     private String numero;
     private int tamanho_m2;
 
@@ -36,8 +39,6 @@ public class Sala extends Recurso implements Serializable {
     public void setNumero(String numero) {
         this.numero = numero;
     }
-
-   
 
     @Override
     public int hashCode() {
@@ -64,4 +65,3 @@ public class Sala extends Recurso implements Serializable {
         return numero;
     }
 }
-

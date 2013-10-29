@@ -80,7 +80,7 @@ public class TAController implements Serializable {
     public String create() {
         try {
             getFacade().save(current);
-            JsfUtil.addSuccessMessage("TACreated");
+            JsfUtil.addSuccessMessage("TACreated", null);
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e,"PersistenceErrorOccured");
@@ -97,7 +97,7 @@ public class TAController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage("TAUpdated");
+            JsfUtil.addSuccessMessage("TAUpdated", null);
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
@@ -130,7 +130,7 @@ public class TAController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage("TADeleted");
+            JsfUtil.addSuccessMessage("TADeleted", null);
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
         }

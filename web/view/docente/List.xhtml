@@ -10,7 +10,7 @@
     <h:head>
         <title>Facelet Title</title>
     </h:head>
-    <h:body>
+    <h:body >
 
         <h:outputStylesheet library="css" name="style.css"  />
 
@@ -21,45 +21,38 @@
                     <h:graphicImage value="resources/images/cmcc.png" >  </h:graphicImage>
                 </p:layoutUnit>  
 
-                
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
                     <p:commandLink id="linkListSala" action="/view/sala/List"  value="Lista de Salas" immediate="true"/>  
-                  
                     <br/>
                     <p:commandLink id="linkListCentro" action="/view/centro/List" immediate="true" value="Lista de Centros"/>  
-                      
                     <br/>
                     <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" immediate="true" value="Lista de Equipamentos"/>  
-                     
                     <br/>
                     <p:separator/>
                     <h:link outcome="/index" value="Gerenciar Dados"  />
-
                     <p:separator/>
                     <h:link outcome="/Calendario" value="Calendario"  />
                     <p:separator/>
                 </p:layoutUnit>   
 
-                
 
-                
-                <p:layoutUnit position="center">  
+                <p:layoutUnit position="center" >  
 
                     <p:panel >
-                        <p:dataTable id="db" var="item"  value="#{docenteController.docenteDataModel}" selectionMode="single"  paginator="true" rows="10"  
+                        <p:dataTable id="db" var="item"   value="#{docenteController.docenteDataModel}" selectionMode="single"  paginator="true" rows="10"  
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                      rowsPerPageTemplate="5,10,15" style="text-align: center">  
                             <f:facet name="header">  
                                 Lista de Docentes  
                             </f:facet>   >
-                            <p:column>
+                            <p:column >
                                 <f:facet name="header">
                                     <h:outputText value="id"/>
                                 </f:facet>
                                 <h:outputText value="#{item.id}"/>
                             </p:column>
 
-                            <p:column headerText="nome">  
+                            <p:column headerText="nome" sortBy="#{item.nome}"  >  
                                 <f:facet name="header">
                                     <h:outputText value="Nome"/>
                                 </f:facet>
@@ -77,7 +70,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="Centro"/>
                                 </f:facet>
-                                <h:outputText value="#{item.centro}"/>
+                                <h:outputText value="#{item.centro.nome}"/>
                             </p:column>  
 
                             <p:column headerText="email">  
@@ -105,7 +98,7 @@
                         <br/>
                         <br/>
                     </p:panel>
-                    <p:panel header="Criar Novo Docente" >
+                    <p:panel header="Criar Novo Docente"  >
                         <p:panel footer="" style="display: block; text-align: left ">
                             <h:panelGrid columns="5" id="pnGrCriarDocente" style="display: block; text-align: left">
                                 <h:outputLabel value="Nome" for="nome" />
@@ -122,10 +115,10 @@
 
                             </h:panelGrid>
                             <p:separator/>
-                            <p:commandLink action="#{docenteController.create()}" value="Salvar"  update="msgs,db,pnGrCriarDocente"  > 
-<!--                                <p:commandButton value="Salvar" id="linkSalvar" style="width: 180px;margin-left: 30px;margin-bottom: 5px"/>-->
-                            </p:commandLink>
+                            <p:commandLink action="#{docenteController.create()}" value="Salvar"  update="msgs,db,pnGrCriarDocente"  /> 
+
                         </p:panel>
+
                     </p:panel>
 
                 </p:layoutUnit>  

@@ -5,6 +5,7 @@
 package model;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +25,7 @@ public class Servidor extends Pessoa implements Serializable {
 
     private static final long serialVersionUID = 1L;
    
+    @Column(unique = true)
     protected String matricula;
     @ManyToOne
     protected Centro centro;

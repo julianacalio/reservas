@@ -6,28 +6,25 @@
       xmlns:f="http://java.sun.com/jsf/core">
 
     <h:head>
-        <title>Facelet Title</title>
+
     </h:head>
     <h:body>
-        <h:outputText value="Editar Equipamento"></h:outputText>
+
         <h:form>
+            
+            <h:outputStylesheet library="css" name="style.css"  />
             <p:layout fullPage="true"> 
 
-
                 <p:layoutUnit style="text-align:center" position="north" size="100"  resizable="true" closable="true" collapsible="true" >  
-                 
                     <h:graphicImage value="resources/images/cmcc.png" />
-
                 </p:layoutUnit> 
 
-
-
-                <p:layoutUnit position="west" size="200" header="Links Rápidos"  resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
+                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
                     <p:commandLink id="linkListSala" action="/view/sala/List" immediate="true">  
                         <h:outputText value="Lista de Salas" />  
                     </p:commandLink> 
                     <br/>
-                    <p:commandLink id="linkListCentro" action="/view/centro/List" immediate="true" >  
+                    <p:commandLink id="linkListCentro" action="/view/centro/List" immediate="true">  
                         <h:outputText value="Lista de Centros" />  
                     </p:commandLink> 
                     <br/>
@@ -35,14 +32,14 @@
                         <h:outputText value="Lista de Equipamentos" />  
                     </p:commandLink>
                     <br/>
-                    
+
                     <p:separator/>
                     <h:link outcome="/index" value="Gerenciar Dados"  />
 
                     <p:separator/>
                     <h:link outcome="/Calendario" value="Calendario"  />
                     <p:separator/>
-                    
+
                 </p:layoutUnit> 
 
                 <p:layoutUnit position="center"> 
@@ -59,13 +56,13 @@
                                 <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
                             </h:selectOneMenu>
                         </h:panelGrid>
-                        
+
                         <p:separator/>
-                        
+
                         <h:commandLink action="#{equipamentoController.update}" value="Atualizar Equipamento"/>
-                      
+
                         <p:separator/>
-                        
+
                         <h:commandLink action="#{equipamentoController.prepareList}" value="Mostrar todos os equipamentos" immediate="true"/>
                     </p:panel>
                 </p:layoutUnit>  

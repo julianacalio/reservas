@@ -76,9 +76,14 @@ public class EquipamentoController implements Serializable {
 
     public String prepareList() {
         recreateModel();
+        recreateEquipamento();
         return "List";
     }
 
+    public void recreateEquipamento(){
+        current = null;
+    }
+    
     public String prepareView() {
         current = (Equipamento) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
@@ -94,7 +99,7 @@ public class EquipamentoController implements Serializable {
     public String create() {
         try {
             getFacade().save(current);
-            JsfUtil.addSuccessMessage("Equipamento Criado");
+            JsfUtil.addSuccessMessage("Equipamento Criado", null);
             current = null;
             //return prepareCreate();
             return prepareList();
@@ -114,8 +119,8 @@ public class EquipamentoController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage("Equipamento Atualizado");
-            return "View";
+            JsfUtil.addSuccessMessage("Equipamento Atualizado", null);
+            return "Edit";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
             return null;
@@ -149,7 +154,7 @@ public class EquipamentoController implements Serializable {
         try {
             getFacade().remove(current);
             current = null;
-            JsfUtil.addSuccessMessage("EquipamentoDeleted");
+            JsfUtil.addSuccessMessage("EquipamentoDeleted", null);
         } catch (ConstraintViolationException consExc) {
             JsfUtil.addErrorMessage(consExc, "Este Recurso ja está associado a uma reserva. Delete a reserva antes de apaga-lo");
         } catch (Exception e) {

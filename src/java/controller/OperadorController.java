@@ -80,7 +80,7 @@ public class OperadorController implements Serializable {
     public String create() {
         try {
             getFacade().save(current);
-            JsfUtil.addSuccessMessage("Operador Criado");
+            JsfUtil.addSuccessMessage("Operador Criado", null);
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
@@ -97,7 +97,7 @@ public class OperadorController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage("Operador Atualizado");
+            JsfUtil.addSuccessMessage("Operador Atualizado", null);
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
@@ -130,7 +130,7 @@ public class OperadorController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage("Operador Apagado");
+            JsfUtil.addSuccessMessage("Operador Apagado", null);
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
         }

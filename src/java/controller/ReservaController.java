@@ -82,7 +82,7 @@ public class ReservaController implements Serializable {
     public String create() {
         try {
             getFacade().save(current);
-            JsfUtil.addSuccessMessage("ReservaCreated");
+            JsfUtil.addSuccessMessage("ReservaCreated", null);
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
@@ -99,7 +99,7 @@ public class ReservaController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage("ReservaUpdated");
+            JsfUtil.addSuccessMessage("ReservaUpdated", null);
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
@@ -132,7 +132,7 @@ public class ReservaController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage("ReservaDeleted");
+            JsfUtil.addSuccessMessage("ReservaDeleted", null);
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
         }

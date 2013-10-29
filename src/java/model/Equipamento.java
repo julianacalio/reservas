@@ -5,6 +5,7 @@
 package model;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -18,6 +19,7 @@ public class Equipamento extends Recurso implements Serializable {
 
     private static final long serialVersionUID = 1L;
    
+    @Column(unique = true)
     private String patrimonio;
 
     public String getPatrimonio() {

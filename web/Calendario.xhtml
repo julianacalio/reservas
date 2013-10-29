@@ -17,10 +17,8 @@
             <p:layoutUnit position="north" style="text-align:center" size="100"   resizable="true" closable="true" collapsible="true"  >  
                 <h:form id ="f2">
 
-                    <h:graphicImage value="resources/images/cmcc.png" >
-                                        <!--<h:link outcome="/index" value="Gerenciar Recursos" onclick="#{calendarioController.inicializarVariaveis()}"/>-->
-                    </h:graphicImage>
-
+                    <h:graphicImage value="resources/images/cmcc.png" />
+                                       
                 </h:form>
                 <style type="text/css">
                     /*                                                                .ui-widget{font-size:90% !important;}*/
@@ -37,7 +35,7 @@
 
                         <p:ajax event="rowSelect"  update=":form:schedule" listener="#{calendarioController.escolheSala()}"/>  
 
-                        <p:column headerText="Salas">  
+                        <p:column headerText="Salas" >  
                             #{sala.numero} 
                         </p:column>  
                     </p:dataTable>  
@@ -58,7 +56,7 @@
                 </h:form>  
 
                 <br/>
-                <h:link outcome="/index" value="Gerenciar Recursos" style="text-align: center"  onclick="#{calendarioController.inicializarVariaveis()}"/>
+                <h:link outcome="/index" value="Gerenciar Dados" style="text-align: center"  onclick="#{calendarioController.inicializarVariaveis()}"/>
 
 
 

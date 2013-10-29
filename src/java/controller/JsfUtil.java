@@ -26,25 +26,25 @@ public class JsfUtil {
     public static void addErrorMessage(Exception ex, String defaultMsg) {
         String msg = ex.getLocalizedMessage();
         if (msg != null && msg.length() > 0) {
-            addErrorMessage(msg);
+            addErrorMessage(msg, null);
         } else {
-            addErrorMessage(defaultMsg);
+            addErrorMessage(defaultMsg, null);
         }
     }
 
     public static void addErrorMessages(List<String> messages) {
         for (String message : messages) {
-            addErrorMessage(message);
+            addErrorMessage(message, null);
         }
     }
 
-    public static void addErrorMessage(String msg) {
-        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg);
+    public static void addErrorMessage(String msg, String msgComplement) {
+        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msgComplement);
         FacesContext.getCurrentInstance().addMessage(null, facesMsg);
     }
 
-    public static void addSuccessMessage(String msg) {
-        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
+    public static void addSuccessMessage(String msg, String msgComplement) {
+        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msgComplement);
         FacesContext.getCurrentInstance().addMessage("successInfo", facesMsg);
     }
 }

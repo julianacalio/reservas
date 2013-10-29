@@ -15,8 +15,8 @@
         <h:form id="form1">
             <p:layout fullPage="true">  
 
-                <p:layoutUnit position="north"  size="100"   resizable="true" closable="true" collapsible="true" style="text-align: center">  
-                    <h:graphicImage value="resources/images/cmcc.png" />
+                 <p:layoutUnit position="north" style="text-align:center" size="100"  resizable="true" closable="true" collapsible="true">  
+                    <h:graphicImage value="resources/images/cmcc.png" >  </h:graphicImage>
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
@@ -56,11 +56,11 @@
                                 <h:outputText value="#{item.patrimonio}"/>
                             </p:column>
 
-                            <p:column headerText="descricao">  
+                            <p:column headerText="descricao" sortBy="#{item.descricao}">  
                                 <f:facet name="header">
                                     <h:outputText value="descricao"/>
                                 </f:facet>
-                                <h:outputText value="#{item.descricao}"/>
+                                <h:outputText value="#{item.descricao}" />
                             </p:column>  
 
                             <p:column headerText="numero">  
@@ -74,7 +74,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="Centro"/>
                                 </f:facet>
-                                <h:outputText value="#{item.centro}"/>
+                                <h:outputText value="#{item.centro.nome}"/>
                             </p:column>  
 
                             <p:column headerText="Controle">
@@ -102,7 +102,7 @@
                                 <h:outputLabel value="Descrição" for="descricao" />
                                 <h:inputText id="descricao" value="#{equipamentoController.selected.descricao}" title="numero" />
                                 <h:outputLabel value="Centro" for="centro" />
-                                <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro" >
+                                <h:selectOneMenu id="centro" value="#{equipamentoController.selected.centro}" title="centro" >
                                     <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
                                 </h:selectOneMenu>
                             </h:panelGrid>

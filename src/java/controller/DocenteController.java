@@ -6,6 +6,7 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -14,6 +15,7 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import model.Docente;
+import org.hibernate.exception.ConstraintViolationException;
 import outros.DocenteDataModel;
 
 /**
@@ -81,7 +83,7 @@ public class DocenteController implements Serializable {
         try {
             getFacade().remove(current);
             current = null;
-            JsfUtil.addSuccessMessage("Docente deletado");
+            JsfUtil.addSuccessMessage("Docente deletado", null);
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Ocorreu um erro de persistência");
 
@@ -109,13 +111,21 @@ public class DocenteController implements Serializable {
     public String create() {
 
         try {
-            
+
             getFacade().save(current);
-            current = null; // iniciala a variavel para limpar os dados dos componentes
+
             //ejbFacade.merge(docente);
-            JsfUtil.addSuccessMessage("Docente Criado");
+            JsfUtil.addSuccessMessage("Docente Criado", current.getNome());
+            current = null; // iniciala a variavel para limpar os dados dos componentes
             //return prepareCreate();
             return prepareList();
+        } catch (EJBException ex) {
+            if ((ex.getCausedByException() instanceof ConstraintViolationException)) {
+                JsfUtil.addErrorMessage("Não pode salvar uma docente com o mesmo número de matrícula", current.getMatricula());
+            } else {
+                JsfUtil.addErrorMessage("PersistenceErrorOccured", null);
+            }
+            return null;
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Ocorreu um erro de persistência");
             return null;
@@ -124,21 +134,28 @@ public class DocenteController implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        recreatDocente();
+        recreateDocente();
         return "List";
     }
 
-    public void recreatDocente(){
+    public void recreateDocente() {
         current = null;
     }
-    
+
     public String update() {
 
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage("Docente Atualizado");
+            JsfUtil.addSuccessMessage("Docente Atualizado", current.getNome());
             //return "View";
             return "Edit";
+        } catch (EJBException ex) {
+            if ((ex.getCausedByException() instanceof ConstraintViolationException)) {
+                JsfUtil.addErrorMessage("Não pode salvar uma docente com o mesmo número de matrícula", current.getMatricula());
+            } else {
+                JsfUtil.addErrorMessage("PersistenceErrorOccured", null);
+            }
+            return null;
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Ocorreu um erro de persistência");
             return null;

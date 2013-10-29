@@ -10,7 +10,7 @@
     </h:head>
     <h:body>
         Hello from Facelets
-        <h:form>
+        <h:form id="form1">
 
             <h:outputStylesheet library="css" name="style.css"  />
             <p:layout fullPage="true">  
@@ -19,35 +19,21 @@
                     <h:graphicImage value="resources/images/cmcc.png" />
                 </p:layoutUnit>  
 
-
-
-                <p:layoutUnit position="east" size="200" header="Left" resizable="true" closable="true" collapsible="true">  
-                    <h:outputText value="east unit content." />  
-                </p:layoutUnit>  
-
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
-                    <p:commandLink id="ajax2" action="/view/docente/List" immediate="true">  
-                        <h:outputText value="Lista de Docentes" />  
-                    </p:commandLink> 
+                    <p:commandLink id="cmlDocente" action="/view/docente/List" immediate="true" value="Lista de Docentes" />  
                     <br/>
-                    <p:commandLink id="ajax3" action="/view/centro/List" immediate="true">  
-                        <h:outputText value="Lista de Centros" />  
-                    </p:commandLink> 
+                    <p:commandLink id="cmlCentro" action="/view/centro/List" immediate="true" value="Lista de Centros" /> 
                     <br/>
-                    <p:commandLink id="ajax5" action="/view/equipamento/List" immediate="true">  
-                        <h:outputText value="Lista de Equipamentos" />  
-                    </p:commandLink>
+                    <p:commandLink id="cmlEquipamento" action="/view/equipamento/List" immediate="true" value="Lista de Equipamentos" />    
                     <br/>
                     <p:separator/>
                     <h:link outcome="/index" value="Gerenciar Dados"  />
-
                     <p:separator/>
                     <h:link outcome="/Calendario" value="Calendario"  />
                     <p:separator/>
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="center">  
-
 
                     <p:panel id="painel" >
                         <p:dataTable id="db" var="item"  value="#{salaController.salaDataModel}" selectionMode="single"  paginator="true" rows="10"  
@@ -81,7 +67,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="Centro"/>
                                 </f:facet>
-                                <h:outputText value="#{item.centro}"/>
+                                <h:outputText value="#{item.centro.nome}"/>
                             </p:column>  
 
 
@@ -96,7 +82,7 @@
                                 <f:facet name="header">
                                     <h:outputText value=""/>
                                 </f:facet>
-                                <p:commandLink id ="cmlDestroy" action="#{salaController.destroy}" value="Deletar" immediate="true" update="db"/>
+                                <p:commandLink id ="cmlDestroy" action="#{salaController.destroy}" value="Deletar" immediate="true" update="db,:form1:msgs"/>
                             </p:column>
 
                         </p:dataTable> 
@@ -115,7 +101,7 @@
                             </h:panelGrid>
                             <p:separator id="separator"/>
                             <p:commandLink action="#{salaController.create()}"  value="Salvar"  update="msgs,db,pnGrCriarSala" > 
-<!--                                <p:commandButton value="Salvar" id="linkSalvar" style="width: 180px" update="db"/>-->
+                                <!--                                <p:commandButton value="Salvar" id="linkSalvar" style="width: 180px" update="db"/>-->
                             </p:commandLink>
 
                         </p:panel>

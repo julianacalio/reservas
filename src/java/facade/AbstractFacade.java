@@ -11,6 +11,8 @@ public abstract class AbstractFacade<T> {
 
     private Class<T> entityClass;
 
+    //private Session session;
+
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
@@ -45,8 +47,6 @@ public abstract class AbstractFacade<T> {
 
     }
 
-    
-    
     public void remove(T entity) {
         Session session = getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
@@ -62,7 +62,6 @@ public abstract class AbstractFacade<T> {
         return entity;
     }
 
-  
     public List<T> findAll() {
         Session session = getSessionFactory().openSession();
         Criteria crit = session.createCriteria(entityClass);
@@ -90,5 +89,10 @@ public abstract class AbstractFacade<T> {
         int count = ((Number) crit.setProjection(Projections.rowCount()).uniqueResult()).intValue();
         session.close();
         return count;
+    }
+    
+    public void closeSession(){
+        getSessionFactory().close();
+        int a = 2;
     }
 }

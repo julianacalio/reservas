@@ -179,7 +179,7 @@ public class RecursoController implements Serializable {
     public String create() {
         try {
             getFacade().save(current);
-            JsfUtil.addSuccessMessage("RecursoCreated");
+            JsfUtil.addSuccessMessage("RecursoCreated", null);
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
@@ -196,7 +196,7 @@ public class RecursoController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage("RecursoUpdated");
+            JsfUtil.addSuccessMessage("RecursoUpdated", null);
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
@@ -229,7 +229,7 @@ public class RecursoController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage("RecursoDeleted");
+            JsfUtil.addSuccessMessage("RecursoDeleted", null);
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
         }

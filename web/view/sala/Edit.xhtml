@@ -9,28 +9,33 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
+        <h:form>
+            <p:layout fullPage="true">  
 
-        <p:layout fullPage="true">  
-
-           <p:layoutUnit position="north" style="text-align:center" size="100"  resizable="true" closable="true" collapsible="true">  
+                <p:layoutUnit position="north" style="text-align:center" size="100"  resizable="true" closable="true" collapsible="true">  
                     <h:graphicImage value="resources/images/cmcc.png" />
                 </p:layoutUnit> 
 
 
+                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true">  
+                    <p:commandLink id="cmlDocente" action="/view/docente/List" immediate="true" value="Lista de Docentes" />  
+                    <br/>
+                    <p:commandLink id="cmlCentro" action="/view/centro/List" immediate="true" value="Lista de Centros" /> 
+                    <br/>
+                    <p:commandLink id="cmlEquipamento" action="/view/equipamento/List" immediate="true" value="Lista de Equipamentos" />    
+                    <br/>
+                    <p:separator/>
+                    <h:link outcome="/index" value="Gerenciar Dados"  />
+                    <p:separator/>
+                    <h:link outcome="/Calendario" value="Calendario"  />
+                    <p:separator/>  
+                </p:layoutUnit>  
 
-            <p:layoutUnit position="west" size="200" header="Left" resizable="true" closable="true" collapsible="true">  
-                <h:outputText value="West unit content." />  
-            </p:layoutUnit>  
 
-        
-
-            <p:layoutUnit position="center">  
-                <h:form>  
-
-                   
+                <p:layoutUnit position="center">  
 
                     <p:panel header="Editar Sala">
-                        
+
                         <p:panel>
                             <h:panelGrid columns="2">
                                 <h:outputLabel value="tamanho" for="tamanho_m2" />
@@ -43,25 +48,22 @@
                                 </h:selectOneMenu>
                             </h:panelGrid>
                         </p:panel>
-                        <p:panel>
-                            <h:commandLink action="#{salaController.update}" value="update"/>
-                        </p:panel>
+                        <p:separator/>
+                        <h:commandLink action="#{salaController.update}" value="Atualizar sala"/>
+                        <p:separator/>
+                        <h:commandLink action="#{salaController.prepareList}" value="Listar todas as salas" immediate="true"/>
+                        <p:separator/>
 
-                        <p:panel>
-                            <h:commandLink action="#{salaController.prepareList}" value="List" immediate="true"/>
-                        </p:panel>
-                     
                     </p:panel>
-                </h:form>  
 
-            </p:layoutUnit>  
+                </p:layoutUnit>  
 
-              <p:layoutUnit position="south" style="text-align:center" size="80"  resizable="true" closable="true" collapsible="true">  
+                <p:layoutUnit position="south" style="text-align:center" size="80"  resizable="true" closable="true" collapsible="true">  
                     <p:messages id="msgs" showDetail="true"/>   
                 </p:layoutUnit> 
 
-        </p:layout>  
-
+            </p:layout>  
+        </h:form>
     </h:body>
 
 </html>
