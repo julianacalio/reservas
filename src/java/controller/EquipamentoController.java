@@ -26,7 +26,7 @@ public class EquipamentoController implements Serializable {
     private Equipamento current;
     private DataModel items = null;
     @EJB
-    private facade.EquipamentoFacade ejbFacade;
+    private facade.EquipamentoFacade equipamentoFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private EquipamentoDataModel equipamentoDataModel;
@@ -36,7 +36,7 @@ public class EquipamentoController implements Serializable {
 
     public EquipamentoDataModel getEquipamentoDataModel() {
         if (equipamentoDataModel == null) {
-            List<Equipamento> equipamentos = ejbFacade.findAll();
+            List<Equipamento> equipamentos = equipamentoFacade.findAll();
             equipamentoDataModel = new EquipamentoDataModel(equipamentos);
         }
         return equipamentoDataModel;
@@ -55,7 +55,7 @@ public class EquipamentoController implements Serializable {
     }
 
     private EquipamentoFacade getFacade() {
-        return ejbFacade;
+        return equipamentoFacade;
     }
 
     public PaginationHelper getPagination() {
@@ -231,15 +231,15 @@ public class EquipamentoController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        return JsfUtil.getSelectItems(equipamentoFacade.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+        return JsfUtil.getSelectItems(equipamentoFacade.findAll(), true);
     }
 
     public Equipamento getEquipamento(java.lang.Long id) {
-        return ejbFacade.find(id);
+        return equipamentoFacade.find(id);
     }
 
     @FacesConverter(forClass = Equipamento.class)

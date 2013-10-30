@@ -27,7 +27,7 @@ public class CentroController implements Serializable {
     private DataModel items = null;
 
     @EJB
-    private facade.CentroFacade ejbFacade;
+    private facade.CentroFacade centroFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private CentroDataModel centroDataModel;
@@ -43,7 +43,7 @@ public class CentroController implements Serializable {
         return centroDataModel;
     }
 
-    public void setSalaDataModel(CentroDataModel centroDataModel) {
+    public void setCentroDataModel(CentroDataModel centroDataModel) {
         this.centroDataModel = centroDataModel;
     }
 
@@ -56,7 +56,7 @@ public class CentroController implements Serializable {
     }
 
     private CentroFacade getFacade() {
-        return ejbFacade;
+        return centroFacade;
     }
 
     public PaginationHelper getPagination() {
@@ -231,15 +231,15 @@ public class CentroController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        return JsfUtil.getSelectItems(centroFacade.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+        return JsfUtil.getSelectItems(centroFacade.findAll(), true);
     }
 
     public Centro getCentro(java.lang.Long id) {
-        return ejbFacade.find(id);
+        return centroFacade.find(id);
     }
 
     @FacesConverter(forClass = Centro.class)

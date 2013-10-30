@@ -5,12 +5,10 @@ import model.Recurso;
 
 
 import java.io.Serializable;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.ResourceBundle;
 import javax.ejb.EJB;
 
 
@@ -34,10 +32,6 @@ import org.primefaces.model.DefaultScheduleModel;
 
 import org.primefaces.model.ScheduleModel;
 
-/**
- *
- * @author André
- */
 @Named("recursoController")
 @SessionScoped
 public class RecursoController implements Serializable {
