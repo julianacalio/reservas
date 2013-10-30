@@ -49,9 +49,9 @@
                             </h:panelGrid>
                         </p:panel>
                         <p:separator/>
-                        <h:commandLink action="#{salaController.update}" value="Atualizar sala"/>
+                        <p:commandLink action="#{salaController.update}" value="Atualizar sala"  update="msgs"/>
                         <p:separator/>
-                        <h:commandLink action="#{salaController.prepareList}" value="Listar todas as salas" immediate="true"/>
+                        <p:commandLink action="#{salaController.prepareList}" value="Listar todas as salas" immediate="true"/>
                         <p:separator/>
 
                     </p:panel>

@@ -4,7 +4,6 @@ import facade.SalaFacade;
 import model.Sala;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
@@ -17,7 +16,6 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
-import org.hibernate.HibernateException;
 import org.hibernate.exception.ConstraintViolationException;
 import outros.SalaDataModel;
 
@@ -31,7 +29,7 @@ public class SalaController implements Serializable {
     private int selectedItemIndex;
 
     @EJB
-    private facade.SalaFacade ejbFacade;
+    private facade.SalaFacade salaFacade;
     private SalaDataModel salaDataModel;
 
     public SalaController() {
@@ -59,7 +57,7 @@ public class SalaController implements Serializable {
     }
 
     private SalaFacade getFacade() {
-        return ejbFacade;
+        return salaFacade;
     }
 
     public PaginationHelper getPagination() {
@@ -105,19 +103,18 @@ public class SalaController implements Serializable {
     public String create() {
         try {
             getFacade().save(current);
-            JsfUtil.addSuccessMessage("Sala Criada", ":" + current.toString());
+            JsfUtil.addSuccessMessage("Sala Criada: ", current.toString());
             current = null;
-            //return prepareCreate();
             return prepareList();
         } catch (EJBException ex) {
             if ((ex.getCausedByException() instanceof ConstraintViolationException)) {
-                JsfUtil.addErrorMessage("Não pode salvar uma sala com o mesmo número", current.toString());
+                JsfUtil.addErrorMessage("Não pode salvar uma sala com o mesmo número", current.getNumero());
             } else {
-                JsfUtil.addErrorMessage("PersistenceErrorOccured", null);
+                JsfUtil.addErrorMessage("Erro de Persistência", ex.getMessage());
             }
             return null;
         } catch (Exception e) {
-            JsfUtil.addErrorMessage("PersistenceErrorOccured", null);
+            JsfUtil.addErrorMessage("Erro de Persistência", e.getMessage());
             return null;
         }
     }
@@ -132,10 +129,17 @@ public class SalaController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage("Sala Atualizada", null);
-            return "View";
+            JsfUtil.addSuccessMessage("Sala Atualizada: ", current.getNumero());
+            return "Edit";
+        } catch (EJBException ex) {
+            if ((ex.getCausedByException() instanceof ConstraintViolationException)) {
+                JsfUtil.addErrorMessage("Não pode salvar uma sala com o mesmo número", current.getNumero());
+            } else {
+                JsfUtil.addErrorMessage("Erro de Persistência", ex.getMessage());
+            }
+            return null;
         } catch (Exception e) {
-            JsfUtil.addErrorMessage("PersistenceErrorOccured", null);
+            JsfUtil.addErrorMessage("Erro de Persistência", e.getMessage());
             return null;
         }
     }
@@ -166,19 +170,17 @@ public class SalaController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage("Sala Apagada", null);
+            JsfUtil.addSuccessMessage("Sala Apagada: ", current.getNumero());
             current = null;
         } catch (EJBException ex) {
             if (ex.getCausedByException() instanceof ConstraintViolationException) {
-
-                JsfUtil.addErrorMessage("Não pode deletar, esta sala ja tem uma reserva cadastrada", null);
+                JsfUtil.addErrorMessage("Não pode deletar ", "Esta sala já possui uma reserva cadastrada");
             } else {
-                JsfUtil.addErrorMessage("PersistenceErrorOccured", null);
+                JsfUtil.addErrorMessage("Não pode deletar ", ex.getMessage());
             }
 
-            //getFacade().closeSession();
         } catch (Exception e) {
-            JsfUtil.addErrorMessage("PersistenceErrorOccured", null);
+            JsfUtil.addErrorMessage("PersistenceErrorOccured", e.getMessage());
         }
     }
 
@@ -226,15 +228,15 @@ public class SalaController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        return JsfUtil.getSelectItems(salaFacade.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+        return JsfUtil.getSelectItems(salaFacade.findAll(), true);
     }
 
     public Sala getSala(java.lang.Long id) {
-        return ejbFacade.find(id);
+        return salaFacade.find(id);
     }
 
     @FacesConverter(forClass = Sala.class)

@@ -6,6 +6,7 @@ import facade.CentroFacade;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -15,6 +16,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import org.hibernate.exception.ConstraintViolationException;
 import outros.CentroDataModel;
 
 @Named("centroController")
@@ -23,7 +25,7 @@ public class CentroController implements Serializable {
 
     private Centro current;
     private DataModel items = null;
-    
+
     @EJB
     private facade.CentroFacade ejbFacade;
     private PaginationHelper pagination;
@@ -33,7 +35,7 @@ public class CentroController implements Serializable {
     public CentroController() {
     }
 
-     public CentroDataModel getCentroDataModel() {
+    public CentroDataModel getCentroDataModel() {
         if (centroDataModel == null) {
             List<Centro> centros = getFacade().findAll();
             centroDataModel = new CentroDataModel(centros);
@@ -44,7 +46,7 @@ public class CentroController implements Serializable {
     public void setSalaDataModel(CentroDataModel centroDataModel) {
         this.centroDataModel = centroDataModel;
     }
-    
+
     public Centro getSelected() {
         if (current == null) {
             current = new Centro();
@@ -92,16 +94,24 @@ public class CentroController implements Serializable {
     }
 
     public String create() {
+
         try {
             getFacade().save(current);
-            JsfUtil.addSuccessMessage("Centro Criado", null);
+            JsfUtil.addSuccessMessage("Centro Criado: ", current.getNome());
             current = null;
-             //return prepareCreate();
             return prepareList();
+        } catch (EJBException ex) {
+            if ((ex.getCausedByException() instanceof ConstraintViolationException)) {
+                JsfUtil.addErrorMessage("Não pode salvar uma centro com o mesmo nome", current.getNome());
+            } else {
+                JsfUtil.addErrorMessage("Erro de Persistência", ex.getMessage());
+            }
+            return null;
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e,"PersistenceErrorOccured");
+            JsfUtil.addErrorMessage("Erro de Persistência", e.getMessage());
             return null;
         }
+
     }
 
     public String prepareEdit() {
@@ -111,19 +121,28 @@ public class CentroController implements Serializable {
         return "Edit";
     }
 
-    public String teste(){
+    public String teste() {
         return "Edit";
     }
-    
+
     public String update() {
+
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage("Centro Atualizado", null);
-            return "View";
+            JsfUtil.addSuccessMessage("Centro Atualizado: ", current.getNome());
+            return "Edit";
+        } catch (EJBException ex) {
+            if ((ex.getCausedByException() instanceof ConstraintViolationException)) {
+                JsfUtil.addErrorMessage("Não pode salvar um centro com o mesmo nome: ", current.getNome());
+            } else {
+                JsfUtil.addErrorMessage("Erro de Persistência", ex.getMessage());
+            }
+            return null;
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
+            JsfUtil.addErrorMessage("Erro de Persistência", e.getMessage());
             return null;
         }
+
     }
 
     public String destroy() {
@@ -150,13 +169,22 @@ public class CentroController implements Serializable {
     }
 
     private void performDestroy() {
+
         try {
             getFacade().remove(current);
+            JsfUtil.addSuccessMessage("Centro Apagado: ", current.getNome());
             current = null;
-            JsfUtil.addSuccessMessage("Centro Deletado", null);
+        } catch (EJBException ex) {
+            if (ex.getCausedByException() instanceof ConstraintViolationException) {
+                JsfUtil.addErrorMessage("Não pode deletar ", "Esta centro já possui uma reserva cadastrada");
+            } else {
+                JsfUtil.addErrorMessage("Não pode deletar ", ex.getMessage());
+            }
+
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
+            JsfUtil.addErrorMessage("PersistenceErrorOccured", e.getMessage());
         }
+
     }
 
     private void updateCurrentItem() {
@@ -252,15 +280,11 @@ public class CentroController implements Serializable {
             }
         }
     }
-    
-    
-    
-    
-    public static void main(String Args[]){
-        
-        Centro c= new Centro();
+
+    public static void main(String Args[]) {
+
+        Centro c = new Centro();
         c.setNome("CMCC");
-        
-        
+
     }
 }

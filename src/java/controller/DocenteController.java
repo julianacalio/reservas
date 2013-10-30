@@ -82,11 +82,17 @@ public class DocenteController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
+            JsfUtil.addSuccessMessage("Docente deletado: ", current.getNome());
             current = null;
-            JsfUtil.addSuccessMessage("Docente deletado", null);
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "Ocorreu um erro de persistência");
+        } catch (EJBException ex) {
+            if (ex.getCausedByException() instanceof ConstraintViolationException) {
+                JsfUtil.addErrorMessage("Não pode deletar ", "Este docente já possui uma reserva cadastrada");
+            } else {
+                JsfUtil.addErrorMessage("Não pode deletar ", ex.getMessage());
+            }
 
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage("PersistenceErrorOccured", e.getMessage());
         }
     }
 
@@ -115,19 +121,19 @@ public class DocenteController implements Serializable {
             getFacade().save(current);
 
             //ejbFacade.merge(docente);
-            JsfUtil.addSuccessMessage("Docente Criado", current.getNome());
-            current = null; // iniciala a variavel para limpar os dados dos componentes
+            JsfUtil.addSuccessMessage("Docente Criado: ", current.getNome());
+            current = null; // inicializa a variavel para limpar os dados dos componentes
             //return prepareCreate();
             return prepareList();
         } catch (EJBException ex) {
             if ((ex.getCausedByException() instanceof ConstraintViolationException)) {
-                JsfUtil.addErrorMessage("Não pode salvar uma docente com o mesmo número de matrícula", current.getMatricula());
+                JsfUtil.addErrorMessage("Não pode salvar um docente com o mesmo número de matrícula", current.getMatricula());
             } else {
-                JsfUtil.addErrorMessage("PersistenceErrorOccured", null);
+                JsfUtil.addErrorMessage("Erro de Persistência", ex.getMessage());
             }
             return null;
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "Ocorreu um erro de persistência");
+            JsfUtil.addErrorMessage("Erro de Persistência", e.getMessage());
             return null;
         }
     }
@@ -151,13 +157,13 @@ public class DocenteController implements Serializable {
             return "Edit";
         } catch (EJBException ex) {
             if ((ex.getCausedByException() instanceof ConstraintViolationException)) {
-                JsfUtil.addErrorMessage("Não pode salvar uma docente com o mesmo número de matrícula", current.getMatricula());
+                JsfUtil.addErrorMessage("Não pode salvar um docente com o mesmo número de matrícula", current.getMatricula());
             } else {
-                JsfUtil.addErrorMessage("PersistenceErrorOccured", null);
+                JsfUtil.addErrorMessage("Erro de Persistência", ex.getMessage());
             }
             return null;
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "Ocorreu um erro de persistência");
+            JsfUtil.addErrorMessage("Erro de Persistência", e.getMessage());
             return null;
         }
     }

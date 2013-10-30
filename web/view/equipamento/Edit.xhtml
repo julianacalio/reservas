@@ -47,8 +47,8 @@
                         <h:panelGrid columns="2">
                             <h:outputLabel value="patrimonio" for="patrimonio" />
                             <h:inputText id="patrimonio" value="#{equipamentoController.selected.patrimonio}" title="patrimonio" />
-                            <h:outputLabel value="#{bundle.EditEquipamentoLabel_descricao}" for="descricao" />
-                            <h:inputText id="descricao" value="#{equipamentoController.selected.descricao}" title="descrcao" />
+                            <h:outputLabel value="descrição" for="descricao" />
+                            <h:inputText id="descricao" value="#{equipamentoController.selected.descricao}" title="descricao" />
                             <h:outputLabel value="id" for="id" />
                             <h:inputText id="id" value="#{equipamentoController.selected.id}" title="id" />
                             <h:outputLabel value="centro" for="centro" />
@@ -59,11 +59,11 @@
 
                         <p:separator/>
 
-                        <h:commandLink action="#{equipamentoController.update}" value="Atualizar Equipamento"/>
+                        <p:commandLink action="#{equipamentoController.update}" value="Atualizar Equipamento"/>
 
                         <p:separator/>
 
-                        <h:commandLink action="#{equipamentoController.prepareList}" value="Mostrar todos os equipamentos" immediate="true"/>
+                        <p:commandLink action="#{equipamentoController.prepareList}" value="Mostrar todos os equipamentos" immediate="true"/>
                     </p:panel>
                 </p:layoutUnit>  
 

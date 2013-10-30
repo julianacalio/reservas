@@ -6,6 +6,7 @@ import model.Equipamento;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -80,10 +81,10 @@ public class EquipamentoController implements Serializable {
         return "List";
     }
 
-    public void recreateEquipamento(){
+    public void recreateEquipamento() {
         current = null;
     }
-    
+
     public String prepareView() {
         current = (Equipamento) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
@@ -97,39 +98,56 @@ public class EquipamentoController implements Serializable {
     }
 
     public String create() {
+
         try {
             getFacade().save(current);
-            JsfUtil.addSuccessMessage("Equipamento Criado", null);
+            JsfUtil.addSuccessMessage("Equipamento Criado: ", current.getDescricao());
             current = null;
-            //return prepareCreate();
             return prepareList();
+        } catch (EJBException ex) {
+            if ((ex.getCausedByException() instanceof ConstraintViolationException)) {
+                JsfUtil.addErrorMessage("Não pode salvar o equipamento com o mesmo patrimônio ", current.getDescricao());
+            } else {
+                JsfUtil.addErrorMessage("Erro de Persistência", ex.getMessage());
+            }
+            return null;
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
+            JsfUtil.addErrorMessage("Erro de Persistência", e.getMessage());
             return null;
         }
+
     }
 
     public String prepareEdit() {
-         current = (Equipamento) equipamentoDataModel.getRowData();
+        current = (Equipamento) equipamentoDataModel.getRowData();
         //current = (Equipamento) getItems().getRowData();
         //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
 
     public String update() {
+
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage("Equipamento Atualizado", null);
+            JsfUtil.addSuccessMessage("Equipamento Atualizado: ", current.getDescricao());
             return "Edit";
+        } catch (EJBException ex) {
+            if ((ex.getCausedByException() instanceof ConstraintViolationException)) {
+                JsfUtil.addErrorMessage("Não pode salvar um equipamento com o mesmo patrimônio", current.getPatrimonio());
+            } else {
+                JsfUtil.addErrorMessage("Erro de Persistência", ex.getMessage());
+            }
+            return null;
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
+            JsfUtil.addErrorMessage("Erro de Persistência", e.getMessage());
             return null;
         }
+
     }
 
     public String destroy() {
         current = (Equipamento) equipamentoDataModel.getRowData();
-       // current = (Equipamento) getItems().getRowData();
+        // current = (Equipamento) getItems().getRowData();
         //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
@@ -151,16 +169,22 @@ public class EquipamentoController implements Serializable {
     }
 
     private void performDestroy() {
+
         try {
             getFacade().remove(current);
+            JsfUtil.addSuccessMessage("Equipamento Apagado: ", current.getDescricao());
             current = null;
-            JsfUtil.addSuccessMessage("EquipamentoDeleted", null);
-        } catch (ConstraintViolationException consExc) {
-            JsfUtil.addErrorMessage(consExc, "Este Recurso ja está associado a uma reserva. Delete a reserva antes de apaga-lo");
+        } catch (EJBException ex) {
+            if (ex.getCausedByException() instanceof ConstraintViolationException) {
+                JsfUtil.addErrorMessage("Não pode deletar ", "Este equipamento já possui uma reserva cadastrada");
+            } else {
+                JsfUtil.addErrorMessage("Não pode deletar ", ex.getMessage());
+            }
+
         } catch (Exception e) {
-            current = null;
-            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
+            JsfUtil.addErrorMessage("PersistenceErrorOccured", e.getMessage());
         }
+
     }
 
     private void updateCurrentItem() {

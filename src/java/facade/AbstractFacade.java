@@ -12,7 +12,6 @@ public abstract class AbstractFacade<T> {
     private Class<T> entityClass;
 
     //private Session session;
-
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
@@ -31,8 +30,11 @@ public abstract class AbstractFacade<T> {
         Session session = getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         session.update(entity);
-        transaction.commit();
-        session.close();
+        try {
+            transaction.commit();
+        } finally {
+            session.close();
+        }
     }
 
     public T merge(T entity) {
@@ -51,8 +53,11 @@ public abstract class AbstractFacade<T> {
         Session session = getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         session.delete(entity);
-        transaction.commit();
-        session.close();
+        try {
+            transaction.commit();
+        } finally {
+            session.close();
+        }
     }
 
     public T find(Long id) {
@@ -90,9 +95,6 @@ public abstract class AbstractFacade<T> {
         session.close();
         return count;
     }
-    
-    public void closeSession(){
-        getSessionFactory().close();
-        int a = 2;
-    }
+
+  
 }
