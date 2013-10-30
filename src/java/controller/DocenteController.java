@@ -16,7 +16,7 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import model.Docente;
 import org.hibernate.exception.ConstraintViolationException;
-import outros.DocenteDataModel;
+import util.DocenteDataModel;
 
 /**
  *

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
@@ -6,41 +6,69 @@
       xmlns:f="http://java.sun.com/jsf/core">
 
     <h:head>
-        <title>Facelet Title</title>
+
     </h:head>
     <h:body>
-        <h:outputText value="Editar TA"></h:outputText>
 
-        <h:panelGroup id="messagePanel" layout="block">
-            <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-        </h:panelGroup>
         <h:form>
-            <h:panelGrid columns="2">
-                
-                <h:outputLabel value="#{bundle.EditTALabel_centro}" for="centro" />
-                <h:selectOneMenu id="centro" value="#{tAController.selected.centro}" title="centro" >
-                    <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
-                </h:selectOneMenu>
-                <h:outputLabel value="matricula" for="matricula" />
-                <h:inputText id="matricula" value="#{tAController.selected.matricula}" title="matricula" />
-               
-                <h:outputLabel value="email" for="email" />
-                <h:inputText id="email" value="#{tAController.selected.email}" title="email" />
-                <h:outputLabel value="nome" for="nome" />
-                <h:inputText id="nome" value="#{tAController.selected.nome}" title="nome" />
-                
-            </h:panelGrid>
-            <h:commandLink action="#{tAController.update}" value="save"/>
-            <br />
-            <br />
-            <h:link outcome="View" value="View"/>
-            <br />
-            <h:commandLink action="#{tAController.prepareList}" value="mostrar todos os TAs" immediate="true"/>
-            <br />
-            <br />
-            <h:link outcome="/index" value="index" />
-        </h:form>
 
+            <h:outputStylesheet library="css" name="style.css"  />
+
+            <p:layout fullPage="true">  
+
+                <p:layoutUnit style="text-align:center" position="north" size="100"  resizable="true" closable="true" collapsible="true" >  
+                    <h:graphicImage value="resources/images/cmcc.png" />
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
+                    <p:commandLink id="linkListCentro" action="/view/centro/List" immediate="true" value="Lista de Centros"/>  
+                    <br/>
+                    <p:commandLink id="linkListDocente" action="/view/docente/List" immediate="true" value="Lista de Docentes"/>  
+                    <br/>
+                    <p:commandLink id="linkListSala" action="/view/sala/List"  value="Lista de Salas" immediate="true"/>  
+                    <br/>
+                    <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" immediate="true" value="Lista de Equipamentos"/>  
+                    <br/>
+                    <p:separator/>
+                    <h:link outcome="/index" value="Gerenciar Dados"  />
+                    <p:separator/>
+                    <h:link outcome="/Calendario" value="Calendario"  />
+                    <p:separator/>
+                </p:layoutUnit>    
+
+
+                <p:layoutUnit position="center">  
+
+                    <p:panel header="Editar Dados do Técnico Administrativo" style=" text-align: left">
+                        <h:panelGrid columns="2" id="pnGrCriarDocente" style="text-align: left"  >
+                            <h:outputLabel value="Nome" for="nome" />
+                            <h:inputText id="nome" value="#{tAController.selected.nome}" title="nome" />
+                            <h:outputLabel value="Matrícula" for="matricula" />
+                            <h:inputText id="matricula" value="#{tAController.selected.matricula}" title="matricula"  />
+                            <h:outputLabel value="Centro" for="centro"  />
+                            <h:selectOneMenu id="centro" value="#{tAController.selected.centro}" title="centro" required="true" requiredMessage="Selecione um Centro para este Docente"  >
+                                <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
+                            </h:selectOneMenu>
+                            <h:outputLabel value="email" for="email"  />
+                            <h:inputText id="email" value="#{tAController.selected.email}" title="email" />
+                        </h:panelGrid>
+
+                        <p:separator/>
+                        <p:commandLink action="#{tAController.update()}" value="Atualizar técnico adminstrativo" update="msgs"/>
+                        <p:separator/>
+                        <p:commandLink action="#{tAController.prepareList()}" value="Mostrar todos técnicos Adminstrativos" immediate="true" />
+                    </p:panel>
+
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="south" style="text-align:center" size="80"  resizable="true" closable="true" collapsible="true">  
+                    <p:messages id="msgs" showDetail="true"/>   
+                </p:layoutUnit>  
+
+            </p:layout>  
+
+        </h:form>
     </h:body>
 
 </html>
+

@@ -1,81 +1,139 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
-      <h:head>
+
+
+    <h:head>
         <title>Facelet Title</title>
     </h:head>
-    <h:body>
-            <h:outputText value="Listar todos os TAs"></h:outputText>
-      
-            <h:form >
-                <h:panelGroup id="messagePanel" layout="block">
-                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                </h:panelGroup>
-                <h:outputText escape="false" value="Lista de TAs vazia" rendered="#{tAController.items.rowCount == 0}"/>
-                <h:panelGroup rendered="#{tAController.items.rowCount > 0}">
-                    <h:outputText value="#{tAController.pagination.pageFirstItem + 1}..#{tAController.pagination.pageLastItem + 1}/#{tAController.pagination.itemsCount}"/>&nbsp;
-                    <h:commandLink action="#{tAController.previous}" value="Previous #{tAController.pagination.pageSize}" rendered="#{tAController.pagination.hasPreviousPage}"/>&nbsp;
-                    <h:commandLink action="#{tAController.next}" value="Next #{tAController.pagination.pageSize}" rendered="#{tAController.pagination.hasNextPage}"/>&nbsp;
-                    <h:dataTable value="#{tAController.items}" var="item"  >
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="id"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="centro"/>
-                            </f:facet>
-                            <h:outputText value="#{item.centro}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="matricula"/>
-                            </f:facet>
-                            <h:outputText value="#{item.matricula}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="id"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="email"/>
-                            </f:facet>
-                            <h:outputText value="#{item.email}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="nome"/>
-                            </f:facet>
-                            <h:outputText value="#{item.nome}"/>
-                        </h:column>
-                        
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
-                            <h:commandLink action="#{tAController.prepareView}" value="View"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{tAController.prepareEdit}" value="edit"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{tAController.destroy}" value="destroy"/>
-                        </h:column>
-                    </h:dataTable>
-                </h:panelGroup>
-                <br />
-                <h:commandLink action="#{tAController.prepareCreate}" value="create"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="index"/>
-            </h:form>
-       </h:body>
+    <h:body >
 
+        <h:outputStylesheet library="css" name="style.css"  />
+
+        <h:form id="form1"> 
+            <p:layout fullPage="true">  
+
+                <p:layoutUnit position="north" style="text-align:center" size="100"  resizable="true" closable="true" collapsible="true">  
+                    <h:graphicImage value="resources/images/cmcc.png" >  </h:graphicImage>
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
+                    <p:commandLink id="linkListCentro" action="/view/centro/List" immediate="true" value="Lista de Centros"/>  
+                    <br/>
+                    <p:commandLink id="linkListDocente" action="/view/docente/List" immediate="true" value="Lista de Docentes"/>  
+                    <br/>
+                    <p:commandLink id="linkListSala" action="/view/sala/List"  value="Lista de Salas" immediate="true"/>  
+                    <br/>
+                    <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" immediate="true" value="Lista de Equipamentos"/>  
+                    <br/>
+                    <p:separator/>
+                    <h:link outcome="/index" value="Gerenciar Dados"  />
+                    <p:separator/>
+                    <h:link outcome="/Calendario" value="Calendario"  />
+                    <p:separator/>
+                </p:layoutUnit>   
+
+
+                <p:layoutUnit position="center" >  
+
+                    <p:panel >
+                        <p:dataTable id="db" var="item"   value="#{tAController.TADataModel}" selectionMode="single"  paginator="true" rows="10"  
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                     rowsPerPageTemplate="5,10,15" style="text-align: center">  
+                            <f:facet name="header">  
+                                Lista de Técnicos Adminstrativos  
+                            </f:facet>   >
+                            <p:column >
+                                <f:facet name="header">
+                                    <h:outputText value="id"/>
+                                </f:facet>
+                                <h:outputText value="#{item.id}"/>
+                            </p:column>
+
+                            <p:column headerText="nome" sortBy="#{item.nome}"  >  
+                                <f:facet name="header">
+                                    <h:outputText value="Nome"/>
+                                </f:facet>
+                                <h:outputText value="#{item.nome}"/>
+                            </p:column>  
+
+                            <p:column headerText="matricula">  
+                                <f:facet name="header">
+                                    <h:outputText value="Matrícula"/>
+                                </f:facet>
+                                <h:outputText value="#{item.matricula}"/>
+                            </p:column>  
+
+                            <p:column headerText="centro">  
+                                <f:facet name="header">
+                                    <h:outputText value="Centro"/>
+                                </f:facet>
+                                <h:outputText value="#{item.centro.nome}"/>
+                            </p:column>  
+
+                            <p:column headerText="email">  
+                                <f:facet name="header">
+                                    <h:outputText value="email"/>
+                                </f:facet>
+                                <h:outputText value="#{item.email}"/>
+                            </p:column>
+
+                            <p:column headerText="">
+                                <f:facet name="header">
+                                    <h:outputText value=""/>
+                                </f:facet>
+                                <p:commandLink action="#{tAController.prepareEdit()}" value="Editar" immediate="true"  />
+                            </p:column>
+
+                            <p:column headerText="">
+                                <f:facet name="header">
+                                    <h:outputText value=""/>
+                                </f:facet>
+                                <p:commandLink action="#{tAController.destroy()}" value="Deletar" immediate="true" update="db,:form1:msgs"/>
+                            </p:column>
+
+                        </p:dataTable> 
+                        <br/>
+                        <br/>
+                    </p:panel>
+                    <p:panel header="Criar Novo Docente"  >
+                        <p:panel footer="" style="display: block; text-align: left ">
+                            <h:panelGrid columns="5" id="pnGrCriarDocente" style="display: block; text-align: left">
+                                <h:outputLabel value="Nome" for="nome" />
+                                <h:inputText id="nome" value="#{tAController.selected.nome}" title="nome" />
+                                <h:outputLabel value="Matrícula" for="matricula" />
+                                <h:inputText id="matricula" value="#{tAController.selected.matricula}" title="matricula" />
+                                <br/>
+                                <h:outputLabel value="Centro" for="centro"  />
+                                <h:selectOneMenu id="centro" value="#{tAController.selected.centro}" title="centro" required="true" requiredMessage="Selecione um Centro para este Docente"  >
+                                    <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
+                                </h:selectOneMenu>
+                                <h:outputLabel value="email" for="email"  />
+                                <h:inputText id="email" value="#{tAController.selected.email}" title="email" />
+
+                            </h:panelGrid>
+                            <p:separator/>
+                            <p:commandLink action="#{tAController.create()}" value="Salvar"  update="msgs,db,pnGrCriarDocente"  /> 
+
+                        </p:panel>
+
+                    </p:panel>
+
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="south" style="text-align:center" size="80"  resizable="true" closable="true" collapsible="true">  
+                    <p:messages id="msgs" showDetail="true"/>   
+                </p:layoutUnit>  
+
+            </p:layout>  
+
+        </h:form> 
+
+
+    </h:body>
 </html>
+

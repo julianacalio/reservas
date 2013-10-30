@@ -15,22 +15,21 @@
         <h:form id="form1">
             <p:layout fullPage="true">  
 
-                 <p:layoutUnit position="north" style="text-align:center" size="100"  resizable="true" closable="true" collapsible="true">  
+                <p:layoutUnit position="north" style="text-align:center" size="100"  resizable="true" closable="true" collapsible="true">  
                     <h:graphicImage value="resources/images/cmcc.png" >  </h:graphicImage>
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
-                    <p:commandLink id="linkDocente" action="/view/docente/List" immediate="true" value="Lista de Docentes" />    
-
+                    <p:commandLink id="linkListCentro" action="/view/centro/List" immediate="true" value="Lista de Centros"/>  
                     <br/>
-                    <p:commandLink id="linkCentro" action="/view/centro/List" immediate="true" value="Lista de Centros" />  
-
+                    <p:commandLink id="linkListDocente" action="/view/docente/List" immediate="true" value="Lista de Docentes"/>  
                     <br/>
-                    <p:commandLink id="linkSala" action="/view/sala/List" immediate="true" value="Lista de Salas" />  
-
+                    <p:commandLink id="linkListTA" action="/view/TA/List" immediate="true" value="Lista de TAs"/> 
+                    <br/>
+                    <p:commandLink id="linkListSala" action="/view/sala/List"  value="Lista de Salas" immediate="true"/>  
+                    <br/>
                     <p:separator/>
                     <h:link outcome="/index" value="Gerenciar Dados"  />
-
                     <p:separator/>
                     <h:link outcome="/Calendario" value="Calendario"  />
                     <p:separator/>

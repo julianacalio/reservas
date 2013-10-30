@@ -3,10 +3,10 @@ package controller;
 import facade.TAFacade;
 import model.TA;
 
-
 import java.io.Serializable;
-import java.util.ResourceBundle;
+import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -16,6 +16,8 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import org.hibernate.exception.ConstraintViolationException;
+import util.TADataModel;
 
 @Named("tAController")
 @SessionScoped
@@ -24,11 +26,24 @@ public class TAController implements Serializable {
     private TA current;
     private DataModel items = null;
     @EJB
-    private facade.TAFacade ejbFacade;
+    private facade.TAFacade taFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private TADataModel taDataModel;
 
     public TAController() {
+    }
+
+    public TADataModel getTADataModel() {
+        if (taDataModel == null) {
+            List<TA> tas = getFacade().findAll();
+            taDataModel = new TADataModel(tas);
+        }
+        return taDataModel;
+    }
+
+    public void setTADataModel(TADataModel taDataModel) {
+        this.taDataModel = taDataModel;
     }
 
     public TA getSelected() {
@@ -40,7 +55,7 @@ public class TAController implements Serializable {
     }
 
     private TAFacade getFacade() {
-        return ejbFacade;
+        return taFacade;
     }
 
     public PaginationHelper getPagination() {
@@ -79,39 +94,61 @@ public class TAController implements Serializable {
 
     public String create() {
         try {
+
             getFacade().save(current);
-            JsfUtil.addSuccessMessage("TACreated", null);
-            return prepareCreate();
+
+            //ejbFacade.merge(docente);
+            JsfUtil.addSuccessMessage("Técnico Administrativo Criado: ", current.getNome());
+            current = null; // inicializa a variavel para limpar os dados dos componentes
+            //return prepareCreate();
+            return prepareList();
+        } catch (EJBException ex) {
+            if ((ex.getCausedByException() instanceof ConstraintViolationException)) {
+                JsfUtil.addErrorMessage("Não pode salvar um técnico administrativo com o mesmo número de matrícula", current.getMatricula());
+            } else {
+                JsfUtil.addErrorMessage("Erro de Persistência", ex.getMessage());
+            }
+            return null;
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e,"PersistenceErrorOccured");
+            JsfUtil.addErrorMessage("Erro de Persistência", e.getMessage());
             return null;
         }
     }
 
     public String prepareEdit() {
-        current = (TA) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        current = (TA) taDataModel.getRowData();
+//        current = (TA) getItems().getRowData();
+//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
 
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage("TAUpdated", null);
-            return "View";
+            JsfUtil.addSuccessMessage("Técnico Administrativo Atualizado", current.getNome());
+            //return "View";
+            return "Edit";
+        } catch (EJBException ex) {
+            if ((ex.getCausedByException() instanceof ConstraintViolationException)) {
+                JsfUtil.addErrorMessage("Não pode salvar um técnico adiminstrativo com o mesmo número de matrícula", current.getMatricula());
+            } else {
+                JsfUtil.addErrorMessage("Erro de Persistência", ex.getMessage());
+            }
+            return null;
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
+            JsfUtil.addErrorMessage("Erro de Persistência", e.getMessage());
             return null;
         }
     }
 
     public String destroy() {
-        current = (TA) getItems().getRowData();
+        current = (TA) taDataModel.getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
         recreateModel();
         return "List";
+
     }
 
     public String destroyAndView() {
@@ -130,9 +167,17 @@ public class TAController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage("TADeleted", null);
+            JsfUtil.addSuccessMessage("Técnico Administrativo deletado: ", current.getNome());
+            current = null;
+        } catch (EJBException ex) {
+            if (ex.getCausedByException() instanceof ConstraintViolationException) {
+                JsfUtil.addErrorMessage("Não pode deletar ", "Este Técnico Administrativos já possui uma reserva cadastrada");
+            } else {
+                JsfUtil.addErrorMessage("Não pode deletar ", ex.getMessage());
+            }
+
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
+            JsfUtil.addErrorMessage("PersistenceErrorOccured", e.getMessage());
         }
     }
 
@@ -160,6 +205,7 @@ public class TAController implements Serializable {
 
     private void recreateModel() {
         items = null;
+        taDataModel = null;
     }
 
     private void recreatePagination() {
@@ -179,15 +225,15 @@ public class TAController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        return JsfUtil.getSelectItems(taFacade.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+        return JsfUtil.getSelectItems(taFacade.findAll(), true);
     }
 
     public TA getTA(java.lang.Long id) {
-        return ejbFacade.find(id);
+        return taFacade.find(id);
     }
 
     @FacesConverter(forClass = TA.class)

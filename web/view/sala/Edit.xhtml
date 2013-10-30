@@ -18,17 +18,19 @@
 
 
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true">  
-                    <p:commandLink id="cmlDocente" action="/view/docente/List" immediate="true" value="Lista de Docentes" />  
+                    <p:commandLink id="linkListCentro" action="/view/centro/List" immediate="true" value="Lista de Centros"/>  
                     <br/>
-                    <p:commandLink id="cmlCentro" action="/view/centro/List" immediate="true" value="Lista de Centros" /> 
+                    <p:commandLink id="linkListDocente" action="/view/docente/List" immediate="true" value="Lista de Docentes"/>  
                     <br/>
-                    <p:commandLink id="cmlEquipamento" action="/view/equipamento/List" immediate="true" value="Lista de Equipamentos" />    
+                    <p:commandLink id="linkListTA" action="/view/TA/List" immediate="true" value="Lista de TAs"/>  
+                    <br/>
+                    <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" immediate="true" value="Lista de Equipamentos"/>  
                     <br/>
                     <p:separator/>
                     <h:link outcome="/index" value="Gerenciar Dados"  />
                     <p:separator/>
                     <h:link outcome="/Calendario" value="Calendario"  />
-                    <p:separator/>  
+                    <p:separator/> 
                 </p:layoutUnit>  
 
 

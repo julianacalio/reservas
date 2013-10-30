@@ -15,28 +15,22 @@
             <p:layout fullPage="true">  
 
                 <p:layoutUnit style="text-align:center" position="north" size="100"  resizable="true" closable="true" collapsible="true" >  
-                    <!--                    <div style="text-align: center " ><h:outputText value="Gerenciamento de Recursos" style ="font-weight:bold"  /></div>-->
+
                     <h:graphicImage value="resources/images/cmcc.png" />
 
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
-                    <p:commandLink id="linkListSala" action="/view/sala/List" >  
-                        <h:outputText value="Lista de Salas" />  
-                    </p:commandLink> 
+                    <p:commandLink id="linkListDocente" action="/view/docente/List" immediate="true" value="Lista de Docentes"/>  
                     <br/>
-                    <p:commandLink id="linkListCentro" action="/view/docente/List" >  
-                        <h:outputText value="Lista de Docentes" />  
-                    </p:commandLink> 
+                    <p:commandLink id="linkListTA" action="/view/TA/List" immediate="true" value="Lista de TAs"/>  
                     <br/>
-                    <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" >  
-                        <h:outputText value="Lista de Equipamentos" />  
-                    </p:commandLink>
+                    <p:commandLink id="linkListSala" action="/view/sala/List"  value="Lista de Salas" immediate="true"/>  
                     <br/>
-
+                    <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" immediate="true" value="Lista de Equipamentos"/>  
+                    <br/>
                     <p:separator/>
                     <h:link outcome="/index" value="Gerenciar Dados"  />
-
                     <p:separator/>
                     <h:link outcome="/Calendario" value="Calendario"  />
                     <p:separator/>
@@ -51,10 +45,10 @@
 
                     </h:panelGrid>
                     <p:separator/>
-                    <h:commandLink action="#{centroController.update}" value="Atualizar centro"/>
+                    <p:commandLink action="#{centroController.update}" value="Atualizar centro"/>
                     <p:separator/>
 
-                    <h:commandLink action="#{centroController.prepareList}" value="Mostrar todos os centros" immediate="true"/>
+                    <p:commandLink action="#{centroController.prepareList}" value="Mostrar todos os centros" immediate="true"/>
 
                 </p:layoutUnit>
 

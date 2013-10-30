@@ -5,15 +5,15 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
-        <title>JSF Tutorial!</title>
+
+        <title>Calendario de Reservas de Salas e Equipamentos</title>
 
     </h:head>
     <h:body>
         <h:outputStylesheet library="css" name="style.css"  />
         Hello from Facelets
         <br />
-        <!--h:link outcome="/view/docente/List" value="Página de boas-vindas do Primefaces" /-->
+
         <br/>
         <h:form>
 
@@ -32,27 +32,27 @@
                     </h3>
                 </p:layoutUnit>  
 
-<!--                <p:layoutUnit position="east" size="200" header="Right" resizable="true" closable="true" collapsible="true">  
-
-                </p:layoutUnit>  
-
-                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="false" closable="true" collapsible="true" effect="drop">  
-
-                </p:layoutUnit> -->
 
                 <p:layoutUnit position="center" >  
                     <p:panel style="display: block; text-align: center">
+
+                        <p:commandLink id="linkCentro" action= "/view/centro/List"   >  
+                            <p:commandButton value="Centros" id="btnCentro" style="width: 160px"/>
+                        </p:commandLink>
+
+                        <p:separator/>
+
                         <p:commandLink id="linkDocente" action= "/view/docente/List"   >  
-                            <p:commandButton value="Docente" id="btnDocente" style="width: 160px">
+                            <p:commandButton value="Docente" id="btnDocente"  style="width: 160px" >
                                 <!--  <h:graphicImage value="resources/images/book2.png" />  -->
                             </p:commandButton>
                         </p:commandLink>
 
                         <p:separator/>
 
-                        <p:commandLink id="linkCentro" action= "/view/centro/List"   >  
-                            <p:commandButton value="Centros" id="btnCentro" style="width: 160px"/>
-                        </p:commandLink>
+                        <p:commandLink id="linkTA" action= "/view/TA/List"   >  
+                            <p:commandButton value="TAs" id="btnTA" style="width: 160px"/>
+                        </p:commandLink> 
 
                         <p:separator/>
 

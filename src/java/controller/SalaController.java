@@ -17,7 +17,7 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import org.hibernate.exception.ConstraintViolationException;
-import outros.SalaDataModel;
+import util.SalaDataModel;
 
 @Named(value = "salaController")
 @SessionScoped

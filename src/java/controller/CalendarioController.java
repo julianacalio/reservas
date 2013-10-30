@@ -35,8 +35,8 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleModel;
 
 import org.primefaces.model.ScheduleModel;
-import outros.EquipamentoDataModel;
-import outros.SalaDataModel;
+import util.EquipamentoDataModel;
+import util.SalaDataModel;
 
 @Named("calendarioController")
 @SessionScoped
@@ -63,6 +63,7 @@ public class CalendarioController implements Serializable {
     List<Pessoa> pessoas;
     private EquipamentoDataModel equipamentoDataModel;
     private SalaDataModel salaDataModel;
+    
 
     public CalendarioController() {
 
@@ -156,12 +157,14 @@ public class CalendarioController implements Serializable {
     }
 
     public Map<Equipamento, Equipamento> getEquipamentos() {
-
+        
+        
+        
         equips = new HashMap<Equipamento, Equipamento>();
         List<Equipamento> e;
         //verifica se existe alguma reserva antes de procurar os equipamentos livres
         if (reserva != null && reserva.getInicio() != null && reserva.getFim() != null) {
-            e = getEquipamentosLivres();
+            e = getEquipamentosLivres(reserva);
         } else {
             e = equipamentoFacade.findAll();
         }
@@ -321,13 +324,13 @@ public class CalendarioController implements Serializable {
 
     public List<Reserva> getReservasOcupadas(Reserva reserva, List<Equipamento> equipamentos) {
 
-        // Verifica Disponibilidade da reserva principal
+        // Verifica Disponibilidade do recurso na reserva principal
         List<Reserva> reservas = reservaFacade.findBetween(reserva.getInicio(), reserva.getFim(), reserva.getRecurso());
 
         if (equipamentos == null) {
             equipamentos = new ArrayList<Equipamento>();
         }
-        // Verifica disponibilidade das reservas adicionais
+        // Verifica disponibilidade dos recursos adicionais
         for (int i = 0; i < equipamentos.size(); i++) {
             List<Reserva> reservasEquipamentos = reservaFacade.findBetween(reserva.getInicio(), reserva.getFim(), equipamentos.get(i));
             reservas.addAll(reservasEquipamentos);
@@ -664,7 +667,7 @@ public class CalendarioController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        List<Recurso> recursos = recursoFacade.findAll();
+       
         return JsfUtil.getSelectItems(recursoFacade.findAll(), true);
     }
 
@@ -672,7 +675,7 @@ public class CalendarioController implements Serializable {
         return recursoFacade.find(id);
     }
 
-    private List<Equipamento> getEquipamentosLivres() {
+    private List<Equipamento> getEquipamentosLivres(Reserva reserva) {
 
         List<Equipamento> equipamentosLivres = equipamentoFacade.findAll();
         if (reserva.getRecurso() instanceof Equipamento) {

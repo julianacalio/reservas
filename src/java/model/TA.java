@@ -7,9 +7,6 @@ package model;
 import java.io.Serializable;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 /**
  *
@@ -20,7 +17,6 @@ import javax.persistence.Id;
 public class TA extends Servidor implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
 
     @Override
     public int hashCode() {
@@ -44,7 +40,6 @@ public class TA extends Servidor implements Serializable {
 
     @Override
     public String toString() {
-        return "TA[ "+ nome + " ]";
+        return nome;
     }
 }
-
