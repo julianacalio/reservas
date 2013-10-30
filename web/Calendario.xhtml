@@ -93,7 +93,7 @@
                             <h:outputLabel for="to" value="Fim*:" />  
                             <p:calendar id="to"  value="#{calendarioController.reserva.fim}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" required="true" widgetVar="w">
 
-                                <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraFim()}" update="ck"/>
+                                <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraFim()}" update="to,ck"/>
                             </p:calendar>
 
                             <h:outputLabel for="title" value="Motivo:" />  
@@ -111,6 +111,17 @@
                         </h:panelGrid>  
                     </p:dialog>
 
+                     <p:dialog id="janela3" widgetVar="eventDialogSelectRecurso" header="Selecione um recurso" >
+                        <p:panel style="display: block;text-align: center">
+                            <h:outputLabel value="Por favor, selecione uma sala ou um equipamento para fazer a reserva."  />
+                            <br/>
+                            <!--                            <h:outputLabel value="Favor selecionar outro horario" />
+                                                        <br/>-->
+                            <br/>
+                            <p:commandButton id="okButton2"  value="OK" oncomplete="eventDialogSelectRecurso.hide();"  style="width: 100px" />  
+                        </p:panel>
+                    </p:dialog>
+                    
                     <p:dialog id="janela2" widgetVar="eventDialog2" header="Sala Ocupada" >
                         <p:panel style="display: block;text-align: center">
                             <h:outputLabel value="Esta sala esta ocupada neste horário."  />

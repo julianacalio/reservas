@@ -22,8 +22,11 @@ public abstract class AbstractFacade<T> {
         Session session = getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         session.save(entity);
-        transaction.commit();
-        session.close();
+        try {
+            transaction.commit();
+        } finally {
+            session.close();
+        }
     }
 
     public void edit(T entity) {
@@ -96,5 +99,4 @@ public abstract class AbstractFacade<T> {
         return count;
     }
 
-  
 }
