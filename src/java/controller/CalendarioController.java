@@ -158,8 +158,6 @@ public class CalendarioController implements Serializable {
 
     public Map<Equipamento, Equipamento> getEquipamentos() {
         
-        
-        
         equips = new HashMap<Equipamento, Equipamento>();
         List<Equipamento> e;
         //verifica se existe alguma reserva antes de procurar os equipamentos livres
