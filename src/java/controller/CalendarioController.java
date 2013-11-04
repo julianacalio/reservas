@@ -238,23 +238,30 @@ public class CalendarioController implements Serializable {
                 showConfirmDialog();
                 return;
             }
+            reserva = reservaFacade.merge(reserva);
+            current.addReserva(reserva);
+            reserva.setRecursosAssociados(getRecursosAssociados(reserva));
+            eventModel.addEvent(reserva);
+
+        } else {
+            reserva = reservaFacade.merge(reserva);
+            eventModel.updateEvent(reserva);
         }
 
         //reserva = reservaFacade.edit(reserva);
-        reserva = reservaFacade.merge(reserva);
+       // reserva = reservaFacade.merge(reserva);
         if (isEquipamentoSelecionado()) {
             criaReservasAdicionais(selectedEquipamentos, reserva);
         }
 
         //current.addReserva(reserva);
-        if (isNovaReserva(reserva)) {
-            current.addReserva(reserva);
-            reserva.setRecursosAssociados(getRecursosAssociados(reserva));
-            eventModel.addEvent(reserva);
-        } else {
-            eventModel.updateEvent(reserva);
-        }
-
+//        if (isNovaReserva(reserva)) {
+//            current.addReserva(reserva);
+//            reserva.setRecursosAssociados(getRecursosAssociados(reserva));
+//            eventModel.addEvent(reserva);
+//        } else {
+//            eventModel.updateEvent(reserva);
+//        }
     }
 
     public boolean isReservaOcupada(Reserva reserva) {
@@ -341,33 +348,39 @@ public class CalendarioController implements Serializable {
         return reservas;
     }
 
-    public void removerReservasAdicionais(Reserva reserva) {
-        List<Reserva> reservas = reservaFacade.findAll(reserva.getInicio(), reserva.getFim(), reserva.getRealizacao());
-        for (int i = 0; i < reservas.size(); i++) {
-            reservas.get(i).getRecurso().remReserva(reservas.get(i));
-            reservaFacade.remove(reservas.get(i));
+    public void removerReservasConjuntas(Reserva reserva) {
+        List<Reserva> reservasComMesmaData = reservaFacade.findAll(reserva.getInicio(), reserva.getFim(), reserva.getRealizacao());
+        for (int i = 0; i < reservasComMesmaData.size(); i++) {
+            if (reservasComMesmaData.get(i).getIid() != reserva.getIid()) {
+                reservasComMesmaData.get(i).getRecurso().remReserva(reservasComMesmaData.get(i));
+                reservaFacade.remove(reservasComMesmaData.get(i));
+            }
         }
         equipamentoDataModel = null;
         salaDataModel = null;
     }
 
     public void remReserva(ActionEvent actionEvent) {
-        if (reserva.getRecurso() instanceof Sala) {
-            if (selectedEquipamentos != null) {
-                removerReservasAdicionais(reserva);
-            }
-        } else {
-            current.remReserva(reserva);
-            reservaFacade.remove(reserva);
+        if (reserva.getRecurso() instanceof Sala && selectedEquipamentos != null && !selectedEquipamentos.isEmpty()) {
+            removerReservasConjuntas(reserva);
         }
+//        else {
+//            current.remReserva(reserva);
+//            reservaFacade.remove(reserva);
+//        }
         eventModel.deleteEvent(reserva);
-        // current.remReserva(reserva);
-        // reservaFacade.remove(reserva);
+        current.remReserva(reserva);
+        reservaFacade.remove(reserva);
         reserva = null;
     }
 
     public void onReservaSelect(SelectEvent selectEvent) {
         reserva = (Reserva) selectEvent.getObject();
+
+        if (reserva.getIid() == null) {
+            throw new RuntimeException("Reserva sem IID !!!!!!");
+
+        }
 
         //busca as reservas associadas com a reserva selecionada
         List<Reserva> reservas = reservaFacade.findAll(reserva.getInicio(), reserva.getFim(), reserva.getRealizacao());
