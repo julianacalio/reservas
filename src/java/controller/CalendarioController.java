@@ -238,18 +238,17 @@ public class CalendarioController implements Serializable {
                 showConfirmDialog();
                 return;
             }
-
         }
 
         //reserva = reservaFacade.edit(reserva);
         reserva = reservaFacade.merge(reserva);
-        if (selecionouAlgumEquipamento()) {
+        if (isEquipamentoSelecionado()) {
             criaReservasAdicionais(selectedEquipamentos, reserva);
         }
 
-        current.addReserva(reserva);
-
+        //current.addReserva(reserva);
         if (isNovaReserva(reserva)) {
+            current.addReserva(reserva);
             reserva.setRecursosAssociados(getRecursosAssociados(reserva));
             eventModel.addEvent(reserva);
         } else {
@@ -258,7 +257,12 @@ public class CalendarioController implements Serializable {
 
     }
 
-    public boolean selecionouAlgumEquipamento() {
+    public boolean isReservaOcupada(Reserva reserva) {
+        List<Reserva> reservasOcupadas = getReservasOcupadas(reserva, selectedEquipamentos);
+        return reservasOcupadas != null && !reservasOcupadas.isEmpty();
+    }
+
+    public boolean isEquipamentoSelecionado() {
         return selectedEquipamentos != null && !selectedEquipamentos.isEmpty();
     }
 
@@ -300,7 +304,7 @@ public class CalendarioController implements Serializable {
     }
 
     public boolean isNovaReserva(Reserva reserva) {
-        return reserva.getId() == null;
+        return reserva.getIid() == null;
     }
 
     public List<String> getRecursosAssociados(Reserva reserva) {

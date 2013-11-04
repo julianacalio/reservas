@@ -66,8 +66,8 @@ public abstract class AbstractFacade<T> {
         T entidade = (T) session.merge(entity);
         transaction.commit();
         session.close();
-        //return entidade;
-        return entity;
+        return entidade;
+        //return entity;
 
     }
 
