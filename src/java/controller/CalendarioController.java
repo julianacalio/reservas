@@ -63,7 +63,6 @@ public class CalendarioController implements Serializable {
     List<Pessoa> pessoas;
     private EquipamentoDataModel equipamentoDataModel;
     private SalaDataModel salaDataModel;
-    
 
     public CalendarioController() {
 
@@ -111,8 +110,6 @@ public class CalendarioController implements Serializable {
         this.current = current;
     }
 
-    
-    
     public EquipamentoDataModel getEquipamentoDataModel() {
         if (equipamentoDataModel == null) {
             List<Equipamento> equipamentos = equipamentoFacade.findAll();
@@ -157,7 +154,7 @@ public class CalendarioController implements Serializable {
     }
 
     public Map<Equipamento, Equipamento> getEquipamentos() {
-        
+
         equips = new HashMap<Equipamento, Equipamento>();
         List<Equipamento> e;
         //verifica se existe alguma reserva antes de procurar os equipamentos livres
@@ -246,7 +243,7 @@ public class CalendarioController implements Serializable {
 
         //reserva = reservaFacade.edit(reserva);
         reserva = reservaFacade.merge(reserva);
-        if (selectedEquipamentos != null && !selectedEquipamentos.isEmpty()) {
+        if (selecionouAlgumEquipamento()) {
             criaReservasAdicionais(selectedEquipamentos, reserva);
         }
 
@@ -259,6 +256,10 @@ public class CalendarioController implements Serializable {
             eventModel.updateEvent(reserva);
         }
 
+    }
+
+    public boolean selecionouAlgumEquipamento() {
+        return selectedEquipamentos != null && !selectedEquipamentos.isEmpty();
     }
 
     public String getNomeReservasOcupadas(List<Reserva> reservasOcupadas) {
@@ -665,7 +666,7 @@ public class CalendarioController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-       
+
         return JsfUtil.getSelectItems(recursoFacade.findAll(), true);
     }
 
