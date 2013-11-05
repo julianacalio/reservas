@@ -56,7 +56,8 @@ public class Recurso implements Serializable {
 
     public void addReserva(Reserva reserva) {
         reservas.add(reserva);
-        reserva.setRecurso(this);
+        //reserva.setRecurso(this);
+        reserva.addRecurso(this);
     }
 
     public void remReserva(Reserva reserva) {

@@ -93,7 +93,8 @@ public class RecursoController implements Serializable {
 
     public void onDateSelect(SelectEvent selectEvent) {
         reserva = new Reserva();
-        reserva.setRecurso(current);
+        //reserva.setRecurso(current);
+        reserva.addRecurso(current);
         Date inicio = (Date) selectEvent.getObject();
         Calendar fim = Calendar.getInstance();
         fim.setTime(inicio);

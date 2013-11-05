@@ -34,8 +34,8 @@ public class Reserva implements Serializable, ScheduleEvent {
     @ManyToOne
     private Operador operador;
     @ManyToOne
-    private Recurso recurso;
-    @ManyToOne(fetch = FetchType.EAGER)
+//    private Recurso recurso;
+//    @ManyToOne(fetch = FetchType.EAGER)
     private Pessoa reservante;
     @ManyToOne
     private Centro centro;
@@ -51,15 +51,24 @@ public class Reserva implements Serializable, ScheduleEvent {
         this.recursosAssociados = equipamentosAssociados;
     }
 
-//    @OneToMany(mappedBy = "reserva", fetch = FetchType.EAGER)
-//    protected List<Recurso> recursos;
-//    public List<Recurso> getRecursos() {
-//        return recursos;
-//    }
-//
-//    public void setRecursos(List<Recurso> recursos) {
-//        this.recursos = recursos;
-//    }
+    
+
+    
+    @OneToMany(mappedBy = "reserva", fetch = FetchType.EAGER)
+    protected List<Recurso> recursos;
+    public List<Recurso> getRecursos() {
+        return recursos;
+    }
+
+    public void addRecurso(Recurso recurso){
+        this.recursos.add(recurso);
+    }
+    
+    public void setRecursos(List<Recurso> recursos) {
+        this.recursos.addAll(recursos) ;
+    }
+    
+    
     public String getMotivo() {
         return motivo;
     }
@@ -86,13 +95,13 @@ public class Reserva implements Serializable, ScheduleEvent {
         this.operador = operador;
     }
 
-    public Recurso getRecurso() {
-        return recurso;
-    }
-
-    public void setRecurso(Recurso recurso) {
-        this.recurso = recurso;
-    }
+//    public Recurso getRecurso() {
+//        return recurso;
+//    }
+//
+//    public void setRecurso(Recurso recurso) {
+//        this.recurso = recurso;
+//    }
 
     public Pessoa getReservante() {
         return reservante;
