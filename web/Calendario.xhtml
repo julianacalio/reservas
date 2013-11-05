@@ -67,7 +67,7 @@
                 <h:form id="form">  
                     <p:growl id="messages" showDetail="true" />  
 
-                    <p:schedule showWeekends="true"   timeZone="GMT-3" allDaySlot="true" view="month" minTime="7"  maxTime="22" axisFormat="H:mm" timeFormat="H:mm{ - H:mm}" id="schedule" value="#{calendarioController.eventModel}" widgetVar="myschedule"   locale="br"  >  
+                    <p:schedule showWeekends="true" timeZone="GMT-2"   allDaySlot="true" view="month" minTime="7"  maxTime="22" axisFormat="H:mm" timeFormat="H:mm{ - H:mm}" id="schedule" value="#{calendarioController.eventModel}" widgetVar="myschedule"   locale="br"  >  
 
                         <p:ajax  event="dateSelect" listener="#{calendarioController.onDateSelect}"  update="eventDetails"   /> 
                         <p:ajax event="eventSelect" listener="#{calendarioController.onReservaSelect}" update="eventDetails" oncomplete="eventDialog.show()" />  
@@ -85,12 +85,12 @@
 
                             <h:outputLabel for="from" value="Inicio*:" />  
 
-                            <p:calendar id="from"  value="#{calendarioController.reserva.inicio}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15" locale="br" required="true">  
+                            <p:calendar id="from" timeZone="GMT-2" value="#{calendarioController.reserva.inicio}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15" locale="br" required="true">  
                                 <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraInicio()}" update="to,ck"/>
                             </p:calendar>
 
                             <h:outputLabel for="to" value="Fim*:" />  
-                            <p:calendar id="to"  value="#{calendarioController.reserva.fim}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" required="true" widgetVar="w">
+                            <p:calendar id="to" timeZone="GMT-2" value="#{calendarioController.reserva.fim}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" required="true" widgetVar="w">
 
                                 <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraFim()}" update="to,ck"/>
                             </p:calendar>
@@ -99,9 +99,15 @@
                             <p:inputText id="title" value="#{calendarioController.reserva.motivo}" />  
 
                             <h:outputLabel for="ck" value="Equipamentos:" />
-                            <p:selectCheckboxMenu id="ck" value="#{calendarioController.selectedEquipamentos}"  converter="equi" label="Adicionar" filter="true" filterMatchMode="startsWith" panelStyle="width:220px">  
+                            <p:selectCheckboxMenu id="ck" value="#{calendarioController.selectedEquipamentos}"  converter="equi" label="Adicionar Equipamentos" filter="true" filterMatchMode="startsWith" panelStyle="width:220px">  
                                 <f:selectItems value="#{calendarioController.equipamentos}" var ="t" />  
                             </p:selectCheckboxMenu>  
+
+                            <p:outputLabel   rendered="#{calendarioController.reserva.id != null}"/>
+
+                            <p:dataList  rendered="#{calendarioController.reserva.id != null}" value="#{calendarioController.recursosAssociados}" var="car" itemType="disc" >
+                                        #{car}
+                            </p:dataList>
 
                             <p:commandButton id="addButton"  value="Salvar" actionListener="#{calendarioController.addReserva}" oncomplete="myschedule.update();eventDialog.hide();" update=":form2:dtEquipamento,messages" />
                             <p:commandButton id="remButton"  value="Remover" actionListener="#{calendarioController.remReserva}" oncomplete="myschedule.update();eventDialog.hide();" rendered="#{calendarioController.reserva.id != null}" update=":form2:dtEquipamento,:form1:dtSala"/>  
@@ -165,10 +171,10 @@
                 week: 'Semana',
                 day: 'Dia',
                 allDayText: 'Hora'
-                
-                
-                
-            
+
+
+
+
 
             };
         </script>

@@ -242,6 +242,9 @@ public class CalendarioController implements Serializable {
             current.addReserva(reserva);
             reserva.setRecursosAssociados(getRecursosAssociados(reserva));
             eventModel.addEvent(reserva);
+            if (isEquipamentoSelecionado()) {
+                criaReservasAdicionais(selectedEquipamentos, reserva);
+            }
 
         } else {
             reserva = reservaFacade.merge(reserva);
@@ -249,11 +252,10 @@ public class CalendarioController implements Serializable {
         }
 
         //reserva = reservaFacade.edit(reserva);
-       // reserva = reservaFacade.merge(reserva);
-        if (isEquipamentoSelecionado()) {
-            criaReservasAdicionais(selectedEquipamentos, reserva);
-        }
-
+        // reserva = reservaFacade.merge(reserva);
+//        if (isEquipamentoSelecionado()) {
+//            criaReservasAdicionais(selectedEquipamentos, reserva);
+//        }
         //current.addReserva(reserva);
 //        if (isNovaReserva(reserva)) {
 //            current.addReserva(reserva);
@@ -314,6 +316,21 @@ public class CalendarioController implements Serializable {
         return reserva.getIid() == null;
     }
 
+    public List<String> getRecursosAssociados() {
+        List<Reserva> reservas = reservaFacade.findAll(reserva.getInicio(), reserva.getFim(), reserva.getRealizacao());
+        List<String> nomeRecursos = new ArrayList<String>();
+        for (Reserva res : reservas) {
+            if (res.getRecurso() instanceof Equipamento) {
+                Equipamento e = (Equipamento) res.getRecurso();
+                nomeRecursos.add(e.getDescricao());
+            } else {
+                Sala s = (Sala) res.getRecurso();
+                nomeRecursos.add("Sala: " + s.getNumero());
+            }
+        }
+        return nomeRecursos;
+    }
+
     public List<String> getRecursosAssociados(Reserva reserva) {
 
         // List<Reserva> reservas = reservaFacade.findAllBetween(reserva.getInicio(), reserva.getFim());
@@ -330,6 +347,17 @@ public class CalendarioController implements Serializable {
 
         }
         return nomeRecursos;
+    }
+
+    public List<String> getTeste() {
+        ArrayList<String> dados = new ArrayList<String>();
+        dados.add("teste1");
+        dados.add("teste2");
+        dados.add("teste3");
+        dados.add("teste4");
+        dados.add("teste5");
+        return dados;
+
     }
 
     public List<Reserva> getReservasOcupadas(Reserva reserva, List<Equipamento> equipamentos) {
@@ -361,7 +389,7 @@ public class CalendarioController implements Serializable {
     }
 
     public void remReserva(ActionEvent actionEvent) {
-        if (reserva.getRecurso() instanceof Sala && selectedEquipamentos != null && !selectedEquipamentos.isEmpty()) {
+        if (reserva.getRecurso() instanceof Sala) {
             removerReservasConjuntas(reserva);
         }
 //        else {
