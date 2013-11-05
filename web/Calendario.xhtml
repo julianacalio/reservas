@@ -67,7 +67,7 @@
                 <h:form id="form">  
                     <p:growl id="messages" showDetail="true" />  
 
-                    <p:schedule showWeekends="true" timeZone="GMT-2"   allDaySlot="true" view="month" minTime="7"  maxTime="22" axisFormat="H:mm" timeFormat="H:mm{ - H:mm}" id="schedule" value="#{calendarioController.eventModel}" widgetVar="myschedule"   locale="br"  >  
+                    <p:schedule showWeekends="true" timeZone="GMT-2"  allDaySlot="true" view="month" minTime="7"  maxTime="22" axisFormat="H:mm" timeFormat="H:mm{ - H:mm}" id="schedule" value="#{calendarioController.eventModel}" widgetVar="myschedule"   locale="br"  >  
 
                         <p:ajax  event="dateSelect" listener="#{calendarioController.onDateSelect}"  update="eventDetails"   /> 
                         <p:ajax event="eventSelect" listener="#{calendarioController.onReservaSelect}" update="eventDetails" oncomplete="eventDialog.show()" />  
@@ -91,7 +91,6 @@
 
                             <h:outputLabel for="to" value="Fim*:" />  
                             <p:calendar id="to" timeZone="GMT-2" value="#{calendarioController.reserva.fim}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" required="true" widgetVar="w">
-
                                 <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraFim()}" update="to,ck"/>
                             </p:calendar>
 
@@ -99,7 +98,7 @@
                             <p:inputText id="title" value="#{calendarioController.reserva.motivo}" />  
 
                             <h:outputLabel for="ck" value="Equipamentos:" />
-                            <p:selectCheckboxMenu id="ck" value="#{calendarioController.selectedEquipamentos}"  converter="equi" label="Adicionar Equipamentos" filter="true" filterMatchMode="startsWith" panelStyle="width:220px">  
+                            <p:selectCheckboxMenu id="ck"   value="#{calendarioController.selectedEquipamentos}"  converter="equi" label="Adicionar Equipamentos" filter="true" filterMatchMode="startsWith" panelStyle="width:220px">  
                                 <f:selectItems value="#{calendarioController.equipamentos}" var ="t" />  
                             </p:selectCheckboxMenu>  
 
