@@ -15,13 +15,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
  *
- * @author
- * charles
+ * @author charles
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -38,14 +38,10 @@ public class Recurso implements Serializable {
 //    public void setReserva(Recurso reserva) {
 //        this.reserva = reserva;
 //    }
-    
-    
-    
-    @OneToMany(mappedBy = "recurso", fetch = FetchType.EAGER)
+//    @OneToMany(mappedBy = "recurso", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "recursos", fetch = FetchType.EAGER)
     protected List<Reserva> reservas;
 
- 
-    
     public List<Reserva> getReservas() {
         return reservas;
     }

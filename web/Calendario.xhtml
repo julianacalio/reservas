@@ -69,14 +69,14 @@
 
                     <p:schedule showWeekends="true" timeZone="GMT-2"  allDaySlot="true" view="month" minTime="7"  maxTime="22" axisFormat="H:mm" timeFormat="H:mm{ - H:mm}" id="schedule" value="#{calendarioController.eventModel}" widgetVar="myschedule"   locale="br"  >  
 
-                        <p:ajax  event="dateSelect" listener="#{calendarioController.onDateSelect}"  update="eventDetails"   /> 
-                        <p:ajax event="eventSelect" listener="#{calendarioController.onReservaSelect}" update="eventDetails" oncomplete="eventDialog.show()" />  
+                        <p:ajax  event="dateSelect" listener="#{calendarioController.onDateSelect}"  update="eventDetails,janela"   /> 
+                        <p:ajax event="eventSelect" listener="#{calendarioController.onReservaSelect}" update="eventDetails,janela" oncomplete="eventDialog.show()" />  
                         <p:ajax event="eventMove" listener="#{calendarioController.onReservaMove}" update="messages" />  
                         <p:ajax event="eventResize" listener="#{calendarioController.onEventResize}" update="messages" />  
                     </p:schedule> 
 
 
-                    <p:dialog id="janela" widgetVar="eventDialog" header="Detalhes da Reserva"   >
+                    <p:dialog id="janela" widgetVar="eventDialog" header="Detalhes da Reserva: #{calendarioController.current.toString()}"   >
                         <h:panelGrid id="eventDetails" columns="2"> 
 
                             <h:outputLabel value="Reservante*: " for="ac_reservante"/>  
@@ -102,10 +102,14 @@
                                 <f:selectItems value="#{calendarioController.equipamentos}" var ="t" />  
                             </p:selectCheckboxMenu>  
 
-                            <p:outputLabel   rendered="#{calendarioController.reserva.id != null}"/>
+                            <p:outputLabel   rendered="#{calendarioController.reserva.id != null}"  value="Itens Escolhidos"/>
 
-                            <p:dataList  rendered="#{calendarioController.reserva.id != null}" value="#{calendarioController.recursosAssociados}" var="car" itemType="disc" >
-                                        #{car}
+                            <p:dataList  rendered="#{calendarioController.reserva.id != null}" value="#{calendarioController.reserva.recursos}" var="recurso" itemType="disc" >
+
+                                <p:column>
+                                    #{recurso.toString()}
+                                </p:column>
+
                             </p:dataList>
 
                             <p:commandButton id="addButton"  value="Salvar" actionListener="#{calendarioController.addReserva}" oncomplete="myschedule.update();eventDialog.hide();" update=":form2:dtEquipamento,messages" />

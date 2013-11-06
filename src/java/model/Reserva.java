@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -33,29 +34,17 @@ public class Reserva implements Serializable, ScheduleEvent {
     private Long iid;
     @ManyToOne
     private Operador operador;
-    @ManyToOne
+//    @ManyToOne
 //    private Recurso recurso;
-//    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Pessoa reservante;
     @ManyToOne
     private Centro centro;
     String motivo;
-    @javax.persistence.Transient
-    private List<String> recursosAssociados = new ArrayList<String>();
-
-    public List<String> getRecursosAssociados() {
-        return recursosAssociados;
-    }
-
-    public void setRecursosAssociados(List<String> equipamentosAssociados) {
-        this.recursosAssociados = equipamentosAssociados;
-    }
-
     
-
-    
-    @OneToMany(mappedBy = "reserva", fetch = FetchType.EAGER)
-    protected List<Recurso> recursos;
+//    @OneToMany(mappedBy = "reserva", fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
+    protected List<Recurso> recursos = new ArrayList<Recurso>();
     public List<Recurso> getRecursos() {
         return recursos;
     }
@@ -67,7 +56,6 @@ public class Reserva implements Serializable, ScheduleEvent {
     public void setRecursos(List<Recurso> recursos) {
         this.recursos.addAll(recursos) ;
     }
-    
     
     public String getMotivo() {
         return motivo;
@@ -197,11 +185,11 @@ public class Reserva implements Serializable, ScheduleEvent {
 
     @Override
     public String getTitle() {
-        if (recursosAssociados != null && !recursosAssociados.isEmpty()) {
+        if (recursos != null && !recursos.isEmpty()) {
             String title = " " + reservante.getNome() + (motivo == null || motivo.isEmpty() ? "\n :: nao especificado" : " \n :: " + motivo);
 
-            for (String equipamentoAssociado : recursosAssociados) {
-                title += "\n" + equipamentoAssociado;
+            for (Recurso recursoAssociado : recursos) {
+                title += "\n" + recursoAssociado.toString();
             }
 //           
             return title;

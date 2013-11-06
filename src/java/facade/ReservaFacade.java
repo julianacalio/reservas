@@ -20,10 +20,9 @@ import org.hibernate.criterion.Restrictions;
  * @author charles
  */
 @Stateless
-public class ReservaFacade extends AbstractFacade<Reserva>{
-    
-    
-    public ReservaFacade(){
+public class ReservaFacade extends AbstractFacade<Reserva> {
+
+    public ReservaFacade() {
         super(Reserva.class);
     }
 
@@ -34,6 +33,7 @@ public class ReservaFacade extends AbstractFacade<Reserva>{
 
     /**
      * Busca todas as reservas que possuem a mesma data de início, fim e realização.
+     *
      * @param inicio Data inicio da reserva
      * @param fim Data do fim da reserva
      * @param realizacao Data de realização da reserva
@@ -53,6 +53,7 @@ public class ReservaFacade extends AbstractFacade<Reserva>{
 
     /**
      * Busca todas as reservas que estiverem entre a data de início e fim especificada
+     *
      * @param inicio Data de Início
      * @param fim Data de Fim
      * @return Lista contendo todas as reservas que obedecem ao critério especificado
@@ -61,6 +62,7 @@ public class ReservaFacade extends AbstractFacade<Reserva>{
         Session session = getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(Reserva.class);
         criteria.add(Restrictions.or(Restrictions.between("fim", inicio, fim), Restrictions.between("inicio", inicio, fim)));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
         List results = criteria.list();
         session.close();
         return results;
@@ -68,6 +70,7 @@ public class ReservaFacade extends AbstractFacade<Reserva>{
 
     /**
      * Busca as reservas de um determinado recurso dentro de uma certa data de início e data de fim
+     *
      * @param inicio Data de início
      * @param fim Data de fim
      * @param recurso Recurso pesquisado
