@@ -73,15 +73,15 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
      *
      * @param inicio Data de início
      * @param fim Data de fim
-     * @param recurso Recurso pesquisado
+     * @param reserva Recursos pesquisado
      * @return Lista contendo todas as reservas que obedecem ao critério especificado
      */
-    public List<Reserva> findBetween(Date inicio, Date fim, Recurso recurso) {
+    public List<Reserva> findBetween(Date inicio, Date fim, Reserva reserva) {
         Session session = getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(Reserva.class);
 
         criteria.add(Restrictions.or(Restrictions.between("fim", inicio, fim), Restrictions.between("inicio", inicio, fim)));
-        criteria.add(Restrictions.eq("recurso", recurso));
+        criteria.add(Restrictions.eq("iid",reserva.getIid() ));
         List results = criteria.list();
 
         session.close();

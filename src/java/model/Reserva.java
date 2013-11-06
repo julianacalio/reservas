@@ -22,8 +22,7 @@ import org.primefaces.model.ScheduleEvent;
 
 /**
  *
- * @author
- * charles
+ * @author charles
  */
 @Entity
 public class Reserva implements Serializable, ScheduleEvent {
@@ -41,22 +40,23 @@ public class Reserva implements Serializable, ScheduleEvent {
     @ManyToOne
     private Centro centro;
     String motivo;
-    
+
 //    @OneToMany(mappedBy = "reserva", fetch = FetchType.EAGER)
     @ManyToMany(fetch = FetchType.EAGER)
     protected List<Recurso> recursos = new ArrayList<Recurso>();
+
     public List<Recurso> getRecursos() {
         return recursos;
     }
 
-    public void addRecurso(Recurso recurso){
+    public void addRecurso(Recurso recurso) {
         this.recursos.add(recurso);
     }
-    
+
     public void setRecursos(List<Recurso> recursos) {
-        this.recursos.addAll(recursos) ;
+        this.recursos.addAll(recursos);
     }
-    
+
     public String getMotivo() {
         return motivo;
     }
@@ -90,7 +90,6 @@ public class Reserva implements Serializable, ScheduleEvent {
 //    public void setRecurso(Recurso recurso) {
 //        this.recurso = recurso;
 //    }
-
     public Pessoa getReservante() {
         return reservante;
     }
@@ -191,7 +190,7 @@ public class Reserva implements Serializable, ScheduleEvent {
             for (Recurso recursoAssociado : recursos) {
                 title += "\n" + recursoAssociado.toString();
             }
-//           
+
             return title;
         }
         return " " + reservante.getNome() + (motivo == null || motivo.isEmpty() ? "\n :: nao especificado" : " \n :: " + motivo);

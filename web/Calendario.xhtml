@@ -106,8 +106,8 @@
 
                             <p:dataList  rendered="#{calendarioController.reserva.id != null}" value="#{calendarioController.reserva.recursos}" var="recurso" itemType="disc" >
 
-                                <p:column>
-                                    #{recurso.toString()}
+                                <p:column selectionMode="single">
+                                    #{recurso}
                                 </p:column>
 
                             </p:dataList>

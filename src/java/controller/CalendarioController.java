@@ -195,7 +195,6 @@ public class CalendarioController implements Serializable {
 
             eventModel = new DefaultScheduleModel();
             for (Reserva res : current.getReservas()) {
-//                res.setRecursosAssociados(getRecursosAssociados(res));
                 eventModel.addEvent(res);
             }
         }
@@ -235,7 +234,7 @@ public class CalendarioController implements Serializable {
 
     public void addReserva(ActionEvent actionEvent) {
         if (isNovaReserva(reserva)) {
-           Set<Recurso> recursosOcupados = getRecursosOcupados(reserva);
+            Set<Recurso> recursosOcupados = getRecursosOcupados(reserva);
             if (recursosOcupados != null && !recursosOcupados.isEmpty()) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosOcupados.toString());
                 addMessage(message);
@@ -244,13 +243,13 @@ public class CalendarioController implements Serializable {
             }
             if (isEquipamentoSelecionado()) {
                 for (Equipamento equipamento : selectedEquipamentos) {
-                    reserva.addRecurso(equipamento);
-                    //criaReservasAdicionais(selectedEquipamentos, reserva);
+                    if (equipamento.getId() != current.getId()) {
+                        reserva.addRecurso(equipamento);
+                    }
                 }
             }
             reserva = reservaFacade.merge(reserva);
             //current.addReserva(reserva);
-            //reserva.setRecursosAssociados(getRecursosAssociados(reserva));
             eventModel.addEvent(reserva);
 
         } else {
@@ -259,160 +258,37 @@ public class CalendarioController implements Serializable {
         }
         recreateEquipamentoDataModel();
         recreateSalaDataModel();
-        //reserva = reservaFacade.edit(reserva);
-        // reserva = reservaFacade.merge(reserva);
-//        if (isEquipamentoSelecionado()) {
-//            criaReservasAdicionais(selectedEquipamentos, reserva);
-//        }
-        //current.addReserva(reserva);
-//        if (isNovaReserva(reserva)) {
-//            current.addReserva(reserva);
-//            reserva.setRecursosAssociados(getRecursosAssociados(reserva));
-//            eventModel.addEvent(reserva);
-//        } else {
-//            eventModel.updateEvent(reserva);
-//        }
+
     }
 
-//    public boolean isReservaOcupada(Reserva reserva) {
-//        List<Reserva> reservasOcupadas = getReservasOcupadas(reserva, selectedEquipamentos);
-//        return reservasOcupadas != null && !reservasOcupadas.isEmpty();
-//    }
     public boolean isEquipamentoSelecionado() {
         return selectedEquipamentos != null && !selectedEquipamentos.isEmpty();
-    }
-
-    public String getNomeReservasOcupadas(List<Reserva> reservasOcupadas) {
-
-        String nomeRecurso = "";
-//        for (int i = 0; i < reservasOcupadas.size(); i++) {
-//            Recurso recurso = reservasOcupadas.get(i).getRecurso();
-//
-//            if (recurso instanceof Equipamento) {
-//                Equipamento e = (Equipamento) recurso;
-//                nomeRecurso += "Equipamento: " + e.getDescricao() + "\n";
-//            } else {
-//                Sala s = (Sala) recurso;
-//                nomeRecurso += "Sala: " + s.getNumero() + "\n";
-//            }
-//
-//        }
-        return nomeRecurso;
-    }
-
-// MUDAR ESSA IMPLEMENTACAO PARA LISTA. TIRAR O ARRAY, NAO EH MAIS NECESSARIO
-    public void criaReservasAdicionais(List<Equipamento> equipamentosAssociados, Reserva reserva) {
-        ArrayList<Reserva> res = new ArrayList<Reserva>();
-        //Reserva[] reservas = new Reserva[equipamentosAssociados.size()];
-        int qtde = equipamentosAssociados.size();
-        for (int i = 0; i < qtde; i++) {
-            Reserva novaReserva = new Reserva();
-            novaReserva.setCentro(reserva.getCentro());
-            novaReserva.setFim(reserva.getFim());
-            novaReserva.setInicio(reserva.getInicio());
-            novaReserva.setMotivo(reserva.getMotivo());
-            novaReserva.setRealizacao(reserva.getRealizacao());
-            novaReserva.setReservante(reserva.getReservante());
-            //reserva.setRecurso(equipamentosAssociados.get(i));
-            novaReserva.addRecurso(equipamentosAssociados.get(i));
-            res.add(novaReserva);
-            // reservas[i] = reservaFacade.merge(reservas[i]);
-            //equipamentosAssociados.get(i).addReserva(reservas[i]);
-            // Atualiza a lista de equipamentos associados com este reserva para ser mostrado no calendario
-            //reserva.getRecursosAssociados().add(equipamentosAssociados.get(i).getDescricao());
-        }
-        // reserva.setReservas(res);
-        // reserva.setRecursos(equipamentosAssociados);
-        equipamentoDataModel = null;
     }
 
     public boolean isNovaReserva(Reserva reserva) {
         return reserva.getIid() == null;
     }
 
-//    public List<String> getRecursosAssociados() {
-//        List<Reserva> reservas = reservaFacade.findAll(reserva.getInicio(), reserva.getFim(), reserva.getRealizacao());
-//        List<String> nomeRecursos = new ArrayList<String>();
-//        for (Reserva res : reservas) {
-//            if (res.getRecurso() instanceof Equipamento) {
-//                Equipamento e = (Equipamento) res.getRecurso();
-//                nomeRecursos.add(e.getDescricao());
-//            } else {
-//                Sala s = (Sala) res.getRecurso();
-//                nomeRecursos.add("Sala: " + s.getNumero());
-//            }
-//        }
-//        return nomeRecursos;
-//    }
-//    public List<String> getRecursosAssociados(Reserva reserva) {
-//
-//        // List<Reserva> reservas = reservaFacade.findAllBetween(reserva.getInicio(), reserva.getFim());
-//        List<Reserva> reservas = reservaFacade.findAll(reserva.getInicio(), reserva.getFim(), reserva.getRealizacao());
-//        List<String> nomeRecursos = new ArrayList<String>();
-//        for (Reserva res : reservas) {
-//            if (res.getRecurso() instanceof Equipamento) {
-//                Equipamento e = (Equipamento) res.getRecurso();
-//                nomeRecursos.add(e.getDescricao());
-//            } else {
-//                Sala s = (Sala) res.getRecurso();
-//                nomeRecursos.add("Sala: " + s.getNumero());
-//            }
-//
-//        }
-//        return nomeRecursos;
-//    }
-    public List<String> getTeste() {
-        ArrayList<String> dados = new ArrayList<String>();
-        dados.add("teste1");
-        dados.add("teste2");
-        dados.add("teste3");
-        dados.add("teste4");
-        dados.add("teste5");
-        return dados;
-
-    }
-
-//    public List<Reserva> getReservasOcupadas(Reserva reserva, List<Equipamento> equipamentos) {
-//
-//        // Verifica Disponibilidade do recurso na reserva principal
-//        List<Reserva> reservas = reservaFacade.findBetween(reserva.getInicio(), reserva.getFim(), reserva.getRecurso());
-//
-//        if (equipamentos == null) {
-//            equipamentos = new ArrayList<Equipamento>();
-//        }
-//        // Verifica disponibilidade dos recursos adicionais
-//        for (int i = 0; i < equipamentos.size(); i++) {
-//            List<Reserva> reservasEquipamentos = reservaFacade.findBetween(reserva.getInicio(), reserva.getFim(), equipamentos.get(i));
-//            reservas.addAll(reservasEquipamentos);
-//        }
-//        return reservas;
-//    }
-//    public void removerReservasConjuntas(Reserva reserva) {
-//        List<Reserva> reservasComMesmaData = reservaFacade.findAll(reserva.getInicio(), reserva.getFim(), reserva.getRealizacao());
-//        for (int i = 0; i < reservasComMesmaData.size(); i++) {
-//            if (reservasComMesmaData.get(i).getIid() != reserva.getIid()) {
-//                reservasComMesmaData.get(i).getRecurso().remReserva(reservasComMesmaData.get(i));
-//                reservaFacade.remove(reservasComMesmaData.get(i));
-//            }
-//        }
-//        equipamentoDataModel = null;
-//        salaDataModel = null;
-//    }
     public void remReserva(ActionEvent actionEvent) {
-//        if (reserva.getRecurso() instanceof Sala) {
-//            removerReservasConjuntas(reserva);
-//        }
-//        else {
-//            current.remReserva(reserva);
-//            reservaFacade.remove(reserva);
-//        }
+
         eventModel.deleteEvent(reserva);
         current.remReserva(reserva);
         reservaFacade.remove(reserva);
-        reserva = null;
+        recreateReserva();
         recreateEquipamentoDataModel();
         recreateSalaDataModel();
+        limparSelecaoTabelaEquipamento();
+        limparSelecaoTabelaSala();
+        recreateSelectedRecurso();
+    }
 
+    public void recreateReserva() {
+        reserva = null;
+    }
+
+    public void recreateSelectedRecurso() {
+        novaSala = null;
+        novoEquipamento = null;
     }
 
     public void recreateEquipamentoDataModel() {
@@ -427,23 +303,9 @@ public class CalendarioController implements Serializable {
         reserva = (Reserva) selectEvent.getObject();
 
         if (reserva.getIid() == null) {
-            throw new RuntimeException("Reserva sem IID !!!!!!");
-
+            throw new RuntimeException("Reserva sem IID !!!!!!");// Teste para verificar problemas ocorrendo no merge
         }
 
-        //busca as reservas associadas com a reserva selecionada
-        List<Reserva> reservas = reservaFacade.findAll(reserva.getInicio(), reserva.getFim(), reserva.getRealizacao());
-        if (selectedEquipamentos != null) {
-            selectedEquipamentos.clear();
-        } else {
-            selectedEquipamentos = new ArrayList<Equipamento>();
-        }
-        // atualiza a lista de equipamentos associados com aquela reserva no selectCheckBoxMenu
-//        for (int i = 0; i < reservas.size(); i++) {
-//            if (reservas.get(i).getRecurso() instanceof Equipamento) {
-//                selectedEquipamentos.add((Equipamento) reservas.get(i).getRecurso());
-//            }
-//        }
     }
 
     public void onDateSelect(SelectEvent selectEvent) {
@@ -480,7 +342,6 @@ public class CalendarioController implements Serializable {
     }
 
     public boolean selecionouRecurso() {
-
         return novaSala != null || novoEquipamento != null;
     }
 
@@ -532,28 +393,17 @@ public class CalendarioController implements Serializable {
         }
     }
 
-//    public boolean possuiEquipamentosReservados() {
-//        List<Reserva> reservasOcupadas = getReservasOcupadas(reserva, selectedEquipamentos);
-//        if (reservasOcupadas != null && !reservasOcupadas.isEmpty()) {
-//            return true;
-//        } else {
-//        }
-//        return false;
-//    }
     public void onReservaMove(ScheduleEntryMoveEvent event) {
-        //reserva = reservaFacade.edit((Reserva) event.getScheduleEvent());
         reserva = reservaFacade.merge((Reserva) event.getScheduleEvent());
-
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Reserva movida", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Reserva movida", "Recursos alterados: \n" + reserva.getRecursos());
         addMessage(message);
         recreateEquipamentoDataModel();
         recreateSalaDataModel();
     }
 
     public void onEventResize(ScheduleEntryResizeEvent event) {
-        //reserva = reservaFacade.edit((Reserva) event.getScheduleEvent());
         reserva = reservaFacade.merge((Reserva) event.getScheduleEvent());
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Reserva redimensionada", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Reserva redimensionada", "Recursos alterados: \n" + reserva.getRecursos());
         addMessage(message);
         recreateEquipamentoDataModel();
         recreateSalaDataModel();
@@ -757,6 +607,7 @@ public class CalendarioController implements Serializable {
 
     public Set<Recurso> getRecursosOcupados(Reserva reserva) {
         List<Reserva> reservasOcupadas = reservaFacade.findAllBetween(reserva.getInicio(), reserva.getFim());
+  //      List<Reserva> reservas = reservaFacade.findBetween(reserva.getInicio(), reserva.getFim(), reserva); testar essa logica
         Set<Recurso> recursosOcupados = new HashSet<Recurso>();
         for (Reserva reservaOcupada : reservasOcupadas) {
             recursosOcupados.addAll(reservaOcupada.getRecursos());
@@ -766,7 +617,6 @@ public class CalendarioController implements Serializable {
 
     private List<Equipamento> getEquipamentosOcupados() {
         Set<Recurso> recursosOcupados = getRecursosOcupados(reserva);
-
         List<Equipamento> todosEquipamentos = equipamentoFacade.findAll();
         List<Equipamento> equipamentoOcupados = new ArrayList<Equipamento>();
         for (Equipamento equipamento : todosEquipamentos) {
@@ -777,23 +627,6 @@ public class CalendarioController implements Serializable {
         return equipamentoOcupados;
     }
 
-//    private List<Equipamento> getEquipamentosLivres(Reserva reserva) {
-//
-//        List<Equipamento> equipamentosLivres = equipamentoFacade.findAll();
-//        if (reserva.getRecurso() instanceof Equipamento) {
-//            equipamentosLivres.remove((Equipamento) reserva.getRecurso());
-//        }
-//        List<Reserva> reservas = getReservasOcupadas(reserva, equipamentosLivres);
-//
-//        for (Reserva res : reservas) {
-//            if (res.getRecurso() instanceof Equipamento) {
-//                equipamentosLivres.remove((Equipamento) res.getRecurso());
-//            }
-//        }
-//
-//        return equipamentosLivres;
-//
-//    }
     @FacesConverter(forClass = Recurso.class)
     public static class RecursoControllerConverter implements Converter {
 
