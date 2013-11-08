@@ -407,11 +407,6 @@ public class CalendarioController implements Serializable {
     }
 
     public void onValueChangeHoraFim() {
-        Date inicio = reserva.getInicio();
-        Date fim = reserva.getFim();
-        if (fim.before(inicio)) {
-            reserva.setFim(reserva.getInicio());
-        }
     }
 
     public void onReservaMove(ScheduleEntryMoveEvent event) {
@@ -655,6 +650,10 @@ public class CalendarioController implements Serializable {
             }
         }
         return recursos;
+    }
+
+    public String getLabelBotaoAddReserva() {
+        return isNovaReserva(reserva) ? "Salvar" : "Atualizar";
     }
 
     private List<Equipamento> getEquipamentosOcupados() {
