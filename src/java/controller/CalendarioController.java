@@ -163,7 +163,7 @@ public class CalendarioController implements Serializable {
         //verifica se existe alguma reserva antes de procurar os equipamentos livres
         if (reserva != null && reserva.getInicio() != null && reserva.getFim() != null) {
             e = getEquipamentosLivres(reserva);
-            // e = equipamentoFacade.findAll();
+            //e = equipamentoFacade.findAll();
         } else {
             e = equipamentoFacade.findAll();
         }
@@ -234,9 +234,9 @@ public class CalendarioController implements Serializable {
 
     public void addReserva(ActionEvent actionEvent) {
         if (isNovaReserva(reserva)) {
-            Set<Recurso> recursosOcupados = getRecursosOcupados(reserva);
-            if (recursosOcupados != null && !recursosOcupados.isEmpty()) {
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosOcupados.toString());
+
+            if (isAlgumRecursoOcupado()) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", getRecursosOcupadosReserva(reserva, selectedEquipamentos).toString());
                 addMessage(message);
                 showConfirmDialog();
                 return;
@@ -253,12 +253,24 @@ public class CalendarioController implements Serializable {
             eventModel.addEvent(reserva);
 
         } else {
+            if (isEquipamentoSelecionado()) {
+                reserva.getRecursos().clear();
+                reserva.addRecurso(current);
+                for (Equipamento equipamento : selectedEquipamentos) {
+                    if (equipamento.getId() != current.getId()) {
+                        reserva.addRecurso(equipamento);
+                    }
+                }
+            }
             reserva = reservaFacade.merge(reserva);
             eventModel.updateEvent(reserva);
         }
         recreateEquipamentoDataModel();
         recreateSalaDataModel();
+    }
 
+    public boolean isAlgumRecursoOcupado() {
+        return !getRecursosOcupadosReserva(reserva, selectedEquipamentos).isEmpty();
     }
 
     public boolean isEquipamentoSelecionado() {
@@ -301,11 +313,20 @@ public class CalendarioController implements Serializable {
 
     public void onReservaSelect(SelectEvent selectEvent) {
         reserva = (Reserva) selectEvent.getObject();
-
+        atualizaSelectedEquipamentos(reserva.getRecursos());
         if (reserva.getIid() == null) {
             throw new RuntimeException("Reserva sem IID !!!!!!");// Teste para verificar problemas ocorrendo no merge
         }
 
+    }
+
+    public void atualizaSelectedEquipamentos(List<Recurso> recursos) {
+        selectedEquipamentos = new ArrayList<Equipamento>();
+        for (Recurso recurso : recursos) {
+            if (recurso instanceof Equipamento) {
+                selectedEquipamentos.add((Equipamento) recurso);
+            }
+        }
     }
 
     public void onDateSelect(SelectEvent selectEvent) {
@@ -584,7 +605,6 @@ public class CalendarioController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-
         return JsfUtil.getSelectItems(recursoFacade.findAll(), true);
     }
 
@@ -593,38 +613,60 @@ public class CalendarioController implements Serializable {
     }
 
     private List<Equipamento> getEquipamentosLivres(Reserva reserva) {
-        Set<Recurso> recursosOcupados = getRecursosOcupados(reserva);
-
-        List<Equipamento> todosEquipamentos = equipamentoFacade.findAll();
-        List<Equipamento> equipamentosLivres = new ArrayList<Equipamento>();
-        for (Equipamento equipamento : todosEquipamentos) {
-            if (!recursosOcupados.contains(equipamento)) {
-                equipamentosLivres.add(equipamento);
+        List<Recurso> recursosOcupados = isNovaReserva(reserva)
+                ? getRecursosOcupados(reserva.getInicio(), reserva.getFim()) : getRecursosOcupados(reserva.getInicio(), reserva.getFim(), reserva.getIid());
+        List<Equipamento> equipamentosLivres = equipamentoFacade.findAll();
+        for (Recurso recurso : recursosOcupados) {
+            if (recurso instanceof Equipamento) {
+                equipamentosLivres.remove((Equipamento) recurso);
             }
         }
         return equipamentosLivres;
     }
 
-    public Set<Recurso> getRecursosOcupados(Reserva reserva) {
-        List<Reserva> reservasOcupadas = reservaFacade.findAllBetween(reserva.getInicio(), reserva.getFim());
-  //      List<Reserva> reservas = reservaFacade.findBetween(reserva.getInicio(), reserva.getFim(), reserva); testar essa logica
-        Set<Recurso> recursosOcupados = new HashSet<Recurso>();
+    public List<Recurso> getRecursosOcupados(Date inicio, Date fim) {
+        List<Reserva> reservasOcupadas = reservaFacade.findAllBetween(inicio, fim);
+        List<Recurso> recursosOcupados = new ArrayList<Recurso>();
         for (Reserva reservaOcupada : reservasOcupadas) {
             recursosOcupados.addAll(reservaOcupada.getRecursos());
         }
         return recursosOcupados;
     }
 
-    private List<Equipamento> getEquipamentosOcupados() {
-        Set<Recurso> recursosOcupados = getRecursosOcupados(reserva);
-        List<Equipamento> todosEquipamentos = equipamentoFacade.findAll();
-        List<Equipamento> equipamentoOcupados = new ArrayList<Equipamento>();
-        for (Equipamento equipamento : todosEquipamentos) {
-            if (recursosOcupados.contains(equipamento)) {
-                equipamentoOcupados.add(equipamento);
+    public List<Recurso> getRecursosOcupados(Date inicio, Date fim, Long id) {
+        List<Reserva> reservasOcupadas = reservaFacade.findBetween(inicio, fim, reserva.getIid());
+        List<Recurso> recursosOcupados = new ArrayList<Recurso>();
+        for (Reserva reservaOcupada : reservasOcupadas) {
+            recursosOcupados.addAll(reservaOcupada.getRecursos());
+        }
+        return recursosOcupados;
+    }
+
+    public List<Recurso> getRecursosOcupadosReserva(Reserva reserva, List<Equipamento> equipamentosSelecionados) {
+        List<Recurso> recursosSelecionados = new ArrayList<Recurso>();
+        recursosSelecionados.addAll(equipamentosSelecionados);
+        recursosSelecionados.add(current);
+
+        List<Recurso> recursosOcupados = getRecursosOcupados(reserva.getInicio(), reserva.getFim());
+        List<Recurso> recursos = new ArrayList<Recurso>();
+        for (Recurso recursoSelecionado : recursosSelecionados) {
+            if (recursosOcupados.contains(recursoSelecionado)) {
+                recursos.add(recursoSelecionado);
             }
         }
-        return equipamentoOcupados;
+        return recursos;
+    }
+
+    private List<Equipamento> getEquipamentosOcupados() {
+        List<Recurso> recursosOcupados = getRecursosOcupados(reserva.getInicio(), reserva.getFim());
+        List<Equipamento> equipamentosOcupados = new ArrayList<Equipamento>();
+
+        for (Recurso recurso : recursosOcupados) {
+            if (recurso instanceof Equipamento) {
+                equipamentosOcupados.add((Equipamento) recurso);
+            }
+        }
+        return equipamentosOcupados;
     }
 
     @FacesConverter(forClass = Recurso.class)

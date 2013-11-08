@@ -62,6 +62,7 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
         Session session = getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(Reserva.class);
         criteria.add(Restrictions.or(Restrictions.between("fim", inicio, fim), Restrictions.between("inicio", inicio, fim)));
+        List res1 = criteria.list();
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
         List results = criteria.list();
         session.close();
@@ -73,15 +74,17 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
      *
      * @param inicio Data de início
      * @param fim Data de fim
-     * @param reserva Recursos pesquisado
+     * @param id Recursos pesquisado
      * @return Lista contendo todas as reservas que obedecem ao critério especificado
      */
-    public List<Reserva> findBetween(Date inicio, Date fim, Reserva reserva) {
+    public List<Reserva> findBetween(Date inicio, Date fim, Long id) {
         Session session = getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(Reserva.class);
 
         criteria.add(Restrictions.or(Restrictions.between("fim", inicio, fim), Restrictions.between("inicio", inicio, fim)));
-        criteria.add(Restrictions.eq("iid",reserva.getIid() ));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
+        List r = criteria.list();
+        criteria.add(Restrictions.ne("iid", id));
         List results = criteria.list();
 
         session.close();
