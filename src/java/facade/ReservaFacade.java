@@ -61,7 +61,7 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
     public List<Reserva> findAllBetween(Date inicio, Date fim) {
         Session session = getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(Reserva.class);
-        criteria.add(Restrictions.or(Restrictions.between("fim", inicio, fim), Restrictions.between("inicio", inicio, fim)));
+        criteria.add(Restrictions.or(Restrictions.between("inicio", inicio, fim), Restrictions.between("fim", inicio, fim)));
         List res1 = criteria.list();
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
         List results = criteria.list();
@@ -81,11 +81,31 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
         Session session = getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(Reserva.class);
 
-        criteria.add(Restrictions.or(Restrictions.between("fim", inicio, fim), Restrictions.between("inicio", inicio, fim)));
+        criteria.add(Restrictions.or(Restrictions.between("inicio", inicio, fim), Restrictions.between("fim", inicio, fim)));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
         List r = criteria.list();
         criteria.add(Restrictions.ne("iid", id));
         List results = criteria.list();
+
+        session.close();
+        return results;
+    }
+
+    public List<Reserva> findBetweenTeste(Date inicio, Date fim, Long id) {
+        Session session = getSessionFactory().openSession();
+
+        Criteria criteria2 = session.createCriteria(Reserva.class);
+        criteria2.add(Restrictions.or(Restrictions.between("inicio", inicio, fim), Restrictions.between("fim", inicio, fim)));
+        criteria2.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
+        criteria2.add(Restrictions.ne("iid", id));
+        List results2 = criteria2.list();
+
+        Criteria criteria1 = session.createCriteria(Reserva.class);
+        criteria1.add(Restrictions.and(Restrictions.le("inicio", inicio), Restrictions.ge("fim", fim)));
+        criteria1.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
+        List r = criteria1.list();
+        criteria1.add(Restrictions.ne("iid", id));
+        List results = criteria1.list();
 
         session.close();
         return results;

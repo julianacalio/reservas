@@ -414,7 +414,9 @@ public class CalendarioController implements Serializable {
     }
 
     public void onReservaMove(ScheduleEntryMoveEvent event) {
+
         Reserva reservaRedimensionada = (Reserva) event.getScheduleEvent();
+        reserva = reservaFacade.find(reservaRedimensionada.getIid());
         List<Recurso> recursosOcupados = getRecursosOcupados(reservaRedimensionada.getInicio(), reservaRedimensionada.getFim(), reserva.getIid());
         if (!recursosOcupados.isEmpty()) {
             current = recursoFacade.find(current.getId());
@@ -433,6 +435,7 @@ public class CalendarioController implements Serializable {
 
     public void onEventResize(ScheduleEntryResizeEvent event) {
         Reserva reservaRedimensionada = (Reserva) event.getScheduleEvent();
+        reserva = reservaFacade.find(reservaRedimensionada.getIid());
         List<Recurso> recursosOcupados = getRecursosOcupados(reservaRedimensionada.getInicio(), reservaRedimensionada.getFim(), reserva.getIid());
         if (!recursosOcupados.isEmpty()) {
             current = recursoFacade.find(current.getId());
@@ -645,6 +648,7 @@ public class CalendarioController implements Serializable {
 
     public List<Recurso> getRecursosOcupados(Date inicio, Date fim) {
         List<Reserva> reservasOcupadas = reservaFacade.findAllBetween(inicio, fim);
+        //  List<Reserva> reservasOcupadas = reservaFacade.findBetweenTeste(inicio, fim, reserva.getIid());
         List<Recurso> recursosOcupados = new ArrayList<Recurso>();
         for (Reserva reservaOcupada : reservasOcupadas) {
             recursosOcupados.addAll(reservaOcupada.getRecursos());
@@ -654,6 +658,7 @@ public class CalendarioController implements Serializable {
 
     public List<Recurso> getRecursosOcupados(Date inicio, Date fim, Long id) {
         List<Reserva> reservasOcupadas = reservaFacade.findBetween(inicio, fim, reserva.getIid());
+        List<Reserva> reservasOcupadas2 = reservaFacade.findBetweenTeste(inicio, fim, reserva.getIid());
         List<Recurso> recursosOcupados = new ArrayList<Recurso>();
         for (Reserva reservaOcupada : reservasOcupadas) {
             recursosOcupados.addAll(reservaOcupada.getRecursos());
@@ -667,6 +672,7 @@ public class CalendarioController implements Serializable {
         recursosSelecionados.add(current);
 
         List<Recurso> recursosOcupados = getRecursosOcupados(reserva.getInicio(), reserva.getFim());
+
         List<Recurso> recursos = new ArrayList<Recurso>();
         for (Recurso recursoSelecionado : recursosSelecionados) {
             if (recursosOcupados.contains(recursoSelecionado)) {
