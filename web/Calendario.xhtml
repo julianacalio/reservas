@@ -71,8 +71,8 @@
 
                         <p:ajax  event="dateSelect" listener="#{calendarioController.onDateSelect}"  update="eventDetails,janela"   /> 
                         <p:ajax event="eventSelect" listener="#{calendarioController.onReservaSelect}" update="eventDetails,janela" oncomplete="eventDialog.show()" />  
-                        <p:ajax event="eventMove" listener="#{calendarioController.onReservaMove}" update="messages" />  
-                        <p:ajax event="eventResize" listener="#{calendarioController.onEventResize}" update="messages" />  
+                        <p:ajax event="eventMove" listener="#{calendarioController.onReservaMove}" update="messages" oncomplete="myschedule.update()" />  
+                        <p:ajax event="eventResize" listener="#{calendarioController.onEventResize}" update="messages" oncomplete="myschedule.update()" />  
                     </p:schedule> 
 
 
@@ -128,7 +128,7 @@
 
                     <p:dialog id="janela2" widgetVar="eventDialog2" header="Sala Ocupada" >
                         <p:panel style="display: block;text-align: center">
-                            <h:outputLabel value="Esta sala esta ocupada neste horário."  />
+                            <h:outputLabel value="Esta sala ou equipamento esta ocupada(o) neste horário."  />
                             <br/>
                             <h:outputLabel value="Favor selecionar outro horario" />
                             <br/>
