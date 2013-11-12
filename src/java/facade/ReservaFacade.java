@@ -64,9 +64,17 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
         criteria.add(Restrictions.or(Restrictions.between("inicio", inicio, fim), Restrictions.between("fim", inicio, fim)));
         List res1 = criteria.list();
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
-        List results = criteria.list();
+        List results1 = criteria.list();
+        
+        Criteria criteria2 = session.createCriteria(Reserva.class);
+        criteria2.add(Restrictions.and(Restrictions.le("inicio", inicio), Restrictions.ge("fim", fim)));
+        criteria2.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
+        List results2 = criteria2.list();
+
+        results1.addAll(results2);
+        
         session.close();
-        return results;
+        return results1;
     }
 
     /**
@@ -79,16 +87,22 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
      */
     public List<Reserva> findBetween(Date inicio, Date fim, Long id) {
         Session session = getSessionFactory().openSession();
-        Criteria criteria = session.createCriteria(Reserva.class);
+        Criteria criteria1 = session.createCriteria(Reserva.class);
 
-        criteria.add(Restrictions.or(Restrictions.between("inicio", inicio, fim), Restrictions.between("fim", inicio, fim)));
-        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
-        List r = criteria.list();
-        criteria.add(Restrictions.ne("iid", id));
-        List results = criteria.list();
+        criteria1.add(Restrictions.or(Restrictions.between("inicio", inicio, fim), Restrictions.between("fim", inicio, fim)));
+        criteria1.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
+        criteria1.add(Restrictions.ne("iid", id));
+        List results1 = criteria1.list();
 
+        Criteria criteria2 = session.createCriteria(Reserva.class);
+        criteria2.add(Restrictions.and(Restrictions.le("inicio", inicio), Restrictions.ge("fim", fim)));
+        criteria2.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
+        criteria1.add(Restrictions.ne("iid", id));
+        List results2 = criteria2.list();
+
+        results1.addAll(results2);
         session.close();
-        return results;
+        return results1;
     }
 
     public List<Reserva> findBetweenTeste(Date inicio, Date fim, Long id) {

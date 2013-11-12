@@ -9,10 +9,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.ejb.EJB;
 
 import javax.enterprise.context.SessionScoped;
@@ -26,7 +24,6 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import model.Equipamento;
 import model.Pessoa;
 import model.Reserva;
@@ -417,7 +414,8 @@ public class CalendarioController implements Serializable {
 
         Reserva reservaRedimensionada = (Reserva) event.getScheduleEvent();
         reserva = reservaFacade.find(reservaRedimensionada.getIid());
-        List<Recurso> recursosOcupados = getRecursosOcupados(reservaRedimensionada.getInicio(), reservaRedimensionada.getFim(), reserva.getIid());
+        atualizaSelectedEquipamentos(reserva.getRecursos());
+        List<Recurso> recursosOcupados = getRecursosOcupadosReservaId(reservaRedimensionada,selectedEquipamentos);
         if (!recursosOcupados.isEmpty()) {
             current = recursoFacade.find(current.getId());
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosOcupados.toString());
@@ -436,7 +434,8 @@ public class CalendarioController implements Serializable {
     public void onEventResize(ScheduleEntryResizeEvent event) {
         Reserva reservaRedimensionada = (Reserva) event.getScheduleEvent();
         reserva = reservaFacade.find(reservaRedimensionada.getIid());
-        List<Recurso> recursosOcupados = getRecursosOcupados(reservaRedimensionada.getInicio(), reservaRedimensionada.getFim(), reserva.getIid());
+        atualizaSelectedEquipamentos(reserva.getRecursos());
+        List<Recurso> recursosOcupados = getRecursosOcupadosReservaId(reservaRedimensionada,selectedEquipamentos);
         if (!recursosOcupados.isEmpty()) {
             current = recursoFacade.find(current.getId());
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosOcupados.toString());
@@ -658,7 +657,6 @@ public class CalendarioController implements Serializable {
 
     public List<Recurso> getRecursosOcupados(Date inicio, Date fim, Long id) {
         List<Reserva> reservasOcupadas = reservaFacade.findBetween(inicio, fim, reserva.getIid());
-        List<Reserva> reservasOcupadas2 = reservaFacade.findBetweenTeste(inicio, fim, reserva.getIid());
         List<Recurso> recursosOcupados = new ArrayList<Recurso>();
         for (Reserva reservaOcupada : reservasOcupadas) {
             recursosOcupados.addAll(reservaOcupada.getRecursos());
@@ -672,6 +670,22 @@ public class CalendarioController implements Serializable {
         recursosSelecionados.add(current);
 
         List<Recurso> recursosOcupados = getRecursosOcupados(reserva.getInicio(), reserva.getFim());
+
+        List<Recurso> recursos = new ArrayList<Recurso>();
+        for (Recurso recursoSelecionado : recursosSelecionados) {
+            if (recursosOcupados.contains(recursoSelecionado)) {
+                recursos.add(recursoSelecionado);
+            }
+        }
+        return recursos;
+    }
+    
+    public List<Recurso> getRecursosOcupadosReservaId(Reserva reserva, List<Equipamento> equipamentosSelecionados) {
+        List<Recurso> recursosSelecionados = new ArrayList<Recurso>();
+        recursosSelecionados.addAll(equipamentosSelecionados);
+        recursosSelecionados.add(current);
+
+        List<Recurso> recursosOcupados = getRecursosOcupados(reserva.getInicio(), reserva.getFim(),reserva.getIid());
 
         List<Recurso> recursos = new ArrayList<Recurso>();
         for (Recurso recursoSelecionado : recursosSelecionados) {
