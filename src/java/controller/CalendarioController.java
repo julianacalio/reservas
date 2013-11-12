@@ -8,9 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 
 import javax.enterprise.context.SessionScoped;
@@ -21,8 +19,6 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
-import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import model.Equipamento;
 import model.Pessoa;
@@ -43,9 +39,9 @@ import util.SalaDataModel;
 public class CalendarioController implements Serializable {
 
     private List<Equipamento> selectedEquipamentos;
-    private Map<Equipamento, Equipamento> equips;
+    private List<Equipamento> equips;
     private Recurso current, novaescolha, novaSala, novoEquipamento;
-    private DataModel items = null;
+   // private DataModel items = null;
     @EJB
     private facade.RecursoFacade recursoFacade;
     @EJB
@@ -56,8 +52,8 @@ public class CalendarioController implements Serializable {
     private facade.SalaFacade salaFacade;
     @EJB
     private facade.EquipamentoFacade equipamentoFacade;
-    private PaginationHelper pagination;
-    private int selectedItemIndex;
+  //  private PaginationHelper pagination;
+   // private int selectedItemIndex;
     private ScheduleModel eventModel;
     private Reserva reserva = new Reserva();
     List<Pessoa> pessoas;
@@ -139,14 +135,14 @@ public class CalendarioController implements Serializable {
     }
 
     public List<Pessoa> completeReservante(String query) {
-        List<Pessoa> suggestions = new ArrayList<Pessoa>();
+        List<Pessoa> sugestoes = new ArrayList<Pessoa>();
         query = query.toLowerCase();
         for (Pessoa p : pessoas) {
             if (p.getNome().toLowerCase().startsWith(query)) {
-                suggestions.add(p);
+                sugestoes.add(p);
             }
         }
-        return suggestions;
+        return sugestoes;
     }
 
     public List<Equipamento> getSelectedEquipamentos() {
@@ -157,22 +153,17 @@ public class CalendarioController implements Serializable {
         this.selectedEquipamentos = selectedEquipamentos;
     }
 
-    public Map<Equipamento, Equipamento> getEquipamentos() {
+    public List<Equipamento> getEquipamentos() {
 
-        equips = new HashMap<Equipamento, Equipamento>();
-        List<Equipamento> e;
+        equips = new ArrayList<Equipamento>();
+        List<Equipamento> equipamentosDisponiveis;
         //verifica se existe alguma reserva antes de procurar os equipamentos livres
         if (reserva != null && reserva.getInicio() != null && reserva.getFim() != null) {
-            e = getEquipamentosLivres(reserva);
-            //e = equipamentoFacade.findAll();
+            equipamentosDisponiveis = getEquipamentosLivres(reserva);
         } else {
-            e = equipamentoFacade.findAll();
+            equipamentosDisponiveis = equipamentoFacade.findAll();
         }
-
-        for (int i = 0; i < e.size(); i++) {
-            equips.put(e.get(i), e.get(i));
-        }
-
+        equips.addAll(equipamentosDisponiveis);
         return equips;
     }
 
@@ -415,7 +406,7 @@ public class CalendarioController implements Serializable {
         Reserva reservaRedimensionada = (Reserva) event.getScheduleEvent();
         reserva = reservaFacade.find(reservaRedimensionada.getIid());
         atualizaSelectedEquipamentos(reserva.getRecursos());
-        List<Recurso> recursosOcupados = getRecursosOcupadosReservaId(reservaRedimensionada,selectedEquipamentos);
+        List<Recurso> recursosOcupados = getRecursosOcupadosReservaId(reservaRedimensionada, selectedEquipamentos);
         if (!recursosOcupados.isEmpty()) {
             current = recursoFacade.find(current.getId());
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosOcupados.toString());
@@ -435,7 +426,7 @@ public class CalendarioController implements Serializable {
         Reserva reservaRedimensionada = (Reserva) event.getScheduleEvent();
         reserva = reservaFacade.find(reservaRedimensionada.getIid());
         atualizaSelectedEquipamentos(reserva.getRecursos());
-        List<Recurso> recursosOcupados = getRecursosOcupadosReservaId(reservaRedimensionada,selectedEquipamentos);
+        List<Recurso> recursosOcupados = getRecursosOcupadosReservaId(reservaRedimensionada, selectedEquipamentos);
         if (!recursosOcupados.isEmpty()) {
             current = recursoFacade.find(current.getId());
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosOcupados.toString());
@@ -461,173 +452,173 @@ public class CalendarioController implements Serializable {
         context.execute("wdgListEquipamento.clearSelection()");
     }
 
-    public Recurso getSelected() {
-        if (current == null) {
-            current = new Recurso();
-            selectedItemIndex = -1;
-        }
-        return current;
-    }
+//    public Recurso getSelected() {
+//        if (current == null) {
+//            current = new Recurso();
+//            selectedItemIndex = -1;
+//        }
+//        return current;
+//    }
 
     private RecursoFacade getFacade() {
         return recursoFacade;
     }
 
-    public PaginationHelper getPagination() {
-        if (pagination == null) {
-            pagination = new PaginationHelper(10) {
-                @Override
-                public int getItemsCount() {
-                    return getFacade().count();
-                }
+//    public PaginationHelper getPagination() {
+//        if (pagination == null) {
+//            pagination = new PaginationHelper(10) {
+//                @Override
+//                public int getItemsCount() {
+//                    return getFacade().count();
+//                }
+//
+//                @Override
+//                public DataModel createPageDataModel() {
+//                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+//                }
+//            };
+//        }
+//        return pagination;
+//    }
 
-                @Override
-                public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
-                }
-            };
-        }
-        return pagination;
-    }
+//    public String prepareList() {
+//        recreateModel();
+//        return "List";
+//    }
 
-    public String prepareList() {
-        recreateModel();
-        return "List";
-    }
+//    public String prepareView() {
+//        current = (Recurso) getItems().getRowData();
+//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+//
+//        if (pessoas == null) {
+//            pessoas = pessoaFacade.findAll();
+//        }
+//
+//        if (eventModel == null) {
+//            eventModel = new DefaultScheduleModel();
+//            for (Reserva res : current.getReservas()) {
+//                eventModel.addEvent(res);
+//            }
+//        }
+//
+//        return "View";
+//    }
 
-    public String prepareView() {
-        current = (Recurso) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+//    public String prepareCreate() {
+//        current = new Recurso();
+//        selectedItemIndex = -1;
+//        return "Create";
+//    }
 
-        if (pessoas == null) {
-            pessoas = pessoaFacade.findAll();
-        }
+//    public String create() {
+//        try {
+//            getFacade().save(current);
+//            JsfUtil.addSuccessMessage("RecursoCreated", null);
+//            return prepareCreate();
+//        } catch (Exception e) {
+//            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
+//            return null;
+//        }
+//    }
 
-        if (eventModel == null) {
-            eventModel = new DefaultScheduleModel();
-            for (Reserva res : current.getReservas()) {
-                eventModel.addEvent(res);
-            }
-        }
+//    public String prepareEdit() {
+//        current = (Recurso) getItems().getRowData();
+//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+//        return "Edit";
+//    }
 
-        return "View";
-    }
+//    public String update() {
+//        try {
+//            getFacade().edit(current);
+//            JsfUtil.addSuccessMessage("RecursoUpdated", null);
+//            return "View";
+//        } catch (Exception e) {
+//            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
+//            return null;
+//        }
+//    }
 
-    public String prepareCreate() {
-        current = new Recurso();
-        selectedItemIndex = -1;
-        return "Create";
-    }
+//    public String destroy() {
+//        current = (Recurso) getItems().getRowData();
+//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+//        performDestroy();
+//        recreatePagination();
+//        recreateModel();
+//        return "List";
+//    }
 
-    public String create() {
-        try {
-            getFacade().save(current);
-            JsfUtil.addSuccessMessage("RecursoCreated", null);
-            return prepareCreate();
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
-            return null;
-        }
-    }
+//    public String destroyAndView() {
+//        performDestroy();
+//        recreateModel();
+//        updateCurrentItem();
+//        if (selectedItemIndex >= 0) {
+//            return "View";
+//        } else {
+//            // all items were removed - go back to list
+//            recreateModel();
+//            return "List";
+//        }
+//    }
 
-    public String prepareEdit() {
-        current = (Recurso) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "Edit";
-    }
+//    private void performDestroy() {
+//        try {
+//            getFacade().remove(current);
+//            JsfUtil.addSuccessMessage("Recurso Apagado", null);
+//        } catch (Exception e) {
+//            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
+//        }
+//    }
 
-    public String update() {
-        try {
-            getFacade().edit(current);
-            JsfUtil.addSuccessMessage("RecursoUpdated", null);
-            return "View";
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
-            return null;
-        }
-    }
+//    private void updateCurrentItem() {
+//        int count = getFacade().count();
+//        if (selectedItemIndex >= count) {
+//            // selected index cannot be bigger than number of items:
+//            selectedItemIndex = count - 1;
+//            // go to previous page if last page disappeared:
+//            if (pagination.getPageFirstItem() >= count) {
+//                pagination.previousPage();
+//            }
+//        }
+//        if (selectedItemIndex >= 0) {
+//            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+//        }
+//    }
 
-    public String destroy() {
-        current = (Recurso) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        performDestroy();
-        recreatePagination();
-        recreateModel();
-        return "List";
-    }
+//    public DataModel getItems() {
+//        if (items == null) {
+//            items = getPagination().createPageDataModel();
+//        }
+//        return items;
+//    }
 
-    public String destroyAndView() {
-        performDestroy();
-        recreateModel();
-        updateCurrentItem();
-        if (selectedItemIndex >= 0) {
-            return "View";
-        } else {
-            // all items were removed - go back to list
-            recreateModel();
-            return "List";
-        }
-    }
+//    private void recreateModel() {
+//        items = null;
+//    }
 
-    private void performDestroy() {
-        try {
-            getFacade().remove(current);
-            JsfUtil.addSuccessMessage("Recurso Apagado", null);
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
-        }
-    }
+//    private void recreatePagination() {
+//        pagination = null;
+//    }
 
-    private void updateCurrentItem() {
-        int count = getFacade().count();
-        if (selectedItemIndex >= count) {
-            // selected index cannot be bigger than number of items:
-            selectedItemIndex = count - 1;
-            // go to previous page if last page disappeared:
-            if (pagination.getPageFirstItem() >= count) {
-                pagination.previousPage();
-            }
-        }
-        if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
-        }
-    }
+//    public String next() {
+//        getPagination().nextPage();
+//        recreateModel();
+//        return "List";
+//    }
 
-    public DataModel getItems() {
-        if (items == null) {
-            items = getPagination().createPageDataModel();
-        }
-        return items;
-    }
+//    public String previous() {
+//        getPagination().previousPage();
+//        recreateModel();
+//        return "List";
+//    }
 
-    private void recreateModel() {
-        items = null;
-    }
+//    public SelectItem[] getItemsAvailableSelectMany() {
+//
+//        return JsfUtil.getSelectItems(recursoFacade.findAll(), false);
+//    }
 
-    private void recreatePagination() {
-        pagination = null;
-    }
-
-    public String next() {
-        getPagination().nextPage();
-        recreateModel();
-        return "List";
-    }
-
-    public String previous() {
-        getPagination().previousPage();
-        recreateModel();
-        return "List";
-    }
-
-    public SelectItem[] getItemsAvailableSelectMany() {
-
-        return JsfUtil.getSelectItems(recursoFacade.findAll(), false);
-    }
-
-    public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(recursoFacade.findAll(), true);
-    }
+//    public SelectItem[] getItemsAvailableSelectOne() {
+//        return JsfUtil.getSelectItems(recursoFacade.findAll(), true);
+//    }
 
     public Recurso getRecurso(java.lang.Long id) {
         return recursoFacade.find(id);
@@ -679,13 +670,15 @@ public class CalendarioController implements Serializable {
         }
         return recursos;
     }
-    
+
+    // Retorna or recursos selecionados pela reserva que ja estao reservados no banco de dados na nova data especificada
+    // sem considerar os recursos salvo pela propria reserva.
     public List<Recurso> getRecursosOcupadosReservaId(Reserva reserva, List<Equipamento> equipamentosSelecionados) {
         List<Recurso> recursosSelecionados = new ArrayList<Recurso>();
         recursosSelecionados.addAll(equipamentosSelecionados);
         recursosSelecionados.add(current);
 
-        List<Recurso> recursosOcupados = getRecursosOcupados(reserva.getInicio(), reserva.getFim(),reserva.getIid());
+        List<Recurso> recursosOcupados = getRecursosOcupados(reserva.getInicio(), reserva.getFim(), reserva.getIid());
 
         List<Recurso> recursos = new ArrayList<Recurso>();
         for (Recurso recursoSelecionado : recursosSelecionados) {

@@ -48,14 +48,14 @@
                             <f:facet name="header">  
                                 Lista de Técnicos Adminstrativos  
                             </f:facet>   >
-                            <p:column >
+<!--                            <p:column >
                                 <f:facet name="header">
                                     <h:outputText value="id"/>
                                 </f:facet>
                                 <h:outputText value="#{item.id}"/>
-                            </p:column>
+                            </p:column>-->
 
-                            <p:column headerText="nome" sortBy="#{item.nome}"  >  
+                            <p:column headerText="nome" sortBy="#{item.nome}" style="text-align: left"  >  
                                 <f:facet name="header">
                                     <h:outputText value="Nome"/>
                                 </f:facet>
@@ -76,7 +76,7 @@
                                 <h:outputText value="#{item.centro.nome}"/>
                             </p:column>  
 
-                            <p:column headerText="email">  
+                            <p:column headerText="email" style = "text-align: left">  
                                 <f:facet name="header">
                                     <h:outputText value="email"/>
                                 </f:facet>

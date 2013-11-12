@@ -34,7 +34,7 @@
 
                         <p:ajax event="rowSelect"  update=":form:schedule" listener="#{calendarioController.escolheSala()}"/>  
 
-                        <p:column headerText="Salas" >  
+                        <p:column headerText="Salas"  >  
                             #{sala.numero} 
                         </p:column>  
                     </p:dataTable>  
@@ -47,7 +47,7 @@
 
                         <p:ajax event="rowSelect"  update=":form:schedule" listener="#{calendarioController.escolheEquipamento()}"/>  
 
-                        <p:column headerText="Equipamentos">  
+                        <p:column headerText="Equipamentos" >  
                             #{equipamento.descricao} 
 
                         </p:column>  
