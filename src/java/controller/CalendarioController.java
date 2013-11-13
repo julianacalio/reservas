@@ -225,15 +225,15 @@ public class CalendarioController implements Serializable {
     }
 
     public void addReserva(ActionEvent actionEvent) {
-        if (isAlgumRecursoOcupado(reserva, selectedEquipamentos)) {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", getRecursosOcupadosReserva(reserva, selectedEquipamentos).toString());
-            addMessage(message);
-            showConfirmDialog();
-            return;
-        }
-        if (isNovaReserva(reserva)) {
 
-           
+        if (isNovaReserva(reserva)) {
+            if (isAlgumRecursoOcupado(reserva, selectedEquipamentos)) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", getRecursosOcupadosReserva(reserva, selectedEquipamentos).toString());
+                current = recursoFacade.find(current.getId());
+                addMessage(message);
+                showConfirmDialog();
+                return;
+            }
             if (isEquipamentoSelecionado()) {
                 for (Equipamento equipamento : selectedEquipamentos) {
                     if (equipamento.getId() != current.getId()) {
