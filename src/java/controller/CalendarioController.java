@@ -246,6 +246,13 @@ public class CalendarioController implements Serializable {
             eventModel.addEvent(reserva);
 
         } else {
+            if (!getRecursosOcupados(reserva.getInicio(), reserva.getFim(), reserva.getIid()).isEmpty()) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", getRecursosOcupadosReserva(reserva, selectedEquipamentos).toString());
+                current = recursoFacade.find(current.getId());
+                addMessage(message);
+                showConfirmDialog();
+                return;
+            }
             if (isEquipamentoSelecionado()) {
                 reserva.getRecursos().clear();
                 reserva.addRecurso(current);
