@@ -41,7 +41,7 @@ public class CalendarioController implements Serializable {
     private List<Equipamento> selectedEquipamentos;
     private List<Equipamento> equips;
     private Recurso current, novaescolha, novaSala, novoEquipamento;
-   // private DataModel items = null;
+    // private DataModel items = null;
     @EJB
     private facade.RecursoFacade recursoFacade;
     @EJB
@@ -52,8 +52,8 @@ public class CalendarioController implements Serializable {
     private facade.SalaFacade salaFacade;
     @EJB
     private facade.EquipamentoFacade equipamentoFacade;
-  //  private PaginationHelper pagination;
-   // private int selectedItemIndex;
+    //  private PaginationHelper pagination;
+    // private int selectedItemIndex;
     private ScheduleModel eventModel;
     private Reserva reserva = new Reserva();
     List<Pessoa> pessoas;
@@ -225,14 +225,15 @@ public class CalendarioController implements Serializable {
     }
 
     public void addReserva(ActionEvent actionEvent) {
+        if (isAlgumRecursoOcupado(reserva, selectedEquipamentos)) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", getRecursosOcupadosReserva(reserva, selectedEquipamentos).toString());
+            addMessage(message);
+            showConfirmDialog();
+            return;
+        }
         if (isNovaReserva(reserva)) {
 
-            if (isAlgumRecursoOcupado(reserva, selectedEquipamentos)) {
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", getRecursosOcupadosReserva(reserva, selectedEquipamentos).toString());
-                addMessage(message);
-                showConfirmDialog();
-                return;
-            }
+           
             if (isEquipamentoSelecionado()) {
                 for (Equipamento equipamento : selectedEquipamentos) {
                     if (equipamento.getId() != current.getId()) {
@@ -459,7 +460,6 @@ public class CalendarioController implements Serializable {
 //        }
 //        return current;
 //    }
-
     private RecursoFacade getFacade() {
         return recursoFacade;
     }
@@ -480,12 +480,10 @@ public class CalendarioController implements Serializable {
 //        }
 //        return pagination;
 //    }
-
 //    public String prepareList() {
 //        recreateModel();
 //        return "List";
 //    }
-
 //    public String prepareView() {
 //        current = (Recurso) getItems().getRowData();
 //        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
@@ -503,13 +501,11 @@ public class CalendarioController implements Serializable {
 //
 //        return "View";
 //    }
-
 //    public String prepareCreate() {
 //        current = new Recurso();
 //        selectedItemIndex = -1;
 //        return "Create";
 //    }
-
 //    public String create() {
 //        try {
 //            getFacade().save(current);
@@ -520,13 +516,11 @@ public class CalendarioController implements Serializable {
 //            return null;
 //        }
 //    }
-
 //    public String prepareEdit() {
 //        current = (Recurso) getItems().getRowData();
 //        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
 //        return "Edit";
 //    }
-
 //    public String update() {
 //        try {
 //            getFacade().edit(current);
@@ -537,7 +531,6 @@ public class CalendarioController implements Serializable {
 //            return null;
 //        }
 //    }
-
 //    public String destroy() {
 //        current = (Recurso) getItems().getRowData();
 //        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
@@ -546,7 +539,6 @@ public class CalendarioController implements Serializable {
 //        recreateModel();
 //        return "List";
 //    }
-
 //    public String destroyAndView() {
 //        performDestroy();
 //        recreateModel();
@@ -559,7 +551,6 @@ public class CalendarioController implements Serializable {
 //            return "List";
 //        }
 //    }
-
 //    private void performDestroy() {
 //        try {
 //            getFacade().remove(current);
@@ -568,7 +559,6 @@ public class CalendarioController implements Serializable {
 //            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
 //        }
 //    }
-
 //    private void updateCurrentItem() {
 //        int count = getFacade().count();
 //        if (selectedItemIndex >= count) {
@@ -583,43 +573,35 @@ public class CalendarioController implements Serializable {
 //            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
 //        }
 //    }
-
 //    public DataModel getItems() {
 //        if (items == null) {
 //            items = getPagination().createPageDataModel();
 //        }
 //        return items;
 //    }
-
 //    private void recreateModel() {
 //        items = null;
 //    }
-
 //    private void recreatePagination() {
 //        pagination = null;
 //    }
-
 //    public String next() {
 //        getPagination().nextPage();
 //        recreateModel();
 //        return "List";
 //    }
-
 //    public String previous() {
 //        getPagination().previousPage();
 //        recreateModel();
 //        return "List";
 //    }
-
 //    public SelectItem[] getItemsAvailableSelectMany() {
 //
 //        return JsfUtil.getSelectItems(recursoFacade.findAll(), false);
 //    }
-
 //    public SelectItem[] getItemsAvailableSelectOne() {
 //        return JsfUtil.getSelectItems(recursoFacade.findAll(), true);
 //    }
-
     public Recurso getRecurso(java.lang.Long id) {
         return recursoFacade.find(id);
     }
@@ -690,7 +672,10 @@ public class CalendarioController implements Serializable {
     }
 
     public String getLabelBotaoAddReserva() {
-        return isNovaReserva(reserva) ? "Salvar" : "Atualizar";
+        if (reserva != null) {
+            return isNovaReserva(reserva) ? "Salvar" : "Atualizar";
+        }
+        return "Salvar";
     }
 
     private List<Equipamento> getEquipamentosOcupados() {
