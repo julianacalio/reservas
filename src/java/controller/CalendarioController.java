@@ -227,8 +227,9 @@ public class CalendarioController implements Serializable {
     public void addReserva(ActionEvent actionEvent) {
 
         if (isNovaReserva(reserva)) {
-            if (isAlgumRecursoOcupado(reserva, selectedEquipamentos)) {
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", getRecursosOcupadosReserva(reserva, selectedEquipamentos).toString());
+            List<Recurso> recursosReservados = getRecursosOcupadosReserva(reserva, selectedEquipamentos);
+            if (!recursosReservados.isEmpty()) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosReservados.toString());
                 current = recursoFacade.find(current.getId());
                 addMessage(message);
                 showConfirmDialog();
@@ -246,8 +247,11 @@ public class CalendarioController implements Serializable {
             eventModel.addEvent(reserva);
 
         } else {
-            if (!getRecursosOcupados(reserva.getInicio(), reserva.getFim(), reserva.getIid()).isEmpty()) {
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", getRecursosOcupadosReserva(reserva, selectedEquipamentos).toString());
+            List<Recurso> recursosReservados = getRecursosOcupadosReservaId(reserva, selectedEquipamentos);
+            if (!recursosReservados.isEmpty()) {
+                current = recursoFacade.find(current.getId());
+                recreateEventModel();
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosReservados.toString());
                 current = recursoFacade.find(current.getId());
                 addMessage(message);
                 showConfirmDialog();
@@ -330,6 +334,12 @@ public class CalendarioController implements Serializable {
     }
 
     public void onDateSelect(SelectEvent selectEvent) {
+
+        if (!isValidDate((Date) selectEvent.getObject())) {
+            showDialogDataInvalida();
+            return;
+        }
+
         if (selectedEquipamentos != null) {
             selectedEquipamentos.clear();
         }
@@ -356,10 +366,8 @@ public class CalendarioController implements Serializable {
         reserva.setInicio(inicio);
         reserva.setFim(fim.getTime());
         reserva.setRealizacao(new Date());
+        showDialog();
 
-        if (isValidDate(reserva.getInicio())) {
-            showDialog();
-        }
     }
 
     public boolean selecionouRecurso() {
@@ -368,6 +376,10 @@ public class CalendarioController implements Serializable {
 
     public void showDialog() {
         RequestContext.getCurrentInstance().execute("eventDialog.show()");
+    }
+
+    public void showDialogDataInvalida() {
+        RequestContext.getCurrentInstance().execute("eventDialog3.show()");
     }
 
     public void showDialogFaltaRecurso() {
@@ -412,6 +424,13 @@ public class CalendarioController implements Serializable {
     public void onReservaMove(ScheduleEntryMoveEvent event) {
 
         Reserva reservaRedimensionada = (Reserva) event.getScheduleEvent();
+
+        if (!isValidDate(reservaRedimensionada.getInicio())) {
+            current = recursoFacade.find(current.getId());
+            recreateEventModel();
+            showDialogDataInvalida();
+            return;
+        }
         reserva = reservaFacade.find(reservaRedimensionada.getIid());
         atualizaSelectedEquipamentos(reserva.getRecursos());
         List<Recurso> recursosOcupados = getRecursosOcupadosReservaId(reservaRedimensionada, selectedEquipamentos);

@@ -101,9 +101,9 @@
                         <br/>
                         <br/>
                     </p:panel>
-                    <p:panel header="Criar Novo Docente"  >
+                    <p:panel header="Criar Novo Tecnico Adminstrativo"  >
                         <p:panel footer="" style="display: block; text-align: left ">
-                            <h:panelGrid columns="5" id="pnGrCriarDocente" style="display: block; text-align: left">
+                            <h:panelGrid columns="5" id="pnGrCriarTA" style="display: block; text-align: left">
                                 <h:outputLabel value="Nome" for="nome" />
                                 <h:inputText id="nome" value="#{tAController.selected.nome}" title="nome" />
                                 <h:outputLabel value="Matrícula" for="matricula" />
@@ -118,7 +118,7 @@
 
                             </h:panelGrid>
                             <p:separator/>
-                            <p:commandLink action="#{tAController.create()}" value="Salvar"  update="msgs,db,pnGrCriarDocente"  /> 
+                            <p:commandLink action="#{tAController.create()}" value="Salvar"  update="msgs,db,pnGrCriarTA"  /> 
 
                         </p:panel>
 

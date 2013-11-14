@@ -85,13 +85,13 @@
 
                             <h:outputLabel for="from" value="Inicio*:" />  
 
-                            <p:calendar id="from" timeZone="GMT-2" value="#{calendarioController.reserva.inicio}" minHour="07" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15" locale="br" required="true">  
+                            <p:calendar id="from" timeZone="GMT-2"  value="#{calendarioController.reserva.inicio}" minHour="07" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15" locale="br" required="true">  
                                 <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraInicio()}" update="to,ck"/>
                             </p:calendar>
 
                             <h:outputLabel for="to" value="Fim*:" />  
-                            <p:calendar id="to" timeZone="GMT-2" value="#{calendarioController.reserva.fim}" minHour="#{calendarioController.reserva.inicio.hours}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" required="true" widgetVar="w">
-                                <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraFim()}" update="ck"/>
+                            <p:calendar id="to" timeZone="GMT-2"   value="#{calendarioController.reserva.fim}" minHour="#{calendarioController.reserva.inicio.hours}" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" required="true" widgetVar="w">
+                                <p:ajax event="valueChange"  listener="#{calendarioController.onValueChangeHoraFim()}" update="ck"/>
                             </p:calendar>
 
                             <h:outputLabel for="title" value="Motivo:" />  
@@ -136,6 +136,16 @@
                             <p:commandButton id="okButton"  value="OK" oncomplete="eventDialog2.hide();"  style="width: 100px" />  
                         </p:panel>
                     </p:dialog>
+                    
+                    <p:dialog id="janela4" widgetVar="eventDialog3" header="Horario Invalido" >
+                        <p:panel style="display: block;text-align: center">
+                            <h:outputLabel value="Esta data expirou."  />
+                            <br/>
+                            <br/>
+                            <p:commandButton id="okButton3"  value="OK" oncomplete="eventDialog3.hide();"  style="width: 100px" />  
+                        </p:panel>
+                    </p:dialog>
+                    
 
                 </h:form>  
 
