@@ -33,6 +33,13 @@ import org.primefaces.model.ScheduleModel;
 import util.EquipamentoDataModel;
 import util.SalaDataModel;
 
+//        org.primefaces.component.calendar.Calendar c = new org.primefaces.component.calendar.Calendar();
+//        Collection<String> eventos = c.getEventNames();
+//
+//        org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu s = new org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu();
+//        Collection<String> eventos2 = s.getEventNames();
+//        
+//        org.primefaces.component.datatable.DataTable d = new org.primefaces.component.datatable.DataTable();
 @Named("calendarioController")
 @SessionScoped
 public class CalendarioController implements Serializable {
@@ -151,16 +158,13 @@ public class CalendarioController implements Serializable {
 
     public List<Equipamento> getEquipamentos() {
 
-        equips = new ArrayList<Equipamento>();
-        List<Equipamento> equipamentosDisponiveis;
         //verifica se existe alguma reserva antes de procurar os equipamentos livres
         if (reserva != null && reserva.getInicio() != null && reserva.getFim() != null) {
-            equipamentosDisponiveis = getEquipamentosLivres(reserva);
+            return getEquipamentosNaoReservados(reserva);
         } else {
-            equipamentosDisponiveis = equipamentoFacade.findAll();
+            return equipamentoFacade.findAll();
         }
-        equips.addAll(equipamentosDisponiveis);
-        return equips;
+
     }
 
     public Reserva getReserva() {
@@ -239,11 +243,38 @@ public class CalendarioController implements Serializable {
                 }
             }
             reserva = reservaFacade.merge(reserva);
-            //current.addReserva(reserva);
             eventModel.addEvent(reserva);
 
         } else {
-            List<Recurso> recursosReservados = getRecursosOcupadosReservaId(reserva, selectedEquipamentos);
+//            List<Recurso> recursosReservados = getRecursosOcupadosReservaId(reserva, selectedEquipamentos);
+//            if (!recursosReservados.isEmpty()) {
+//                current = recursoFacade.find(current.getId());
+//                recreateEventModel();
+//                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosReservados.toString());
+//                current = recursoFacade.find(current.getId());
+//                addMessage(message);
+//                showConfirmDialog();
+//                return;
+//            }
+//            if (isEquipamentoSelecionado()) {
+//                reserva.getRecursos().clear();
+//                reserva.addRecurso(current);
+//                for (Equipamento equipamento : selectedEquipamentos) {
+//                    if (equipamento.getId() != current.getId()) {
+//                        reserva.addRecurso(equipamento);
+//                       
+//                    }
+//                }
+//            }
+//            reserva = reservaFacade.merge(reserva);
+//            eventModel.updateEvent(reserva);
+        }
+        recreateEquipamentoDataModel();
+        recreateSalaDataModel();
+    }
+    
+    public void updateReserva(ActionEvent actionEvent){
+         List<Recurso> recursosReservados = getRecursosOcupadosReservaId(reserva, selectedEquipamentos);
             if (!recursosReservados.isEmpty()) {
                 current = recursoFacade.find(current.getId());
                 recreateEventModel();
@@ -259,13 +290,14 @@ public class CalendarioController implements Serializable {
                 for (Equipamento equipamento : selectedEquipamentos) {
                     if (equipamento.getId() != current.getId()) {
                         reserva.addRecurso(equipamento);
+                       
                     }
                 }
             }
             reserva = reservaFacade.merge(reserva);
             eventModel.updateEvent(reserva);
-        }
-        recreateEquipamentoDataModel();
+            
+             recreateEquipamentoDataModel();
         recreateSalaDataModel();
     }
 
@@ -278,6 +310,9 @@ public class CalendarioController implements Serializable {
     }
 
     public boolean isNovaReserva(Reserva reserva) {
+        if (reserva == null) {
+            return false;
+        }
         return reserva.getIid() == null;
     }
 
@@ -317,6 +352,8 @@ public class CalendarioController implements Serializable {
         if (reserva.getIid() == null) {
             throw new RuntimeException("Reserva sem IID !!!!!!");// Teste para verificar problemas ocorrendo no merge
         }
+        
+        showDialog();
 
     }
 
@@ -344,13 +381,6 @@ public class CalendarioController implements Serializable {
             showDialogFaltaRecurso();
             return;
         }
-//        org.primefaces.component.calendar.Calendar c = new org.primefaces.component.calendar.Calendar();
-//        Collection<String> eventos = c.getEventNames();
-//
-//        org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu s = new org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu();
-//        Collection<String> eventos2 = s.getEventNames();
-//        
-//        org.primefaces.component.datatable.DataTable d = new org.primefaces.component.datatable.DataTable();
 
         reserva = new Reserva();
         //reserva.setRecurso(current);
@@ -475,26 +505,24 @@ public class CalendarioController implements Serializable {
         context.execute("wdgListEquipamento.clearSelection()");
     }
 
-
     private RecursoFacade getFacade() {
         return recursoFacade;
     }
-
 
     public Recurso getRecurso(java.lang.Long id) {
         return recursoFacade.find(id);
     }
 
-    private List<Equipamento> getEquipamentosLivres(Reserva reserva) {
-        List<Recurso> recursosOcupados = isNovaReserva(reserva)
+    private List<Equipamento> getEquipamentosNaoReservados(Reserva reserva) {
+        List<Recurso> recursosReservados = isNovaReserva(reserva)
                 ? getRecursosOcupados(reserva.getInicio(), reserva.getFim()) : getRecursosOcupados(reserva.getInicio(), reserva.getFim(), reserva.getIid());
-        List<Equipamento> equipamentosLivres = equipamentoFacade.findAll();
-        for (Recurso recurso : recursosOcupados) {
-            if (recurso instanceof Equipamento) {
-                equipamentosLivres.remove((Equipamento) recurso);
+        List<Equipamento> equipamentosNaoReservados = equipamentoFacade.findAll();
+        for (Recurso recursoReservado : recursosReservados) {
+            if (recursoReservado instanceof Equipamento) {
+                equipamentosNaoReservados.remove((Equipamento) recursoReservado);
             }
         }
-        return equipamentosLivres;
+        return equipamentosNaoReservados;
     }
 
     public List<Recurso> getRecursosOcupados(Date inicio, Date fim) {
@@ -551,22 +579,19 @@ public class CalendarioController implements Serializable {
     }
 
     public String getLabelBotaoAddReserva() {
-        if (reserva != null) {
-            return isNovaReserva(reserva) ? "Salvar" : "Atualizar";
-        }
-        return "Salvar";
+        return isNovaReserva(reserva) ? "Salvar" : "Atualizar";
     }
 
-    private List<Equipamento> getEquipamentosOcupados() {
-        List<Recurso> recursosOcupados = getRecursosOcupados(reserva.getInicio(), reserva.getFim());
-        List<Equipamento> equipamentosOcupados = new ArrayList<Equipamento>();
+    private List<Equipamento> getEquipamentosReservados() {
+        List<Recurso> recursosReservados = getRecursosOcupados(reserva.getInicio(), reserva.getFim());
+        List<Equipamento> equipamentosReservados = new ArrayList<Equipamento>();
 
-        for (Recurso recurso : recursosOcupados) {
+        for (Recurso recurso : recursosReservados) {
             if (recurso instanceof Equipamento) {
-                equipamentosOcupados.add((Equipamento) recurso);
+                equipamentosReservados.add((Equipamento) recurso);
             }
         }
-        return equipamentosOcupados;
+        return equipamentosReservados;
     }
 
     @FacesConverter(forClass = Recurso.class)

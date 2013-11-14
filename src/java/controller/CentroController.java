@@ -81,11 +81,11 @@ public class CentroController implements Serializable {
         return "List";
     }
 
-    public String prepareView() {
-        current = (Centro) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "View";
-    }
+//    public String prepareView() {
+//        current = (Centro) getItems().getRowData();
+//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+//        return "View";
+//    }
 
     public String prepareCreate() {
         current = new Centro();
