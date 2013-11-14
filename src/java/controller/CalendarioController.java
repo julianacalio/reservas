@@ -284,6 +284,7 @@ public class CalendarioController implements Serializable {
                 showConfirmDialog();
                 return;
             }
+            
             if (isEquipamentoSelecionado()) {
                 reserva.getRecursos().clear();
                 reserva.addRecurso(current);
