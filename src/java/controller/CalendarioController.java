@@ -18,7 +18,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.event.ActionEvent;
-import javax.faces.model.DataModel;
 import javax.inject.Named;
 import model.Equipamento;
 import model.Pessoa;
@@ -41,7 +40,6 @@ public class CalendarioController implements Serializable {
     private List<Equipamento> selectedEquipamentos;
     private List<Equipamento> equips;
     private Recurso current, novaescolha, novaSala, novoEquipamento;
-    // private DataModel items = null;
     @EJB
     private facade.RecursoFacade recursoFacade;
     @EJB
@@ -52,8 +50,6 @@ public class CalendarioController implements Serializable {
     private facade.SalaFacade salaFacade;
     @EJB
     private facade.EquipamentoFacade equipamentoFacade;
-    //  private PaginationHelper pagination;
-    // private int selectedItemIndex;
     private ScheduleModel eventModel;
     private Reserva reserva = new Reserva();
     List<Pessoa> pessoas;
@@ -479,155 +475,12 @@ public class CalendarioController implements Serializable {
         context.execute("wdgListEquipamento.clearSelection()");
     }
 
-//    public Recurso getSelected() {
-//        if (current == null) {
-//            current = new Recurso();
-//            selectedItemIndex = -1;
-//        }
-//        return current;
-//    }
+
     private RecursoFacade getFacade() {
         return recursoFacade;
     }
 
-//    public PaginationHelper getPagination() {
-//        if (pagination == null) {
-//            pagination = new PaginationHelper(10) {
-//                @Override
-//                public int getItemsCount() {
-//                    return getFacade().count();
-//                }
-//
-//                @Override
-//                public DataModel createPageDataModel() {
-//                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
-//                }
-//            };
-//        }
-//        return pagination;
-//    }
-//    public String prepareList() {
-//        recreateModel();
-//        return "List";
-//    }
-//    public String prepareView() {
-//        current = (Recurso) getItems().getRowData();
-//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-//
-//        if (pessoas == null) {
-//            pessoas = pessoaFacade.findAll();
-//        }
-//
-//        if (eventModel == null) {
-//            eventModel = new DefaultScheduleModel();
-//            for (Reserva res : current.getReservas()) {
-//                eventModel.addEvent(res);
-//            }
-//        }
-//
-//        return "View";
-//    }
-//    public String prepareCreate() {
-//        current = new Recurso();
-//        selectedItemIndex = -1;
-//        return "Create";
-//    }
-//    public String create() {
-//        try {
-//            getFacade().save(current);
-//            JsfUtil.addSuccessMessage("RecursoCreated", null);
-//            return prepareCreate();
-//        } catch (Exception e) {
-//            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
-//            return null;
-//        }
-//    }
-//    public String prepareEdit() {
-//        current = (Recurso) getItems().getRowData();
-//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-//        return "Edit";
-//    }
-//    public String update() {
-//        try {
-//            getFacade().edit(current);
-//            JsfUtil.addSuccessMessage("RecursoUpdated", null);
-//            return "View";
-//        } catch (Exception e) {
-//            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
-//            return null;
-//        }
-//    }
-//    public String destroy() {
-//        current = (Recurso) getItems().getRowData();
-//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-//        performDestroy();
-//        recreatePagination();
-//        recreateModel();
-//        return "List";
-//    }
-//    public String destroyAndView() {
-//        performDestroy();
-//        recreateModel();
-//        updateCurrentItem();
-//        if (selectedItemIndex >= 0) {
-//            return "View";
-//        } else {
-//            // all items were removed - go back to list
-//            recreateModel();
-//            return "List";
-//        }
-//    }
-//    private void performDestroy() {
-//        try {
-//            getFacade().remove(current);
-//            JsfUtil.addSuccessMessage("Recurso Apagado", null);
-//        } catch (Exception e) {
-//            JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
-//        }
-//    }
-//    private void updateCurrentItem() {
-//        int count = getFacade().count();
-//        if (selectedItemIndex >= count) {
-//            // selected index cannot be bigger than number of items:
-//            selectedItemIndex = count - 1;
-//            // go to previous page if last page disappeared:
-//            if (pagination.getPageFirstItem() >= count) {
-//                pagination.previousPage();
-//            }
-//        }
-//        if (selectedItemIndex >= 0) {
-//            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
-//        }
-//    }
-//    public DataModel getItems() {
-//        if (items == null) {
-//            items = getPagination().createPageDataModel();
-//        }
-//        return items;
-//    }
-//    private void recreateModel() {
-//        items = null;
-//    }
-//    private void recreatePagination() {
-//        pagination = null;
-//    }
-//    public String next() {
-//        getPagination().nextPage();
-//        recreateModel();
-//        return "List";
-//    }
-//    public String previous() {
-//        getPagination().previousPage();
-//        recreateModel();
-//        return "List";
-//    }
-//    public SelectItem[] getItemsAvailableSelectMany() {
-//
-//        return JsfUtil.getSelectItems(recursoFacade.findAll(), false);
-//    }
-//    public SelectItem[] getItemsAvailableSelectOne() {
-//        return JsfUtil.getSelectItems(recursoFacade.findAll(), true);
-//    }
+
     public Recurso getRecurso(java.lang.Long id) {
         return recursoFacade.find(id);
     }
