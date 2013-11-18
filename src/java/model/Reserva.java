@@ -27,6 +27,8 @@ import org.primefaces.model.ScheduleEvent;
 @Entity
 public class Reserva implements Serializable, ScheduleEvent {
 
+     private Long grupoId;
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,6 +43,15 @@ public class Reserva implements Serializable, ScheduleEvent {
     private Centro centro;
     String motivo;
 
+    public Long getGrupoId() {
+        return grupoId;
+    }
+
+    public void setGrupoId(Long grupoId) {
+        this.grupoId = grupoId;
+    }
+
+    
 //    @OneToMany(mappedBy = "reserva", fetch = FetchType.EAGER)
     @ManyToMany(fetch = FetchType.EAGER)
     protected List<Recurso> recursos = new ArrayList<Recurso>();

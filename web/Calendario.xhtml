@@ -97,6 +97,11 @@
                             <h:outputLabel for="title" value="Motivo:" />  
                             <p:inputText id="title" value="#{calendarioController.reserva.motivo}" />  
 
+                            <h:outputLabel  value=""   />
+                            <p:selectManyCheckbox id="lineDirection"   onchange="eventDialogRepeticao.show()"  >  
+                                <f:selectItem itemLabel="Repetir" itemValue="Repetir"  />  
+                            </p:selectManyCheckbox> 
+
                             <h:outputLabel for="ck" value="Equipamentos:" />
                             <p:selectCheckboxMenu id="ck"   value="#{calendarioController.selectedEquipamentos}"  converter="equi" label="Adicionar / Remover Itens" filter="true" filterMatchMode="startsWith" panelStyle="width:220px">  
                                 <f:selectItems value="#{calendarioController.equipamentos}" var ="t" />  
@@ -118,6 +123,32 @@
                         </h:panelGrid>  
                     </p:dialog>
 
+
+                    <p:dialog widgetVar="eventDialogRepeticao" header="Repetir">
+                        <h:panelGrid id="eventRepeat" columns="2">
+                            <h:outputLabel  value="Repetição:" /> 
+                            <h:selectOneMenu id="somModoRepeticao" value="Semanal" title="modo repetição" >
+                                <f:selectItems value="#{calendarioController.opcoesRepeticao}"/>
+                            </h:selectOneMenu>
+
+                            <h:outputLabel  value="Repete:"   />
+                            <p:selectManyCheckbox      >  
+                                <f:selectItem itemLabel="Seg" itemValue="Seg"  /> 
+                                <f:selectItem itemLabel="Ter" itemValue="Ter"  />  
+                                <f:selectItem itemLabel="Qua" itemValue="Qua"  />  
+                                <f:selectItem itemLabel="Qui" itemValue="Qui"  />  
+                                <f:selectItem itemLabel="Sex" itemValue="Sex"  />  
+                            </p:selectManyCheckbox> 
+                            
+                             <h:outputLabel  value="Termina:"/>
+                             <h:panelGrid columns="2"> 
+                                 <p:inputText id="numeroOcorrencias" style="width: 20px"  />
+                                  <h:outputLabel  value="ocorrências"/>
+                             </h:panelGrid>
+                            
+                        </h:panelGrid>
+                    </p:dialog>
+
                     <p:dialog id="janela3" widgetVar="eventDialogSelectRecurso" header="Selecione um recurso" >
                         <p:panel style="display: block;text-align: center">
                             <h:outputLabel value="Por favor, selecione uma sala ou um equipamento para fazer a reserva."  />
@@ -137,7 +168,7 @@
                             <p:commandButton id="okButton"  value="OK" oncomplete="eventDialog2.hide();"  style="width: 100px" />  
                         </p:panel>
                     </p:dialog>
-                    
+
                     <p:dialog id="janela4" widgetVar="eventDialog3" header="Horario Invalido" >
                         <p:panel style="display: block;text-align: center">
                             <h:outputLabel value="Esta data expirou."  />
@@ -146,7 +177,7 @@
                             <p:commandButton id="okButton3"  value="OK" oncomplete="eventDialog3.hide();"  style="width: 100px" />  
                         </p:panel>
                     </p:dialog>
-                    
+
 
                 </h:form>  
 

@@ -23,6 +23,7 @@ import model.Equipamento;
 import model.Pessoa;
 import model.Reserva;
 import model.Sala;
+import org.joda.time.DateTime;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
@@ -226,49 +227,24 @@ public class CalendarioController implements Serializable {
 
     public void addReserva(ActionEvent actionEvent) {
 
-        if (isNovaReserva(reserva)) {
-            List<Recurso> recursosReservados = getRecursosOcupadosReserva(reserva, selectedEquipamentos);
-            if (!recursosReservados.isEmpty()) {
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosReservados.toString());
-                current = recursoFacade.find(current.getId());
-                addMessage(message);
-                showConfirmDialog();
-                return;
-            }
-            if (isEquipamentoSelecionado()) {
-                for (Equipamento equipamento : selectedEquipamentos) {
-                    if (equipamento.getId() != current.getId()) {
-                        reserva.addRecurso(equipamento);
-                    }
+        List<Recurso> recursosReservados = getRecursosOcupadosReserva(reserva, selectedEquipamentos);
+        if (!recursosReservados.isEmpty()) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosReservados.toString());
+            current = recursoFacade.find(current.getId());
+            addMessage(message);
+            showConfirmDialog();
+            return;
+        }
+        if (isEquipamentoSelecionado()) {
+            for (Equipamento equipamento : selectedEquipamentos) {
+                if (equipamento.getId() != current.getId()) {
+                    reserva.addRecurso(equipamento);
                 }
             }
-            reserva = reservaFacade.merge(reserva);
-            eventModel.addEvent(reserva);
-
-        } else {
-//            List<Recurso> recursosReservados = getRecursosOcupadosReservaId(reserva, selectedEquipamentos);
-//            if (!recursosReservados.isEmpty()) {
-//                current = recursoFacade.find(current.getId());
-//                recreateEventModel();
-//                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosReservados.toString());
-//                current = recursoFacade.find(current.getId());
-//                addMessage(message);
-//                showConfirmDialog();
-//                return;
-//            }
-//            if (isEquipamentoSelecionado()) {
-//                reserva.getRecursos().clear();
-//                reserva.addRecurso(current);
-//                for (Equipamento equipamento : selectedEquipamentos) {
-//                    if (equipamento.getId() != current.getId()) {
-//                        reserva.addRecurso(equipamento);
-//                       
-//                    }
-//                }
-//            }
-//            reserva = reservaFacade.merge(reserva);
-//            eventModel.updateEvent(reserva);
         }
+        reserva = reservaFacade.merge(reserva);
+        eventModel.addEvent(reserva);
+
         recreateEquipamentoDataModel();
         recreateSalaDataModel();
     }
@@ -543,6 +519,7 @@ public class CalendarioController implements Serializable {
             recursosOcupados.addAll(reservaOcupada.getRecursos());
         }
         return recursosOcupados;
+
     }
 
     public List<Recurso> getRecursosOcupadosReserva(Reserva reserva, List<Equipamento> equipamentosSelecionados) {
@@ -552,13 +529,7 @@ public class CalendarioController implements Serializable {
 
         List<Recurso> recursosOcupados = getRecursosOcupados(reserva.getInicio(), reserva.getFim());
         recursosOcupados.retainAll(recursosSelecionados);
-//       List<Recurso> recursos = new ArrayList<Recurso>();
-//        for (Recurso recursoSelecionado : recursosSelecionados) {
-//            if (recursosOcupados.contains(recursoSelecionado)) {
-//                recursos.add(recursoSelecionado);
-//            }
-//        }
-//        return recursos;
+
         return recursosOcupados;
     }
 
@@ -571,13 +542,7 @@ public class CalendarioController implements Serializable {
 
         List<Recurso> recursosOcupados = getRecursosOcupados(reserva.getInicio(), reserva.getFim(), reserva.getIid());
         recursosOcupados.retainAll(recursosSelecionados);
-//        List<Recurso> recursos = new ArrayList<Recurso>();
-//        for (Recurso recursoSelecionado : recursosSelecionados) {
-//            if (recursosOcupados.contains(recursoSelecionado)) {
-//                recursos.add(recursoSelecionado);
-//            }
-//        }
-//        return recursos;
+
         return recursosOcupados;
     }
 
@@ -595,6 +560,22 @@ public class CalendarioController implements Serializable {
             }
         }
         return equipamentosReservados;
+    }
+
+    public void repetirReserva() {
+        Date date = new Date();
+        DateTime dt = new DateTime();
+
+    }
+
+    public List<String> getOpcoesRepeticao() {
+        List<String> opcoes = new ArrayList<String>();
+        opcoes.add("Semanal");
+        opcoes.add("Segunda a Sexta");
+        opcoes.add("Segunda,Quarta,Sexta");
+        opcoes.add("Terça,Quinta");
+        opcoes.add("Quarta, Sexta");
+        return opcoes;
     }
 
     @FacesConverter(forClass = Recurso.class)
