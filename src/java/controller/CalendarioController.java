@@ -272,33 +272,33 @@ public class CalendarioController implements Serializable {
         recreateEquipamentoDataModel();
         recreateSalaDataModel();
     }
-    
-    public void updateReserva(ActionEvent actionEvent){
-         List<Recurso> recursosReservados = getRecursosOcupadosReservaId(reserva, selectedEquipamentos);
-            if (!recursosReservados.isEmpty()) {
-                current = recursoFacade.find(current.getId());
-                recreateEventModel();
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosReservados.toString());
-                current = recursoFacade.find(current.getId());
-                addMessage(message);
-                showConfirmDialog();
-                return;
-            }
-            
-            if (isEquipamentoSelecionado()) {
-                reserva.getRecursos().clear();
-                reserva.addRecurso(current);
-                for (Equipamento equipamento : selectedEquipamentos) {
-                    if (equipamento.getId() != current.getId()) {
-                        reserva.addRecurso(equipamento);
-                       
-                    }
+
+    public void updateReserva(ActionEvent actionEvent) {
+        List<Recurso> recursosReservados = getRecursosOcupadosReservaId(reserva, selectedEquipamentos);
+        if (!recursosReservados.isEmpty()) {
+            current = recursoFacade.find(current.getId());
+            recreateEventModel();
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosReservados.toString());
+            current = recursoFacade.find(current.getId());
+            addMessage(message);
+            showConfirmDialog();
+            return;
+        }
+
+        if (isEquipamentoSelecionado()) {
+            reserva.getRecursos().clear();
+            reserva.addRecurso(current);
+            for (Equipamento equipamento : selectedEquipamentos) {
+                if (equipamento.getId() != current.getId()) {
+                    reserva.addRecurso(equipamento);
+
                 }
             }
-            reserva = reservaFacade.merge(reserva);
-            eventModel.updateEvent(reserva);
-            
-             recreateEquipamentoDataModel();
+        }
+        reserva = reservaFacade.merge(reserva);
+        eventModel.updateEvent(reserva);
+
+        recreateEquipamentoDataModel();
         recreateSalaDataModel();
     }
 
@@ -353,7 +353,7 @@ public class CalendarioController implements Serializable {
         if (reserva.getIid() == null) {
             throw new RuntimeException("Reserva sem IID !!!!!!");// Teste para verificar problemas ocorrendo no merge
         }
-        
+
         showDialog();
 
     }
@@ -551,14 +551,15 @@ public class CalendarioController implements Serializable {
         recursosSelecionados.add(current);
 
         List<Recurso> recursosOcupados = getRecursosOcupados(reserva.getInicio(), reserva.getFim());
-
-        List<Recurso> recursos = new ArrayList<Recurso>();
-        for (Recurso recursoSelecionado : recursosSelecionados) {
-            if (recursosOcupados.contains(recursoSelecionado)) {
-                recursos.add(recursoSelecionado);
-            }
-        }
-        return recursos;
+        recursosOcupados.retainAll(recursosSelecionados);
+//       List<Recurso> recursos = new ArrayList<Recurso>();
+//        for (Recurso recursoSelecionado : recursosSelecionados) {
+//            if (recursosOcupados.contains(recursoSelecionado)) {
+//                recursos.add(recursoSelecionado);
+//            }
+//        }
+//        return recursos;
+        return recursosOcupados;
     }
 
     // Retorna or recursos selecionados pela reserva que ja estao reservados no banco de dados na nova data especificada
@@ -569,14 +570,15 @@ public class CalendarioController implements Serializable {
         recursosSelecionados.add(current);
 
         List<Recurso> recursosOcupados = getRecursosOcupados(reserva.getInicio(), reserva.getFim(), reserva.getIid());
-
-        List<Recurso> recursos = new ArrayList<Recurso>();
-        for (Recurso recursoSelecionado : recursosSelecionados) {
-            if (recursosOcupados.contains(recursoSelecionado)) {
-                recursos.add(recursoSelecionado);
-            }
-        }
-        return recursos;
+        recursosOcupados.retainAll(recursosSelecionados);
+//        List<Recurso> recursos = new ArrayList<Recurso>();
+//        for (Recurso recursoSelecionado : recursosSelecionados) {
+//            if (recursosOcupados.contains(recursoSelecionado)) {
+//                recursos.add(recursoSelecionado);
+//            }
+//        }
+//        return recursos;
+        return recursosOcupados;
     }
 
     public String getLabelBotaoAddReserva() {
