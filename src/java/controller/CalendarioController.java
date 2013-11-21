@@ -45,6 +45,9 @@ import util.SalaDataModel;
 @SessionScoped
 public class CalendarioController implements Serializable {
 
+    boolean isRepetida;
+    int numeroOcocrrencias;
+    List<Integer> diasDaSemana;
     private List<Equipamento> selectedEquipamentos;
     private List<Equipamento> equips;
     private Recurso current, novaescolha, novaSala, novoEquipamento;
@@ -112,6 +115,10 @@ public class CalendarioController implements Serializable {
 
     public void setCurrent(Recurso current) {
         this.current = current;
+    }
+
+    public void addDiaDaSemana(int diaDaSemana) {
+        diasDaSemana.add(diaDaSemana);
     }
 
     public EquipamentoDataModel getEquipamentoDataModel() {
@@ -226,6 +233,19 @@ public class CalendarioController implements Serializable {
     }
 
     public void addReserva(ActionEvent actionEvent) {
+
+        if (2 == 2) {
+            List<Integer> dias = new ArrayList<Integer>();
+            dias.add(2);
+            dias.add(3);
+            dias.add(4);
+            dias.add(5);
+            dias.add(6);
+            criaReservaSemanal(2, dias, reserva);
+            recreateEquipamentoDataModel();
+            recreateSalaDataModel();
+            return;
+        }
 
         List<Recurso> recursosReservados = getRecursosOcupadosReserva(reserva, selectedEquipamentos);
         if (!recursosReservados.isEmpty()) {
@@ -562,10 +582,70 @@ public class CalendarioController implements Serializable {
         return equipamentosReservados;
     }
 
-    public void repetirReserva() {
-        Date date = new Date();
-        DateTime dt = new DateTime();
+    public void criaReservaSemanal(int numeroOcorrencias, List<Integer> diasDaSemana, Reserva reserva) {
 
+        List<Date> datasSelecionadas = getDatasSelecionadas(diasDaSemana, reserva.getInicio());
+        for (int i = 0; i < numeroOcorrencias; i++) {
+            for (Date date : datasSelecionadas) {
+                Reserva reservaSemanal = new Reserva();
+                reservaSemanal.setInicio(date);
+                // Melhorar essa logica, usar outra biblioteca de manipulacao de datas...
+                Calendar dataFinal = Calendar.getInstance();
+                dataFinal.setTime(date);
+                Calendar data = Calendar.getInstance();
+                data.setTime(reserva.getFim());
+                dataFinal.set(Calendar.HOUR, data.get(Calendar.HOUR));
+                dataFinal.set(Calendar.MINUTE, data.get(Calendar.MINUTE));
+                // *******************************************************************
+                reservaSemanal.setFim(dataFinal.getTime());
+                reservaSemanal.setCentro(reserva.getCentro());
+                reservaSemanal.setReservante(reserva.getReservante());
+                reservaSemanal.setMotivo(reserva.getMotivo());
+                reservaSemanal.setRealizacao(reserva.getRealizacao());
+                reservaSemanal.setRecursos(reserva.getRecursos());
+                reservaSemanal.setOperador(reserva.getOperador());
+                reservaSemanal = addSemana(reservaSemanal, i);
+                if (isEquipamentoSelecionado()) {
+                    for (Equipamento equipamento : selectedEquipamentos) {
+                        if (equipamento.getId() != current.getId()) {
+                            reservaSemanal.addRecurso(equipamento);
+                        }
+                    }
+                }
+                reservaFacade.save(reservaSemanal);
+                eventModel.addEvent(reservaSemanal);
+
+            }
+
+        }
+
+    }
+
+    public List<Date> getDatasSelecionadas(List<Integer> diasDaSemana, Date dataSelecionada) {
+
+        Calendar calendario = Calendar.getInstance();
+        calendario.setTime(dataSelecionada);
+        int diaSemanaSelecionado = calendario.get(Calendar.DAY_OF_WEEK);
+        List<Date> datas = new ArrayList<Date>();
+        for (int diaDaSemana : diasDaSemana) {
+            calendario = Calendar.getInstance();
+            calendario.setTime(dataSelecionada);
+            calendario.add(Calendar.DAY_OF_MONTH, diaDaSemana - diaSemanaSelecionado);
+            datas.add(calendario.getTime());
+        }
+
+        return datas;
+    }
+
+    public Reserva addSemana(Reserva reserva, int qtdeDias) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(reserva.getInicio());
+        c.add(Calendar.DAY_OF_MONTH, 7 * qtdeDias);
+        reserva.setInicio(c.getTime());
+        c.setTime(reserva.getFim());
+        c.add(Calendar.DAY_OF_MONTH, 7 * qtdeDias);
+        reserva.setFim(c.getTime());
+        return reserva;
     }
 
     public List<String> getOpcoesRepeticao() {
