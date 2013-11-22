@@ -7,7 +7,7 @@ package facade;
 
 import controller.HibernateUtil;
 import javax.ejb.Stateless;
-import model.GrupoReservas;
+import model.GrupoReserva;
 import org.hibernate.SessionFactory;
 
 /**
@@ -15,10 +15,10 @@ import org.hibernate.SessionFactory;
  * @author charles
  */
 @Stateless
-public class GrupoReservasFacade extends AbstractFacade<GrupoReservas> {
+public class GrupoReservaFacade extends AbstractFacade<GrupoReserva> {
 
-    public GrupoReservasFacade() {
-        super(GrupoReservas.class);
+    public GrupoReservaFacade() {
+        super(GrupoReserva.class);
     }
 
     @Override

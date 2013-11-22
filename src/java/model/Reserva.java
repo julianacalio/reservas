@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -28,9 +29,16 @@ import static util.DateTools.prepareCalendar;
  */
 @Entity
 public class Reserva implements Serializable, ScheduleEvent {
+    @ManyToOne(cascade = {CascadeType.ALL})
+    private GrupoReserva grupoReserva;
 
-    @ManyToOne
-    private GrupoReservas grupoReservas;
+    public GrupoReserva getGrupoReserva() {
+        return grupoReserva;
+    }
+
+    public void setGrupoReserva(GrupoReserva grupoReserva) {
+        this.grupoReserva = grupoReserva;
+    }
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -45,6 +53,8 @@ public class Reserva implements Serializable, ScheduleEvent {
     @ManyToOne
     private Centro centro;
     String motivo;
+
+    
 
 //    @OneToMany(mappedBy = "reserva", fetch = FetchType.EAGER)
     @ManyToMany(fetch = FetchType.EAGER)
@@ -152,24 +162,6 @@ public class Reserva implements Serializable, ScheduleEvent {
 
     public void setIid(Long id) {
         this.iid = id;
-    }
-
-    private boolean groupManaged;
-
-    public boolean isGroupManaged() {
-        return groupManaged;
-    }
-
-    public GrupoReservas getGrupoReservas() {
-        return grupoReservas;
-    }
-
-    public void setGrupoReservas(GrupoReservas grupoReservas) {
-        this.grupoReservas = grupoReservas;
-    }
-
-    public void setGroupManaged(boolean groupManaged) {
-        this.groupManaged = groupManaged;
     }
 
     @Override

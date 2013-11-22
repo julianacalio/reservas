@@ -20,7 +20,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import model.Equipamento;
-import model.GrupoReservas;
+import model.GrupoReserva;
 import model.Pessoa;
 import model.Reserva;
 import model.Sala;
@@ -62,6 +62,8 @@ public class CalendarioController implements Serializable {
     private facade.SalaFacade salaFacade;
     @EJB
     private facade.EquipamentoFacade equipamentoFacade;
+    @EJB
+    private facade.GrupoReservaFacade grupoReservaFacade;
     private ScheduleModel eventModel;
     private Reserva reserva = new Reserva();
     List<Pessoa> pessoas;
@@ -235,7 +237,7 @@ public class CalendarioController implements Serializable {
 
     public void salvaReserva(ActionEvent actionEvent) {
         if (2==2) {
-            GrupoReservas gruporeservas = new GrupoReservas();
+            GrupoReserva gruporeserva = new GrupoReserva();
       
             List<Integer> dias = new ArrayList<Integer>();
             dias.add(2);
@@ -243,7 +245,8 @@ public class CalendarioController implements Serializable {
             dias.add(4);
             dias.add(5);
             dias.add(6);
-            gruporeservas.createReservaSemanal(reserva, 2, dias);
+            gruporeserva.createReservaSemanal(reserva, 2, dias);
+            grupoReservaFacade.save(gruporeserva);
            
         } else {
             addReserva(actionEvent);

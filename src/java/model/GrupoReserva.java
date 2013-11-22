@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,14 +21,23 @@ import javax.persistence.OneToMany;
  * @author charles
  */
 @Entity
-public class GrupoReservas implements Serializable {
+public class GrupoReserva implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(mappedBy = "grupoReservas")
+    @OneToMany(mappedBy = "grupoReserva",cascade = {CascadeType.ALL})
     private List<Reserva> reservas;
+
+    public List<Reserva> getReservas() {
+        return reservas;
+    }
+
+    public void setReservas(List<Reserva> reservas) {
+        this.reservas = reservas;
+    }
 
     public void addReserva(Reserva reserva) {
         reservas.add(reserva);
@@ -43,14 +53,6 @@ public class GrupoReservas implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public List<Reserva> getReservas() {
-        return reservas;
-    }
-
-    public void setReservas(List<Reserva> reservas) {
-        this.reservas = reservas;
     }
 
     public void setReservante(Pessoa reservante) {
@@ -77,8 +79,6 @@ public class GrupoReservas implements Serializable {
         }
     }
 
-  
-
     private void setDia(int dia, Reserva reserva) {
 
         Date dataInicio = reserva.getInicio();
@@ -89,8 +89,7 @@ public class GrupoReservas implements Serializable {
         reserva.setFim(dataFim);
 
     }
-    
-    
+
     public void createReservaSemanal(Reserva reservaModelo, int numeroOcorrencias, List<Integer> diasDaSemana) {
         reservas = new ArrayList<Reserva>();
         List<Integer> diasPrimeiraSemana = util.DateTools.getDiasSelecionados(diasDaSemana, reservaModelo.getRealizacao());
