@@ -6,6 +6,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import org.primefaces.model.ScheduleEvent;
+import static util.DateTools.prepareCalendar;
 
 /**
  *
@@ -27,8 +29,9 @@ import org.primefaces.model.ScheduleEvent;
 @Entity
 public class Reserva implements Serializable, ScheduleEvent {
 
-     private Long grupoId;
-    
+    @ManyToOne
+    private GrupoReservas grupoReservas;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,15 +46,6 @@ public class Reserva implements Serializable, ScheduleEvent {
     private Centro centro;
     String motivo;
 
-    public Long getGrupoId() {
-        return grupoId;
-    }
-
-    public void setGrupoId(Long grupoId) {
-        this.grupoId = grupoId;
-    }
-
-    
 //    @OneToMany(mappedBy = "reserva", fetch = FetchType.EAGER)
     @ManyToMany(fetch = FetchType.EAGER)
     protected List<Recurso> recursos = new ArrayList<Recurso>();
@@ -132,6 +126,19 @@ public class Reserva implements Serializable, ScheduleEvent {
     public void setRealizacao(Date realizacao) {
         this.realizacao = realizacao;
     }
+
+    public Reserva getClone() {
+        Reserva reservaClone = new Reserva();
+        reservaClone.centro = this.centro;
+        reservaClone.fim = this.fim;
+        reservaClone.id = this.id;
+        reservaClone.inicio = this.inicio;
+        reservaClone.realizacao = this.realizacao;
+        reservaClone.recursos = this.recursos;
+        reservaClone.reservante = this.reservante;
+        return reservaClone;
+    }
+
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date inicio;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -145,6 +152,24 @@ public class Reserva implements Serializable, ScheduleEvent {
 
     public void setIid(Long id) {
         this.iid = id;
+    }
+
+    private boolean groupManaged;
+
+    public boolean isGroupManaged() {
+        return groupManaged;
+    }
+
+    public GrupoReservas getGrupoReservas() {
+        return grupoReservas;
+    }
+
+    public void setGrupoReservas(GrupoReservas grupoReservas) {
+        this.grupoReservas = grupoReservas;
+    }
+
+    public void setGroupManaged(boolean groupManaged) {
+        this.groupManaged = groupManaged;
     }
 
     @Override

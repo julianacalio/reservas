@@ -115,7 +115,7 @@
                                 </p:column>
                             </p:dataList>
 
-                            <p:commandButton id="addButton"  value="Salvar" actionListener="#{calendarioController.addReserva}" oncomplete="myschedule.update();eventDialog.hide();" update=":form2:dtEquipamento,messages" rendered="#{calendarioController.reserva.iid == null}" />
+                            <p:commandButton id="addButton"  value="Salvar" actionListener="#{calendarioController.salvaReserva}" oncomplete="myschedule.update();eventDialog.hide();" update=":form2:dtEquipamento,messages" rendered="#{calendarioController.reserva.iid == null}" />
                             <p:commandButton id="updateButton"  value="Atualizar" actionListener="#{calendarioController.updateReserva}" oncomplete="myschedule.update();eventDialog.hide();" update=":form2:dtEquipamento,messages" rendered="#{calendarioController.reserva.iid != null}"/>
                             <p:commandButton id="remButton"  value="Remover" actionListener="#{calendarioController.remReserva}" oncomplete="myschedule.update();eventDialog.hide();" rendered="#{calendarioController.reserva.iid != null}" update=":form2:dtEquipamento,:form1:dtSala"/>  
                             <p:commandButton id="cancelButton"  value="Cancelar"  oncomplete="eventDialog.hide();"  rendered="#{calendarioController.reserva.iid == null}"/> 
