@@ -29,7 +29,8 @@ import static util.DateTools.prepareCalendar;
  */
 @Entity
 public class Reserva implements Serializable, ScheduleEvent {
-    @ManyToOne(cascade = {CascadeType.ALL})
+
+    @ManyToOne(fetch = FetchType.EAGER)
     private GrupoReserva grupoReserva;
 
     public GrupoReserva getGrupoReserva() {
@@ -53,8 +54,6 @@ public class Reserva implements Serializable, ScheduleEvent {
     @ManyToOne
     private Centro centro;
     String motivo;
-
-    
 
 //    @OneToMany(mappedBy = "reserva", fetch = FetchType.EAGER)
     @ManyToMany(fetch = FetchType.EAGER)
@@ -137,16 +136,19 @@ public class Reserva implements Serializable, ScheduleEvent {
         this.realizacao = realizacao;
     }
 
-    public Reserva getClone() {
-        Reserva reservaClone = new Reserva();
-        reservaClone.centro = this.centro;
-        reservaClone.fim = this.fim;
-        reservaClone.id = this.id;
-        reservaClone.inicio = this.inicio;
-        reservaClone.realizacao = this.realizacao;
-        reservaClone.recursos = this.recursos;
-        reservaClone.reservante = this.reservante;
-        return reservaClone;
+   
+
+    public Reserva createClone(Reserva reserva) {
+       
+        reserva.centro = this.centro;
+        reserva.fim = this.fim;
+        reserva.inicio = this.inicio;
+        reserva.fim = this.fim;
+        reserva.realizacao = this.realizacao;
+        reserva.recursos = this.recursos;
+        reserva.reservante = this.reservante;
+        reserva.motivo = this.motivo;
+        return reserva;
     }
 
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)

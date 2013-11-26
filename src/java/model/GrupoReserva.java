@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,8 +29,8 @@ public class GrupoReserva implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(mappedBy = "grupoReserva",cascade = {CascadeType.ALL})
-    private List<Reserva> reservas;
+    @OneToMany(mappedBy = "grupoReserva",cascade = CascadeType.ALL)
+    private List<Reserva> reservas = new ArrayList<Reserva>();
 
     public List<Reserva> getReservas() {
         return reservas;
@@ -95,14 +96,17 @@ public class GrupoReserva implements Serializable {
         List<Integer> diasPrimeiraSemana = util.DateTools.getDiasSelecionados(diasDaSemana, reservaModelo.getRealizacao());
         for (int i = 0; i < numeroOcorrencias; i++) {
             for (Integer diaPrimeiraSemana : diasPrimeiraSemana) {
-                Reserva reservaSemanal = reservaModelo.getClone();
+                Reserva reservaSemanal = new Reserva();
+                reservaSemanal =   reservaModelo.createClone(reservaSemanal);
+                
                 setDia(diaPrimeiraSemana, reservaSemanal);
                 Date dataInicial = reservaSemanal.getInicio();
-                dataInicial = util.DateTools.addDia(dataInicial, 7 * numeroOcorrencias);
+                dataInicial = util.DateTools.addDia(dataInicial, 7 * i);
                 reservaSemanal.setInicio(dataInicial);
                 Date dataFinal = reservaSemanal.getFim();
-                dataFinal = util.DateTools.addDia(dataFinal, 7 * numeroOcorrencias);
+                dataFinal = util.DateTools.addDia(dataFinal, 7 * i);
                 reservaSemanal.setFim(dataFinal);
+                reservaSemanal.setGrupoReserva(this);
                 reservas.add(reservaSemanal);
             }
         }

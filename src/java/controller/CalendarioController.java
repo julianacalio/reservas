@@ -236,18 +236,26 @@ public class CalendarioController implements Serializable {
     }
 
     public void salvaReserva(ActionEvent actionEvent) {
-        if (2==2) {
+        if (2 == 2) {
             GrupoReserva gruporeserva = new GrupoReserva();
-      
+
             List<Integer> dias = new ArrayList<Integer>();
-            dias.add(2);
             dias.add(3);
-            dias.add(4);
-            dias.add(5);
-            dias.add(6);
+//            dias.add(3);
+//            dias.add(4);
+//            dias.add(5);
+//            dias.add(6);
             gruporeserva.createReservaSemanal(reserva, 2, dias);
+            //reserva.setGrupoReserva(gruporeserva);
+            //gruporeserva.addReserva(reserva);
             grupoReservaFacade.save(gruporeserva);
-           
+            for (Reserva reservaAgrupada : gruporeserva.getReservas()) {
+                eventModel.addEvent(reservaAgrupada);
+            }
+
+            recreateEquipamentoDataModel();
+            recreateSalaDataModel();
+
         } else {
             addReserva(actionEvent);
         }
@@ -357,6 +365,8 @@ public class CalendarioController implements Serializable {
         if (reserva.getIid() == null) {
             throw new RuntimeException("Reserva sem IID !!!!!!");// Teste para verificar problemas ocorrendo no merge
         }
+        
+        GrupoReserva gp = grupoReservaFacade.find(reserva.getGrupoReserva().getId());
 
         showDialog();
 
@@ -595,9 +605,9 @@ public class CalendarioController implements Serializable {
         List<Date> datasSelecionadas = getDatasSelecionadas(diasDaSemana, reserva.getInicio());
         for (int i = 0; i < numeroOcorrencias; i++) {
             for (Date date : datasSelecionadas) {
-                Reserva reservaSemanal = reserva.getClone();
+                Reserva reservaSemanal = new Reserva();
+                reservaSemanal = reserva.createClone(reservaSemanal);
                 reservaSemanal.setInicio(date);
-
                 int dia = util.DateTools.getDia(reservaSemanal.getInicio());
                 reservaSemanal.setFim(util.DateTools.setDia(reservaSemanal.getFim(), dia));
 
