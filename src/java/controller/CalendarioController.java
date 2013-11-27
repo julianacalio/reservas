@@ -19,12 +19,13 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
+import model.Centro;
 import model.Equipamento;
 import model.GrupoReserva;
 import model.Pessoa;
 import model.Reserva;
 import model.Sala;
-import org.joda.time.DateTime;
+//import org.joda.time.DateTime;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
@@ -64,6 +65,8 @@ public class CalendarioController implements Serializable {
     private facade.EquipamentoFacade equipamentoFacade;
     @EJB
     private facade.GrupoReservaFacade grupoReservaFacade;
+    @EJB
+    private facade.CentroFacade centrofacade;
     private ScheduleModel eventModel;
     private Reserva reserva = new Reserva();
     List<Pessoa> pessoas;
@@ -245,7 +248,7 @@ public class CalendarioController implements Serializable {
 //            dias.add(4);
 //            dias.add(5);
 //            dias.add(6);
-            gruporeserva.createReservaSemanal(reserva, 2, dias);
+            gruporeserva.createReservaSemanal(reserva, 4, dias);
             //reserva.setGrupoReserva(gruporeserva);
             //gruporeserva.addReserva(reserva);
             grupoReservaFacade.save(gruporeserva);
@@ -331,9 +334,22 @@ public class CalendarioController implements Serializable {
 
     public void remReserva(ActionEvent actionEvent) {
 
-        eventModel.deleteEvent(reserva);
-        current.remReserva(reserva);
-        reservaFacade.remove(reserva);
+        if (reserva.getGrupoReserva() != null) {
+            GrupoReserva gp = grupoReservaFacade.find(reserva.getGrupoReserva().getId());
+            List<Reserva> reservas;
+            reservas = reservaFacade.findAll(reserva.getGrupoReserva());
+            gp.setReservas(reservas);
+
+            for (Reserva reservaRemovida : gp.getReservas()) {
+                eventModel.deleteEvent(reservaRemovida);
+            }
+            grupoReservaFacade.remove(gp);
+        } else {
+
+            eventModel.deleteEvent(reserva);
+            current.remReserva(reserva);
+            reservaFacade.remove(reserva);
+        }
         recreateReserva();
         recreateEquipamentoDataModel();
         recreateSalaDataModel();
@@ -365,8 +381,6 @@ public class CalendarioController implements Serializable {
         if (reserva.getIid() == null) {
             throw new RuntimeException("Reserva sem IID !!!!!!");// Teste para verificar problemas ocorrendo no merge
         }
-        
-        GrupoReserva gp = grupoReservaFacade.find(reserva.getGrupoReserva().getId());
 
         showDialog();
 

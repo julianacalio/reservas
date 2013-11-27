@@ -29,7 +29,7 @@ public class GrupoReserva implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(mappedBy = "grupoReserva",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "grupoReserva", cascade = CascadeType.ALL)
     private List<Reserva> reservas = new ArrayList<Reserva>();
 
     public List<Reserva> getReservas() {
@@ -97,8 +97,7 @@ public class GrupoReserva implements Serializable {
         for (int i = 0; i < numeroOcorrencias; i++) {
             for (Integer diaPrimeiraSemana : diasPrimeiraSemana) {
                 Reserva reservaSemanal = new Reserva();
-                reservaSemanal =   reservaModelo.createClone(reservaSemanal);
-                
+                reservaSemanal = reservaModelo.createClone(reservaSemanal);
                 setDia(diaPrimeiraSemana, reservaSemanal);
                 Date dataInicial = reservaSemanal.getInicio();
                 dataInicial = util.DateTools.addDia(dataInicial, 7 * i);
