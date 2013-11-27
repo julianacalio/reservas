@@ -127,8 +127,8 @@
                     <p:dialog widgetVar="eventDialogRepeticao" header="Repetir">
                         <h:panelGrid id="eventRepeat" columns="2">
                             <h:outputLabel  value="Repetição:" /> 
-                            <h:selectOneMenu id="somModoRepeticao" value="Semanal" title="modo repetição" >
-                                <f:selectItems value="#{calendarioController.opcoesRepeticao}"/>
+                            <h:selectOneMenu id="somModoRepeticao" value="#{calendarioController.opcaoRepeticaoEscolhida}" title="Modo repetição"  >
+                                <f:selectItems value="#{calendarioController.opcoesRepeticao}"  />
                             </h:selectOneMenu>
 
                             <h:outputLabel  value="Repete:"   />
@@ -145,6 +145,9 @@
                                  <p:inputText id="numeroOcorrencias" style="width: 20px"  />
                                   <h:outputLabel  value="ocorrências"/>
                              </h:panelGrid>
+                             
+                               <p:commandButton id="btnConfirmaRepeticao"  value="Confirmar" oncomplete="eventDialogRepeticao.hide();"  style="width: 100px" />  
+                               <p:commandButton id="btnCancelaRepeticao"  value="Cancelar" oncomplete="eventDialogRepeticao.hide();"  style="width: 100px" />  
                             
                         </h:panelGrid>
                     </p:dialog>

@@ -32,12 +32,36 @@ public class GrupoReserva implements Serializable {
     @OneToMany(mappedBy = "grupoReserva", cascade = CascadeType.ALL)
     private List<Reserva> reservas = new ArrayList<Reserva>();
 
+    private List<Integer> diasDaSemana = new ArrayList<Integer>();
+
+    private int numeroRepeticoes;
+
+    public int getNumeroRepeticoes() {
+        return numeroRepeticoes;
+    }
+
+    public void setNumeroRepeticoes(int numeroRepeticoes) {
+        this.numeroRepeticoes = numeroRepeticoes;
+    }
+
     public List<Reserva> getReservas() {
         return reservas;
     }
 
     public void setReservas(List<Reserva> reservas) {
         this.reservas = reservas;
+    }
+
+    public void addDiaDaSemana(int DIA_DA_SEMANA) {
+        diasDaSemana.add(DIA_DA_SEMANA);
+    }
+
+    public List<Integer> getDiasDaSemana() {
+        return diasDaSemana;
+    }
+
+    public void setDiasDaSemana(List<Integer> diasDaSemana) {
+        this.diasDaSemana = diasDaSemana;
     }
 
     public void addReserva(Reserva reserva) {
@@ -91,10 +115,10 @@ public class GrupoReserva implements Serializable {
 
     }
 
-    public void createReservaSemanal(Reserva reservaModelo, int numeroOcorrencias, List<Integer> diasDaSemana) {
+    public void buildReservaSemanal(Reserva reservaModelo) {
         reservas = new ArrayList<Reserva>();
-        List<Integer> diasPrimeiraSemana = util.DateTools.getDiasSelecionados(diasDaSemana, reservaModelo.getRealizacao());
-        for (int i = 0; i < numeroOcorrencias; i++) {
+        List<Integer> diasPrimeiraSemana = util.DateTools.getDiasSelecionados(this.diasDaSemana, reservaModelo.getRealizacao());
+        for (int i = 0; i < this.numeroRepeticoes; i++) {
             for (Integer diaPrimeiraSemana : diasPrimeiraSemana) {
                 Reserva reservaSemanal = new Reserva();
                 reservaSemanal = reservaModelo.createClone(reservaSemanal);
