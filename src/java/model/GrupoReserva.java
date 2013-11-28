@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -32,6 +33,7 @@ public class GrupoReserva implements Serializable {
     @OneToMany(mappedBy = "grupoReserva", cascade = CascadeType.ALL)
     private List<Reserva> reservas = new ArrayList<Reserva>();
 
+    @ElementCollection
     private List<Integer> diasDaSemana = new ArrayList<Integer>();
 
     private int numeroRepeticoes;
@@ -117,7 +119,7 @@ public class GrupoReserva implements Serializable {
 
     public void buildReservaSemanal(Reserva reservaModelo) {
         reservas = new ArrayList<Reserva>();
-        List<Integer> diasPrimeiraSemana = util.DateTools.getDiasSelecionados(this.diasDaSemana, reservaModelo.getRealizacao());
+        List<Integer> diasPrimeiraSemana = util.DateTools.getDiasSelecionados(this.diasDaSemana, reservaModelo.getInicio());
         for (int i = 0; i < this.numeroRepeticoes; i++) {
             for (Integer diaPrimeiraSemana : diasPrimeiraSemana) {
                 Reserva reservaSemanal = new Reserva();

@@ -95,12 +95,12 @@
                             </p:calendar>
 
                             <h:outputLabel for="title" value="Motivo:" />  
-                            <p:inputText id="title" value="#{calendarioController.reserva.motivo}" />  
+                            <p:inputText id="title" value="#{calendarioController.reserva.motivo}"   />  
 
-                            <h:outputLabel  value=""   />
-                            <p:selectManyCheckbox id="lineDirection"   onchange="eventDialogRepeticao.show()"  >  
-                                <f:selectItem itemLabel="Repetir" itemValue="Repetir"  />  
-                            </p:selectManyCheckbox> 
+                            <h:outputLabel  value="Repetir"   />
+                            <p:selectBooleanCheckbox id="checkReservaSemanal"  value="#{calendarioController.reservaSemanal}"     >  
+                                <p:ajax  listener="#{calendarioController.verificaSelecaoRepeticao()}"/> 
+                            </p:selectBooleanCheckbox> 
 
                             <h:outputLabel for="ck" value="Equipamentos:" />
                             <p:selectCheckboxMenu id="ck"   value="#{calendarioController.selectedEquipamentos}"  converter="equi" label="Adicionar / Remover Itens" filter="true" filterMatchMode="startsWith" panelStyle="width:220px">  
@@ -139,16 +139,16 @@
                                 <f:selectItem itemLabel="Qui" itemValue="Qui"  />  
                                 <f:selectItem itemLabel="Sex" itemValue="Sex"  />  
                             </p:selectManyCheckbox> 
-                            
-                             <h:outputLabel  value="Termina:"/>
-                             <h:panelGrid columns="2"> 
-                                 <p:inputText id="numeroOcorrencias" style="width: 20px"  />
-                                  <h:outputLabel  value="ocorrências"/>
-                             </h:panelGrid>
-                             
-                               <p:commandButton id="btnConfirmaRepeticao"  value="Confirmar" oncomplete="eventDialogRepeticao.hide();"  style="width: 100px" />  
-                               <p:commandButton id="btnCancelaRepeticao"  value="Cancelar" oncomplete="eventDialogRepeticao.hide();"  style="width: 100px" />  
-                            
+
+                            <h:outputLabel  value="Termina:"/>
+                            <h:panelGrid columns="2"> 
+                                <p:inputText id="numeroOcorrencias" value="#{calendarioController.grupoReserva.numeroRepeticoes}" style="width: 20px"  />
+                                <h:outputLabel  value="ocorrências"/>
+                            </h:panelGrid>
+
+                            <p:commandButton id="btnConfirmaRepeticao"  value="Confirmar" oncomplete="eventDialogRepeticao.hide();"  style="width: 120px" />  
+                            <p:commandButton id="btnCancelaRepeticao"  value="Cancelar" oncomplete="eventDialogRepeticao.hide();"  style="width: 120px" />  
+
                         </h:panelGrid>
                     </p:dialog>
 

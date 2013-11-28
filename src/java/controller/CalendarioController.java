@@ -68,15 +68,24 @@ public class CalendarioController implements Serializable {
 
     private ScheduleModel eventModel;
     private Reserva reserva = new Reserva();
-    private  GrupoReserva grupoReserva = new GrupoReserva();
+    private GrupoReserva grupoReserva = new GrupoReserva();
     List<Pessoa> pessoas;
     private EquipamentoDataModel equipamentoDataModel;
     private SalaDataModel salaDataModel;
     private String opcaoRepeticaoEscolhida;
+    private boolean reservaSemanal;
 
     public CalendarioController() {
         eventModel = null;
         pessoas = null;
+    }
+
+    public boolean isReservaSemanal() {
+        return reservaSemanal;
+    }
+
+    public void setReservaSemanal(boolean reservaSemanal) {
+        this.reservaSemanal = reservaSemanal;
     }
 
     public String getOpcaoRepeticaoEscolhida() {
@@ -96,6 +105,14 @@ public class CalendarioController implements Serializable {
         equipamentoDataModel = null;
         recreateEventModel();
         pessoas = null;
+    }
+
+    public GrupoReserva getGrupoReserva() {
+        return grupoReserva;
+    }
+
+    public void setGrupoReserva(GrupoReserva grupoReserva) {
+        this.grupoReserva = grupoReserva;
     }
 
     public Recurso getNovaescolha() {
@@ -214,6 +231,12 @@ public class CalendarioController implements Serializable {
 
         return eventModel;
     }
+    
+    public void verificaSelecaoRepeticao(){
+        if(isReservaSemanal()){
+              RequestContext.getCurrentInstance().execute("eventDialogRepeticao.show()");
+        }
+    }
 
     public void escolheRecurso() {
         if (novaescolha == current) {
@@ -246,7 +269,7 @@ public class CalendarioController implements Serializable {
     }
 
     public void salvaReserva(ActionEvent actionEvent) {
-        if (2 == 2) {
+        if (isReservaSemanal()) {
             String opcaoEscolhida = getOpcaoRepeticaoEscolhida();
             grupoReserva.setDiasDaSemana(getDiasEscolhidos(opcaoEscolhida));
             grupoReserva.buildReservaSemanal(reserva);
@@ -263,36 +286,7 @@ public class CalendarioController implements Serializable {
         }
     }
 
-    public List<Integer> getDiasEscolhidos(String opcaoSelecionada) {
-        List<Integer> dias = new ArrayList<Integer>();
-        if (opcaoSelecionada.equals("Semanal")) {
-            dias.add(Calendar.MONDAY);
-            dias.add(Calendar.TUESDAY);
-            dias.add(Calendar.WEDNESDAY);
-            dias.add(Calendar.THURSDAY);
-            dias.add(Calendar.FRIDAY);
-            return dias;
-        }
-        if (opcaoSelecionada.equals("Segunda a Sexta")) {
-            dias.add(Calendar.MONDAY);
-            dias.add(Calendar.FRIDAY);
-            return dias;
-        }
-        if (opcaoSelecionada.equals("Terça,Quinta")) {
-            dias.add(Calendar.TUESDAY);
-            dias.add(Calendar.THURSDAY);
-            return dias;
-        }
-
-        if (opcaoSelecionada.equals("Quarta, Sexta")) {
-            dias.add(Calendar.WEDNESDAY);
-            dias.add(Calendar.FRIDAY);
-            return dias;
-        }
-        return dias;
-
-    }
-
+   
     public void addReserva(ActionEvent actionEvent) {
 
         List<Recurso> recursosReservados = getRecursosOcupadosReserva(reserva, selectedEquipamentos);
@@ -316,6 +310,44 @@ public class CalendarioController implements Serializable {
         recreateEquipamentoDataModel();
         recreateSalaDataModel();
     }
+    
+     public List<Integer> getDiasEscolhidos(String opcaoSelecionada) {
+        List<Integer> dias = new ArrayList<Integer>();
+        if (opcaoSelecionada.equals("Semanal")) {
+            dias.add(Calendar.MONDAY);
+            dias.add(Calendar.TUESDAY);
+            dias.add(Calendar.WEDNESDAY);
+            dias.add(Calendar.THURSDAY);
+            dias.add(Calendar.FRIDAY);
+            return dias;
+        }
+        if (opcaoSelecionada.equals("Segunda a Sexta")) {
+            dias.add(Calendar.MONDAY);
+            dias.add(Calendar.FRIDAY);
+            return dias;
+        }
+        if (opcaoSelecionada.equals("Terça,Quinta")) {
+            dias.add(Calendar.TUESDAY);
+            dias.add(Calendar.THURSDAY);
+            return dias;
+        }
+
+        if (opcaoSelecionada.equals("Segunda, Quarta, Sexta")) {
+            dias.add(Calendar.MONDAY);
+            dias.add(Calendar.WEDNESDAY);
+            dias.add(Calendar.FRIDAY);
+            return dias;
+        }
+
+        if (opcaoSelecionada.equals("Quarta, Sexta")) {
+            dias.add(Calendar.WEDNESDAY);
+            dias.add(Calendar.FRIDAY);
+            return dias;
+        }
+        return dias;
+
+    }
+
 
     public void updateReserva(ActionEvent actionEvent) {
         List<Recurso> recursosReservados = getRecursosOcupadosReservaId(reserva, selectedEquipamentos);
