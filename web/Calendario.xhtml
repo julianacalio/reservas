@@ -132,19 +132,25 @@
                             </h:selectOneMenu>
 
                             <h:outputLabel  value="Repete:"   />
-                            <p:selectManyCheckbox      >  
-                                <f:selectItem itemLabel="Seg" itemValue="Seg"  /> 
+                            <p:selectManyCheckbox    value="#{calendarioController.diasEscolhidos}"  >  
+                                <f:selectItem itemLabel="Seg" itemValue="Seg" /> 
                                 <f:selectItem itemLabel="Ter" itemValue="Ter"  />  
                                 <f:selectItem itemLabel="Qua" itemValue="Qua"  />  
                                 <f:selectItem itemLabel="Qui" itemValue="Qui"  />  
                                 <f:selectItem itemLabel="Sex" itemValue="Sex"  />  
                             </p:selectManyCheckbox> 
 
+
                             <h:outputLabel  value="Termina:"/>
                             <h:panelGrid columns="2"> 
                                 <p:inputText id="numeroOcorrencias" value="#{calendarioController.grupoReserva.numeroRepeticoes}" style="width: 20px"  />
                                 <h:outputLabel  value="ocorrências"/>
                             </h:panelGrid>
+
+                            <h:outputLabel  value="data final"/>
+                            <p:calendar id="finalDate" timeZone="GMT-2"    pattern="dd/MM/yyyy"   locale="br" required="true" widgetVar="w">
+
+                            </p:calendar>
 
                             <p:commandButton id="btnConfirmaRepeticao"  value="Confirmar" oncomplete="eventDialogRepeticao.hide();"  style="width: 120px" />  
                             <p:commandButton id="btnCancelaRepeticao"  value="Cancelar" oncomplete="eventDialogRepeticao.hide();"  style="width: 120px" />  

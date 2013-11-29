@@ -70,6 +70,10 @@ public class Reserva implements Serializable, ScheduleEvent {
     public void setRecursos(List<Recurso> recursos) {
         this.recursos.addAll(recursos);
     }
+    
+    public void addAll(List<Recurso> recursos){
+        this.recursos.addAll(recursos);
+    }
 
     public String getMotivo() {
         return motivo;
@@ -138,17 +142,17 @@ public class Reserva implements Serializable, ScheduleEvent {
 
    
 
-    public Reserva createClone(Reserva reserva) {
-       
-        reserva.centro = this.centro;
-        reserva.fim = this.fim;
-        reserva.inicio = this.inicio;
-        reserva.fim = this.fim;
-        reserva.realizacao = this.realizacao;
-        reserva.recursos = this.recursos;
-        reserva.reservante = this.reservante;
-        reserva.motivo = this.motivo;
-        return reserva;
+    public Reserva createClone() {
+       Reserva res = new Reserva();
+        res.centro = this.centro;
+        res.fim = this.fim;
+        res.inicio = this.inicio;
+        res.fim = this.fim;
+        res.realizacao = this.realizacao;
+        res.recursos = this.recursos;
+        res.reservante = this.reservante;
+        res.motivo = this.motivo;
+        return res;
     }
 
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -250,4 +254,6 @@ public class Reserva implements Serializable, ScheduleEvent {
     public boolean isEditable() {
         return true;
     }
+
+    
 }
