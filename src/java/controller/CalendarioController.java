@@ -74,10 +74,19 @@ public class CalendarioController implements Serializable {
     private String opcaoRepeticaoEscolhida;
     private List<String> diasEscolhidos;
     private boolean reservaSemanal;
+    private List<Reserva> reservasImpossiveis = new ArrayList<Reserva>();
 
     public CalendarioController() {
         eventModel = null;
         pessoas = null;
+    }
+
+    public List<Reserva> getReservasImpossiveis() {
+        return reservasImpossiveis;
+    }
+
+    public void setReservasImpossiveis(List<Reserva> reservasImpossiveis) {
+        this.reservasImpossiveis = reservasImpossiveis;
     }
 
     public List<String> getDiasEscolhidos() {
@@ -242,7 +251,7 @@ public class CalendarioController implements Serializable {
 
     public void verificaSelecaoRepeticao() {
         if (isReservaSemanal()) {
-            RequestContext.getCurrentInstance().execute("eventDialogRepeticao.show()");
+            // RequestContext.getCurrentInstance().execute("eventDialogRepeticao.show()");
         }
     }
 
@@ -281,9 +290,17 @@ public class CalendarioController implements Serializable {
             if (isEquipamentoSelecionado()) {
                 reserva = adicionaEquipamentosNaReserva(reserva, selectedEquipamentos);
             }
-            String opcaoEscolhida = getOpcaoRepeticaoEscolhida();
+            //String opcaoEscolhida = getOpcaoRepeticaoEscolhida();
             grupoReserva.setDiasDaSemana(getDiasEscolhidos(diasEscolhidos));
             grupoReserva.buildReservaSemanal(reserva);
+            reservasImpossiveis = getReservasOcupadas(grupoReserva);
+            if (!reservasImpossiveis.isEmpty()) {
+                for (Reserva reservaImpossivel : reservasImpossiveis) {
+                   // Reserva r = new Reserva();
+                    grupoReserva.removeReserva(reservaImpossivel);
+                }
+                RequestContext.getCurrentInstance().execute("eventDialog5.show()");
+            }
             grupoReservaFacade.save(grupoReserva);
             for (Reserva reservaAgrupada : grupoReserva.getReservas()) {
                 eventModel.addEvent(reservaAgrupada);
@@ -295,6 +312,18 @@ public class CalendarioController implements Serializable {
         } else {
             addReserva(actionEvent);
         }
+    }
+
+    //Retorna as reservas que podem ser feitas possuem um ou mais recursos ocupados
+    //naquele horario escolhido
+    public List<Reserva> getReservasOcupadas(GrupoReserva novoGrupoReserva) {
+        List<Reserva> reservasImpos = new ArrayList<Reserva>();
+        for (Reserva res : novoGrupoReserva.getReservas()) {
+            if (!getRecursosOcupadosPelaReserva(res).isEmpty()) {
+                reservasImpos.add(res);
+            }
+        }
+        return reservasImpos;
     }
 
     public Reserva adicionaEquipamentosNaReserva(Reserva reserva, List<Equipamento> equipamentos) {
@@ -677,6 +706,12 @@ public class CalendarioController implements Serializable {
 
     }
 
+    /**
+     * Retorna os recursos que foram selecionados pelas reserva dentro de um horario especifico e ja foram reservados no banco de dados.
+     *
+     * @param reserva Reserva que possui uma lista de recursos que serão analisados
+     * @return Lista de recursos que ja estao reservados no horario da reserva
+     */
     public List<Recurso> getRecursosOcupadosPelaReserva(Reserva reserva) {
         List<Recurso> recursosSelecionados = reserva.getRecursos();
         List<Recurso> recursosOcupados = getRecursosOcupados(reserva.getInicio(), reserva.getFim());

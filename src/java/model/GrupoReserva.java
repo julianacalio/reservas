@@ -7,7 +7,9 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
@@ -131,12 +133,14 @@ public class GrupoReserva implements Serializable {
                 dataFinal = util.DateTools.addDia(dataFinal, 7 * i);
                 reservaSemanal.setFim(dataFinal);
                 reservaSemanal.setGrupoReserva(this);
-                if (dataInicial.after(reservaModelo.getInicio()) || dataInicial.equals(reservaModelo.getInicio()) || dataFinal.after(reservaModelo.getFim()) || dataFinal.equals(reservaModelo.getFim())) {
+                if (dataInicial.after(reservaModelo.getInicio()) || dataInicial.equals(reservaModelo.getInicio()) || dataFinal.before(reservaModelo.getFim()) || dataFinal.equals(reservaModelo.getFim())) {
                     reservas.add(reservaSemanal);
                 }
             }
         }
 
     }
+
+
 
 }

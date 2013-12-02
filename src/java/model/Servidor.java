@@ -46,7 +46,6 @@ public class Servidor extends Pessoa implements Serializable {
         this.matricula = matricula;
     }
 
-   
 
     @Override
     public int hashCode() {
