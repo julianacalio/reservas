@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javax.ejb.EJB;
 
@@ -294,11 +295,18 @@ public class CalendarioController implements Serializable {
             grupoReserva.setDiasDaSemana(getDiasEscolhidos(diasEscolhidos));
             grupoReserva.buildReservaSemanal(reserva);
             reservasImpossiveis = getReservasOcupadas(grupoReserva);
+            //se possui alguma reserva impossivel
             if (!reservasImpossiveis.isEmpty()) {
+                //procura essa reserva na lista e remove
                 for (Reserva reservaImpossivel : reservasImpossiveis) {
-                   // Reserva r = new Reserva();
-                    grupoReserva.removeReserva(reservaImpossivel);
+                    for (Iterator<Reserva> res = grupoReserva.getReservas().iterator(); res.hasNext();) {
+                        Reserva r = res.next();
+                        if (r.getInicio().equals(reservaImpossivel.getInicio())) {
+                            res.remove();
+                        }
+                    }
                 }
+                
                 RequestContext.getCurrentInstance().execute("eventDialog5.show()");
             }
             grupoReservaFacade.save(grupoReserva);
@@ -308,13 +316,14 @@ public class CalendarioController implements Serializable {
 
             recreateEquipamentoDataModel();
             recreateSalaDataModel();
+            recreateGrupoReserva();
 
         } else {
             addReserva(actionEvent);
         }
     }
 
-    //Retorna as reservas que podem ser feitas possuem um ou mais recursos ocupados
+    //Retorna as reservas que nao podem ser feitas pois possuem um ou mais recursos ocupados
     //naquele horario escolhido
     public List<Reserva> getReservasOcupadas(GrupoReserva novoGrupoReserva) {
         List<Reserva> reservasImpos = new ArrayList<Reserva>();
@@ -438,7 +447,6 @@ public class CalendarioController implements Serializable {
             for (Equipamento equipamento : selectedEquipamentos) {
                 if (equipamento.getId() != current.getId()) {
                     reserva.addRecurso(equipamento);
-
                 }
             }
         }
@@ -811,6 +819,10 @@ public class CalendarioController implements Serializable {
         opcoes.add("Terça,Quinta");
         opcoes.add("Quarta, Sexta");
         return opcoes;
+    }
+
+    private void recreateGrupoReserva() {
+        grupoReserva = null;
     }
 
     @FacesConverter(forClass = Recurso.class)
