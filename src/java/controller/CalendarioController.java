@@ -293,7 +293,7 @@ public class CalendarioController implements Serializable {
             }
             //String opcaoEscolhida = getOpcaoRepeticaoEscolhida();
             grupoReserva.setDiasDaSemana(getDiasEscolhidos(diasEscolhidos));
-            grupoReserva.buildReservaSemanal(reserva);
+            grupoReserva.buildReservaSemanal(reserva,grupoReserva.getNumeroRepeticoes());
             reservasImpossiveis = getReservasOcupadas(grupoReserva);
             //se possui alguma reserva impossivel
             if (!reservasImpossiveis.isEmpty()) {
@@ -317,6 +317,10 @@ public class CalendarioController implements Serializable {
             recreateEquipamentoDataModel();
             recreateSalaDataModel();
             recreateGrupoReserva();
+            recreateReservasImpossiveis();
+            recreateDiasEscolhidos();
+            recreateIsReservaSemanal();
+           
 
         } else {
             addReserva(actionEvent);
@@ -767,24 +771,7 @@ public class CalendarioController implements Serializable {
         return equipamentosReservados;
     }
 
-//    public List<Reserva> getReservaSemanal(int numeroOcorrencias, List<Integer> diasDaSemana, Reserva reserva) {
-//        List<Reserva> reservasSemanais = new ArrayList<Reserva>();
-//        List<Date> datasSelecionadas = getDatasSelecionadas(diasDaSemana, reserva.getInicio());
-//        for (int i = 0; i < numeroOcorrencias; i++) {
-//            for (Date date : datasSelecionadas) {
-//                Reserva reservaSemanal = new Reserva();
-//                reservaSemanal = reserva.createClone(reservaSemanal);
-//                reservaSemanal.setInicio(date);
-//                int dia = util.DateTools.getDia(reservaSemanal.getInicio());
-//                reservaSemanal.setFim(util.DateTools.setDia(reservaSemanal.getFim(), dia));
-//
-//                reservasSemanais.add(reservaSemanal);
-//
-//            }
-//
-//        }
-//        return reservasSemanais;
-//    }
+
     public List<Date> getDatasSelecionadas(List<Integer> diasDaSemana, Date dataSelecionada) {
 
         Calendar calendario = Calendar.getInstance();
@@ -801,16 +788,7 @@ public class CalendarioController implements Serializable {
         return datas;
     }
 
-//    public Reserva addSemana(Reserva reserva, int qtdeDias) {
-//        Calendar c = Calendar.getInstance();
-//        c.setTime(reserva.getInicio());
-//        c.add(Calendar.DAY_OF_MONTH, 7 * qtdeDias);
-//        reserva.setInicio(c.getTime());
-//        c.setTime(reserva.getFim());
-//        c.add(Calendar.DAY_OF_MONTH, 7 * qtdeDias);
-//        reserva.setFim(c.getTime());
-//        return reserva;
-//    }
+
     public List<String> getOpcoesRepeticao() {
         List<String> opcoes = new ArrayList<String>();
         opcoes.add("Semanal");
@@ -823,6 +801,22 @@ public class CalendarioController implements Serializable {
 
     private void recreateGrupoReserva() {
         grupoReserva = null;
+    }
+
+    private void recreateReservasImpossiveis() {
+        reservasImpossiveis = null;
+    }
+    
+    private void recreateDiasEscolhidos(){
+        diasEscolhidos = null;
+    }
+    
+    private void recreateIsReservaSemanal(){
+        reservaSemanal = false;
+    }
+    
+    private void recreateNumeroOcorrencias(){
+        numeroOcocrrencias = 0;
     }
 
     @FacesConverter(forClass = Recurso.class)

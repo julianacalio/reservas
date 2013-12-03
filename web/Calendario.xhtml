@@ -102,8 +102,6 @@
                                 <f:selectItems value="#{calendarioController.equipamentos}" var ="t" />  
                             </p:selectCheckboxMenu> 
 
-                           
-
                             <h:outputLabel  value="Repetir"   />
                             <p:selectBooleanCheckbox id="checkReservaSemanal"  value="#{calendarioController.reservaSemanal}"    >  
                                 <p:ajax  listener="#{calendarioController.verificaSelecaoRepeticao()}"  update="smcDiasSemana,numeroOcorrencias2,finalDate2"/> 
@@ -142,8 +140,6 @@
 
                         </h:panelGrid>  
                     </p:dialog>
-
-
 
 
                     <p:dialog id="janela3" widgetVar="eventDialogSelectRecurso" header="Selecione um recurso" >

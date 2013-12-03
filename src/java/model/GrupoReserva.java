@@ -119,7 +119,7 @@ public class GrupoReserva implements Serializable {
 
     }
 
-    public void buildReservaSemanal(Reserva reservaModelo) {
+    public void buildReservaSemanal(Reserva reservaModelo, int numeroOcorrencias) {
         reservas = new ArrayList<Reserva>();
         List<Integer> diasSemanaSelecionados = util.DateTools.getDiasSelecionados(this.diasDaSemana, reservaModelo.getInicio(), this.numeroRepeticoes);
         for (int i = 0; i < this.numeroRepeticoes; i++) {
@@ -139,6 +139,34 @@ public class GrupoReserva implements Serializable {
                 }
             }
         }
+
+    }
+
+    
+    //arrumar este metodo
+    public void buildReservaSemanal(Reserva reservaModelo, Date dataFinalEscolhida) {
+        reservas = new ArrayList<Reserva>();
+        List<Integer> diasSemanaSelecionados = util.DateTools.getDiasSelecionados(this.diasDaSemana, reservaModelo.getInicio(), this.numeroRepeticoes);
+
+        int i = 0;
+
+        for (Integer diaPrimeiraSemana : diasSemanaSelecionados) {
+            Reserva reservaSemanal = reservaModelo.createClone();
+            setDia(diaPrimeiraSemana, reservaSemanal);
+            Date dataInicial = reservaSemanal.getInicio();
+            dataInicial = util.DateTools.addDia(dataInicial, 7 * i);
+            reservaSemanal.setInicio(dataInicial);
+            Date dataFinal = reservaSemanal.getFim();
+            dataFinal = util.DateTools.addDia(dataFinal, 7 * i);
+            reservaSemanal.setFim(dataFinal);
+            reservaSemanal.setGrupoReserva(this);
+            if (dataFinal.before(dataFinalEscolhida) || dataFinal.equals(dataFinalEscolhida)) {
+                reservas.add(reservaSemanal);
+            }else{
+                break;
+            }
+        }
+        i++;
 
     }
 
