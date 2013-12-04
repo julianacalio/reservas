@@ -17,7 +17,7 @@
                 <h:form id ="f2">
 
                     <!--                    <h:graphicImage value="resources/images/cmcc.png" />-->
-                    <p:outputLabel value="Calendárioo de Alocação de Salas e Equipamentos" style="color: green;font-size: 37px;font-weight: bold"/>
+                    <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 37px;font-weight: bold"/>
                 </h:form>
                 <style type="text/css">
                     /*                                                                .ui-widget{font-size:90% !important;}*/
@@ -102,11 +102,6 @@
                                 <f:selectItems value="#{calendarioController.equipamentos}" var ="t" />  
                             </p:selectCheckboxMenu> 
 
-                            <h:outputLabel  value="Repetir"   />
-                            <p:selectBooleanCheckbox id="checkReservaSemanal"  value="#{calendarioController.reservaSemanal}"    >  
-                                <p:ajax  listener="#{calendarioController.verificaSelecaoRepeticao()}"  update="smcDiasSemana,numeroOcorrencias2,finalDate2"/> 
-                            </p:selectBooleanCheckbox> 
-
                             <p:outputLabel   rendered="#{calendarioController.reserva.id != null}"  value="Itens Escolhidos"/>
                             <p:dataList  rendered="#{calendarioController.reserva.id != null}" value="#{calendarioController.reserva.recursos}"  var="recurso" itemType="disc" >
                                 <p:column selectionMode="single">
@@ -114,24 +109,25 @@
                                 </p:column>
                             </p:dataList>
 
+                            <h:outputLabel  value="Repetir"   />
+                            <p:selectBooleanCheckbox id="checkReservaSemanal"  value="#{calendarioController.reservaSemanal}"    >  
+                                <p:ajax  listener="#{calendarioController.verificaSelecaoRepeticao()}"  update="smcDiasSemana,finalDate2"/> 
+                            </p:selectBooleanCheckbox> 
+
                             <h:outputLabel  value="Repete:" rendered="#{calendarioController.reserva.grupoReserva == null}"  />
                             <p:selectManyCheckbox  id="smcDiasSemana"  value="#{calendarioController.diasEscolhidos}" rendered="#{calendarioController.reserva.grupoReserva == null}" disabled="#{!calendarioController.reservaSemanal}"  >  
                                 <f:selectItem itemLabel="Seg" itemValue="Seg" /> 
-                                <f:selectItem itemLabel="Ter" itemValue="Ter"  />  
-                                <f:selectItem itemLabel="Qua" itemValue="Qua"  />  
-                                <f:selectItem itemLabel="Qui" itemValue="Qui"  />  
-                                <f:selectItem itemLabel="Sex" itemValue="Sex"  />  
+                                <f:selectItem itemLabel="Ter" itemValue="Ter" />  
+                                <f:selectItem itemLabel="Qua" itemValue="Qua" />  
+                                <f:selectItem itemLabel="Qui" itemValue="Qui" />  
+                                <f:selectItem itemLabel="Sex" itemValue="Sex" />  
                             </p:selectManyCheckbox> 
 
                             <h:outputLabel  value="Termina:" rendered="#{calendarioController.reserva.grupoReserva == null}"/>
                             <h:panelGrid columns="2" rendered="#{calendarioController.reserva.grupoReserva == null}"> 
-                                <p:inputText id="numeroOcorrencias2" value="#{calendarioController.grupoReserva.numeroRepeticoes}" rendered="#{calendarioController.reserva.grupoReserva == null}" disabled="#{!calendarioController.reservaSemanal}" style="width: 20px"  />
-                                <h:outputLabel  value="ocorrências" rendered="#{calendarioController.reserva.grupoReserva == null}" />
+                                <h:outputLabel  value="Data final" rendered="#{calendarioController.reserva.grupoReserva == null}" />
+                                <p:calendar id="finalDate2" timeZone="GMT-2"  value="#{calendarioController.dataFinalReservaSemanal}"  pattern="dd/MM/yyyy"   locale="br"  widgetVar="w" rendered="#{calendarioController.reserva.grupoReserva == null}" disabled="#{!calendarioController.reservaSemanal}" />
                             </h:panelGrid>
-
-                            <h:outputLabel  value="Data final" rendered="#{calendarioController.reserva.grupoReserva == null}" />
-                            <p:calendar id="finalDate2" timeZone="GMT-2"    pattern="dd/MM/yyyy"   locale="br"  widgetVar="w" rendered="#{calendarioController.reserva.grupoReserva == null}" disabled="#{!calendarioController.reservaSemanal}" />
-
 
                             <p:commandButton id="addButton"  value="Salvar" actionListener="#{calendarioController.salvaReserva}" oncomplete="myschedule.update();eventDialog.hide();" update=":form2:dtEquipamento,messages" rendered="#{calendarioController.reserva.iid == null}" />
                             <p:commandButton id="updateButton"  value="Atualizar" actionListener="#{calendarioController.updateReserva}" oncomplete="myschedule.update();eventDialog.hide();" update=":form2:dtEquipamento,messages" rendered="#{calendarioController.reserva.iid != null}"/>
@@ -172,7 +168,7 @@
                     </p:dialog>
 
                     <p:dialog id="janela5" widgetVar="eventDialog5" header="Reservas Indisponíveis"  dynamic="true" >
-                        
+
                         <p:panel style="display: block;text-align: center">
                             <h:outputLabel value="Alguma(s) reserva(s) possue(m) um ou mais recursos"  />
                             <br/>
@@ -180,13 +176,13 @@
                             <br/>
                             <h:outputLabel value="e não serão salvas."/>
                             <br/>
-                            <p:dataList value="#{calendarioController.reservasImpossiveis}"  var="reservaImpossivel" itemType="disc" >
+                            <p:dataList value="#{calendarioController.reservasImpossiveis}" var="reservaImpossivel" itemType="disc" >
                                 <p:column >
-                                    #{reservaImpossivel.inicio} até  #{reservaImpossivel.fim}
+                                    data: #{reservaImpossivel.dataInicio} recursos: #{reservaImpossivel.recursos}
                                 </p:column>
                             </p:dataList>
                             <br/>
-                            <p:commandButton id="okButton5"  value="OK" oncomplete="eventDialog5.hide();"  style="width: 100px" />  
+                            <p:commandButton id="okButton5"  value="OK" oncomplete="eventDialog5.hide();"   style="width: 100px" />  
                         </p:panel>
                     </p:dialog>
 

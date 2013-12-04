@@ -7,6 +7,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
@@ -26,106 +27,95 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class GrupoReserva implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    
     @OneToMany(mappedBy = "grupoReserva", cascade = CascadeType.ALL)
     private List<Reserva> reservas = new ArrayList<Reserva>();
-
+    
     @ElementCollection
     private List<Integer> diasDaSemana = new ArrayList<Integer>();
-
-    private int numeroRepeticoes;
-
-    public int getNumeroRepeticoes() {
-        return numeroRepeticoes;
-    }
-
-    public void setNumeroRepeticoes(int numeroRepeticoes) {
-        this.numeroRepeticoes = numeroRepeticoes;
-    }
-
+    
     public List<Reserva> getReservas() {
         return reservas;
     }
-
+    
     public void setReservas(List<Reserva> reservas) {
         this.reservas = reservas;
     }
-
+    
     public void addDiaDaSemana(int DIA_DA_SEMANA) {
         diasDaSemana.add(DIA_DA_SEMANA);
     }
-
+    
     public List<Integer> getDiasDaSemana() {
         return diasDaSemana;
     }
-
+    
     public void setDiasDaSemana(List<Integer> diasDaSemana) {
         this.diasDaSemana = diasDaSemana;
     }
-
+    
     public void addReserva(Reserva reserva) {
         reservas.add(reserva);
     }
-
+    
     public void removeReserva(Reserva reserva) {
         reservas.remove(reserva);
     }
-
+    
     public Long getId() {
         return id;
     }
-
+    
     public void setId(Long id) {
         this.id = id;
     }
-
+    
     public void setReservante(Pessoa reservante) {
         for (Reserva reserva : reservas) {
             reserva.setReservante(reservante);
         }
     }
-
+    
     public void setInicio(Date inicio) {
         for (Reserva reserva : reservas) {
             reserva.setInicio(inicio);
         }
     }
-
+    
     public void setRealizacao(Date realizacao) {
         for (Reserva reserva : reservas) {
             reserva.setRealizacao(realizacao);
         }
     }
-
+    
     public void setRecursos(List<Recurso> recursos) {
         for (Reserva reserva : reservas) {
             reserva.setRecursos(recursos);
         }
     }
-
+    
     private void setDia(int dia, Reserva reserva) {
-
+        
         Date dataInicio = reserva.getInicio();
         dataInicio = util.DateTools.setDia(dataInicio, dia);
         reserva.setInicio(dataInicio);
         Date dataFim = reserva.getFim();
         dataFim = util.DateTools.setDia(dataFim, dia);
         reserva.setFim(dataFim);
-
+        
     }
-
+    
     public void buildReservaSemanal(Reserva reservaModelo, int numeroOcorrencias) {
         reservas = new ArrayList<Reserva>();
-        List<Integer> diasSemanaSelecionados = util.DateTools.getDiasSelecionados(this.diasDaSemana, reservaModelo.getInicio(), this.numeroRepeticoes);
-        for (int i = 0; i < this.numeroRepeticoes; i++) {
+        List<Integer> diasSemanaSelecionados = util.DateTools.getDiasSelecionados(this.diasDaSemana, reservaModelo.getInicio());
+        for (int i = 0; i < numeroOcorrencias; i++) {
             for (Integer diaPrimeiraSemana : diasSemanaSelecionados) {
                 Reserva reservaSemanal = reservaModelo.createClone();
-                // reservaSemanal.setIid(i+10L);
                 setDia(diaPrimeiraSemana, reservaSemanal);
                 Date dataInicial = reservaSemanal.getInicio();
                 dataInicial = util.DateTools.addDia(dataInicial, 7 * i);
@@ -139,35 +129,34 @@ public class GrupoReserva implements Serializable {
                 }
             }
         }
-
+        
     }
 
-    
     //arrumar este metodo
     public void buildReservaSemanal(Reserva reservaModelo, Date dataFinalEscolhida) {
         reservas = new ArrayList<Reserva>();
-        List<Integer> diasSemanaSelecionados = util.DateTools.getDiasSelecionados(this.diasDaSemana, reservaModelo.getInicio(), this.numeroRepeticoes);
-
+        List<Integer> diasSemanaSelecionados = util.DateTools.getDiasSelecionados(this.diasDaSemana, reservaModelo.getInicio());
+        
+        Date dataFinal = Calendar.getInstance().getTime();
         int i = 0;
-
-        for (Integer diaPrimeiraSemana : diasSemanaSelecionados) {
-            Reserva reservaSemanal = reservaModelo.createClone();
-            setDia(diaPrimeiraSemana, reservaSemanal);
-            Date dataInicial = reservaSemanal.getInicio();
-            dataInicial = util.DateTools.addDia(dataInicial, 7 * i);
-            reservaSemanal.setInicio(dataInicial);
-            Date dataFinal = reservaSemanal.getFim();
-            dataFinal = util.DateTools.addDia(dataFinal, 7 * i);
-            reservaSemanal.setFim(dataFinal);
-            reservaSemanal.setGrupoReserva(this);
-            if (dataFinal.before(dataFinalEscolhida) || dataFinal.equals(dataFinalEscolhida)) {
-                reservas.add(reservaSemanal);
-            }else{
-                break;
+        while (dataFinal.before(dataFinalEscolhida)) {
+            for (Integer diaPrimeiraSemana : diasSemanaSelecionados) {
+                Reserva reservaSemanal = reservaModelo.createClone();
+                setDia(diaPrimeiraSemana, reservaSemanal);
+                Date dataInicial = reservaSemanal.getInicio();
+                dataInicial = util.DateTools.addDia(dataInicial, 7 * i);
+                reservaSemanal.setInicio(dataInicial);
+                dataFinal = reservaSemanal.getFim();
+                dataFinal = util.DateTools.addDia(dataFinal, 7 * i);
+                reservaSemanal.setFim(dataFinal);
+                reservaSemanal.setGrupoReserva(this);
+                if (dataInicial.after(reservaModelo.getInicio()) || dataInicial.equals(reservaModelo.getInicio()) && dataFinal.before(dataFinalEscolhida)) {
+                    reservas.add(reservaSemanal);
+                }
             }
+            i++;
         }
-        i++;
-
+        
     }
-
+    
 }

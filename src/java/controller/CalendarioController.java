@@ -8,8 +8,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.EJB;
 
 import javax.enterprise.context.SessionScoped;
@@ -76,10 +78,19 @@ public class CalendarioController implements Serializable {
     private List<String> diasEscolhidos;
     private boolean reservaSemanal;
     private List<Reserva> reservasImpossiveis = new ArrayList<Reserva>();
+    private Date dataFinalReservaSemanal;
 
     public CalendarioController() {
         eventModel = null;
         pessoas = null;
+    }
+
+    public Date getDataFinalReservaSemanal() {
+        return dataFinalReservaSemanal;
+    }
+
+    public void setDataFinalReservaSemanal(Date dataFinalReservaSemanal) {
+        this.dataFinalReservaSemanal = dataFinalReservaSemanal;
     }
 
     public List<Reserva> getReservasImpossiveis() {
@@ -293,7 +304,7 @@ public class CalendarioController implements Serializable {
             }
             //String opcaoEscolhida = getOpcaoRepeticaoEscolhida();
             grupoReserva.setDiasDaSemana(getDiasEscolhidos(diasEscolhidos));
-            grupoReserva.buildReservaSemanal(reserva,grupoReserva.getNumeroRepeticoes());
+            grupoReserva.buildReservaSemanal(reserva, dataFinalReservaSemanal);
             reservasImpossiveis = getReservasOcupadas(grupoReserva);
             //se possui alguma reserva impossivel
             if (!reservasImpossiveis.isEmpty()) {
@@ -306,7 +317,7 @@ public class CalendarioController implements Serializable {
                         }
                     }
                 }
-                
+
                 RequestContext.getCurrentInstance().execute("eventDialog5.show()");
             }
             grupoReservaFacade.save(grupoReserva);
@@ -317,10 +328,9 @@ public class CalendarioController implements Serializable {
             recreateEquipamentoDataModel();
             recreateSalaDataModel();
             recreateGrupoReserva();
-            recreateReservasImpossiveis();
+            //recreateReservasImpossiveis();
             recreateDiasEscolhidos();
             recreateIsReservaSemanal();
-           
 
         } else {
             addReserva(actionEvent);
@@ -332,7 +342,10 @@ public class CalendarioController implements Serializable {
     public List<Reserva> getReservasOcupadas(GrupoReserva novoGrupoReserva) {
         List<Reserva> reservasImpos = new ArrayList<Reserva>();
         for (Reserva res : novoGrupoReserva.getReservas()) {
-            if (!getRecursosOcupadosPelaReserva(res).isEmpty()) {
+            List<Recurso> recursosOcupados = getRecursosOcupadosPelaReserva(res);
+            if (!recursosOcupados.isEmpty()) {
+                res.limparRecursos();
+                res.setRecursos(recursosOcupados);
                 reservasImpos.add(res);
             }
         }
@@ -555,6 +568,7 @@ public class CalendarioController implements Serializable {
             return;
         }
 
+        grupoReserva = new GrupoReserva();
         reserva = new Reserva();
         //reserva.setRecurso(current);
         reserva.addRecurso(current);
@@ -699,7 +713,8 @@ public class CalendarioController implements Serializable {
     }
 
     public List<Recurso> getRecursosOcupados(Date inicio, Date fim) {
-        List<Reserva> reservasOcupadas = reservaFacade.findAllBetween(inicio, fim);
+       // List<Reserva> reservasOcupadas = reservaFacade.findAllBetween(inicio, fim);
+        Set<Reserva> reservasOcupadas = new HashSet<Reserva>(reservaFacade.findAllBetween(inicio, fim));
         //  List<Reserva> reservasOcupadas = reservaFacade.findBetweenTeste(inicio, fim, reserva.getIid());
         List<Recurso> recursosOcupados = new ArrayList<Recurso>();
         for (Reserva reservaOcupada : reservasOcupadas) {
@@ -771,7 +786,6 @@ public class CalendarioController implements Serializable {
         return equipamentosReservados;
     }
 
-
     public List<Date> getDatasSelecionadas(List<Integer> diasDaSemana, Date dataSelecionada) {
 
         Calendar calendario = Calendar.getInstance();
@@ -787,7 +801,6 @@ public class CalendarioController implements Serializable {
 
         return datas;
     }
-
 
     public List<String> getOpcoesRepeticao() {
         List<String> opcoes = new ArrayList<String>();
@@ -806,16 +819,16 @@ public class CalendarioController implements Serializable {
     private void recreateReservasImpossiveis() {
         reservasImpossiveis = null;
     }
-    
-    private void recreateDiasEscolhidos(){
+
+    private void recreateDiasEscolhidos() {
         diasEscolhidos = null;
     }
-    
-    private void recreateIsReservaSemanal(){
+
+    private void recreateIsReservaSemanal() {
         reservaSemanal = false;
     }
-    
-    private void recreateNumeroOcorrencias(){
+
+    private void recreateNumeroOcorrencias() {
         numeroOcocrrencias = 0;
     }
 

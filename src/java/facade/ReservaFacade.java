@@ -81,6 +81,7 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
         List res1 = criteria.list();
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
         List results1 = criteria.list();
+        
 
         Criteria criteria2 = session.createCriteria(Reserva.class);
         criteria2.add(Restrictions.and(Restrictions.le("inicio", inicio), Restrictions.ge("fim", fim)));

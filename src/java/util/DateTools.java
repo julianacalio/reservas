@@ -64,16 +64,15 @@ public class DateTools {
         return c.getTime();
     }
 
-    public static int getMinutos(Date data) {
-        Calendar c = prepareCalendar(data);
-        return c.get(Calendar.MINUTE);
-    }
-
-    public static int getHora(Date data) {
-        Calendar c = prepareCalendar(data);
-        return c.get(Calendar.HOUR_OF_DAY);
-    }
-
+//    public static int getMinutos(Date data) {
+//        Calendar c = prepareCalendar(data);
+//        return c.get(Calendar.MINUTE);
+//    }
+//    
+//    public static int getHora(Date data) {
+//        Calendar c = prepareCalendar(data);
+//        return c.get(Calendar.HOUR_OF_DAY);
+//    }
     public static Date setDia(Date data, int dia) {
         Calendar c = prepareCalendar(data);
         c.set(Calendar.DAY_OF_MONTH, dia);
@@ -91,8 +90,20 @@ public class DateTools {
         return cal;
     }
 
+    public static String getData(Date data) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(data);
+        int month = c.get(Calendar.MONTH) + 1;//janeiro comeca a contar como mes 0.
+        return String.valueOf(c.get(Calendar.DAY_OF_MONTH) + "/" + month + "/" + c.get(Calendar.YEAR));
+    }
+
+    public static String getHora(Date data) {
+        Calendar c = Calendar.getInstance();
+        return String.valueOf(c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE));
+    }
+
     //retorna os dias do mes que correspondem aos dias da semana selecionados em funcao da data selecionada
-    public static List<Integer> getDiasSelecionados(List<Integer> diasDaSemana, Date dataSelecionada, int numeroOcorrencias) {
+    public static List<Integer> getDiasSelecionados(List<Integer> diasDaSemana, Date dataSelecionada) {
 
         Calendar calendario = Calendar.getInstance();
         calendario.setTime(dataSelecionada);
@@ -103,9 +114,8 @@ public class DateTools {
             calendario.setTime(dataSelecionada);
             calendario.add(Calendar.DAY_OF_MONTH, (diaDaSemana - diaSemanaSelecionado));
             //adiciona a data á lista somente se ela for igual ou posterior ao dia selecionado.
-            
-                dias.add(calendario.get(Calendar.DAY_OF_MONTH));
-           
+
+            dias.add(calendario.get(Calendar.DAY_OF_MONTH));
 
         }
         return dias;

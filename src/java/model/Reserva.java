@@ -21,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import org.primefaces.model.ScheduleEvent;
+import util.DateTools;
 import static util.DateTools.prepareCalendar;
 
 /**
@@ -70,8 +71,8 @@ public class Reserva implements Serializable, ScheduleEvent {
     public void setRecursos(List<Recurso> recursos) {
         this.recursos.addAll(recursos);
     }
-    
-    public void addAll(List<Recurso> recursos){
+
+    public void addAll(List<Recurso> recursos) {
         this.recursos.addAll(recursos);
     }
 
@@ -99,6 +100,10 @@ public class Reserva implements Serializable, ScheduleEvent {
 
     public void setOperador(Operador operador) {
         this.operador = operador;
+    }
+
+    public void limparRecursos() {
+        this.recursos.clear();
     }
 
 //    public Recurso getRecurso() {
@@ -140,10 +145,24 @@ public class Reserva implements Serializable, ScheduleEvent {
         this.realizacao = realizacao;
     }
 
-   
+    public String getDataInicio() {
+        return DateTools.getData(inicio);
+    }
+
+    public String getDataFim() {
+        return DateTools.getData(fim);
+    }
+
+    public String getHoraInicio() {
+        return DateTools.getHora(inicio);
+    }
+
+    public String getHoraFim() {
+        return DateTools.getHora(fim);
+    }
 
     public Reserva createClone() {
-       Reserva res = new Reserva();
+        Reserva res = new Reserva();
         res.centro = this.centro;
         res.fim = this.fim;
         res.inicio = this.inicio;
@@ -255,5 +274,4 @@ public class Reserva implements Serializable, ScheduleEvent {
         return true;
     }
 
-    
 }
