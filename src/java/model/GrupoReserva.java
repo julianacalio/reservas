@@ -134,7 +134,8 @@ public class GrupoReserva implements Serializable {
 
     //arrumar este metodo
     public void buildReservaSemanal(Reserva reservaModelo, Date dataFinalEscolhida) {
-        reservas = new ArrayList<Reserva>();
+        
+        reservas   =  new ArrayList<Reserva>();
         List<Integer> diasSemanaSelecionados = util.DateTools.getDiasSelecionados(this.diasDaSemana, reservaModelo.getInicio());
         
         Date dataFinal = Calendar.getInstance().getTime();

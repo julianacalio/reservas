@@ -111,7 +111,7 @@
 
                             <h:outputLabel  value="Repetir"   />
                             <p:selectBooleanCheckbox id="checkReservaSemanal"  value="#{calendarioController.reservaSemanal}"    >  
-                                <p:ajax  listener="#{calendarioController.verificaSelecaoRepeticao()}"  update="smcDiasSemana,finalDate2"/> 
+                                <p:ajax    update="smcDiasSemana,finalDate2"/> 
                             </p:selectBooleanCheckbox> 
 
                             <h:outputLabel  value="Repete:" rendered="#{calendarioController.reserva.grupoReserva == null}"  />
@@ -126,7 +126,7 @@
                             <h:outputLabel  value="Termina:" rendered="#{calendarioController.reserva.grupoReserva == null}"/>
                             <h:panelGrid columns="2" rendered="#{calendarioController.reserva.grupoReserva == null}"> 
                                 <h:outputLabel  value="Data final" rendered="#{calendarioController.reserva.grupoReserva == null}" />
-                                <p:calendar id="finalDate2" timeZone="GMT-2"  value="#{calendarioController.dataFinalReservaSemanal}"  pattern="dd/MM/yyyy"   locale="br"  widgetVar="w" rendered="#{calendarioController.reserva.grupoReserva == null}" disabled="#{!calendarioController.reservaSemanal}" />
+                                <p:calendar id="finalDate2" timeZone="GMT-2"  value="#{calendarioController.dataFinalReservaSemanal}" required="true" pattern="dd/MM/yyyy"   locale="br"  widgetVar="w" rendered="#{calendarioController.reserva.grupoReserva == null}" disabled="#{!calendarioController.reservaSemanal}" />
                             </h:panelGrid>
 
                             <p:commandButton id="addButton"  value="Salvar" actionListener="#{calendarioController.salvaReserva}" oncomplete="myschedule.update();eventDialog.hide();" update=":form2:dtEquipamento,messages" rendered="#{calendarioController.reserva.iid == null}" />
@@ -172,17 +172,34 @@
                         <p:panel style="display: block;text-align: center">
                             <h:outputLabel value="Alguma(s) reserva(s) possue(m) um ou mais recursos"  />
                             <br/>
-                            <h:outputLabel value="ocupados na(s) data(s) solicitada(s) abaixo."/>
+                            <h:outputLabel value="ocupados na(s) data(s) solicitada(s) abaixo"/>
                             <br/>
                             <h:outputLabel value="e não serão salvas."/>
                             <br/>
                             <p:dataList value="#{calendarioController.reservasImpossiveis}" var="reservaImpossivel" itemType="disc" >
                                 <p:column >
-                                    data: #{reservaImpossivel.dataInicio} recursos: #{reservaImpossivel.recursos}
+                                    data: #{reservaImpossivel.dataInicio} das #{reservaImpossivel.horaInicio} até #{reservaImpossivel.horaFim}
                                 </p:column>
                             </p:dataList>
                             <br/>
                             <p:commandButton id="okButton5"  value="OK" oncomplete="eventDialog5.hide();"   style="width: 100px" />  
+                        </p:panel>
+                    </p:dialog>
+
+                    <p:dialog id="janela6" widgetVar="eventDialog6" header="Reservas Indisponíveis"  dynamic="true" >
+
+                        <p:panel style="display: block;text-align: center">
+
+                            <h:outputLabel value="Esta reserva pertence a um grupo de reservas."  />
+                            <br/>
+                            <h:outputLabel value="Deseja apagar todas as reservas do grupo ou"/>
+                            <br/>
+                            <h:outputLabel value="somente esta reserva individualmente."/>
+                            <br/>
+                            <h:panelGrid columns="2" style="display: block;text-align: center">
+                                <p:commandButton id="okButton6"  value="Somente Esta"  actionListener="#{calendarioController.removeReservaIndividual()}" oncomplete="eventDialog6.hide();myschedule.update();"    />  
+                                <p:commandButton id="okButton7"  value="Todas as Reservas"  actionListener="#{calendarioController.removeReservaSemanal()}" oncomplete="eventDialog6.hide();myschedule.update();"   />  
+                            </h:panelGrid>
                         </p:panel>
                     </p:dialog>
 
@@ -222,9 +239,6 @@
                 week: 'Semana',
                 day: 'Dia',
                 allDayText: 'Hora'
-
-
-
 
 
             };
