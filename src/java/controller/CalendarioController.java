@@ -359,8 +359,8 @@ public class CalendarioController implements Serializable {
         for (Reserva res : novoGrupoReserva.getReservas()) {
             List<Recurso> recursosOcupados = getRecursosOcupadosReservaId(reserva, selectedEquipamentos);
             if (!recursosOcupados.isEmpty()) {
-                res.limparRecursos();
-                res.setRecursos(recursosOcupados);
+//                res.limparRecursos();
+//                res.setRecursos(recursosOcupados);
                 reservasImpos.add(res);
             }
         }
@@ -379,7 +379,7 @@ public class CalendarioController implements Serializable {
         List<Recurso> recursosReservados = getRecursosOcupadosReserva(reserva, selectedEquipamentos);
         if (!recursosReservados.isEmpty()) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosReservados.toString());
-            current = recursoFacade.find(current.getId());
+            updateRecursoSelecionado();
             addMessage(message);
             showConfirmDialog();
             return;
@@ -465,10 +465,10 @@ public class CalendarioController implements Serializable {
 
         List<Recurso> recursosReservados = getRecursosOcupadosReservaId(reserva, selectedEquipamentos);
         if (!recursosReservados.isEmpty()) {
-            current = recursoFacade.find(current.getId());
+            updateRecursoSelecionado();
             recreateEventModel();
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosReservados.toString());
-            current = recursoFacade.find(current.getId());
+            updateRecursoSelecionado();
             addMessage(message);
             showConfirmDialog();
             return;
@@ -483,11 +483,26 @@ public class CalendarioController implements Serializable {
                 }
             }
         }
-        reserva = reservaFacade.merge(reserva);
-        eventModel.updateEvent(reserva);
+
+        if (reserva.getGrupoReserva() != null) {//se pertence a algum grupo
+            grupoReserva.setRecursos(reserva.getRecursos());
+            grupoReserva.setReservante(reserva.getReservante());
+            grupoReserva.setMotivo(reserva.getMotivo());
+            grupoReservaFacade.merge(grupoReserva);
+            updateRecursoSelecionado();
+            recreateEventModel();
+        } else {
+            reserva = reservaFacade.merge(reserva);
+            eventModel.updateEvent(reserva);
+
+        }
 
         recreateEquipamentoDataModel();
         recreateSalaDataModel();
+    }
+
+    public void updateRecursoSelecionado() {
+        current = recursoFacade.find(current.getId());
     }
 
     public boolean isAlgumRecursoOcupado(Reserva reserva, List<Equipamento> selectedEquipamentos) {
@@ -508,7 +523,7 @@ public class CalendarioController implements Serializable {
     public void remReserva(ActionEvent actionEvent) {
 
         if (reserva.getGrupoReserva() != null) {
-             RequestContext.getCurrentInstance().execute("eventDialog6.show()");
+            RequestContext.getCurrentInstance().execute("eventDialog6.show()");
         } else {
             removeReservaIndividual();
         }
@@ -522,9 +537,7 @@ public class CalendarioController implements Serializable {
         recreateReserva();
         recreateEquipamentoDataModel();
         recreateSalaDataModel();
-        limparSelecaoTabelaEquipamento();
-        limparSelecaoTabelaSala();
-        recreateSelectedRecurso();
+        updateRecursoSelecionado();
     }
 
     public void removeReservaSemanal() {
@@ -540,9 +553,7 @@ public class CalendarioController implements Serializable {
         recreateReserva();
         recreateEquipamentoDataModel();
         recreateSalaDataModel();
-        limparSelecaoTabelaEquipamento();
-        limparSelecaoTabelaSala();
-        recreateSelectedRecurso();
+        updateRecursoSelecionado();
     }
 
     public void recreateReserva() {
@@ -643,7 +654,8 @@ public class CalendarioController implements Serializable {
 
         Calendar dataAtual = Calendar.getInstance();
         int diaAtual = dataAtual.get(Calendar.DAY_OF_YEAR);
-        return diaDaReserva >= diaAtual;
+        // return diaDaReserva >= diaAtual;
+        return dataReserva.after(dataAtual) || diaDaReserva == diaAtual;
     }
 
     public void showConfirmDialog() {
@@ -675,7 +687,7 @@ public class CalendarioController implements Serializable {
         Reserva reservaRedimensionada = (Reserva) event.getScheduleEvent();
 
         if (!isValidDate(reservaRedimensionada.getInicio())) {
-            current = recursoFacade.find(current.getId());
+            updateRecursoSelecionado();
             recreateEventModel();
             showDialogDataInvalida();
             return;
@@ -684,7 +696,7 @@ public class CalendarioController implements Serializable {
         atualizaSelectedEquipamentos(reserva.getRecursos());
         List<Recurso> recursosOcupados = getRecursosOcupadosReservaId(reservaRedimensionada, selectedEquipamentos);
         if (!recursosOcupados.isEmpty()) {
-            current = recursoFacade.find(current.getId());
+            updateRecursoSelecionado();
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosOcupados.toString());
             addMessage(message);
             recreateEventModel();
@@ -704,7 +716,7 @@ public class CalendarioController implements Serializable {
         atualizaSelectedEquipamentos(reserva.getRecursos());
         List<Recurso> recursosOcupados = getRecursosOcupadosReservaId(reservaRedimensionada, selectedEquipamentos);
         if (!recursosOcupados.isEmpty()) {
-            current = recursoFacade.find(current.getId());
+            updateRecursoSelecionado();
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosOcupados.toString());
             addMessage(message);
             recreateEventModel();

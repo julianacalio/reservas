@@ -76,21 +76,21 @@
                     </p:schedule> 
 
 
-                    <p:dialog id="janela" widgetVar="eventDialog" header="Detalhes da Reserva: #{calendarioController.current.toString()}"   >
+                    <p:dialog id="janela" widgetVar="eventDialog" header="Detalhes da Reserva:  #{calendarioController.current.toString()}"   >
                         <h:panelGrid id="eventDetails" columns="2"> 
 
                             <h:outputLabel value="Reservante*: " for="ac_reservante"/>  
                             <p:autoComplete value="#{calendarioController.reserva.reservante}" id="ac_reservante" completeMethod="#{calendarioController.completeReservante}"  
                                             var="p" itemLabel="#{p.nome}" itemValue="#{p}" forceSelection="true" required="true" queryDelay="0" requiredMessage="Por favor especifique o nome do reservante" />  
 
-                            <h:outputLabel for="from" value="Inicio*:" />  
+                            <h:outputLabel for="from" value="Inicio*:" rendered="#{calendarioController.reserva.grupoReserva==null}"/>  
 
-                            <p:calendar id="from" timeZone="GMT-2"  value="#{calendarioController.reserva.inicio}" minHour="07" timeOnly="false" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15" locale="br" required="true">  
+                            <p:calendar id="from" timeZone="GMT-2"  value="#{calendarioController.reserva.inicio}" minHour="07" timeOnly="false" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15" locale="br" required="true" rendered="#{calendarioController.reserva.grupoReserva==null}">  
                                 <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraInicio()}" update="to,ck"/>
                             </p:calendar>
 
-                            <h:outputLabel for="to" value="Fim*:" />  
-                            <p:calendar id="to" timeZone="GMT-2"   value="#{calendarioController.reserva.fim}" minHour="#{calendarioController.reserva.inicio.hours}" timeOnly="false" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" required="true" widgetVar="w">
+                            <h:outputLabel for="to" value="Fim*:" rendered="#{calendarioController.reserva.grupoReserva==null}"/>  
+                            <p:calendar id="to" timeZone="GMT-2"   value="#{calendarioController.reserva.fim}" minHour="#{calendarioController.reserva.inicio.hours}" timeOnly="false" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" required="true" widgetVar="w" rendered="#{calendarioController.reserva.grupoReserva==null}">
                                 <p:ajax event="valueChange"  listener="#{calendarioController.onValueChangeHoraFim()}" update="ck"/>
                             </p:calendar>
 
@@ -109,8 +109,8 @@
                                 </p:column>
                             </p:dataList>
 
-                            <h:outputLabel  value="Repetir"   />
-                            <p:selectBooleanCheckbox id="checkReservaSemanal"  value="#{calendarioController.reservaSemanal}"    >  
+                            <h:outputLabel  value="Repetir"  rendered="#{calendarioController.reserva.grupoReserva == null}" />
+                            <p:selectBooleanCheckbox id="checkReservaSemanal"  value="#{calendarioController.reservaSemanal}"  rendered="#{calendarioController.reserva.grupoReserva == null}"   >  
                                 <p:ajax    update="smcDiasSemana,finalDate2"/> 
                             </p:selectBooleanCheckbox> 
 

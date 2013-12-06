@@ -99,6 +99,7 @@ public class DateTools {
 
     public static String getHora(Date data) {
         Calendar c = Calendar.getInstance();
+        c.setTime(data);
         return String.valueOf(c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE));
     }
 
