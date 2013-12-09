@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import model.GrupoReserva;
-import model.Recurso;
 import model.Reserva;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -54,6 +53,11 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
         return results;
     }
 
+    /**
+     * Retorna todas as reservas que pertencem aquele grupo de reservas
+     * @param grupoReserva Objeto grupo de reservas com um id diferente de null
+     * @return reservas que pertencem aquele grupo
+     */
     public List<Reserva> findAll(GrupoReserva grupoReserva) {
         Session session = getSessionFactory().openSession();
         Criteria criteria = session.createCriteria(Reserva.class);
@@ -81,7 +85,6 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
         List res1 = criteria.list();
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
         List results1 = criteria.list();
-        
 
         Criteria criteria2 = session.createCriteria(Reserva.class);
         criteria2.add(Restrictions.and(Restrictions.le("inicio", inicio), Restrictions.ge("fim", fim)));
@@ -95,28 +98,30 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
     }
 
     /**
-     * Busca as reservas de um determinado recurso dentro de uma certa data de
-     * início e data de fim
+     * Busca as reservas que comecem ou terminem dentro de uma data de
+     * início e uma data de fim sem considerar as reservas feitas pelo
+     * ID passado.
      *
+     * 
      * @param inicio Data de início
      * @param fim Data de fim
-     * @param id Recursos pesquisado
+     * @param desconsiderar_ID_Reserva da reserva que nao será considerada na busca
      * @return Lista contendo todas as reservas que obedecem ao critério
      * especificado
      */
-    public List<Reserva> findBetween(Date inicio, Date fim, Long id) {
+    public List<Reserva> findBetween(Date inicio, Date fim, Long desconsiderar_ID_Reserva) {
         Session session = getSessionFactory().openSession();
         Criteria criteria1 = session.createCriteria(Reserva.class);
 
         criteria1.add(Restrictions.or(Restrictions.between("inicio", inicio, fim), Restrictions.between("fim", inicio, fim)));
         criteria1.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
-        criteria1.add(Restrictions.ne("iid", id));
+        criteria1.add(Restrictions.ne("iid", desconsiderar_ID_Reserva));
         List results1 = criteria1.list();
 
         Criteria criteria2 = session.createCriteria(Reserva.class);
         criteria2.add(Restrictions.and(Restrictions.le("inicio", inicio), Restrictions.ge("fim", fim)));
         criteria2.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
-        criteria2.add(Restrictions.ne("iid", id));
+        criteria2.add(Restrictions.ne("iid", desconsiderar_ID_Reserva));
         List results2 = criteria2.list();
 
         results1.addAll(results2);
@@ -124,23 +129,4 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
         return results1;
     }
 
-    public List<Reserva> findBetweenTeste(Date inicio, Date fim, Long id) {
-        Session session = getSessionFactory().openSession();
-
-        Criteria criteria2 = session.createCriteria(Reserva.class);
-        criteria2.add(Restrictions.or(Restrictions.between("inicio", inicio, fim), Restrictions.between("fim", inicio, fim)));
-        criteria2.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
-        criteria2.add(Restrictions.ne("iid", id));
-        List results2 = criteria2.list();
-
-        Criteria criteria1 = session.createCriteria(Reserva.class);
-        criteria1.add(Restrictions.and(Restrictions.le("inicio", inicio), Restrictions.ge("fim", fim)));
-        criteria1.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
-        List r = criteria1.list();
-        criteria1.add(Restrictions.ne("iid", id));
-        List results = criteria1.list();
-
-        session.close();
-        return results;
-    }
 }

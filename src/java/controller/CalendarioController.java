@@ -27,7 +27,6 @@ import model.GrupoReserva;
 import model.Pessoa;
 import model.Reserva;
 import model.Sala;
-//import org.joda.time.DateTime;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
@@ -35,6 +34,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleModel;
 
 import org.primefaces.model.ScheduleModel;
+import util.DateTools;
 import util.EquipamentoDataModel;
 import util.SalaDataModel;
 
@@ -176,9 +176,6 @@ public class CalendarioController implements Serializable {
         this.current = current;
     }
 
-    public void addDiaDaSemana(int diaDaSemana) {
-        diasDaSemana.add(diaDaSemana);
-    }
 
     public EquipamentoDataModel getEquipamentoDataModel() {
         if (equipamentoDataModel == null) {
@@ -261,12 +258,7 @@ public class CalendarioController implements Serializable {
         return eventModel;
     }
 
-    public void verificaSelecaoRepeticao() {
-        // if (isReservaSemanal()) {
-        // RequestContext.getCurrentInstance().execute("eventDialogRepeticao.show()");
-        // }
-    }
-
+    
     public void escolheRecurso() {
         if (novaescolha == current) {
             return;
@@ -276,7 +268,7 @@ public class CalendarioController implements Serializable {
     }
 
     public void escolheSala() {
-        limparSelecaoTabelaEquipamento();
+        limpaSelecaoTabelaEquipamento();
         if (novaSala == current) {
             return;
         }
@@ -285,7 +277,7 @@ public class CalendarioController implements Serializable {
     }
 
     public void escolheEquipamento() {
-        limparSelecaoTabelaSala();
+        limpaSelecaoTabelaSala();
         if (novoEquipamento == current) {
             return;
         }
@@ -301,7 +293,7 @@ public class CalendarioController implements Serializable {
         if (isReservaSemanal()) {
             addReservaSemanal();
         } else {
-            addReserva(actionEvent);
+            addReserva();
         }
     }
 
@@ -309,7 +301,7 @@ public class CalendarioController implements Serializable {
         if (isEquipamentoSelecionado()) {
             reserva = adicionaEquipamentosNaReserva(reserva, selectedEquipamentos);
         }
-        //String opcaoEscolhida = getOpcaoRepeticaoEscolhida();
+        
         grupoReserva.setDiasDaSemana(getDiasEscolhidos(diasEscolhidos));
         grupoReserva.buildReservaSemanal(reserva, dataFinalReservaSemanal);
         reservasImpossiveis = getReservasOcupadas(grupoReserva);
@@ -324,7 +316,7 @@ public class CalendarioController implements Serializable {
                     }
                 }
             }
-            RequestContext.getCurrentInstance().execute("eventDialog5.show()");
+            RequestContext.getCurrentInstance().execute("reservasIndisponiveis.show()");
         }
         grupoReservaFacade.save(grupoReserva);
         for (Reserva reservaAgrupada : grupoReserva.getReservas()) {
@@ -344,7 +336,7 @@ public class CalendarioController implements Serializable {
     public List<Reserva> getReservasOcupadas(GrupoReserva novoGrupoReserva) {
         List<Reserva> reservasImpos = new ArrayList<Reserva>();
         for (Reserva res : novoGrupoReserva.getReservas()) {
-            List<Recurso> recursosOcupados = getRecursosOcupadosPelaReserva(res);
+            List<Recurso> recursosOcupados = getRecursosOcupadosDaReserva(res);
             if (!recursosOcupados.isEmpty()) {
                 reservasImpos.add(res);
             }
@@ -353,14 +345,12 @@ public class CalendarioController implements Serializable {
     }
 
     //Retorna as reservas que nao podem ser feitas pois possuem um ou mais recursos ocupados
-    //naquele horario escolhido
+    //naquele horario escolhido sem considerar os horarios feitos pela propia reserva
     public List<Reserva> getReservasOcupadasId(GrupoReserva novoGrupoReserva) {
         List<Reserva> reservasImpos = new ArrayList<Reserva>();
         for (Reserva res : novoGrupoReserva.getReservas()) {
             List<Recurso> recursosOcupados = getRecursosOcupadosReservaId(reserva, selectedEquipamentos);
             if (!recursosOcupados.isEmpty()) {
-//                res.limparRecursos();
-//                res.setRecursos(recursosOcupados);
                 reservasImpos.add(res);
             }
         }
@@ -374,9 +364,14 @@ public class CalendarioController implements Serializable {
         return reserva;
     }
 
-    public void addReserva(ActionEvent actionEvent) {
-
-        List<Recurso> recursosReservados = getRecursosOcupadosReserva(reserva, selectedEquipamentos);
+    public void addReserva() {
+        if (isEquipamentoSelecionado()) {
+            if (isEquipamentoSelecionado()) {
+                reserva = adicionaEquipamentosNaReserva(reserva, selectedEquipamentos);
+            }
+        }
+        
+        List<Recurso> recursosReservados = getRecursosOcupadosDaReserva(reserva);
         if (!recursosReservados.isEmpty()) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosReservados.toString());
             updateRecursoSelecionado();
@@ -384,53 +379,12 @@ public class CalendarioController implements Serializable {
             showConfirmDialog();
             return;
         }
-        if (isEquipamentoSelecionado()) {
-            if (isEquipamentoSelecionado()) {
-                reserva = adicionaEquipamentosNaReserva(reserva, selectedEquipamentos);
-            }
-        }
+
         reserva = reservaFacade.merge(reserva);
         eventModel.addEvent(reserva);
 
         recreateEquipamentoDataModel();
         recreateSalaDataModel();
-    }
-
-    public List<Integer> getDiasEscolhidos(String opcaoSelecionada) {
-        List<Integer> dias = new ArrayList<Integer>();
-        if (opcaoSelecionada.equals("Semanal")) {
-            dias.add(Calendar.MONDAY);
-            dias.add(Calendar.TUESDAY);
-            dias.add(Calendar.WEDNESDAY);
-            dias.add(Calendar.THURSDAY);
-            dias.add(Calendar.FRIDAY);
-            return dias;
-        }
-        if (opcaoSelecionada.equals("Segunda a Sexta")) {
-            dias.add(Calendar.MONDAY);
-            dias.add(Calendar.FRIDAY);
-            return dias;
-        }
-        if (opcaoSelecionada.equals("Terça,Quinta")) {
-            dias.add(Calendar.TUESDAY);
-            dias.add(Calendar.THURSDAY);
-            return dias;
-        }
-
-        if (opcaoSelecionada.equals("Segunda, Quarta, Sexta")) {
-            dias.add(Calendar.MONDAY);
-            dias.add(Calendar.WEDNESDAY);
-            dias.add(Calendar.FRIDAY);
-            return dias;
-        }
-
-        if (opcaoSelecionada.equals("Quarta, Sexta")) {
-            dias.add(Calendar.WEDNESDAY);
-            dias.add(Calendar.FRIDAY);
-            return dias;
-        }
-        return dias;
-
     }
 
     public List<Integer> getDiasEscolhidos(List<String> diasEscolhidos) {
@@ -505,10 +459,6 @@ public class CalendarioController implements Serializable {
         current = recursoFacade.find(current.getId());
     }
 
-    public boolean isAlgumRecursoOcupado(Reserva reserva, List<Equipamento> selectedEquipamentos) {
-        return !getRecursosOcupadosReserva(reserva, selectedEquipamentos).isEmpty();
-    }
-
     public boolean isEquipamentoSelecionado() {
         return selectedEquipamentos != null && !selectedEquipamentos.isEmpty();
     }
@@ -523,7 +473,7 @@ public class CalendarioController implements Serializable {
     public void remReserva(ActionEvent actionEvent) {
 
         if (reserva.getGrupoReserva() != null) {
-            RequestContext.getCurrentInstance().execute("eventDialog6.show()");
+            RequestContext.getCurrentInstance().execute("removerReservaSemanal.show()");
         } else {
             removeReservaIndividual();
         }
@@ -576,9 +526,6 @@ public class CalendarioController implements Serializable {
     public void onReservaSelect(SelectEvent selectEvent) {
         reserva = (Reserva) selectEvent.getObject();
         atualizaSelectedEquipamentos(reserva.getRecursos());
-        if (reserva.getIid() == null) {
-            throw new RuntimeException("Reserva sem IID !!!!!!");// Teste para verificar problemas ocorrendo no merge
-        }
 
         if (reserva.getGrupoReserva() != null) {
             grupoReserva = reserva.getGrupoReserva();
@@ -617,9 +564,9 @@ public class CalendarioController implements Serializable {
 
         grupoReserva = new GrupoReserva();
         reserva = new Reserva();
-        //reserva.setRecurso(current);
         reserva.addRecurso(current);
         Date inicio = (Date) selectEvent.getObject();
+        inicio = DateTools.setHora(inicio, 7);
         Calendar fim = Calendar.getInstance();
         fim.setTime(inicio);
         fim.add(Calendar.HOUR, 2);
@@ -639,7 +586,7 @@ public class CalendarioController implements Serializable {
     }
 
     public void showDialogDataInvalida() {
-        RequestContext.getCurrentInstance().execute("eventDialog3.show()");
+        RequestContext.getCurrentInstance().execute("horarioInvalido.show()");
     }
 
     public void showDialogFaltaRecurso() {
@@ -654,20 +601,20 @@ public class CalendarioController implements Serializable {
 
         Calendar dataAtual = Calendar.getInstance();
         int diaAtual = dataAtual.get(Calendar.DAY_OF_YEAR);
-        // return diaDaReserva >= diaAtual;
+
         return dataReserva.after(dataAtual) || diaDaReserva == diaAtual;
     }
 
     public void showConfirmDialog() {
-        RequestContext.getCurrentInstance().execute("eventDialog2.show()");
+        RequestContext.getCurrentInstance().execute("recursoOcupado.show()");
     }
 
-    public void limparSelecaoTabelaSala() {
+    public void limpaSelecaoTabelaSala() {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("wdgListSala.unselectAllRows()");
     }
 
-    public void limparSelecaoTabelaEquipamento() {
+    public void limpaSelecaoTabelaEquipamento() {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("wdgListEquipamento.unselectAllRows()");
     }
@@ -761,9 +708,7 @@ public class CalendarioController implements Serializable {
     }
 
     public List<Recurso> getRecursosOcupados(Date inicio, Date fim) {
-        // List<Reserva> reservasOcupadas = reservaFacade.findAllBetween(inicio, fim);
         Set<Reserva> reservasOcupadas = new HashSet<Reserva>(reservaFacade.findAllBetween(inicio, fim));
-        //  List<Reserva> reservasOcupadas = reservaFacade.findBetweenTeste(inicio, fim, reserva.getIid());
         List<Recurso> recursosOcupados = new ArrayList<Recurso>();
         for (Reserva reservaOcupada : reservasOcupadas) {
             recursosOcupados.addAll(reservaOcupada.getRecursos());
@@ -771,7 +716,7 @@ public class CalendarioController implements Serializable {
         return recursosOcupados;
     }
 
-    public List<Recurso> getRecursosOcupados(Date inicio, Date fim, Long id) {
+    public List<Recurso> getRecursosOcupados(Date inicio, Date fim, Long desconsiderar_ID_Reserva) {
         List<Reserva> reservasOcupadas = reservaFacade.findBetween(inicio, fim, reserva.getIid());
         List<Recurso> recursosOcupados = new ArrayList<Recurso>();
         for (Reserva reservaOcupada : reservasOcupadas) {
@@ -782,26 +727,15 @@ public class CalendarioController implements Serializable {
     }
 
     /**
-     * Retorna os recursos que foram selecionados pelas reserva dentro de um horario especifico e ja foram reservados no banco de dados.
+     * Retorna os recursos que foram selecionados pela nova reserva e ja estao reservados no horario da nova reserva no banco de dados.
      *
      * @param reserva Reserva que possui uma lista de recursos que serão analisados
      * @return Lista de recursos que ja estao reservados no horario da reserva
      */
-    public List<Recurso> getRecursosOcupadosPelaReserva(Reserva reserva) {
+    public List<Recurso> getRecursosOcupadosDaReserva(Reserva reserva) {
         List<Recurso> recursosSelecionados = reserva.getRecursos();
         List<Recurso> recursosOcupados = getRecursosOcupados(reserva.getInicio(), reserva.getFim());
         recursosOcupados.retainAll(recursosSelecionados);
-        return recursosOcupados;
-    }
-
-    public List<Recurso> getRecursosOcupadosReserva(Reserva reserva, List<Equipamento> equipamentosSelecionados) {
-        List<Recurso> recursosSelecionados = new ArrayList<Recurso>();
-        recursosSelecionados.addAll(equipamentosSelecionados);
-        recursosSelecionados.add(current);
-
-        List<Recurso> recursosOcupados = getRecursosOcupados(reserva.getInicio(), reserva.getFim());
-        recursosOcupados.retainAll(recursosSelecionados);
-
         return recursosOcupados;
     }
 
@@ -846,18 +780,7 @@ public class CalendarioController implements Serializable {
             calendario.add(Calendar.DAY_OF_MONTH, diaDaSemana - diaSemanaSelecionado);
             datas.add(calendario.getTime());
         }
-
         return datas;
-    }
-
-    public List<String> getOpcoesRepeticao() {
-        List<String> opcoes = new ArrayList<String>();
-        opcoes.add("Semanal");
-        opcoes.add("Segunda a Sexta");
-        opcoes.add("Segunda,Quarta,Sexta");
-        opcoes.add("Terça,Quinta");
-        opcoes.add("Quarta, Sexta");
-        return opcoes;
     }
 
     private void recreateGrupoReserva() {
