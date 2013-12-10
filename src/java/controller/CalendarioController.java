@@ -176,7 +176,6 @@ public class CalendarioController implements Serializable {
         this.current = current;
     }
 
-
     public EquipamentoDataModel getEquipamentoDataModel() {
         if (equipamentoDataModel == null) {
             List<Equipamento> equipamentos = equipamentoFacade.findAll();
@@ -224,7 +223,7 @@ public class CalendarioController implements Serializable {
 
         //verifica se existe alguma reserva antes de procurar os equipamentos livres
         if (reserva != null && reserva.getInicio() != null && reserva.getFim() != null) {
-            return getEquipamentosNaoReservados(reserva);
+            return getEquipamentosLivres(reserva);
         } else {
             return equipamentoFacade.findAll();
         }
@@ -258,7 +257,6 @@ public class CalendarioController implements Serializable {
         return eventModel;
     }
 
-    
     public void escolheRecurso() {
         if (novaescolha == current) {
             return;
@@ -301,7 +299,7 @@ public class CalendarioController implements Serializable {
         if (isEquipamentoSelecionado()) {
             reserva = adicionaEquipamentosNaReserva(reserva, selectedEquipamentos);
         }
-        
+
         grupoReserva.setDiasDaSemana(getDiasEscolhidos(diasEscolhidos));
         grupoReserva.buildReservaSemanal(reserva, dataFinalReservaSemanal);
         reservasImpossiveis = getReservasOcupadas(grupoReserva);
@@ -370,7 +368,7 @@ public class CalendarioController implements Serializable {
                 reserva = adicionaEquipamentosNaReserva(reserva, selectedEquipamentos);
             }
         }
-        
+
         List<Recurso> recursosReservados = getRecursosOcupadosDaReserva(reserva);
         if (!recursosReservados.isEmpty()) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosReservados.toString());
@@ -695,16 +693,34 @@ public class CalendarioController implements Serializable {
         return recursoFacade.find(id);
     }
 
-    private List<Equipamento> getEquipamentosNaoReservados(Reserva reserva) {
-        List<Recurso> recursosReservados = isNovaReserva(reserva)
-                ? getRecursosOcupados(reserva.getInicio(), reserva.getFim()) : getRecursosOcupados(reserva.getInicio(), reserva.getFim(), reserva.getIid());
-        List<Equipamento> equipamentosNaoReservados = equipamentoFacade.findAll();
-        for (Recurso recursoReservado : recursosReservados) {
-            if (recursoReservado instanceof Equipamento) {
-                equipamentosNaoReservados.remove((Equipamento) recursoReservado);
+    private List<Equipamento> getEquipamentosLivres(Reserva reserva) {
+//        List<Recurso> recursosReservados = isNovaReserva(reserva)
+//                ? getRecursosOcupados(reserva.getInicio(), reserva.getFim()) : getRecursosOcupados(reserva.getInicio(), reserva.getFim(), reserva.getIid());
+        //List<Equipamento> equipamentosNaoReservados = equipamentoFacade.findAll();
+//        for (Recurso recursoReservado : recursosReservados) {
+//            if (recursoReservado instanceof Equipamento) {
+//                equipamentosNaoReservados.remove((Equipamento) recursoReservado);
+//            }
+//        }
+        List<Equipamento> equipamentosLivre = new ArrayList<Equipamento>();
+        List<Recurso> recursos = getRecursosLivres(reserva.getInicio(), reserva.getFim());
+        for (Recurso recurso : recursos) {
+            if (recurso instanceof Equipamento) {
+                equipamentosLivre.add((Equipamento) recurso);
             }
         }
-        return equipamentosNaoReservados;
+        return equipamentosLivre;
+    }
+
+    private List<Recurso> getRecursosLivres(Date inicio, Date fim) {
+        List<Recurso> recursosLivres = recursoFacade.findAll();
+        List<Reserva> reservasOcupadas = reservaFacade.findAllBetween(inicio, fim);
+        List<Recurso> recursosOcupados = new ArrayList<Recurso>();
+        for (Reserva reservaOcupada : reservasOcupadas) {
+            recursosOcupados.addAll(reservaOcupada.getRecursos());
+        }
+        recursosLivres.removeAll(recursosOcupados);
+        return recursosLivres;
     }
 
     public List<Recurso> getRecursosOcupados(Date inicio, Date fim) {

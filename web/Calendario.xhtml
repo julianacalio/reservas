@@ -49,7 +49,6 @@
 
                         <p:column headerText="Equipamentos" >  
                             #{equipamento.descricao} 
-
                         </p:column>  
                     </p:dataTable>  
                 </h:form>  
@@ -59,9 +58,7 @@
                 <h:link outcome="/index" value="Gerenciar Dados" style="text-align: center"  onclick="#{calendarioController.inicializarVariaveis()}"/>
                 <p:separator/>
 
-
             </p:layoutUnit>  
-
 
             <p:layoutUnit position="center">  
                 <h:form id="form">  
@@ -74,7 +71,6 @@
                         <p:ajax event="eventMove" listener="#{calendarioController.onReservaMove}" update="messages" oncomplete="myschedule.update()" />  
                         <p:ajax event="eventResize" listener="#{calendarioController.onEventResize}" update="messages" oncomplete="myschedule.update()" />  
                     </p:schedule> 
-
 
                     <p:dialog id="janela" widgetVar="eventDialog" header="Detalhes da Reserva:  #{calendarioController.current.toString()}"   >
                         <h:panelGrid id="eventDetails" columns="2"> 
@@ -98,16 +94,18 @@
                             <p:inputText id="title" value="#{calendarioController.reserva.motivo}"   />  
 
                             <h:outputLabel for="ck" value="Equipamentos:" />
-                            <p:selectCheckboxMenu id="ck"   value="#{calendarioController.selectedEquipamentos}"  converter="equi" label="Adicionar / Remover Itens" filter="true" filterMatchMode="startsWith" panelStyle="width:220px">  
+                            <p:selectCheckboxMenu id="ck"   value="#{calendarioController.selectedEquipamentos}"  converter="equi" label="Adicionar Equipamentos" filter="true" filterMatchMode="startsWith" panelStyle="width:220px">  
                                 <f:selectItems value="#{calendarioController.equipamentos}" var ="t" />  
                             </p:selectCheckboxMenu> 
 
-                            <p:outputLabel   rendered="#{calendarioController.reserva.iid != null}"  value="Itens Escolhidos"/>
-                            <p:dataList  rendered="#{calendarioController.reserva.iid != null}" value="#{calendarioController.reserva.recursos}"  var="recurso" itemType="disc" >
-                                <p:column selectionMode="single">
-                                    #{recurso}
-                                </p:column>
-                            </p:dataList>
+
+
+                            <p:outputLabel   rendered="#{calendarioController.reserva.iid != null}"  value="Itens Reservados"/>
+                            <p:orderList  value="#{calendarioController.reserva.recursos}" var="recurso" controlsLocation="none"  
+                                          itemLabel="#{recurso}" itemValue="#{recurso}" id="basicList"/>  
+
+                            <p:pickList id="pickList" value="#{calendarioController.reserva.recursos}" var="recurso" 
+                                        itemLabel="#{recurso}" itemValue="#{recurso}" />  
 
                             <h:outputLabel  value="Repetir"  rendered="#{calendarioController.reserva.iid == null}" />
                             <p:selectBooleanCheckbox id="checkReservaSemanal"  value="#{calendarioController.reservaSemanal}"  rendered="#{calendarioController.reserva.iid == null}"   >  
@@ -237,8 +235,8 @@
             };
         </script>
         <br/>
-        
-        
+
+
 
 
     </h:body>

@@ -81,6 +81,8 @@ public class Recurso implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+    
+   
 
     @Override
     public int hashCode() {
