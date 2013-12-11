@@ -64,56 +64,75 @@
                 <h:form id="form">  
                     <p:growl id="messages" showDetail="true" />  
 
-                    <p:schedule showWeekends="true" timeZone="GMT-2"  allDaySlot="true" view="month" minTime="7"  maxTime="22" axisFormat="H:mm" timeFormat="H:mm{ - H:mm}" id="schedule" value="#{calendarioController.eventModel}" widgetVar="myschedule"   locale="br"  >  
-
+                    <p:schedule showWeekends="true" timeZone="GMT-2"  allDaySlot="true" view="month" minTime="7"  maxTime="22" 
+                                axisFormat="H:mm" timeFormat="H:mm{ - H:mm}" id="schedule" value="#{calendarioController.eventModel}"
+                                widgetVar="myschedule"   locale="br"  >  
                         <p:ajax  event="dateSelect" listener="#{calendarioController.onDateSelect}"  update="eventDetails,janela"   /> 
                         <p:ajax event="eventSelect" listener="#{calendarioController.onReservaSelect}" update="eventDetails,janela"  />  
                         <p:ajax event="eventMove" listener="#{calendarioController.onReservaMove}" update="messages" oncomplete="myschedule.update()" />  
                         <p:ajax event="eventResize" listener="#{calendarioController.onEventResize}" update="messages" oncomplete="myschedule.update()" />  
                     </p:schedule> 
 
-                    <p:dialog id="janela" widgetVar="eventDialog" header="Detalhes da Reserva:  #{calendarioController.current.toString()}"   >
+                    <p:dialog id="janela" widgetVar="eventDialog" header="Detalhes da Reserva: #{calendarioController.current.instance} 
+                              #{calendarioController.current.toString()}"   >
                         <h:panelGrid id="eventDetails" columns="2"> 
 
                             <h:outputLabel value="Reservante*: " for="ac_reservante"/>  
-                            <p:autoComplete value="#{calendarioController.reserva.reservante}" id="ac_reservante" completeMethod="#{calendarioController.completeReservante}"  
-                                            var="p" itemLabel="#{p.nome}" itemValue="#{p}" forceSelection="true" required="true" queryDelay="0" requiredMessage="Por favor especifique o nome do reservante" />  
+                            <p:autoComplete value="#{calendarioController.reserva.reservante}" id="ac_reservante" 
+                                            completeMethod="#{calendarioController.completeReservante}"  
+                                            var="p" itemLabel="#{p.nome}" itemValue="#{p}" forceSelection="true" 
+                                            required="true" queryDelay="0" requiredMessage="Por favor especifique o nome do reservante" />  
 
                             <h:outputLabel for="from" value="Inicio*:" rendered="#{calendarioController.reserva.grupoReserva==null}"/>  
 
-                            <p:calendar id="from" timeZone="GMT-2"  value="#{calendarioController.reserva.inicio}" minHour="07" timeOnly="false" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15" locale="br" required="true" rendered="#{calendarioController.reserva.grupoReserva==null}">  
+                            <p:calendar id="from" timeZone="GMT-2"  value="#{calendarioController.reserva.inicio}" 
+                                        minHour="07" timeOnly="false" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" 
+                                        stepMinute="15" locale="br" required="true" rendered="#{calendarioController.reserva.grupoReserva==null}">  
                                 <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraInicio()}" update="to,ck"/>
                             </p:calendar>
 
                             <h:outputLabel for="to" value="Fim*:" rendered="#{calendarioController.reserva.grupoReserva==null}"/>  
-                            <p:calendar id="to" timeZone="GMT-2"   value="#{calendarioController.reserva.fim}" minHour="#{calendarioController.reserva.inicio.hours}" timeOnly="false" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" required="true" widgetVar="w" rendered="#{calendarioController.reserva.grupoReserva==null}">
-                                <p:ajax event="valueChange"  listener="#{calendarioController.onValueChangeHoraFim()}" update="ck"/>
+                            <p:calendar id="to" timeZone="GMT-2"   value="#{calendarioController.reserva.fim}"
+                                        minHour="#{calendarioController.reserva.inicio.hours}" timeOnly="false" 
+                                        pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" 
+                                        required="true" widgetVar="w" rendered="#{calendarioController.reserva.grupoReserva==null}">
+                                <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraFim()}" update="ck"/>
                             </p:calendar>
 
                             <h:outputLabel for="title" value="Motivo:" />  
                             <p:inputText id="title" value="#{calendarioController.reserva.motivo}"   />  
 
-                            <h:outputLabel for="ck" value="Equipamentos:" />
-                            <p:selectCheckboxMenu id="ck"   value="#{calendarioController.selectedEquipamentos}"  converter="equi" label="Adicionar Equipamentos" filter="true" filterMatchMode="startsWith" panelStyle="width:220px">  
-                                <f:selectItems value="#{calendarioController.equipamentos}" var ="t" />  
+                            <h:outputLabel for="ck" value="Equipamentos:"  />
+                            <p:selectCheckboxMenu id="ck"   value="#{calendarioController.selectedEquipamentos}"  
+                                                  converter="equi" label="Adicionar Equipamentos" filter="true" 
+                                                  filterMatchMode="startsWith" panelStyle="width:220px" >  
+                                <f:selectItems value="#{calendarioController.equipamentos}" var ="t"    />  
                             </p:selectCheckboxMenu> 
 
+                            <p:outputLabel value="Itens Reservados" rendered="#{!calendarioController.novaReserva}"/>
+                            <p:dataTable id="dtRecursosEscolhidos" var="rec" value="#{calendarioController.recursoDataModel}"  
+                                         rendered="#{!calendarioController.novaReserva}"  selectionMode="single">  
+                                <p:column >  
+                                    <h:outputText value="#{rec.toString()}" />  
+                                </p:column>  
+
+                                <p:column style="text-align: center" >  
+                                    <p:commandLink  value="x" action="#{calendarioController.removeRecursoReserva}" 
+                                                    update="dtRecursosEscolhidos"  />
+                                </p:column>  
+                            </p:dataTable>  
 
 
-                            <p:outputLabel   rendered="#{calendarioController.reserva.iid != null}"  value="Itens Reservados"/>
-                            <p:orderList  value="#{calendarioController.reserva.recursos}" var="recurso" controlsLocation="none"  
-                                          itemLabel="#{recurso}" itemValue="#{recurso}" id="basicList"/>  
-
-                            <p:pickList id="pickList" value="#{calendarioController.reserva.recursos}" var="recurso" 
-                                        itemLabel="#{recurso}" itemValue="#{recurso}" />  
-
-                            <h:outputLabel  value="Repetir"  rendered="#{calendarioController.reserva.iid == null}" />
-                            <p:selectBooleanCheckbox id="checkReservaSemanal"  value="#{calendarioController.reservaSemanal}"  rendered="#{calendarioController.reserva.iid == null}"   >  
+                            <h:outputLabel  value="Repetir"  rendered="#{calendarioController.novaReserva}" />
+                            <p:selectBooleanCheckbox id="checkReservaSemanal"  value="#{calendarioController.reservaSemanal}"  
+                                                     rendered="#{calendarioController.reserva.iid == null}"   >  
                                 <p:ajax    update="smcDiasSemana,finalDate2"/> 
                             </p:selectBooleanCheckbox> 
 
                             <h:outputLabel  value="Repete:" rendered="#{calendarioController.reserva.iid == null}"  />
-                            <p:selectManyCheckbox  id="smcDiasSemana"  value="#{calendarioController.diasEscolhidos}" rendered="#{calendarioController.reserva.iid == null}" disabled="#{!calendarioController.reservaSemanal}"  >  
+                            <p:selectManyCheckbox  id="smcDiasSemana"  value="#{calendarioController.diasEscolhidos}" 
+                                                   rendered="#{calendarioController.reserva.iid == null}" 
+                                                   disabled="#{!calendarioController.reservaSemanal}"  >  
                                 <f:selectItem itemLabel="Seg" itemValue="Seg" /> 
                                 <f:selectItem itemLabel="Ter" itemValue="Ter" />  
                                 <f:selectItem itemLabel="Qua" itemValue="Qua" />  
@@ -124,13 +143,23 @@
                             <h:outputLabel  value="Termina:" rendered="#{calendarioController.reserva.iid == null}"/>
                             <h:panelGrid columns="2" rendered="#{calendarioController.reserva.iid == null}"> 
                                 <h:outputLabel  value="Data final" rendered="#{calendarioController.reserva.iid == null}" />
-                                <p:calendar id="finalDate2" timeZone="GMT-2"  value="#{calendarioController.dataFinalReservaSemanal}" required="true" pattern="dd/MM/yyyy"   locale="br"  widgetVar="w" rendered="#{calendarioController.reserva.iid == null}" disabled="#{!calendarioController.reservaSemanal}" />
+                                <p:calendar id="finalDate2" timeZone="GMT-2"  value="#{calendarioController.dataFinalReservaSemanal}" 
+                                            required="true" pattern="dd/MM/yyyy"   locale="br"  widgetVar="w" 
+                                            rendered="#{calendarioController.reserva.iid == null}" 
+                                            disabled="#{!calendarioController.reservaSemanal}" />
                             </h:panelGrid>
 
-                            <p:commandButton id="addButton"  value="Salvar" actionListener="#{calendarioController.salvaReserva}" oncomplete="myschedule.update();eventDialog.hide();" update=":form2:dtEquipamento,messages" rendered="#{calendarioController.reserva.iid == null}" />
-                            <p:commandButton id="updateButton"  value="Atualizar" actionListener="#{calendarioController.updateReserva}" oncomplete="myschedule.update();eventDialog.hide();" update=":form2:dtEquipamento,messages" rendered="#{calendarioController.reserva.iid != null}"/>
-                            <p:commandButton id="remButton"  value="Remover" actionListener="#{calendarioController.remReserva}" oncomplete="myschedule.update();eventDialog.hide();" rendered="#{calendarioController.reserva.iid != null}" update=":form2:dtEquipamento,:form1:dtSala"/>  
-                            <p:commandButton id="cancelButton"  value="Cancelar"  oncomplete="eventDialog.hide();"  rendered="#{calendarioController.reserva.iid == null}"/> 
+                            <p:commandButton id="addButton"  value="Salvar" actionListener="#{calendarioController.salvaReserva}" 
+                                             oncomplete="myschedule.update();eventDialog.hide();" update=":form2:dtEquipamento,messages" 
+                                             rendered="#{calendarioController.reserva.iid == null}" />
+                            <p:commandButton id="updateButton"  value="Atualizar" actionListener="#{calendarioController.updateReserva}" 
+                                             oncomplete="myschedule.update();eventDialog.hide();" update=":form2:dtEquipamento,messages" 
+                                             rendered="#{calendarioController.reserva.iid != null}"/>
+                            <p:commandButton id="remButton"  value="Remover" actionListener="#{calendarioController.remReserva}" 
+                                             oncomplete="myschedule.update();eventDialog.hide();" rendered="#{calendarioController.reserva.iid != null}" 
+                                             update=":form2:dtEquipamento,:form1:dtSala"/>  
+                            <p:commandButton id="cancelButton"  value="Cancelar"  oncomplete="eventDialog.hide();"  
+                                             rendered="#{calendarioController.reserva.iid == null}"/> 
 
                         </h:panelGrid>  
                     </p:dialog>
@@ -141,7 +170,8 @@
                             <h:outputLabel value="Por favor, selecione uma sala ou um equipamento para fazer a reserva."  />
                             <br/>
                             <br/>
-                            <p:commandButton id="okButton2"  value="OK" oncomplete="eventDialogSelectRecurso.hide();"  style="width: 100px" />  
+                            <p:commandButton id="okButton2"  value="OK" oncomplete="eventDialogSelectRecurso.hide();"  
+                                             style="width: 100px" />  
                         </p:panel>
                     </p:dialog>
 
@@ -152,7 +182,7 @@
                             <h:outputLabel value="Favor selecionar outro horario" />
                             <br/>
                             <br/>
-                            <p:commandButton id="okButton"  value="OK" oncomplete="recursoOcupado.hide();"  style="width: 100px" />  
+                            <p:commandButton id="okButton" value="OK" oncomplete="recursoOcupado.hide();"  style="width: 100px" />  
                         </p:panel>
                     </p:dialog>
 
@@ -192,8 +222,10 @@
                             <h:outputLabel value="somente esta reserva individualmente."/>
                             <br/>
                             <h:panelGrid columns="2" style="display: block;text-align: center">
-                                <p:commandButton id="okButton6"  value="Somente Esta"  actionListener="#{calendarioController.removeReservaIndividual()}" oncomplete="removerReservaSemanal.hide();myschedule.update();"    />  
-                                <p:commandButton id="okButton7"  value="Todas as Reservas"  actionListener="#{calendarioController.removeReservaSemanal()}" oncomplete="removerReservaSemanal.hide();myschedule.update();"   />  
+                                <p:commandButton id="okButton6"  value="Somente Esta"  actionListener="#{calendarioController.removeReservaIndividual()}" 
+                                                 oncomplete="removerReservaSemanal.hide();myschedule.update();"    />  
+                                <p:commandButton id="okButton7"  value="Todas as Reservas"  actionListener="#{calendarioController.removeReservaSemanal()}"
+                                                 oncomplete="removerReservaSemanal.hide();myschedule.update();"   />  
                             </h:panelGrid>
                         </p:panel>
                     </p:dialog>

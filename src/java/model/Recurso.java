@@ -82,6 +82,9 @@ public class Recurso implements Serializable {
         this.id = id;
     }
     
+    public String getInstance(){
+        return this.getClass().toString().replace("class model.", "");
+    }
    
 
     @Override
