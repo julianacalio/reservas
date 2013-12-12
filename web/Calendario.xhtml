@@ -73,7 +73,7 @@
                         <p:ajax event="eventResize" listener="#{calendarioController.onEventResize}" update="messages" oncomplete="myschedule.update()" />  
                     </p:schedule> 
 
-                    <p:dialog id="janela" widgetVar="eventDialog" header="Detalhes da Reserva: #{calendarioController.current.instance} 
+                    <p:dialog id="janela" widgetVar="detalhesReserva" header="Detalhes da Reserva: #{calendarioController.current.instance} 
                               #{calendarioController.current.toString()}"   >
                         <h:panelGrid id="eventDetails" columns="2"> 
 
@@ -96,7 +96,7 @@
                                         minHour="#{calendarioController.reserva.inicio.hours}" timeOnly="false" 
                                         pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" 
                                         required="true" widgetVar="w" rendered="#{calendarioController.reserva.grupoReserva==null}">
-                                <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraFim()}" update="ck"/>
+                                <p:ajax event="valueChange"  update="ck"/>
                             </p:calendar>
 
                             <h:outputLabel for="title" value="Motivo:" />  
@@ -106,7 +106,7 @@
                             <p:selectCheckboxMenu id="ck"   value="#{calendarioController.selectedEquipamentos}"  
                                                   converter="equi" label="Adicionar Equipamentos" filter="true" 
                                                   filterMatchMode="startsWith" panelStyle="width:220px" >  
-                                <f:selectItems value="#{calendarioController.equipamentos}" var ="t"    />  
+                                <f:selectItems value="#{calendarioController.equipamentos}"     />  
                             </p:selectCheckboxMenu> 
 
                             <p:outputLabel value="Itens Reservados" rendered="#{!calendarioController.novaReserva}"/>
@@ -150,15 +150,15 @@
                             </h:panelGrid>
 
                             <p:commandButton id="addButton"  value="Salvar" actionListener="#{calendarioController.salvaReserva}" 
-                                             oncomplete="myschedule.update();eventDialog.hide();" update=":form2:dtEquipamento,messages" 
+                                             oncomplete="myschedule.update();detalhesReserva.hide();" update=":form2:dtEquipamento,messages" 
                                              rendered="#{calendarioController.reserva.iid == null}" />
                             <p:commandButton id="updateButton"  value="Atualizar" actionListener="#{calendarioController.updateReserva}" 
-                                             oncomplete="myschedule.update();eventDialog.hide();" update=":form2:dtEquipamento,messages" 
+                                             oncomplete="myschedule.update();detalhesReserva.hide();" update=":form2:dtEquipamento,messages" 
                                              rendered="#{calendarioController.reserva.iid != null}"/>
                             <p:commandButton id="remButton"  value="Remover" actionListener="#{calendarioController.remReserva}" 
-                                             oncomplete="myschedule.update();eventDialog.hide();" rendered="#{calendarioController.reserva.iid != null}" 
+                                             oncomplete="myschedule.update();detalhesReserva.hide();" rendered="#{calendarioController.reserva.iid != null}" 
                                              update=":form2:dtEquipamento,:form1:dtSala"/>  
-                            <p:commandButton id="cancelButton"  value="Cancelar"  oncomplete="eventDialog.hide();"  
+                            <p:commandButton id="cancelButton"  value="Cancelar"  oncomplete="detalhesReserva.hide();"  
                                              rendered="#{calendarioController.reserva.iid == null}"/> 
 
                         </h:panelGrid>  

@@ -20,6 +20,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import util.DateTools;
 
 /**
  *
@@ -139,10 +140,13 @@ public class GrupoReserva implements Serializable {
     }
 
     //arrumar este metodo
-    public void buildReservaSemanal(Reserva reservaModelo, Date dataFinalEscolhida) {
+    public void buildReservaSemanal(Reserva reservaModelo, Date dataFinalEscolhida, List<Integer> diasDaSemana) {
+
+        dataFinalEscolhida = DateTools.setHora(dataFinalEscolhida, DateTools.getHoras(reservaModelo.getFim()));
+        dataFinalEscolhida = DateTools.setMinutos(dataFinalEscolhida, DateTools.getMinutos(reservaModelo.getFim()));
 
         reservas = new ArrayList<Reserva>();
-        List<Integer> diasSemanaSelecionados = util.DateTools.getDiasSelecionados(this.diasDaSemana, reservaModelo.getInicio());
+        List<Integer> diasSemanaSelecionados = util.DateTools.getDiasSelecionados(diasDaSemana, reservaModelo.getInicio());
 
         Date dataFinal = Calendar.getInstance().getTime();
         int i = 0;
@@ -157,7 +161,12 @@ public class GrupoReserva implements Serializable {
                 dataFinal = util.DateTools.addDia(dataFinal, 7 * i);
                 reservaSemanal.setFim(dataFinal);
                 reservaSemanal.setGrupoReserva(this);
-                if ((dataInicial.after(reservaModelo.getInicio()) || dataInicial.equals(reservaModelo.getInicio())) && dataFinal.before(dataFinalEscolhida)) {
+                if ((dataInicial.after(reservaModelo.getInicio()) || dataInicial.equals(reservaModelo.getInicio()))
+                        && DateTools.getHoras(dataFinal) <= DateTools.getHoras(dataFinalEscolhida)
+                        && DateTools.getMinutos(dataFinal) <= DateTools.getMinutos(dataFinalEscolhida)
+                        && DateTools.getDia(dataFinal) <= DateTools.getDia(dataFinalEscolhida)
+                        && DateTools.getMes(dataFinal) <= DateTools.getMes(dataFinalEscolhida)
+                        && DateTools.getAno(dataFinal) <= DateTools.getAno(dataFinalEscolhida)) {
                     reservas.add(reservaSemanal);
                 }
             }

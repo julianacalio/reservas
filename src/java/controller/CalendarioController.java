@@ -7,7 +7,6 @@ import model.Recurso;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -33,7 +32,6 @@ import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleModel;
-import org.primefaces.model.DualListModel;
 
 import org.primefaces.model.ScheduleModel;
 import util.DateTools;
@@ -54,7 +52,7 @@ public class CalendarioController implements Serializable {
 
     boolean isRepetida;
     int numeroOcocrrencias;
-    List<Integer> diasDaSemana;
+    //List<Integer> diasDaSemana;
     private List<Equipamento> selectedEquipamentos;
 
     private Recurso current, novaescolha, novaSala, novoEquipamento;
@@ -83,21 +81,20 @@ public class CalendarioController implements Serializable {
     private boolean reservaSemanal;
     private List<Reserva> reservasImpossiveis = new ArrayList<Reserva>();
     private Date dataFinalReservaSemanal;
-    private List<Equipamento> equipamentosLivres;
+    //private List<Equipamento> equipamentosLivres;
 
     public CalendarioController() {
         eventModel = null;
         pessoas = null;
     }
 
-    public List<Equipamento> getEquipamentosLivres() {
-        return equipamentosLivres;
-    }
-
-    public void setEquipamentosLivres(List<Equipamento> equipamentosLivres) {
-        this.equipamentosLivres = equipamentosLivres;
-    }
-
+//    public List<Equipamento> getEquipamentosLivres() {
+//        return equipamentosLivres;
+//    }
+//
+//    public void setEquipamentosLivres(List<Equipamento> equipamentosLivres) {
+//        this.equipamentosLivres = equipamentosLivres;
+//    }
     public RecursoDataModel getRecursoDataModel() {
 
         return recursoDataModel = new RecursoDataModel(reserva.getRecursos());
@@ -253,9 +250,7 @@ public class CalendarioController implements Serializable {
 
         //verifica se existe alguma reserva antes de procurar os equipamentos livres
         if (reserva != null && reserva.getInicio() != null && reserva.getFim() != null) {
-
             return getEquipamentosLivres(reserva.getInicio(), reserva.getFim());
-
         } else {
             return new ArrayList<Equipamento>();
         }
@@ -320,6 +315,7 @@ public class CalendarioController implements Serializable {
 
     public void salvaReserva(ActionEvent actionEvent) {
         if (isReservaSemanal()) {
+            grupoReserva = new GrupoReserva();
             addReservaSemanal();
         } else {
             addReserva();
@@ -331,10 +327,10 @@ public class CalendarioController implements Serializable {
             reserva = adicionaEquipamentosNaReserva(reserva, selectedEquipamentos);
         }
 
-        grupoReserva.setDiasDaSemana(getDiasEscolhidos(diasEscolhidos));
-        grupoReserva.buildReservaSemanal(reserva, dataFinalReservaSemanal);
-         reservasImpossiveis = getReservasOcupadas(grupoReserva);
-       // reservasImpossiveis = reservaFacade.findAllBetween(reserva.getInicio(), reserva.getFim());
+        List<Integer> diasDaSemana = getDiasEscolhidos(diasEscolhidos);
+        grupoReserva.buildReservaSemanal(reserva, dataFinalReservaSemanal, diasDaSemana);
+        reservasImpossiveis = getReservasOcupadas(grupoReserva);
+        // reservasImpossiveis = reservaFacade.findAllBetween(reserva.getInicio(), reserva.getFim());
         //se possui alguma reserva impossivel
         if (!reservasImpossiveis.isEmpty()) {
             //procura essa reserva na lista e remove
@@ -359,6 +355,8 @@ public class CalendarioController implements Serializable {
         recreateDiasEscolhidos();
         recreateIsReservaSemanal();
         recreateDataFinal();
+        recreateReserva();
+        recreateSelectedEquipamento();
     }
 
     //Retorna as reservas que nao podem ser feitas pois possuem um ou mais recursos ocupados
@@ -412,6 +410,7 @@ public class CalendarioController implements Serializable {
 
         recreateEquipamentoDataModel();
         recreateSalaDataModel();
+        recreateSelectedEquipamento();
     }
 
     public List<Integer> getDiasEscolhidos(List<String> diasEscolhidos) {
@@ -458,13 +457,9 @@ public class CalendarioController implements Serializable {
         }
 
         if (isEquipamentoSelecionado()) {
-            reserva.getRecursos().clear();
-            reserva.addRecurso(current);
-            for (Equipamento equipamento : selectedEquipamentos) {
-                if (equipamento.getId() != current.getId()) {
-                    reserva.addRecurso(equipamento);
-                }
-            }
+            //reserva.getRecursos().clear();
+            //  reserva.addRecurso(current);
+            reserva = adicionaEquipamentosNaReserva(reserva, selectedEquipamentos);
         }
 
         if (reserva.getGrupoReserva() != null) {//se pertence a algum grupo
@@ -474,6 +469,7 @@ public class CalendarioController implements Serializable {
             grupoReservaFacade.merge(grupoReserva);
             updateRecursoSelecionado();
             recreateEventModel();
+            recreateSelectedEquipamento();
         } else {
             reserva = reservaFacade.merge(reserva);
             eventModel.updateEvent(reserva);
@@ -482,6 +478,7 @@ public class CalendarioController implements Serializable {
 
         recreateEquipamentoDataModel();
         recreateSalaDataModel();
+        recreateSelectedEquipamento();
     }
 
     public void updateRecursoSelecionado() {
@@ -561,7 +558,7 @@ public class CalendarioController implements Serializable {
 
     public void onReservaSelect(SelectEvent selectEvent) {
         reserva = (Reserva) selectEvent.getObject();
-        atualizaSelectedEquipamentos(reserva.getRecursos());
+        // atualizaSelectedEquipamentos(reserva.getRecursos());
 
         if (reserva.getGrupoReserva() != null) {
             grupoReserva = reserva.getGrupoReserva();
@@ -569,7 +566,7 @@ public class CalendarioController implements Serializable {
             grupoReserva.setReservas(reservas);
         }
 
-        showDialog();
+        showDialogDetalhesDaReserva();
 
     }
 
@@ -598,7 +595,7 @@ public class CalendarioController implements Serializable {
             return;
         }
 
-        grupoReserva = new GrupoReserva();
+        //grupoReserva = new GrupoReserva();
         reserva = new Reserva();
         reserva.addRecurso(current);
         Date inicio = (Date) selectEvent.getObject();
@@ -609,7 +606,7 @@ public class CalendarioController implements Serializable {
         reserva.setInicio(inicio);
         reserva.setFim(fim.getTime());
         reserva.setRealizacao(new Date());
-        showDialog();
+        showDialogDetalhesDaReserva();
 
     }
 
@@ -617,8 +614,8 @@ public class CalendarioController implements Serializable {
         return novaSala != null || novoEquipamento != null;
     }
 
-    public void showDialog() {
-        RequestContext.getCurrentInstance().execute("eventDialog.show()");
+    public void showDialogDetalhesDaReserva() {
+        RequestContext.getCurrentInstance().execute("detalhesReserva.show()");
     }
 
     public void showDialogDataInvalida() {
@@ -862,6 +859,10 @@ public class CalendarioController implements Serializable {
 
     private void recreateDataFinal() {
         dataFinalReservaSemanal = null;
+    }
+
+    private void recreateSelectedEquipamento() {
+        selectedEquipamentos.clear();
     }
 
     @FacesConverter(forClass = Recurso.class)
