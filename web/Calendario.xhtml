@@ -229,6 +229,16 @@
                             </h:panelGrid>
                         </p:panel>
                     </p:dialog>
+
+                    <p:dialog  widgetVar="recursoNaoApagavel" header="Remover Recurso" >
+                        <p:panel style="display: block;text-align: center">
+                            <h:outputLabel value="O recurso principal não pode ser removido."  />
+                            <br/>
+
+                            <p:commandButton   value="OK" oncomplete="recursoNaoApagavel.hide();myschedule.update();"    />  
+
+                        </p:panel>
+                    </p:dialog>
                 </h:form>  
             </p:layoutUnit>  
         </p:layout>  
