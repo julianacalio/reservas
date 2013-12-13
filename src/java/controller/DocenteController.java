@@ -168,9 +168,7 @@ public class DocenteController implements Serializable {
         }
     }
 
-    public static void main(String args[]) {
-        System.out.println("Docente controlller");
-    }
+    
 
     public Docente getDocente() {
         return this.current;

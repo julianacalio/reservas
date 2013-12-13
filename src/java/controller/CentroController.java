@@ -281,10 +281,5 @@ public class CentroController implements Serializable {
         }
     }
 
-    public static void main(String Args[]) {
-
-        Centro c = new Centro();
-        c.setNome("CMCC");
-
-    }
+   
 }
