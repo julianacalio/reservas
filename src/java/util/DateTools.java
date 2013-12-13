@@ -64,34 +64,42 @@ public class DateTools {
         return c.getTime();
     }
 
+    public static Date setSegundos(Date data, int segundos) {
+        Calendar c = prepareCalendar(data);
+        c.set(Calendar.SECOND, segundos);
+        return c.getTime();
+    }
+
     public static int getMinutos(Date data) {
         Calendar c = prepareCalendar(data);
         return c.get(Calendar.MINUTE);
     }
-    
+    public static int getSegundos(Date data) {
+        Calendar c = prepareCalendar(data);
+        return c.get(Calendar.SECOND);
+    }
+
     public static int getHoras(Date data) {
         Calendar c = prepareCalendar(data);
         return c.get(Calendar.HOUR_OF_DAY);
     }
-    
-    
+
     public static Date setDia(Date data, int dia) {
         Calendar c = prepareCalendar(data);
         c.set(Calendar.DAY_OF_MONTH, dia);
         return c.getTime();
     }
-    
 
     public static int getDia(Date data) {
         Calendar c = prepareCalendar(data);
         return c.get(Calendar.DAY_OF_MONTH);
     }
-    
+
     public static int getMes(Date data) {
         Calendar c = prepareCalendar(data);
         return c.get(Calendar.MONTH);
     }
-    
+
     public static int getAno(Date data) {
         Calendar c = prepareCalendar(data);
         return c.get(Calendar.YEAR);
@@ -115,8 +123,6 @@ public class DateTools {
         c.setTime(data);
         return String.valueOf(c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE));
     }
-    
-      
 
     //retorna os dias do mes que correspondem aos dias da semana selecionados em funcao da data selecionada
     public static List<Integer> getDiasSelecionados(List<Integer> diasDaSemana, Date dataSelecionada) {

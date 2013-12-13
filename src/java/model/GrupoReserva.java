@@ -144,6 +144,8 @@ public class GrupoReserva implements Serializable {
 
         dataFinalEscolhida = DateTools.setHora(dataFinalEscolhida, DateTools.getHoras(reservaModelo.getFim()));
         dataFinalEscolhida = DateTools.setMinutos(dataFinalEscolhida, DateTools.getMinutos(reservaModelo.getFim()));
+        dataFinalEscolhida = DateTools.setSegundos(dataFinalEscolhida, 1);
+        
 
         reservas = new ArrayList<Reserva>();
         List<Integer> diasSemanaSelecionados = util.DateTools.getDiasSelecionados(diasDaSemana, reservaModelo.getInicio());
@@ -161,12 +163,7 @@ public class GrupoReserva implements Serializable {
                 dataFinal = util.DateTools.addDia(dataFinal, 7 * i);
                 reservaSemanal.setFim(dataFinal);
                 reservaSemanal.setGrupoReserva(this);
-                if ((dataInicial.after(reservaModelo.getInicio()) || dataInicial.equals(reservaModelo.getInicio()))
-                        && DateTools.getHoras(dataFinal) <= DateTools.getHoras(dataFinalEscolhida)
-                        && DateTools.getMinutos(dataFinal) <= DateTools.getMinutos(dataFinalEscolhida)
-                        && DateTools.getDia(dataFinal) <= DateTools.getDia(dataFinalEscolhida)
-                        && DateTools.getMes(dataFinal) <= DateTools.getMes(dataFinalEscolhida)
-                        && DateTools.getAno(dataFinal) <= DateTools.getAno(dataFinalEscolhida)) {
+                if ((dataInicial.after(reservaModelo.getInicio()) || dataInicial.equals(reservaModelo.getInicio()))&& dataFinal.before(dataFinalEscolhida)) {
                     reservas.add(reservaSemanal);
                 }
             }

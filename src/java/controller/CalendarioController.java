@@ -331,7 +331,7 @@ public class CalendarioController implements Serializable {
 
         List<Integer> diasDaSemana = getDiasEscolhidos(diasEscolhidos);
         grupoReserva.buildReservaSemanal(reserva, dataFinalReservaSemanal, diasDaSemana);
-        reservasImpossiveis = getReservasOcupadas(grupoReserva);
+        reservasImpossiveis = getReservasImpossiveis(grupoReserva);
         // reservasImpossiveis = reservaFacade.findAllBetween(reserva.getInicio(), reserva.getFim());
         //se possui alguma reserva impossivel
         if (!reservasImpossiveis.isEmpty()) {
@@ -363,7 +363,7 @@ public class CalendarioController implements Serializable {
 
     //Retorna as reservas que nao podem ser feitas pois possuem um ou mais recursos ocupados
     //naquele horario escolhido
-    public List<Reserva> getReservasOcupadas(GrupoReserva novoGrupoReserva) {
+    public List<Reserva> getReservasImpossiveis(GrupoReserva novoGrupoReserva) {
         List<Reserva> reservasImpos = new ArrayList<Reserva>();
         for (Reserva res : novoGrupoReserva.getReservas()) {
             List<Recurso> recursosOcupados = getRecursosOcupadosDaReserva(res);
@@ -386,6 +386,8 @@ public class CalendarioController implements Serializable {
 //        }
 //        return reservasImpos;
 //    }
+    
+    
     public Reserva adicionaEquipamentosNaReserva(Reserva reserva, List<Equipamento> equipamentos) {
         for (Equipamento equipamento : equipamentos) {
             reserva.addRecurso(equipamento);
@@ -444,7 +446,6 @@ public class CalendarioController implements Serializable {
 
     public void updateReserva(ActionEvent actionEvent) {
 
-        //List<Recurso> recursosReservados = getRecursosOcupadosReservaId(reserva, selectedEquipamentos);
         List<Recurso> recursosReservados = getRecursosOcupados(reserva.getInicio(), reserva.getFim());
         List<Recurso> recursosPreviamenteSelecionados = reservaFacade.find(reserva.getIid()).getRecursos();
         recursosReservados.removeAll(recursosPreviamenteSelecionados);
@@ -458,8 +459,6 @@ public class CalendarioController implements Serializable {
         }
 
         if (isEquipamentoSelecionado()) {
-            //reserva.getRecursos().clear();
-            //  reserva.addRecurso(current);
             reserva = adicionaEquipamentosNaReserva(reserva, selectedEquipamentos);
         }
 
@@ -558,7 +557,6 @@ public class CalendarioController implements Serializable {
 
     public void onReservaSelect(SelectEvent selectEvent) {
         reserva = (Reserva) selectEvent.getObject();
-        // atualizaSelectedEquipamentos(reserva.getRecursos());
 
         if (reserva.getGrupoReserva() != null) {
             grupoReserva = reserva.getGrupoReserva();
@@ -595,7 +593,6 @@ public class CalendarioController implements Serializable {
             return;
         }
 
-        //grupoReserva = new GrupoReserva();
         reserva = new Reserva();
         reserva.addRecurso(current);
         Date inicio = (Date) selectEvent.getObject();
@@ -673,7 +670,6 @@ public class CalendarioController implements Serializable {
             return;
         }
         reserva = reservaFacade.find(reservaRedimensionada.getIid());
-        //atualizaSelectedEquipamentos(reserva.getRecursos());
         // List<Recurso> recursosOcupados = getRecursosOcupadosReservaId(reservaRedimensionada, selectedEquipamentos);
         List<Recurso> recursosOcupados = getRecursosOcupados(reservaRedimensionada.getInicio(), reservaRedimensionada.getFim());
         recursosOcupados.retainAll(reservaRedimensionada.getRecursos());
@@ -695,11 +691,11 @@ public class CalendarioController implements Serializable {
     public void onEventResize(ScheduleEntryResizeEvent event) {
         Reserva reservaRedimensionada = (Reserva) event.getScheduleEvent();
         reserva = reservaFacade.find(reservaRedimensionada.getIid());
-        List<Recurso> recursosOcupados;
+        List<Reserva> reservasOcupadas = reservaFacade.findAllBetween(reservaRedimensionada.getInicio(), reservaRedimensionada.getFim());
+        reservasOcupadas.remove(reserva);
+        List<Recurso> recursosOcupados = getRecursos(reservasOcupadas);
+
         if (reservaRedimensionada.getFim().after(reserva.getFim())) {
-            recursosOcupados = getRecursosOcupados(reserva.getFim(), reservaRedimensionada.getFim());
-            //atualizaSelectedEquipamentos(reserva.getRecursos());
-            //recursosOcupados = getRecursosOcupadosReservaId(reservaRedimensionada, selectedEquipamentos);
             if (!recursosOcupados.isEmpty()) {
                 updateRecursoSelecionado();
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recurso(s) ocupado(s)", recursosOcupados.toString());
@@ -778,15 +774,14 @@ public class CalendarioController implements Serializable {
         return recursosOcupados;
     }
 
-    public List<Recurso> getRecursosOcupados(Date inicio, Date fim, Long desconsiderar_ID_Reserva) {
-        List<Reserva> reservasOcupadas = reservaFacade.findBetween(inicio, fim, reserva.getIid());
-        List<Recurso> recursosOcupados = new ArrayList<Recurso>();
-        for (Reserva reservaOcupada : reservasOcupadas) {
-            recursosOcupados.addAll(reservaOcupada.getRecursos());
-        }
-        return recursosOcupados;
-    }
-
+//    public List<Recurso> getRecursosOcupados(Date inicio, Date fim, Long desconsiderar_ID_Reserva) {
+//        List<Reserva> reservasOcupadas = reservaFacade.findBetween(inicio, fim, reserva.getIid());
+//        List<Recurso> recursosOcupados = new ArrayList<Recurso>();
+//        for (Reserva reservaOcupada : reservasOcupadas) {
+//            recursosOcupados.addAll(reservaOcupada.getRecursos());
+//        }
+//        return recursosOcupados;
+//    }
     /**
      * Retorna os recursos que foram selecionados pela nova reserva e ja estao reservados no horario da nova reserva no banco de dados.
      *
@@ -800,31 +795,37 @@ public class CalendarioController implements Serializable {
         return recursosOcupados;
     }
 
+    private List<Recurso> getRecursos(List<Reserva> reservasOcupadas) {
+        List<Recurso> recursos = new ArrayList<Recurso>();
+        for (Reserva reservaOcupada : reservasOcupadas) {
+            recursos.addAll(reservaOcupada.getRecursos());
+        }
+        return recursos;
+    }
+
     // Retorna or recursos selecionados pela reserva que ja estao reservados no banco de dados na nova data especificada
     // sem considerar os recursos salvo pela propria reserva.
-    public List<Recurso> getRecursosOcupadosReservaId(Reserva reserva, List<Equipamento> equipamentosSelecionados) {
-        List<Recurso> recursosSelecionados = new ArrayList<Recurso>();
-        recursosSelecionados.addAll(equipamentosSelecionados);
-        recursosSelecionados.add(current);
-
-        List<Recurso> recursosOcupados = getRecursosOcupados(reserva.getInicio(), reserva.getFim(), reserva.getIid());
-        recursosOcupados.retainAll(recursosSelecionados);
-
-        return recursosOcupados;
-    }
-
-    private List<Equipamento> getEquipamentosReservados() {
-        List<Recurso> recursosReservados = getRecursosOcupados(reserva.getInicio(), reserva.getFim());
-        List<Equipamento> equipamentosReservados = new ArrayList<Equipamento>();
-
-        for (Recurso recurso : recursosReservados) {
-            if (recurso instanceof Equipamento) {
-                equipamentosReservados.add((Equipamento) recurso);
-            }
-        }
-        return equipamentosReservados;
-    }
-
+//    public List<Recurso> getRecursosOcupadosReservaId(Reserva reserva, List<Equipamento> equipamentosSelecionados) {
+//        List<Recurso> recursosSelecionados = new ArrayList<Recurso>();
+//        recursosSelecionados.addAll(equipamentosSelecionados);
+//        recursosSelecionados.add(current);
+//
+//        List<Recurso> recursosOcupados = getRecursosOcupados(reserva.getInicio(), reserva.getFim(), reserva.getIid());
+//        recursosOcupados.retainAll(recursosSelecionados);
+//
+//        return recursosOcupados;
+//    }
+//    private List<Equipamento> getEquipamentosReservados() {
+//        List<Recurso> recursosReservados = getRecursosOcupados(reserva.getInicio(), reserva.getFim());
+//        List<Equipamento> equipamentosReservados = new ArrayList<Equipamento>();
+//
+//        for (Recurso recurso : recursosReservados) {
+//            if (recurso instanceof Equipamento) {
+//                equipamentosReservados.add((Equipamento) recurso);
+//            }
+//        }
+//        return equipamentosReservados;
+//    }
     public List<Date> getDatasSelecionadas(List<Integer> diasDaSemana, Date dataSelecionada) {
 
         Calendar calendario = Calendar.getInstance();
