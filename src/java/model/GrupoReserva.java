@@ -33,8 +33,7 @@ public class GrupoReserva implements Serializable {
     @OneToMany(mappedBy = "grupoReserva", cascade = CascadeType.ALL)
     private List<Reserva> reservas = new ArrayList<Reserva>();
 
-//    @ElementCollection
-//    private List<Integer> diasDaSemana = new ArrayList<Integer>();
+
     public List<Reserva> getReservas() {
         return reservas;
     }
@@ -43,16 +42,7 @@ public class GrupoReserva implements Serializable {
         this.reservas = reservas;
     }
 
-//    public void addDiaDaSemana(int DIA_DA_SEMANA) {
-//        diasDaSemana.add(DIA_DA_SEMANA);
-//    }
-//
-//    public List<Integer> getDiasDaSemana() {
-//        return diasDaSemana;
-//    }
-//    public void setDiasDaSemana(List<Integer> diasDaSemana) {
-//        this.diasDaSemana = diasDaSemana;
-//    }
+
     public void addReserva(Reserva reserva) {
         reservas.add(reserva);
     }
@@ -99,8 +89,6 @@ public class GrupoReserva implements Serializable {
         }
     }
 
-   
-
     
     private void setDiaMesAno(Date data, Reserva reserva) {
         Date dataInicio = reserva.getInicio();
@@ -126,11 +114,11 @@ public class GrupoReserva implements Serializable {
         dataFinalEscolhida = DateTools.setSegundos(dataFinalEscolhida, 1);
 
         reservas = new ArrayList<Reserva>();
-        List<Date> diasPrimeirasemana = util.DateTools.getDiasPrimeiraSemana(diasDaSemana, reservaModelo.getInicio());
+        List<Date> diasPrimeiraSemana = util.DateTools.getDiasPrimeiraSemana(diasDaSemana, reservaModelo.getInicio());
         Date dataFinal = Calendar.getInstance().getTime();
         int i = 0;
         while (dataFinal.before(dataFinalEscolhida)) {
-            for (Date date : diasPrimeirasemana) {
+            for (Date date : diasPrimeiraSemana) {
                 Reserva reservaSemanal = reservaModelo.createClone();
                 setDiaMesAno(date, reservaSemanal);
                 Date dataInicial = reservaSemanal.getInicio();

@@ -109,24 +109,24 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
      * @return Lista contendo todas as reservas que obedecem ao critério
      * especificado
      */
-    public List<Reserva> findBetween(Date inicio, Date fim, Long desconsiderar_ID_Reserva) {
-        Session session = getSessionFactory().openSession();
-        Criteria criteria1 = session.createCriteria(Reserva.class);
-
-        criteria1.add(Restrictions.or(Restrictions.between("inicio", inicio, fim), Restrictions.between("fim", inicio, fim)));
-        criteria1.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
-        criteria1.add(Restrictions.ne("iid", desconsiderar_ID_Reserva));
-        List results1 = criteria1.list();
-
-        Criteria criteria2 = session.createCriteria(Reserva.class);
-        criteria2.add(Restrictions.and(Restrictions.le("inicio", inicio), Restrictions.ge("fim", fim)));
-        criteria2.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
-        criteria2.add(Restrictions.ne("iid", desconsiderar_ID_Reserva));
-        List results2 = criteria2.list();
-
-        results1.addAll(results2);
-        session.close();
-        return results1;
-    }
+//    public List<Reserva> findBetween(Date inicio, Date fim, Long desconsiderar_ID_Reserva) {
+//        Session session = getSessionFactory().openSession();
+//        Criteria criteria1 = session.createCriteria(Reserva.class);
+//
+//        criteria1.add(Restrictions.or(Restrictions.between("inicio", inicio, fim), Restrictions.between("fim", inicio, fim)));
+//        criteria1.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
+//        criteria1.add(Restrictions.ne("iid", desconsiderar_ID_Reserva));
+//        List results1 = criteria1.list();
+//
+//        Criteria criteria2 = session.createCriteria(Reserva.class);
+//        criteria2.add(Restrictions.and(Restrictions.le("inicio", inicio), Restrictions.ge("fim", fim)));
+//        criteria2.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
+//        criteria2.add(Restrictions.ne("iid", desconsiderar_ID_Reserva));
+//        List results2 = criteria2.list();
+//
+//        results1.addAll(results2);
+//        session.close();
+//        return results1;
+//    }
 
 }
