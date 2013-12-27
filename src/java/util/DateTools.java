@@ -74,6 +74,7 @@ public class DateTools {
         Calendar c = prepareCalendar(data);
         return c.get(Calendar.MINUTE);
     }
+
     public static int getSegundos(Date data) {
         Calendar c = prepareCalendar(data);
         return c.get(Calendar.SECOND);
@@ -87,6 +88,18 @@ public class DateTools {
     public static Date setDia(Date data, int dia) {
         Calendar c = prepareCalendar(data);
         c.set(Calendar.DAY_OF_MONTH, dia);
+        return c.getTime();
+    }
+
+    public static Date setMes(Date data, int mes) {
+        Calendar c = prepareCalendar(data);
+        c.set(Calendar.MONTH, mes);
+        return c.getTime();
+    }
+
+    public static Date setAno(Date data, int ano) {
+        Calendar c = prepareCalendar(data);
+        c.set(Calendar.YEAR, ano);
         return c.getTime();
     }
 
@@ -114,14 +127,27 @@ public class DateTools {
     public static String getData(Date data) {
         Calendar c = Calendar.getInstance();
         c.setTime(data);
-        int month = c.get(Calendar.MONTH) + 1;//janeiro comeca a contar como mes 0.
-        return String.valueOf(c.get(Calendar.DAY_OF_MONTH) + "/" + month + "/" + c.get(Calendar.YEAR));
+        String month = String.valueOf(c.get(Calendar.MONTH) + 1); //janeiro comeca a contar como mes 0.
+        month = fillWithZero(month);
+        String day = String.valueOf(c.get(Calendar.DAY_OF_MONTH));
+        day = fillWithZero(day);
+        String year = String.valueOf(c.get(Calendar.YEAR));
+        year = fillWithZero(year);
+        return day + "/" + month + "/" + year;
+    }
+
+    public static String fillWithZero(String numero) {
+        return numero.length() < 2 ? "0" + numero : numero;
     }
 
     public static String getHora(Date data) {
         Calendar c = Calendar.getInstance();
         c.setTime(data);
-        return String.valueOf(c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE));
+        String hora = String.valueOf(c.get(Calendar.HOUR_OF_DAY));
+        hora = fillWithZero(hora);
+        String minuto = String.valueOf(c.get(Calendar.MINUTE));
+        minuto = fillWithZero(minuto);
+        return hora + ":" + minuto;
     }
 
     //retorna os dias do mes que correspondem aos dias da semana selecionados em funcao da data selecionada
@@ -141,6 +167,24 @@ public class DateTools {
 
         }
         return dias;
+    }
+
+    public static List<Date> getDiasPrimeiraSemana(List<Integer> diasDaSemana, Date dataSelecionada) {
+        Calendar calendario = Calendar.getInstance();
+        calendario.setTime(dataSelecionada);
+        int diaSemanaSelecionado = calendario.get(Calendar.DAY_OF_WEEK);
+        List<Date> diasPrimeiraSemana = new ArrayList<Date>();
+        for (int diaDaSemana : diasDaSemana) {
+            calendario = Calendar.getInstance();
+            calendario.setTime(dataSelecionada);
+            calendario.add(Calendar.DAY_OF_MONTH, (diaDaSemana - diaSemanaSelecionado));
+            //adiciona a data á lista somente se ela for igual ou posterior ao dia selecionado.
+
+            diasPrimeiraSemana.add(calendario.getTime());
+
+        }
+
+        return diasPrimeiraSemana;
     }
 
 }

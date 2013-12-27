@@ -110,8 +110,8 @@
                             </p:selectCheckboxMenu> 
 
                             <p:outputLabel value="Itens Reservados" rendered="#{!calendarioController.novaReserva}"/>
-                            <p:dataTable id="dtRecursosEscolhidos" var="rec" value="#{calendarioController.recursoDataModel}"  
-                                         rendered="#{!calendarioController.novaReserva}"  selectionMode="single">  
+                            <p:dataTable id="dtRecursosEscolhidos" rendered="#{!calendarioController.novaReserva}" 
+                                         var="rec" value="#{calendarioController.recursoDataModel}" selectionMode="single">  
                                 <p:column >  
                                     <h:outputText value="#{rec.toString()}" />  
                                 </p:column>  
@@ -195,7 +195,7 @@
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="janela5" widgetVar="reservasIndisponiveis" header="Reservas Indisponíveis"  dynamic="true" >
+                    <p:dialog id="janela5" widgetVar="reservasIndisponiveis" header="Reservas Indisponíveis" dynamic ="true"  >
                         <p:panel style="display: block;text-align: center">
                             <h:outputLabel value="Alguma(s) reserva(s) possue(m) um ou mais recursos"  />
                             <br/>
@@ -205,7 +205,7 @@
                             <br/>
                             <p:dataList value="#{calendarioController.reservasImpossiveis}" var="reservaImpossivel" itemType="disc" >
                                 <p:column >
-                                    data: #{reservaImpossivel.dataInicio} das #{reservaImpossivel.horaInicio} até #{reservaImpossivel.horaFim}
+                                    #{reservaImpossivel.dataInicio} 
                                 </p:column>
                             </p:dataList>
                             <br/>

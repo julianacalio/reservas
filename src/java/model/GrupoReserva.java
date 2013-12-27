@@ -8,14 +8,10 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,7 +35,6 @@ public class GrupoReserva implements Serializable {
 
 //    @ElementCollection
 //    private List<Integer> diasDaSemana = new ArrayList<Integer>();
-
     public List<Reserva> getReservas() {
         return reservas;
     }
@@ -55,11 +50,9 @@ public class GrupoReserva implements Serializable {
 //    public List<Integer> getDiasDaSemana() {
 //        return diasDaSemana;
 //    }
-
 //    public void setDiasDaSemana(List<Integer> diasDaSemana) {
 //        this.diasDaSemana = diasDaSemana;
 //    }
-
     public void addReserva(Reserva reserva) {
         reservas.add(reserva);
     }
@@ -117,6 +110,23 @@ public class GrupoReserva implements Serializable {
 
     }
 
+    
+    private void setDiaMesAno(Date data, Reserva reserva) {
+        Date dataInicio = reserva.getInicio();
+        int mes = util.DateTools.getMes(data);
+        int dia = util.DateTools.getDia(data);
+        int ano = util.DateTools.getAno(data);
+        dataInicio = util.DateTools.setDia(dataInicio, dia);
+        dataInicio = util.DateTools.setMes(dataInicio, mes);
+        dataInicio = util.DateTools.setAno(dataInicio, ano);
+        reserva.setInicio(dataInicio);
+        Date dataFim = reserva.getFim();
+        dataFim = util.DateTools.setDia(dataFim, dia);
+        dataFim = util.DateTools.setMes(dataFim, mes);
+        dataFim = util.DateTools.setAno(dataFim, ano);
+        reserva.setFim(dataFim);
+    }
+
 //    public void buildReservaSemanal(Reserva reservaModelo, int numeroOcorrencias) {
 //        reservas = new ArrayList<Reserva>();
 //        List<Integer> diasSemanaSelecionados = util.DateTools.getDiasSelecionados(this.diasDaSemana, reservaModelo.getInicio());
@@ -138,24 +148,23 @@ public class GrupoReserva implements Serializable {
 //        }
 //
 //    }
-
     //arrumar este metodo
     public void buildReservaSemanal(Reserva reservaModelo, Date dataFinalEscolhida, List<Integer> diasDaSemana) {
 
         dataFinalEscolhida = DateTools.setHora(dataFinalEscolhida, DateTools.getHoras(reservaModelo.getFim()));
         dataFinalEscolhida = DateTools.setMinutos(dataFinalEscolhida, DateTools.getMinutos(reservaModelo.getFim()));
         dataFinalEscolhida = DateTools.setSegundos(dataFinalEscolhida, 1);
-        
 
         reservas = new ArrayList<Reserva>();
-        List<Integer> diasSemanaSelecionados = util.DateTools.getDiasSelecionados(diasDaSemana, reservaModelo.getInicio());
-
+       // List<Integer> diasSemanaSelecionados = util.DateTools.getDiasSelecionados(diasDaSemana, reservaModelo.getInicio());
+        List<Date> diasPrimeirasemana = util.DateTools.getDiasPrimeiraSemana(diasDaSemana, reservaModelo.getInicio());
         Date dataFinal = Calendar.getInstance().getTime();
         int i = 0;
         while (dataFinal.before(dataFinalEscolhida)) {
-            for (Integer diaPrimeiraSemana : diasSemanaSelecionados) {
+            for (Date date : diasPrimeirasemana) {
                 Reserva reservaSemanal = reservaModelo.createClone();
-                setDia(diaPrimeiraSemana, reservaSemanal);
+                //setDia(diaPrimeiraSemana, reservaSemanal);
+                setDiaMesAno(date, reservaSemanal);
                 Date dataInicial = reservaSemanal.getInicio();
                 dataInicial = util.DateTools.addDia(dataInicial, 7 * i);
                 reservaSemanal.setInicio(dataInicial);
@@ -163,7 +172,7 @@ public class GrupoReserva implements Serializable {
                 dataFinal = util.DateTools.addDia(dataFinal, 7 * i);
                 reservaSemanal.setFim(dataFinal);
                 reservaSemanal.setGrupoReserva(this);
-                if ((dataInicial.after(reservaModelo.getInicio()) || dataInicial.equals(reservaModelo.getInicio()))&& dataFinal.before(dataFinalEscolhida)) {
+                if ((dataInicial.after(reservaModelo.getInicio()) || dataInicial.equals(reservaModelo.getInicio())) && dataFinal.before(dataFinalEscolhida)) {
                     reservas.add(reservaSemanal);
                 }
             }
