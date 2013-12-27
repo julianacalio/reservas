@@ -6,10 +6,8 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,12 +15,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import org.primefaces.model.ScheduleEvent;
 import util.DateTools;
-import static util.DateTools.prepareCalendar;
 
 /**
  *
@@ -48,15 +44,14 @@ public class Reserva implements Serializable, ScheduleEvent {
     private Long iid;
     @ManyToOne
     private Operador operador;
-//    @ManyToOne
-//    private Recurso recurso;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private Pessoa reservante;
     @ManyToOne
     private Centro centro;
     String motivo;
 
-//    @OneToMany(mappedBy = "reserva", fetch = FetchType.EAGER)
+
     @ManyToMany(fetch = FetchType.EAGER)
     protected List<Recurso> recursos = new ArrayList<Recurso>();
 
@@ -107,13 +102,6 @@ public class Reserva implements Serializable, ScheduleEvent {
         this.recursos.clear();
     }
 
-//    public Recurso getRecurso() {
-//        return recurso;
-//    }
-//
-//    public void setRecurso(Recurso recurso) {
-//        this.recurso = recurso;
-//    }
     public Pessoa getReservante() {
         return reservante;
     }

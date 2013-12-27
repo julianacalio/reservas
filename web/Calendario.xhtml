@@ -105,7 +105,7 @@
                             <h:outputLabel for="ck" value="Equipamentos:"  />
                             <p:selectCheckboxMenu id="ck"   value="#{calendarioController.selectedEquipamentos}"  
                                                   converter="equi" label="Adicionar Equipamentos" filter="true" 
-                                                  filterMatchMode="startsWith" panelStyle="width:220px" >  
+                                                  filterMatchMode="startsWith"  >  
                                 <f:selectItems value="#{calendarioController.equipamentos}"     />  
                             </p:selectCheckboxMenu> 
 
@@ -156,7 +156,8 @@
                                              oncomplete="myschedule.update();detalhesReserva.hide();" update=":form2:dtEquipamento,messages" 
                                              rendered="#{calendarioController.reserva.iid != null}"/>
                             <p:commandButton id="remButton"  value="Remover" actionListener="#{calendarioController.remReserva}" 
-                                             oncomplete="myschedule.update();detalhesReserva.hide();" rendered="#{calendarioController.reserva.iid != null}" 
+                                             oncomplete="myschedule.update();detalhesReserva.hide();" 
+                                             rendered="#{calendarioController.reserva.iid != null}" 
                                              update=":form2:dtEquipamento,:form1:dtSala"/>  
                             <p:commandButton id="cancelButton"  value="Cancelar"  oncomplete="detalhesReserva.hide();"  
                                              rendered="#{calendarioController.reserva.iid == null}"/> 
@@ -195,7 +196,7 @@
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="janela5" widgetVar="reservasIndisponiveis" header="Reservas Indisponíveis" dynamic ="true"  >
+                    <p:dialog id="janela5" widgetVar="reservasIndisponiveis" header="Reservas Indisponíveis" dynamic ="true"   >
                         <p:panel style="display: block;text-align: center">
                             <h:outputLabel value="Alguma(s) reserva(s) possue(m) um ou mais recursos"  />
                             <br/>
@@ -203,7 +204,7 @@
                             <br/>
                             <h:outputLabel value="e não serão salvas."/>
                             <br/>
-                            <p:dataList value="#{calendarioController.reservasImpossiveis}" var="reservaImpossivel" itemType="disc" >
+                            <p:dataList value="#{calendarioController.reservasImpossiveis}" var="reservaImpossivel" itemType="disc"  >
                                 <p:column >
                                     #{reservaImpossivel.dataInicio} 
                                 </p:column>
@@ -213,7 +214,7 @@
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="janela6" widgetVar="removerReservaSemanal" header="Remover Reservas"  dynamic="true" >
+                    <p:dialog id="janela6" widgetVar="removerReservaSemanal" header="Remover Reservas"  dynamic="true"  >
                         <p:panel style="display: block;text-align: center">
                             <h:outputLabel value="Esta reserva pertence a um grupo de reservas."  />
                             <br/>
@@ -272,8 +273,6 @@
                 week: 'Semana',
                 day: 'Dia',
                 allDayText: 'Hora'
-
-
             };
         </script>
         <br/>

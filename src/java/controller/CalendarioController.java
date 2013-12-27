@@ -332,7 +332,6 @@ public class CalendarioController implements Serializable {
         List<Integer> diasDaSemana = getDiasEscolhidos(diasEscolhidos);
         grupoReserva.buildReservaSemanal(reserva, dataFinalReservaSemanal, diasDaSemana);
         reservasImpossiveis = getReservasImpossiveis(grupoReserva);
-        // reservasImpossiveis = reservaFacade.findAllBetween(reserva.getInicio(), reserva.getFim());
         //se possui alguma reserva impossivel
         if (!reservasImpossiveis.isEmpty()) {
             //procura essa reserva na lista e remove
@@ -374,19 +373,7 @@ public class CalendarioController implements Serializable {
         return reservasImpos;
     }
 
-    //Retorna as reservas que nao podem ser feitas pois possuem um ou mais recursos ocupados
-    //naquele horario escolhido sem considerar os horarios feitos pela propia reserva
-//    public List<Reserva> getReservasOcupadasId(GrupoReserva novoGrupoReserva) {
-//        List<Reserva> reservasImpos = new ArrayList<Reserva>();
-//        for (Reserva res : novoGrupoReserva.getReservas()) {
-//            List<Recurso> recursosOcupados = getRecursosOcupadosReservaId(reserva, selectedEquipamentos);
-//            if (!recursosOcupados.isEmpty()) {
-//                reservasImpos.add(res);
-//            }
-//        }
-//        return reservasImpos;
-//    }
-    
+
     
     public Reserva adicionaEquipamentosNaReserva(Reserva reserva, List<Equipamento> equipamentos) {
         for (Equipamento equipamento : equipamentos) {

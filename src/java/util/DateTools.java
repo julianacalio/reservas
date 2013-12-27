@@ -150,25 +150,9 @@ public class DateTools {
         return hora + ":" + minuto;
     }
 
+ 
+
     //retorna os dias do mes que correspondem aos dias da semana selecionados em funcao da data selecionada
-    public static List<Integer> getDiasSelecionados(List<Integer> diasDaSemana, Date dataSelecionada) {
-
-        Calendar calendario = Calendar.getInstance();
-        calendario.setTime(dataSelecionada);
-        int diaSemanaSelecionado = calendario.get(Calendar.DAY_OF_WEEK);
-        List<Integer> dias = new ArrayList<Integer>();
-        for (int diaDaSemana : diasDaSemana) {
-            calendario = Calendar.getInstance();
-            calendario.setTime(dataSelecionada);
-            calendario.add(Calendar.DAY_OF_MONTH, (diaDaSemana - diaSemanaSelecionado));
-            //adiciona a data á lista somente se ela for igual ou posterior ao dia selecionado.
-
-            dias.add(calendario.get(Calendar.DAY_OF_MONTH));
-
-        }
-        return dias;
-    }
-
     public static List<Date> getDiasPrimeiraSemana(List<Integer> diasDaSemana, Date dataSelecionada) {
         Calendar calendario = Calendar.getInstance();
         calendario.setTime(dataSelecionada);
@@ -178,12 +162,8 @@ public class DateTools {
             calendario = Calendar.getInstance();
             calendario.setTime(dataSelecionada);
             calendario.add(Calendar.DAY_OF_MONTH, (diaDaSemana - diaSemanaSelecionado));
-            //adiciona a data á lista somente se ela for igual ou posterior ao dia selecionado.
-
             diasPrimeiraSemana.add(calendario.getTime());
-
         }
-
         return diasPrimeiraSemana;
     }
 
