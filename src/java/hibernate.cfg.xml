@@ -6,22 +6,22 @@
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         
         <!-- inicio da configuracao para servidor de aplicacoes local-->
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/reservasufabc?zeroDateTimeBehavior=convertToNull</property>
+<!--        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/reservasufabc?zeroDateTimeBehavior=convertToNull</property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">root</property>
+        <property name="hibernate.connection.password">root</property>-->
         <!-- fim da configuracao para servidor de aplicacoes local-->
     
         <!-- inicio da configuracao para o openShift -->
-<!--        <property name="hibernate.connection.url">jdbc:mysql://127.4.25.130:3306/reservas?autoReconnect=true</property>
+        <property name="hibernate.connection.url">jdbc:mysql://127.4.25.130:3306/reservas?autoReconnect=true</property>
         <property name="hibernate.connection.username">adminsTRurCq</property>
-        <property name="hibernate.connection.password">n-7DySC-Z4Gh</property>-->
+        <property name="hibernate.connection.password">n-7DySC-Z4Gh</property>
         <!-- fim da configuracao para o openShift -->
         <property name="hibernate.show_sql">false</property>
         <property name="hibernate.format_sql">false</property>
         <property name="hibernate.use_sql_comments">false</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
         <!-- inmportant to specify c3p0 as your connection provider -->
-<!--        <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>-->
+        <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
         <!-- configuration for connection pool via c3p0 -->
         <property name="c3p0.min_size">3</property>
         <property name="c3p0.max_size">20</property>
