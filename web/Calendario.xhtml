@@ -64,7 +64,7 @@
                 <h:form id="form">  
                     <p:growl id="messages" showDetail="true" />  
 
-                    <p:schedule showWeekends="true" timeZone="GMT-2"  allDaySlot="true" view="month" minTime="7"  maxTime="22" 
+                    <p:schedule showWeekends="true"   allDaySlot="true" view="month" minTime="7"  maxTime="22" 
                                 axisFormat="H:mm" timeFormat="H:mm{ - H:mm}" id="schedule" value="#{calendarioController.eventModel}"
                                 widgetVar="myschedule"   locale="br"  >  
                         <p:ajax  event="dateSelect" listener="#{calendarioController.onDateSelect}"  update="eventDetails,janela"   /> 
@@ -85,14 +85,14 @@
 
                             <h:outputLabel for="from" value="Inicio*:" rendered="#{calendarioController.reserva.grupoReserva==null}"/>  
 
-                            <p:calendar id="from" timeZone="GMT-2"  value="#{calendarioController.reserva.inicio}" 
+                            <p:calendar id="from"   value="#{calendarioController.reserva.inicio}" 
                                         minHour="07" timeOnly="false" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" 
                                         stepMinute="15" locale="br" required="true" rendered="#{calendarioController.reserva.grupoReserva==null}">  
                                 <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraInicio()}" update="to,ck"/>
                             </p:calendar>
 
                             <h:outputLabel for="to" value="Fim*:" rendered="#{calendarioController.reserva.grupoReserva==null}"/>  
-                            <p:calendar id="to" timeZone="GMT-2"   value="#{calendarioController.reserva.fim}"
+                            <p:calendar id="to"    value="#{calendarioController.reserva.fim}"
                                         minHour="#{calendarioController.reserva.inicio.hours}" timeOnly="false" 
                                         pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" 
                                         required="true" widgetVar="w" rendered="#{calendarioController.reserva.grupoReserva==null}">
@@ -143,7 +143,7 @@
                             <h:outputLabel  value="Termina:" rendered="#{calendarioController.reserva.iid == null}"/>
                             <h:panelGrid columns="2" rendered="#{calendarioController.reserva.iid == null}"> 
                                 <h:outputLabel  value="Data final" rendered="#{calendarioController.reserva.iid == null}" />
-                                <p:calendar id="finalDate2" timeZone="GMT-2"  value="#{calendarioController.dataFinalReservaSemanal}" 
+                                <p:calendar id="finalDate2"   value="#{calendarioController.dataFinalReservaSemanal}" 
                                             required="true" pattern="dd/MM/yyyy"   locale="br"  widgetVar="w" 
                                             rendered="#{calendarioController.reserva.iid == null}" 
                                             disabled="#{!calendarioController.reservaSemanal}" />
