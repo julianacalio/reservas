@@ -6,7 +6,7 @@
       xmlns:f="http://java.sun.com/jsf/core">
 
     <h:head>
-
+        <title>Equipamento</title>
     </h:head>
     <h:body>
 
@@ -15,9 +15,9 @@
         <h:form id="form1">
             <p:layout fullPage="true">  
 
-                <p:layoutUnit position="north" style="text-align:center" size="75"  resizable="true" closable="true" collapsible="true">  
+                <p:layoutUnit position="north" style="text-align:center" size="70"  resizable="true" closable="true" collapsible="true">  
                     <!--<h:graphicImage value="resources/images/cmcc.png" >  </h:graphicImage>-->
-                     <style type="text/css">
+                    <style type="text/css">
                         /*                                                                .ui-widget{font-size:90% !important;}*/
                         .ui-layout-unit-content{background-image:url('resources/images/cinza4.jpg');}
                     </style>
@@ -67,12 +67,12 @@
                                 <h:outputText value="#{item.descricao}" />
                             </p:column>  
 
-<!--                            <p:column headerText="numero">  
-                                <f:facet name="header">
-                                    <h:outputText value="id"/>
-                                </f:facet>
-                                <h:outputText value="#{item.id}"/>
-                            </p:column>  -->
+                            <!--                            <p:column headerText="numero">  
+                                                            <f:facet name="header">
+                                                                <h:outputText value="id"/>
+                                                            </f:facet>
+                                                            <h:outputText value="#{item.id}"/>
+                                                        </p:column>  -->
 
                             <p:column headerText="centro">  
                                 <f:facet name="header">
