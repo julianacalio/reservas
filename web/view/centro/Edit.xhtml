@@ -16,6 +16,10 @@
                 <p:layoutUnit style="text-align:center" position="north" size="75"  resizable="true" closable="true" collapsible="true" >  
 
                     <!--                    <h:graphicImage value="resources/images/cmcc.png" />-->
+                    <style type="text/css">
+                        /*                                                                .ui-widget{font-size:90% !important;}*/
+                        .ui-layout-unit-content{background-image:url('resources/images/cinza4.jpg');}
+                    </style>
                     <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 37px;font-weight: bold"/>
                 </p:layoutUnit>  
 
@@ -36,19 +40,20 @@
                 </p:layoutUnit>    
 
                 <p:layoutUnit position="center"> 
+                    <p:panel header="Editar Dados do Docente" style=" text-align: left">
+                        <h:panelGrid columns="2">
 
-                    <h:panelGrid columns="2">
+                            <h:outputLabel value="nome" for="nome" />
+                            <h:inputText id="nome" value="#{centroController.selected.nome}" title="nome" />
 
-                        <h:outputLabel value="nome" for="nome" />
-                        <h:inputText id="nome" value="#{centroController.selected.nome}" title="nome" />
+                        </h:panelGrid>
 
-                    </h:panelGrid>
-                    <p:separator/>
-                    <p:commandLink action="#{centroController.update}" value="Atualizar centro"/>
-                    <p:separator/>
+                        <p:separator/>
+                        <p:commandLink action="#{centroController.update}" value="Atualizar centro" update="msgs"/>
+                        <p:separator/>
 
-                    <p:commandLink action="#{centroController.prepareList}" value="Mostrar todos os centros" immediate="true"/>
-
+                        <p:commandLink action="#{centroController.prepareList}" value="Mostrar todos os centros" immediate="true"/>
+                    </p:panel>
                 </p:layoutUnit>
 
                 <p:layoutUnit position="south" style="text-align:center" size="80"  resizable="true" closable="true" collapsible="true">  
