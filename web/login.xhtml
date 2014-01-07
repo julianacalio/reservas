@@ -6,49 +6,54 @@
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
 
-        <title>Calendario de Reservas de Salas e Equipamentos</title>
+        <title>Login</title>
     </h:head>
     <h:body>
+        <h1></h1>
         <h:form id="form">  
-            <h:outputLink id="loginLink" value="javascript:void(0)" onclick="PF('dlg').show()" title="login" >   
-        <p:graphicImage value="resources/images/login.jpg" />  
-    </h:outputLink>  
-  
-    <p:growl id="growl" showDetail="true" life="3000" />  
-  
-    <p:dialog id="dialog" header="Login" widgetVar="dlg" resizable="false">  
-  
-        <h:panelGrid columns="2" cellpadding="5">  
-            <h:outputLabel for="username" value="Username:" />  
-            <p:inputText value="#{loginBean.username}"   
-                    id="username" required="true" label="username" />  
-              
-            <h:outputLabel for="password" value="Password:" />  
-            <h:inputSecret value="#{loginBean.password}"   
-                    id="password" required="true" label="password" />  
-              
-            <f:facet name="footer">  
-                <p:commandButton id="loginButton" value="Login" update="growl"   
-                    actionListener="#{loginBean.login}"   
-                    oncomplete="handleLoginRequest(xhr, status, args)"/>  
-            </f:facet>  
-        </h:panelGrid>  
-          
-    </p:dialog>  
-</h:form>  
-  
-<script type="text/javascript">  
-    function handleLoginRequest(xhr, status, args) {  
-        if(args.validationFailed || !args.loggedIn) {  
-            PF('dlg').jq.effect("shake", { times:5 }, 100);  
-        }   
-        else {  
-            PF('dlg').hide();  
-            $('#loginLink').fadeOut();  
-            index.html;
-        }  
-    }  
-</script>  
+
+            <h:outputLink id="loginLink" value="javascript:void(0)" onclick="dlg.show()" title="login">   
+                <p:graphicImage value="resources/images/login.jpg" />  
+            </h:outputLink>
+
+
+            <p:growl id="growl" showDetail="true" life="3000" />  
+
+            <p:dialog id="dialog" header="Login" widgetVar="dlg" resizable="false">  
+
+                <h:panelGrid columns="2" cellpadding="5">  
+                    <h:outputLabel for="username" value="Username:" />  
+                    <p:inputText value="#{loginBean.username}"   
+                                 id="username" required="true" label="username" />  
+
+                    <h:outputLabel for="password" value="Password:" />  
+                    <h:inputSecret value="#{loginBean.password}"   
+                                   id="password" required="true" label="password" />  
+
+                    <f:facet name="footer">  
+                        <p:commandButton id="loginButton" value="Login" update="growl"   
+                                         actionListener="#{loginBean.login}"   
+                                         oncomplete="handleLoginRequest(xhr, status, args)}" action="#{loginBean.page}" />  
+                    </f:facet>   
+                    
+                    
+                </h:panelGrid>  
+
+            </p:dialog>  
+            
+        </h:form>  
+
+        <script type="text/javascript">
+            function handleLoginRequest(xhr, status, args) {
+                if (args.validationFailed || !args.loggedIn) {
+                    dlg.jq.effect("shake", {times: 5}, 100);
+                }
+                else {
+                    dlg.hide();
+                    $('#loginLink').fadeOut();
+                }
+            }
+        </script>  
     </h:body>
 </html>
 
