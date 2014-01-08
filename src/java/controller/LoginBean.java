@@ -1,6 +1,9 @@
 package controller;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -46,7 +49,6 @@ public class LoginBean implements Serializable {
         } else {
             loggedIn = false;
             msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Invalid credentials");
-
         }
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -59,5 +61,17 @@ public class LoginBean implements Serializable {
         } else {
             return "";
         }
+    }
+
+    public void isLogado() {
+
+        if (!loggedIn) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml?faces-redirect=true");
+            } catch (IOException ex) {
+                Logger.getLogger(CalendarioController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
 }

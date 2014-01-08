@@ -8,13 +8,16 @@
 
         <title>Calendario</title>
     </h:head>
-    <h:body>
+    <h:body onload="#{loginBean.isLogado()}">
 
+        
+        
+        
         <h:outputStylesheet library="css" name="style.css"  />
-        <p:layout fullPage="true">  
+        <p:layout fullPage="true" >  
 
             <p:layoutUnit position="north" style="text-align:center" size="60"   resizable="true" closable="true" collapsible="true"  >  
-                <h:form id ="f2">
+                <h:form id ="f2" >
 
                     <!--<h:graphicImage value="resources/images/cmcc.png" />-->
                     <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 37px;font-weight: bold"/>
@@ -87,14 +90,14 @@
 
                             <p:calendar id="from"   value="#{calendarioController.reserva.inicio}" 
                                         minHour="07" timeOnly="false" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" 
-                                        stepMinute="15" locale="br" required="true" rendered="#{calendarioController.reserva.grupoReserva==null}">  
+                                         locale="br" required="true" rendered="#{calendarioController.reserva.grupoReserva==null}">  
                                 <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraInicio()}" update="to,ck"/>
                             </p:calendar>
 
                             <h:outputLabel for="to" value="Fim*:" rendered="#{calendarioController.reserva.grupoReserva==null}"/>  
                             <p:calendar id="to"    value="#{calendarioController.reserva.fim}"
                                         minHour="#{calendarioController.reserva.inicio.hours}" timeOnly="false" 
-                                        pattern="dd/MM/yyyy H:mm" showButtonPanel="true" stepMinute="15"  locale="br" 
+                                        pattern="dd/MM/yyyy H:mm" showButtonPanel="true"   locale="br" 
                                         required="true" widgetVar="w" rendered="#{calendarioController.reserva.grupoReserva==null}">
                                 <p:ajax event="valueChange"  update="ck"/>
                             </p:calendar>

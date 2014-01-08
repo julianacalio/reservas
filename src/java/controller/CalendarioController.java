@@ -1,6 +1,7 @@
 package controller;
 
 import facade.RecursoFacade;
+import java.io.IOException;
 
 import model.Recurso;
 
@@ -12,10 +13,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.NavigationHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -51,8 +55,7 @@ import util.SalaDataModel;
 public class CalendarioController implements Serializable {
 
     boolean isRepetida;
-    
-    
+
     private List<Equipamento> selectedEquipamentos;
 
     private Recurso current, novaescolha, novaSala, novoEquipamento;
@@ -81,7 +84,6 @@ public class CalendarioController implements Serializable {
     private boolean reservaSemanal;
     private List<Reserva> reservasImpossiveis = new ArrayList<Reserva>();
     private Date dataFinalReservaSemanal;
-   
 
     public CalendarioController() {
         eventModel = null;
@@ -89,9 +91,11 @@ public class CalendarioController implements Serializable {
     }
 
     public RecursoDataModel getRecursoDataModel() {
-
-        return recursoDataModel = new RecursoDataModel(reserva.getRecursos());
-
+        if (reserva != null && reserva.getRecursos() != null) {
+            return recursoDataModel = new RecursoDataModel(reserva.getRecursos());
+        } else {
+            return recursoDataModel = new RecursoDataModel();
+        }
     }
 
     public void setRecursoDataModel(RecursoDataModel recursoDataModel) {
@@ -366,8 +370,6 @@ public class CalendarioController implements Serializable {
         return reservasImpos;
     }
 
-
-    
     public Reserva adicionaEquipamentosNaReserva(Reserva reserva, List<Equipamento> equipamentos) {
         for (Equipamento equipamento : equipamentos) {
             reserva.addRecurso(equipamento);
@@ -440,7 +442,7 @@ public class CalendarioController implements Serializable {
 
         if (isEquipamentoSelecionado()) {
             reserva = adicionaEquipamentosNaReserva(reserva, selectedEquipamentos);
-            
+
         }
 
         if (reserva.getGrupoReserva() != null) {//se pertence a algum grupo
@@ -711,8 +713,6 @@ public class CalendarioController implements Serializable {
         return recursoFacade.find(id);
     }
 
-   
-
     public List<Equipamento> getEquipamentosLivres(Date inicio, Date fim) {
 
         List<Equipamento> equipamentosLivre = new ArrayList<Equipamento>();
@@ -745,7 +745,6 @@ public class CalendarioController implements Serializable {
         return recursosOcupados;
     }
 
-
     /**
      * Retorna os recursos que foram selecionados pela nova reserva e ja estao reservados no horario da nova reserva no banco de dados.
      *
@@ -759,7 +758,6 @@ public class CalendarioController implements Serializable {
         return recursosOcupados;
     }
 
-    
     private List<Recurso> getRecursos(List<Reserva> reservasOcupadas) {
         List<Recurso> recursos = new ArrayList<Recurso>();
         for (Reserva reservaOcupada : reservasOcupadas) {
@@ -768,7 +766,6 @@ public class CalendarioController implements Serializable {
         return recursos;
     }
 
-  
     public List<Date> getDatasSelecionadas(List<Integer> diasDaSemana, Date dataSelecionada) {
 
         Calendar calendario = Calendar.getInstance();
@@ -799,7 +796,6 @@ public class CalendarioController implements Serializable {
     private void recreateIsReservaSemanal() {
         reservaSemanal = false;
     }
-
 
     private void recreateDataFinal() {
         dataFinalReservaSemanal = null;
