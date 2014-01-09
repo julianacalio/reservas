@@ -8,6 +8,7 @@ import model.Recurso;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -86,6 +87,8 @@ public class CalendarioController implements Serializable {
     private Date dataFinalReservaSemanal;
 
     public CalendarioController() {
+        org.primefaces.component.calendar.Calendar c = new org.primefaces.component.calendar.Calendar();
+        Collection<String> eventos = c.getEventNames();
         eventModel = null;
         pessoas = null;
     }
@@ -428,7 +431,7 @@ public class CalendarioController implements Serializable {
 
     public void updateReserva(ActionEvent actionEvent) {
 
-        List<Recurso> recursosReservados = getRecursosOcupados(reserva.getInicio(), reserva.getFim());
+        List<Recurso> recursosReservados = getRecursosOcupadosDaReserva(reserva);
         List<Recurso> recursosPreviamenteSelecionados = reservaFacade.find(reserva.getIid()).getRecursos();
         recursosReservados.removeAll(recursosPreviamenteSelecionados);
         if (!recursosReservados.isEmpty()) {

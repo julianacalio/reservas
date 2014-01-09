@@ -23,7 +23,7 @@
                     <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 37px;font-weight: bold"/>
                 </h:form>
                 <style type="text/css">
-                    .ui-widget{font-size:97% !important;}
+                    /*.ui-widget{font-size:97% !important;}*/
                     .ui-layout-unit-content{background-image:url('resources/images/cinza4.jpg');}
                 </style>
             </p:layoutUnit> 
@@ -68,7 +68,7 @@
                     <p:growl id="messages" showDetail="true" />  
 
                     <p:schedule showWeekends="true"   allDaySlot="true" view="month" minTime="7"  maxTime="22" 
-                                axisFormat="H:mm" timeFormat="H:mm{ - H:mm}" id="schedule" value="#{calendarioController.eventModel}"
+                                axisFormat="H:mm" timeFormat="H:mm{ - H:mm}" id="schedule" value="#{calendarioController.eventModel}" 
                                 widgetVar="myschedule"   locale="br"  >  
                         <p:ajax  event="dateSelect" listener="#{calendarioController.onDateSelect}"  update="eventDetails,janela"   /> 
                         <p:ajax event="eventSelect" listener="#{calendarioController.onReservaSelect}" update="eventDetails,janela"  />  
@@ -90,16 +90,16 @@
 
                             <p:calendar id="from"   value="#{calendarioController.reserva.inicio}" 
                                         minHour="07" timeOnly="false" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" 
-                                         locale="br" required="true" rendered="#{calendarioController.reserva.grupoReserva==null}">  
-                                <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraInicio()}" update="to,ck"/>
+                                        locale="br"  required="true" rendered="#{calendarioController.reserva.grupoReserva==null}">  
+                                <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraInicio()}" update="to,ck"  />
                             </p:calendar>
 
                             <h:outputLabel for="to" value="Fim*:" rendered="#{calendarioController.reserva.grupoReserva==null}"/>  
-                            <p:calendar id="to"    value="#{calendarioController.reserva.fim}"
+                            <p:calendar id="to"  stepMinute="5"  value="#{calendarioController.reserva.fim}"
                                         minHour="#{calendarioController.reserva.inicio.hours}" timeOnly="false" 
                                         pattern="dd/MM/yyyy H:mm" showButtonPanel="true"   locale="br" 
                                         required="true" widgetVar="w" rendered="#{calendarioController.reserva.grupoReserva==null}">
-                                <p:ajax event="valueChange"  update="ck"/>
+                                <p:ajax event="mouseout"  update="ck"/>
                             </p:calendar>
 
                             <h:outputLabel for="title" value="Motivo:" />  

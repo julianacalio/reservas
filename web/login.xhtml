@@ -12,10 +12,15 @@
         <h1></h1>
         <h:form id="form">  
 
-            <h:outputLink id="loginLink" value="javascript:void(0)" onclick="dlg.show()" title="login">   
-                <p:graphicImage value="resources/images/login.jpg" />  
-            </h:outputLink>
+                        <h:outputLink id="loginLink" value="javascript:void(0)" onclick="dlg.show()" title="login">   
+                            <p:graphicImage value="resources/images/login.jpg" />  
+                        </h:outputLink>
 
+          
+
+
+
+            <h1>EM MANUTENCAO FAVOR NAO USAR POR ENQUANTO</h1>
 
             <p:growl id="growl" showDetail="true" life="3000" />  
 
@@ -35,12 +40,12 @@
                                          actionListener="#{loginBean.login}"   
                                          oncomplete="handleLoginRequest(xhr, status, args)}" action="#{loginBean.page}" />  
                     </f:facet>   
-                    
-                    
+
+
                 </h:panelGrid>  
 
             </p:dialog>  
-            
+
         </h:form>  
 
         <script type="text/javascript">
