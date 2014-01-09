@@ -52,14 +52,9 @@
                             <f:facet name="header">  
                                 Lista de Docentes  
                             </f:facet>   >
-<!--                            <p:column >
-                                <f:facet name="header">
-                                    <h:outputText value="id"/>
-                                </f:facet>
-                                <h:outputText value="#{item.id}"/>
-                            </p:column>-->
 
-                            <p:column headerText="nome" sortBy="#{item.nome}" style="text-align: left" >  
+
+                            <p:column headerText="nome" sortBy="#{item.nome}" style="text-align: left" filterBy="#{item.nome}" >  
                                 <f:facet name="header">
                                     <h:outputText value="Nome"/>
                                 </f:facet>

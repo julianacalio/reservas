@@ -4,6 +4,7 @@ import facade.DocenteFacade;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
@@ -41,7 +42,7 @@ public class DocenteController implements Serializable {
     public DocenteDataModel getDocenteDataModel() {
         if (docenteDataModel == null) {
             List<Docente> docentes = docenteFacade.findAll();
-            docenteDataModel = new DocenteDataModel(docentes);
+            docenteDataModel = new DocenteDataModel (docentes);
         }
         return docenteDataModel;
     }
