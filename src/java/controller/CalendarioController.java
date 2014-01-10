@@ -26,6 +26,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 import model.Equipamento;
 import model.GrupoReserva;
@@ -636,11 +637,13 @@ public class CalendarioController implements Serializable {
         context.execute("wdgListEquipamento.unselectAllRows()");
     }
 
-    public void onValueChangeHoraInicio() {
-        Calendar fim = Calendar.getInstance();
-        fim.setTime(reserva.getInicio());
-        fim.add(Calendar.HOUR, 2);
-        reserva.setFim(fim.getTime());
+    public void onValueChangeHoraInicio(ValueChangeEvent event) {
+        if (reserva != null && null != reserva.getInicio()) {
+            Calendar fim = Calendar.getInstance();
+            fim.setTime(reserva.getInicio());
+            fim.add(Calendar.HOUR, 2);
+            reserva.setFim(fim.getTime());
+        }
     }
 
     public void onValueChangeHoraFim() {
