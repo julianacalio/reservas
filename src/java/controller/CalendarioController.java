@@ -564,9 +564,10 @@ public class CalendarioController implements Serializable {
     }
 
     public void onDateSelect(SelectEvent selectEvent) {
-
+        recreateReserva();
         if (!isValidDate((Date) selectEvent.getObject())) {
             showDialogDataInvalida();
+
             return;
         }
 

@@ -20,10 +20,7 @@ body {
 }
 
 
-#abc{
-    color: green;
-    text-align: center;
-}
+
 
 #panelCentro{
     alignment-adjust: central;
@@ -43,4 +40,6 @@ body {
     background-image: url(images/book2.png);
 }
 
- 
+  .ui-widget {  
+               font-size: 13px !important;  
+           }  

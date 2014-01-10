@@ -60,15 +60,13 @@ public class DocenteController implements Serializable {
 
     public String prepareEdit() {
         current = (Docente) docenteDataModel.getRowData();
-        //docente = (Docente) getItems().getRowData();
-        // selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        
         return "Edit";
     }
 
     public String destroy() {
         current = (Docente) docenteDataModel.getRowData();
-        // docente = (Docente) getItems().getRowData();
-        //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        
         performDestroy();
         recreatePagination();
         recreateModel();
