@@ -76,8 +76,8 @@
 
                     <p:dialog id="janela" widgetVar="detalhesReserva" header="Detalhes da Reserva: #{calendarioController.current.instance} 
                               #{calendarioController.current.toString()}"   >
-                        <h:panelGrid id="eventDetails" columns="2"> 
-
+                        <h:panelGrid id="eventDetails" columns="2" > 
+                     
                             <h:outputLabel value="Reservante*: " for="ac_reservante"/>  
                             <p:autoComplete value="#{calendarioController.reserva.reservante}" id="ac_reservante" 
                                             completeMethod="#{calendarioController.completeReservante}"  
@@ -97,9 +97,9 @@
                             <h:outputLabel for="to" value="Fim*:" rendered="#{calendarioController.reserva.grupoReserva==null}"/>  
                             <p:calendar id="to"  stepMinute="5"  value="#{calendarioController.reserva.fim}"
                                         minHour="#{calendarioController.reserva.inicio.hours}" timeOnly="false" 
-                                        pattern="dd/MM/yyyy H:mm" showButtonPanel="true"   locale="br" 
+                                        pattern="dd/MM/yyyy H:mm" showButtonPanel="false"   locale="br" 
                                         required="true" widgetVar="w" rendered="#{calendarioController.reserva.grupoReserva==null}">
-                                <p:ajax event="mouseout" update="ck"/>
+                                <p:ajax event="valueChange" listener="#{calendarioController.onValueChangeHoraInicio}" update="ck"/>
                             </p:calendar>
 
                             <h:outputLabel for="title" value="Motivo:" />  
@@ -245,9 +245,7 @@
                     </p:dialog>
                     
                     
-                    <p:dialog  widgetVar="aaa" header="aaabbb" >
-                       
-                    </p:dialog>
+                    
                 </h:form>  
             </p:layoutUnit>  
         </p:layout>  

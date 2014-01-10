@@ -90,6 +90,8 @@ public class CalendarioController implements Serializable {
     public CalendarioController() {
         org.primefaces.component.calendar.Calendar c = new org.primefaces.component.calendar.Calendar();
         Collection<String> eventos = c.getEventNames();
+                org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu s = new org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu();
+        Collection<String> eventos2 = s.getEventNames();
         eventModel = null;
         pessoas = null;
     }
@@ -637,7 +639,7 @@ public class CalendarioController implements Serializable {
         context.execute("wdgListEquipamento.unselectAllRows()");
     }
 
-    public void onValueChangeHoraInicio(ValueChangeEvent event) {
+    public void onValueChangeHoraInicio() {
         if (reserva != null && null != reserva.getInicio()) {
             Calendar fim = Calendar.getInstance();
             fim.setTime(reserva.getInicio());
@@ -647,6 +649,7 @@ public class CalendarioController implements Serializable {
     }
 
     public void onValueChangeHoraFim() {
+        int a = 2;
     }
 
     public void onReservaMove(ScheduleEntryMoveEvent event) {
