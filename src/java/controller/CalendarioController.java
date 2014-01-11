@@ -86,12 +86,10 @@ public class CalendarioController implements Serializable {
     private boolean reservaSemanal;
     private List<Reserva> reservasImpossiveis = new ArrayList<Reserva>();
     private Date dataFinalReservaSemanal;
+    private boolean isShowAll;
 
     public CalendarioController() {
-        org.primefaces.component.calendar.Calendar c = new org.primefaces.component.calendar.Calendar();
-        Collection<String> eventos = c.getEventNames();
-                org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu s = new org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu();
-        Collection<String> eventos2 = s.getEventNames();
+
         eventModel = null;
         pessoas = null;
     }
@@ -270,18 +268,32 @@ public class CalendarioController implements Serializable {
     }
 
     public ScheduleModel getEventModel() {
-        if (eventModel == null) {
-            if (current == null) {
-                return null;
-            }
 
-            if (pessoas == null) {
-                pessoas = pessoaFacade.findAll();
-            }
-
+        if (isShowAll) {
             eventModel = new DefaultScheduleModel();
-            for (Reserva res : current.getReservas()) {
-                eventModel.addEvent(res);
+            List<Recurso> r = new ArrayList<Recurso>();
+            r.addAll(salaFacade.findAll());
+            for (Recurso recurso : r) {
+                for (Reserva res : recurso.getReservas()) {
+                    eventModel.addEvent(res);
+                }
+            }
+            
+            isShowAll = false;
+        } else {
+            if (eventModel == null) {
+                if (current == null) {
+                    return null;
+                }
+
+                if (pessoas == null) {
+                    pessoas = pessoaFacade.findAll();
+                }
+
+                eventModel = new DefaultScheduleModel();
+                for (Reserva res : current.getReservas()) {
+                    eventModel.addEvent(res);
+                }
             }
         }
 
@@ -501,6 +513,15 @@ public class CalendarioController implements Serializable {
 
     }
 
+    public void selecionaVisualizacaoTodasSalas() {
+        isShowAll = true;
+        current = null;
+        novaSala = null;
+        novoEquipamento = null;
+        limpaSelecaoTabelaEquipamento();
+        limpaSelecaoTabelaSala();
+    }
+
     public void removeReservaIndividual() {
         eventModel.deleteEvent(reserva);
         current.remReserva(reserva);
@@ -545,6 +566,12 @@ public class CalendarioController implements Serializable {
     }
 
     public void onReservaSelect(SelectEvent selectEvent) {
+        recreateReserva();
+        if (!selecionouRecurso()) {
+            showDialogFaltaRecurso();
+            return;
+        }
+
         reserva = (Reserva) selectEvent.getObject();
 
         if (reserva.getGrupoReserva() != null) {
