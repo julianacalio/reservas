@@ -639,7 +639,7 @@ public class CalendarioController implements Serializable {
         context.execute("wdgListEquipamento.unselectAllRows()");
     }
 
-    public void onValueChangeHoraInicio() {
+    public void onValueChangeHoraInicio(SelectEvent event) {
         if (reserva != null && null != reserva.getInicio()) {
             Calendar fim = Calendar.getInstance();
             fim.setTime(reserva.getInicio());
