@@ -16,8 +16,7 @@
 
             <p:layoutUnit position="north" style="text-align:center" size="60"   resizable="true" closable="true" collapsible="true"  >  
                 <h:form id ="f2" >
-                    <p:commandButton id="mostrarSalas"  value="Todas" actionListener="#{calendarioController.selecionaVisualizacaoTodasSalas()}" 
-                                     update=":form:schedule"/>
+
 
 
                     <!--<h:graphicImage value="resources/images/cmcc.png" />-->
@@ -42,9 +41,13 @@
                             #{sala.numero} 
                         </p:column>  
                     </p:dataTable>  
+                    <br/>
+                    <p:commandButton id="mostrarSalas"  value="Todas as Salas" actionListener="#{calendarioController.selecionaVisualizacaoTodasSalas()}" 
+                                     update=":form:schedule"/>
                 </h:form>
-
-
+                <br/>
+             
+                <br/>
                 <h:form id="form2">
                     <p:dataTable   id="dtEquipamento" var="equipamento" value="#{calendarioController.equipamentoDataModel}" widgetVar="wdgListEquipamento" 
                                    selection="#{calendarioController.novoEquipamento}" selectionMode="single"  >  
