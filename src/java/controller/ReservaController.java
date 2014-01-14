@@ -3,8 +3,9 @@ package controller;
 import facade.ReservaFacade;
 import model.Reserva;
 
-
 import java.io.Serializable;
+import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -18,12 +19,14 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import model.Centro;
 import model.Sala;
+import util.ReservaDataModel;
 
 @Named("reservaController")
 @SessionScoped
 public class ReservaController implements Serializable {
 
     private Reserva current;
+    private ReservaDataModel reservaDataModel;
     private DataModel items = null;
     @EJB
     private facade.ReservaFacade ejbFacade;
@@ -31,6 +34,24 @@ public class ReservaController implements Serializable {
     private int selectedItemIndex;
 
     public ReservaController() {
+    }
+
+    public ReservaDataModel getReservaDataModel() {
+        if (reservaDataModel == null) {
+            List<Reserva> reservas = ejbFacade.findAll();
+            for (Iterator<Reserva> res = reservas.iterator(); res.hasNext();) {
+                Reserva r = res.next();
+                if (r.getEmprestimo() == null) {
+                    res.remove();
+                }
+            }
+            reservaDataModel = new ReservaDataModel(reservas);
+        }
+        return reservaDataModel;
+    }
+
+    public void setReservaDataModel(ReservaDataModel reservaDataModel) {
+        this.reservaDataModel = reservaDataModel;
     }
 
     public Reserva getSelected() {
@@ -230,9 +251,5 @@ public class ReservaController implements Serializable {
             }
         }
     }
-    
-    
-    
-     
-    
+
 }

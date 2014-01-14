@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+
+        <title>Gerenciar</title>
+
+    </h:head>
+    <h:body onload="#{loginBean.isLogado()}">
+        <h:outputStylesheet library="css" name="style.css"  />
+
+        <br />
+
+        <br/>
+
+        <h:form>
+
+            <p:layout fullPage="true">  
+
+                <p:layoutUnit position="north" style="text-align:center" size="60"   resizable="true" closable="true" collapsible="true"  >  
+                    <h:form id ="f2" >
+
+
+
+                        <!--<h:graphicImage value="resources/images/cmcc.png" />-->
+                        <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 100px;font-weight: bold"/>
+                    </h:form>
+                    <style type="text/css">
+
+                        .ui-layout-unit-content{background-image:url('resources/images/cinza4.jpg');}
+                    </style>
+                </p:layoutUnit> 
+
+                <p:layoutUnit position="center" >  
+                    <p:dataTable  id="dtEmprestimo" var="reserva" value="#{reservaController.reservaDataModel}" selectionMode="single"  paginator="true" rows="10"  
+                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                  rowsPerPageTemplate="5,10,15" style="text-align: center" selection="#{calendarioController.reserva}">
+
+                        <p:column headerText="Reservante"  >  
+                            #{reserva.reservante.nome} 
+                        </p:column>  
+
+                        <p:column headerText="Recursos"  >  
+                            #{reserva.recursos} 
+                        </p:column> 
+
+                        <p:column headerText="Data Retirada">  
+                            <p:calendar id="retirada" value="#{reserva.emprestimo.retirada}" 
+                                        minHour="07" timeOnly="false" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" 
+                                        locale="br"  required="true"  /> 
+                                     
+                        </p:column> 
+
+                        <p:column headerText="Pessoa Retirou">  
+                            #{reserva.emprestimo.responsavelRetirada} 
+                        </p:column> 
+
+                        <p:column headerText="Data Devolução">  
+                            <p:calendar id="devolucao" value="#{reserva.emprestimo.devolucao}" 
+                                        minHour="07" timeOnly="false" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" 
+                                        locale="br"  required="true"   /> 
+                        </p:column> 
+
+                        <p:column headerText="Pessoa Devolveu">  
+                            #{reserva.emprestimo.responsavelDevolucao} 
+                        </p:column> 
+
+                        <p:column headerText="Pessoa Recebeu">  
+                            #{reserva.emprestimo.responsavelRecebimento} 
+                        </p:column>
+
+                    </p:dataTable>  
+                </p:layoutUnit>  
+
+            </p:layout>  
+
+        </h:form>
+        
+        <script type="text/javascript">
+            PrimeFaces.locales['br'] = {
+                closeText: 'Fechar',
+                prevText: 'Anterior',
+                nextText: 'Próximo',
+                currentText: 'Hoje',
+                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+                dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+                weekHeader: 'Semana',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Só Horas',
+                timeText: 'Tempo',
+                hourText: 'Hora',
+                minuteText: 'Minuto',
+                secondText: 'Segundo',
+                ampm: false,
+                month: 'Mês',
+                week: 'Semana',
+                day: 'Dia',
+                allDayText: 'Hora'
+            };
+        </script>
+    </h:body>
+</html>

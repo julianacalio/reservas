@@ -4,10 +4,6 @@
  */
 package util;
 
-
-  
- 
-
   
 import java.util.List;
 import javax.faces.model.ListDataModel;

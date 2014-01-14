@@ -8,7 +8,6 @@ import model.Recurso;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -20,14 +19,13 @@ import javax.ejb.EJB;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.NavigationHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
+import model.Emprestimo;
 import model.Equipamento;
 import model.GrupoReserva;
 import model.Pessoa;
@@ -196,6 +194,21 @@ public class CalendarioController implements Serializable {
     public void setCurrent(Recurso current) {
         this.current = current;
     }
+    
+    public void criarEmprestimo(){
+       
+        reserva.setEmprestimo(new Emprestimo());
+        reservaFacade.merge(reserva);
+    }
+    
+    
+   public void verEmprestimo(){
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("Emprestimo.xhtml?faces-redirect=true");
+        } catch (IOException ex) {
+            Logger.getLogger(CalendarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+   }
 
     public void removeRecursoReserva() {
         Recurso rec = (Recurso) recursoDataModel.getRowData();
