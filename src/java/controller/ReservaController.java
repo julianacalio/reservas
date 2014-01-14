@@ -37,6 +37,7 @@ public class ReservaController implements Serializable {
     }
 
     public ReservaDataModel getReservaDataModel() {
+        /////
         if (reservaDataModel == null) {
             List<Reserva> reservas = ejbFacade.findAll();
             for (Iterator<Reserva> res = reservas.iterator(); res.hasNext();) {
