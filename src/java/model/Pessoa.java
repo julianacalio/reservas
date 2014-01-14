@@ -24,6 +24,8 @@ import javax.persistence.OneToMany;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "PESSOA_DETAILS_TYPE",discriminatorType = DiscriminatorType.STRING)
 public class Pessoa implements Serializable {
+    @OneToMany(mappedBy = "devolveu")
+    private List<ReservaRecurso> reservaRecursos;
 
     @OneToMany(mappedBy = "reservante")
     private List<Reserva> reservas;

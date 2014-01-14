@@ -5,7 +5,9 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
@@ -17,6 +19,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -27,6 +30,20 @@ import javax.persistence.ManyToOne;
 @DiscriminatorColumn(name = "RECURSO_DETAILS_TYPE", discriminatorType = DiscriminatorType.STRING)
 public class Recurso implements Serializable {
 
+    @OneToMany(mappedBy = "recurso", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private List<ReservaRecurso> reservaRecursos = new ArrayList<ReservaRecurso>();
+
+    public List<ReservaRecurso> getReservaRecursos() {
+        return reservaRecursos;
+    }
+
+    public void setReservaRecursos(List<ReservaRecurso> reservaRecursos) {
+        this.reservaRecursos = reservaRecursos;
+    }
+
+    
+    
+    
 //    @ManyToOne
 //    private Recurso reserva;
 //
@@ -38,26 +55,33 @@ public class Recurso implements Serializable {
 //        this.reserva = reserva;
 //    }
 //    @OneToMany(mappedBy = "recurso", fetch = FetchType.EAGER)
-    @ManyToMany(mappedBy = "recursos", fetch = FetchType.EAGER)
-    protected List<Reserva> reservas;
-
+//    @ManyToMany(mappedBy = "recursos", fetch = FetchType.EAGER)
+//    protected List<Reserva> reservas;
+//
     public List<Reserva> getReservas() {
+        List<Reserva> reservas = new ArrayList<Reserva>();
+        for (ReservaRecurso reservaRecurso1 : reservaRecursos) {
+            reservas.add(reservaRecurso1.getReserva());
+        }
         return reservas;
     }
-
-    public void setReservas(List<Reserva> reservas) {
-        this.reservas = reservas;
-    }
-
-    public void addReserva(Reserva reserva) {
-        reservas.add(reserva);
-        //reserva.setRecurso(this);
-        reserva.addRecurso(this);
-    }
+//
+//    public void setReservas(List<Reserva> reservas) {
+//        this.reservas = reservas;
+//    }
+//
+//    public void addReserva(Reserva reserva) {
+//        reservas.add(reserva);
+//        //reserva.setRecurso(this);
+//        reserva.addRecurso(this);
+//    }
+//
 
     public void remReserva(Reserva reserva) {
-        reservas.remove(reserva);
+        // reservas.remove(reserva);
+        getReservas().remove(reserva);
     }
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -80,11 +104,10 @@ public class Recurso implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
-    public String getInstance(){
+
+    public String getInstance() {
         return this.getClass().toString().replace("class model.", "");
     }
-   
 
     @Override
     public int hashCode() {

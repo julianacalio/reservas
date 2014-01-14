@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import org.primefaces.model.ScheduleEvent;
@@ -51,25 +53,56 @@ public class Reserva implements Serializable, ScheduleEvent {
     private Centro centro;
     String motivo;
 
+    @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private List<ReservaRecurso> reservaRecursos = new ArrayList<ReservaRecurso>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    protected List<Recurso> recursos = new ArrayList<Recurso>();
+    public List<ReservaRecurso> getReservaRecursos() {
+        return reservaRecursos;
+    }
 
+    public void setReservaRecursos(List<ReservaRecurso> reservaRecursos) {
+        this.reservaRecursos = reservaRecursos;
+    }
+    
+    
+    
+
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    protected List<Recurso> recursos = new ArrayList<Recurso>();
     public List<Recurso> getRecursos() {
+        List<Recurso> recursos = new ArrayList<Recurso>();
+        for (ReservaRecurso reservaRecurso1 : reservaRecursos) {
+            recursos.add(reservaRecurso1.getRecurso());
+        }
         return recursos;
     }
 
     public void addRecurso(Recurso recurso) {
-        this.recursos.add(recurso);
+        ReservaRecurso reservaRecurso = new ReservaRecurso();
+        reservaRecurso.setReserva(this);
+        reservaRecurso.setRecurso(recurso);
+        reservaRecursos.add(reservaRecurso);
+        // this.recursos.add(recurso);
     }
 
     public void setRecursos(List<Recurso> recursos) {
-        this.recursos.clear();
-        this.recursos.addAll(recursos);
+       
+//        this.recursos.clear();
+//        this.recursos.addAll(recursos);
+        
+        this.getRecursos().clear();
+        addAll(recursos);
     }
 
     public void addAll(List<Recurso> recursos) {
-        this.recursos.addAll(recursos);
+
+        for (Recurso recurso : recursos) {
+            ReservaRecurso resRec = new ReservaRecurso();
+            resRec.setReserva(this);
+            resRec.setRecurso(recurso);
+            reservaRecursos.add(resRec);
+        }
+      //  this.recursos.addAll(recursos);
     }
 
     public String getMotivo() {
@@ -99,7 +132,8 @@ public class Reserva implements Serializable, ScheduleEvent {
     }
 
     public void limparRecursos() {
-        this.recursos.clear();
+        //this.recursos.clear();
+        this.getRecursos().clear();
     }
 
     public Pessoa getReservante() {
@@ -157,7 +191,8 @@ public class Reserva implements Serializable, ScheduleEvent {
         res.inicio = this.inicio;
         res.fim = this.fim;
         res.realizacao = this.realizacao;
-        res.recursos = this.recursos;
+        //    res.recursos = this.recursos;
+        res.reservaRecursos = this.reservaRecursos;
         res.reservante = this.reservante;
         res.motivo = this.motivo;
         return res;
@@ -226,10 +261,10 @@ public class Reserva implements Serializable, ScheduleEvent {
 
     @Override
     public String getTitle() {
-        if (recursos != null && !recursos.isEmpty()) {
+        if (getRecursos() != null && !getRecursos().isEmpty()) {
             String title = " " + reservante.getNome() + (motivo == null || motivo.isEmpty() ? "\n :: nao especificado" : " \n :: " + motivo);
 
-            for (Recurso recursoAssociado : recursos) {
+            for (Recurso recursoAssociado : getRecursos()) {
                 title += "\n" + recursoAssociado.toString();
             }
 
@@ -262,7 +297,5 @@ public class Reserva implements Serializable, ScheduleEvent {
     public boolean isEditable() {
         return true;
     }
-
-   
 
 }

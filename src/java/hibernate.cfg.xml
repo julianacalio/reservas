@@ -48,5 +48,6 @@
         <mapping class="model.Recurso"/>
         <mapping class="model.Reserva"/>
         <mapping class="model.TA"/>
+        <mapping class="model.ReservaRecurso"/>
     </session-factory>
 </hibernate-configuration>
