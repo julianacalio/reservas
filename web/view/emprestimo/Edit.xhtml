@@ -55,9 +55,8 @@
                                         locale="br" >  
                             </p:calendar>
 
-                            <h:outputLabel value="Pessoa Devolveu" for="pessoaDevolveu" />
-                            <h:inputText id="pessoaDevolveu" value="#{reservaController.current.emprestimo.responsavelDevolucao}" title="nome" />
-                            <h:outputLabel value="Data Retirada"  />
+                           
+                            <h:outputLabel value="Data Devolução"  />
                             <p:calendar id="dataDevolvida" value="#{reservaController.current.emprestimo.devolucao}" 
                                         minHour="07" timeOnly="false" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" 
                                         locale="br"     >  
