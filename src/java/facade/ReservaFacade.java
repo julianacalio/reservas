@@ -13,6 +13,7 @@ import model.Reserva;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -32,14 +33,12 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
     }
 
     /**
-     * Busca todas as reservas que possuem a mesma data de início, fim e
-     * realização.
+     * Busca todas as reservas que possuem a mesma data de início, fim e realização.
      *
      * @param inicio Data inicio da reserva
      * @param fim Data do fim da reserva
      * @param realizacao Data de realização da reserva
-     * @return Lista contendo todas as reservas que obedecem ao critério
-     * especificado
+     * @return Lista contendo todas as reservas que obedecem ao critério especificado
      */
     public List<Reserva> findAll(Date inicio, Date fim, Date realizacao) {
         Session session = getSessionFactory().openSession();
@@ -55,6 +54,7 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
 
     /**
      * Retorna todas as reservas que pertencem aquele grupo de reservas
+     *
      * @param grupoReserva Objeto grupo de reservas com um id diferente de null
      * @return reservas que pertencem aquele grupo
      */
@@ -70,13 +70,11 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
     }
 
     /**
-     * Busca todas as reservas que estiverem entre a data de início e fim
-     * especificada
+     * Busca todas as reservas que estiverem entre a data de início e fim especificada
      *
      * @param inicio Data de Início
      * @param fim Data de Fim
-     * @return Lista contendo todas as reservas que obedecem ao critério
-     * especificado
+     * @return Lista contendo todas as reservas que obedecem ao critério especificado
      */
     public List<Reserva> findAllBetween(Date inicio, Date fim) {
         Session session = getSessionFactory().openSession();
@@ -97,17 +95,26 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
         return results1;
     }
 
+    public List<Reserva> findAllOrder() {
+        Session session = getSessionFactory().openSession();
+        Criteria crit = session.createCriteria(Reserva.class);
+        crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
+        crit.createAlias("this.emprestimo", "e");
+        crit.addOrder(Order.desc("e.retirada"));
+        //crit.setMaxResults(50);
+        List results = crit.list();
+        session.close();
+        return results;
+    }
+
     /**
-     * Busca as reservas que comecem ou terminem dentro de uma data de
-     * início e uma data de fim sem considerar as reservas feitas pelo
-     * ID passado.
+     * Busca as reservas que comecem ou terminem dentro de uma data de início e uma data de fim sem considerar as reservas feitas pelo ID passado.
      *
-     * 
+     *
      * @param inicio Data de início
      * @param fim Data de fim
      * @param desconsiderar_ID_Reserva da reserva que nao será considerada na busca
-     * @return Lista contendo todas as reservas que obedecem ao critério
-     * especificado
+     * @return Lista contendo todas as reservas que obedecem ao critério especificado
      */
 //    public List<Reserva> findBetween(Date inicio, Date fim, Long desconsiderar_ID_Reserva) {
 //        Session session = getSessionFactory().openSession();
@@ -128,5 +135,4 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
 //        session.close();
 //        return results1;
 //    }
-
 }

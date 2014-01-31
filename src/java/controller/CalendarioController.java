@@ -31,6 +31,7 @@ import model.GrupoReserva;
 import model.Pessoa;
 import model.Reserva;
 import model.Sala;
+import model.TA;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
@@ -74,6 +75,7 @@ public class CalendarioController implements Serializable {
 
     private ScheduleModel eventModel;
     private Reserva reserva = new Reserva();
+    private Emprestimo emprestimo = new Emprestimo();
     private GrupoReserva grupoReserva = new GrupoReserva();
     List<Pessoa> pessoas;
     private EquipamentoDataModel equipamentoDataModel;
@@ -194,21 +196,31 @@ public class CalendarioController implements Serializable {
     public void setCurrent(Recurso current) {
         this.current = current;
     }
-    
-    public void criarEmprestimo(){
-       
-        reserva.setEmprestimo(new Emprestimo());
-        reservaFacade.merge(reserva);
+
+    public Emprestimo getEmprestimo() {
+        return emprestimo;
     }
-    
-    
-   public void verEmprestimo(){
+
+    public void setEmprestimo(Emprestimo emprestimo) {
+        this.emprestimo = emprestimo;
+    }
+
+    public void salvaEmprestimo() {
+        reserva.setEmprestimo(emprestimo);
+        reserva = reservaFacade.merge(reserva);
+        updateRecursoSelecionado();
+        recreateEquipamentoDataModel();
+        recreateSalaDataModel();
+        verEmprestimo();
+    }
+
+    public void verEmprestimo() {
         try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("Emprestimo.xhtml?faces-redirect=true");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("view/emprestimo/Emprestimo.xhtml?faces-redirect=true");
         } catch (IOException ex) {
             Logger.getLogger(CalendarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
-   }
+    }
 
     public void removeRecursoReserva() {
         Recurso rec = (Recurso) recursoDataModel.getRowData();
@@ -217,6 +229,12 @@ public class CalendarioController implements Serializable {
         } else {
             RequestContext.getCurrentInstance().execute("recursoNaoApagavel.show()");
         }
+    }
+
+    public void criaEmprestimo() {
+        emprestimo = new Emprestimo();
+        emprestimo.setRetirada(Calendar.getInstance().getTime());
+        RequestContext.getCurrentInstance().execute("criarEmprestimo.show()");
     }
 
     public EquipamentoDataModel getEquipamentoDataModel() {
@@ -232,7 +250,7 @@ public class CalendarioController implements Serializable {
     }
 
     public SalaDataModel getSalaDataModel() {
-        if (salaDataModel == null) {
+        if (salaDataModel == null) { 
             List<Sala> salas = salaFacade.findAll();
             salaDataModel = new SalaDataModel(salas);
         }
@@ -291,7 +309,7 @@ public class CalendarioController implements Serializable {
                     eventModel.addEvent(res);
                 }
             }
-            
+
             isShowAll = false;
         } else {
             if (eventModel == null) {
@@ -610,7 +628,6 @@ public class CalendarioController implements Serializable {
         recreateReserva();
         if (!isValidDate((Date) selectEvent.getObject())) {
             showDialogDataInvalida();
-
             return;
         }
 
@@ -633,6 +650,7 @@ public class CalendarioController implements Serializable {
         reserva.setInicio(inicio);
         reserva.setFim(fim.getTime());
         reserva.setRealizacao(new Date());
+
         showDialogDetalhesDaReserva();
 
     }
@@ -743,6 +761,13 @@ public class CalendarioController implements Serializable {
         addMessage(message);
         recreateEquipamentoDataModel();
         recreateSalaDataModel();
+    }
+
+    public boolean possuiEmprestimo() {
+        if (reserva == null) {
+            return false;
+        }
+        return reserva.getIid() != null && reserva.getEmprestimo() == null;
     }
 
     private void addMessage(FacesMessage message) {

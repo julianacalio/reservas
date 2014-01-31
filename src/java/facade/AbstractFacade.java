@@ -6,6 +6,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 
 public abstract class AbstractFacade<T> {
@@ -51,8 +52,7 @@ public abstract class AbstractFacade<T> {
     }
 
     /**
-     * Combina os dados de uma entidade no banco de dados e retorna esta
-     * entidade atualizada. Caso não exista esta entidade, uma nova é criada.
+     * Combina os dados de uma entidade no banco de dados e retorna esta entidade atualizada. Caso não exista esta entidade, uma nova é criada.
      *
      * @param entity Entidade a ser combinada
      * @return Entidade atualizada/criada
@@ -107,6 +107,7 @@ public abstract class AbstractFacade<T> {
         Session session = getSessionFactory().openSession();
         Criteria crit = session.createCriteria(entityClass);
         crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
+        
         //crit.setMaxResults(50);
         List results = crit.list();
         session.close();

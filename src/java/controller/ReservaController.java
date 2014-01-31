@@ -4,12 +4,13 @@ import facade.ReservaFacade;
 import model.Reserva;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -17,8 +18,10 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
-import model.Centro;
-import model.Sala;
+import model.Pessoa;
+import model.TA;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 import util.ReservaDataModel;
 
 @Named("reservaController")
@@ -29,26 +32,58 @@ public class ReservaController implements Serializable {
     private ReservaDataModel reservaDataModel;
     private DataModel items = null;
     @EJB
-    private facade.ReservaFacade ejbFacade;
+    private facade.ReservaFacade reservaFacade;
+    @EJB
+    private facade.TAFacade taFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
     public ReservaController() {
     }
 
+    public Reserva getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Reserva current) {
+        this.current = current;
+    }
+
     public ReservaDataModel getReservaDataModel() {
         /////
-        if (reservaDataModel == null) {
-            List<Reserva> reservas = ejbFacade.findAll();
-            for (Iterator<Reserva> res = reservas.iterator(); res.hasNext();) {
-                Reserva r = res.next();
-                if (r.getEmprestimo() == null) {
-                    res.remove();
-                }
+        //  if (reservaDataModel == null) {
+        List<Reserva> reservas = reservaFacade.findAllOrder();
+        for (Iterator<Reserva> res = reservas.iterator(); res.hasNext();) {
+            Reserva r = res.next();
+            if (r.getEmprestimo() == null) {
+                res.remove();
             }
-            reservaDataModel = new ReservaDataModel(reservas);
         }
+        reservaDataModel = new ReservaDataModel(reservas);
+        // }
         return reservaDataModel;
+    }
+
+    public void onEdit(RowEditEvent event) { 
+        current = (Reserva)event.getObject();
+        updateEmprestimo();
+    }
+    
+    public void updateEmprestimo() {
+        current = (Reserva) reservaDataModel.getRowData();
+        reservaFacade.merge(current);
+    }
+
+    public List<Pessoa> completeReservante(String query) {
+        List<TA> tas = taFacade.findAll();
+        List<Pessoa> sugestoes = new ArrayList<Pessoa>();
+        query = query.toLowerCase();
+        for (TA ta : tas) {
+            if (ta.getNome().toLowerCase().startsWith(query)) {
+                sugestoes.add(ta);
+            }
+        }
+        return sugestoes;
     }
 
     public void setReservaDataModel(ReservaDataModel reservaDataModel) {
@@ -64,7 +99,7 @@ public class ReservaController implements Serializable {
     }
 
     private ReservaFacade getFacade() {
-        return ejbFacade;
+        return reservaFacade;
     }
 
     public PaginationHelper getPagination() {
@@ -86,7 +121,17 @@ public class ReservaController implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        return "List";
+        return "Emprestimo";
+    }
+
+    public void onCellEdit(CellEditEvent event) {
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+        updateEmprestimo();
+        if(newValue != null && !newValue.equals(oldValue)) {  
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);  
+            FacesContext.getCurrentInstance().addMessage(null, msg);  
+        }  
     }
 
     public String prepareView() {
@@ -113,16 +158,17 @@ public class ReservaController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Reserva) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        current = (Reserva) reservaDataModel.getRowData();
+        //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
 
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage("ReservaUpdated", null);
-            return "View";
+            JsfUtil.addSuccessMessage("Emprestimo Atualizado",null);
+           
+            return "Emprestimo";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
             return null;
@@ -130,7 +176,7 @@ public class ReservaController implements Serializable {
     }
 
     public String destroy() {
-        current = (Reserva) getItems().getRowData();
+        current = (Reserva) reservaDataModel.getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
@@ -203,15 +249,15 @@ public class ReservaController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        return JsfUtil.getSelectItems(reservaFacade.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+        return JsfUtil.getSelectItems(reservaFacade.findAll(), true);
     }
 
     public Reserva getReserva(java.lang.Long id) {
-        return ejbFacade.find(id);
+        return reservaFacade.find(id);
     }
 
     @FacesConverter(forClass = Reserva.class)

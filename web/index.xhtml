@@ -11,7 +11,7 @@
     </h:head>
     <h:body onload="#{loginBean.isLogado()}">
         <h:outputStylesheet library="css" name="style.css"  />
-    
+
         <br />
 
         <br/>
@@ -26,7 +26,7 @@
                         <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 37px;font-weight: bold"/>
                     </h:form>
                     <style type="text/css">
-                        
+
                         .ui-layout-unit-content{background-image:url('resources/images/cinza4.jpg');}
                     </style>
                 </p:layoutUnit>  
@@ -77,8 +77,10 @@
                         <p:commandLink id="linkCalendario" action="/Calendario"    >  
                             <p:commandButton value="Calendario" id="btnCalendario" style="width: 160px" /> 
                         </p:commandLink>
-                        
-                           <p:commandLink id="linkEmpretimo" action="/Emprestimo"    >  
+
+                        <p:separator/>
+
+                        <p:commandLink id="linkEmpretimo" action="/view/emprestimo/Emprestimo"    >  
                             <p:commandButton value="Emprestimo" id="btnEmprestimo" style="width: 160px" /> 
                         </p:commandLink>
                     </p:panel>

@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,28 +11,33 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 
-/**
- *
- * @author charles
- */
 @Entity
 public class Emprestimo implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date retirada;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date devolucao;
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Pessoa responsavelRetirada;
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Pessoa responsavelDevolucao;
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Pessoa responsavelRecebimento;
 
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date devolucao;
+
+    private String responsavelRetirada;
+
+    private String responsavelDevolucao;
+    
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private Pessoa responsavelRecebimento;
+    private String observacao;
+
+  
+    
+    
+    
     public Long getId() {
         return id;
     }
@@ -61,19 +62,19 @@ public class Emprestimo implements Serializable {
         this.devolucao = devolucao;
     }
 
-    public Pessoa getResponsavelRetirada() {
+    public String getResponsavelRetirada() {
         return responsavelRetirada;
     }
 
-    public void setResponsavelRetirada(Pessoa responsavelRetirada) {
+    public void setResponsavelRetirada(String responsavelRetirada) {
         this.responsavelRetirada = responsavelRetirada;
     }
 
-    public Pessoa getResponsavelDevolucao() {
+    public String getResponsavelDevolucao() {
         return responsavelDevolucao;
     }
 
-    public void setResponsavelDevolucao(Pessoa responsavelDevolucao) {
+    public void setResponsavelDevolucao(String responsavelDevolucao) {
         this.responsavelDevolucao = responsavelDevolucao;
     }
 
@@ -85,6 +86,12 @@ public class Emprestimo implements Serializable {
         this.responsavelRecebimento = responsavelRecebimento;
     }
 
-    
+    public String getObservacao() {
+        return observacao;
+    }
+
+    public void setObservacao(String observacao) {
+        this.observacao = observacao;
+    }
 
 }

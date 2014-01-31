@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+
+    </h:head>
+    <h:body onload="#{loginBean.isLogado()}">
+
+        <h:form>
+
+            <h:outputStylesheet library="css" name="style.css"  />
+
+            <p:layout fullPage="true">  
+
+                <p:layoutUnit style="text-align:center" position="north" size="75"  resizable="true" closable="true" collapsible="true" >  
+                    <!--<h:graphicImage value="resources/images/cmcc.png" />-->
+                    <style type="text/css">
+                        /*                                                                .ui-widget{font-size:90% !important;}*/
+                        .ui-layout-unit-content{background-image:url('resources/images/cinza4.jpg');}
+                    </style>
+                    <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 37px;font-weight: bold"/>
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
+                    <p:commandLink id="linkListCentro" action="/view/centro/List" immediate="true" value="Lista de Centros"/>  
+                    <br/>
+                    <p:commandLink id="linkListTA" action="/view/TA/List" immediate="true" value="Lista de TAs"/>  
+                    <br/>
+                    <p:commandLink id="linkListSala" action="/view/sala/List"  value="Lista de Salas" immediate="true"/>  
+                    <br/>
+                    <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" immediate="true" value="Lista de Equipamentos"/>  
+                    <br/> 
+                    <p:commandLink id="linkListEmprestimo" action="/Emprestimo" immediate="true" value="Lista de Emprestimos"/>  
+                    <br/> 
+                    <p:separator/>
+                    <h:link outcome="/index" value="Gerenciar Dados"  />
+                    <p:separator/>
+                    <h:link outcome="/Calendario" value="Calendario"  />
+                    <p:separator/>
+                </p:layoutUnit>    
+
+
+                <p:layoutUnit position="center">  
+                    <p:panel header="Editar Dados do Docente" style=" text-align: left">
+                        <h:panelGrid columns="2" id="pnGrCriarDocente" style="text-align: left"  >
+                            <h:outputLabel value="Pessoa Retirou" for="nome" />
+                            <h:inputText id="nome" value="#{reservaController.current.emprestimo.responsavelRetirada}" title="nome" />
+                            <h:outputLabel value="Data Retirada"  />
+                            <p:calendar id="dataRetirada" value="#{reservaController.current.emprestimo.retirada}" 
+                                        minHour="07" timeOnly="false" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" 
+                                        locale="br" >  
+                            </p:calendar>
+
+                            <h:outputLabel value="Pessoa Devolveu" for="pessoaDevolveu" />
+                            <h:inputText id="pessoaDevolveu" value="#{reservaController.current.emprestimo.responsavelDevolucao}" title="nome" />
+                            <h:outputLabel value="Data Retirada"  />
+                            <p:calendar id="dataDevolvida" value="#{reservaController.current.emprestimo.devolucao}" 
+                                        minHour="07" timeOnly="false" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" 
+                                        locale="br"     >  
+                            </p:calendar>
+
+                            <h:outputLabel value="Pessoa Recebeu: " for="ac_recebidor"/>  
+                            <p:autoComplete value="#{reservaController.current.emprestimo.responsavelRecebimento}" id="ac_recebidor" 
+                                            completeMethod="#{reservaController.completeReservante}"  
+                                            var="p" itemLabel="#{p.nome}" itemValue="#{p}" forceSelection="true" 
+                                            required="true" queryDelay="0" requiredMessage="Por favor especifique o nome do reservante" /> 
+
+                            <h:outputLabel value="Observação" for="observacao" />
+                            <h:inputText id="observacao" value="#{reservaController.current.emprestimo.observacao}" title="Observação" />
+
+
+                        </h:panelGrid>
+
+                        <p:separator/>
+
+                        <p:commandLink action="#{reservaController.update()}" value="Atualizar Emprestimo" update="msgs">
+                            <p:commandButton value="Salvar" id="linkUpdate" style="width: 180px"/>
+                        </p:commandLink>
+
+                        <p:separator/>
+
+                        <p:commandLink action="#{reservaController.prepareList()}" value="Mostrar todos Emprestimos" immediate="true" />
+                    </p:panel>
+
+
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="south" style="text-align:center" size="80"  resizable="true" closable="true" collapsible="true">  
+                    <p:messages id="msgs" showDetail="true"/>   
+                </p:layoutUnit>  
+
+            </p:layout>  
+
+        </h:form>
+    </h:body>
+
+</html>
+

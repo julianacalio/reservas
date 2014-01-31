@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import java.io.Serializable;
@@ -22,10 +18,6 @@ import javax.persistence.Transient;
 import org.primefaces.model.ScheduleEvent;
 import util.DateTools;
 
-/**
- *
- * @author charles
- */
 @Entity
 public class Reserva implements Serializable, ScheduleEvent {
 
@@ -50,9 +42,7 @@ public class Reserva implements Serializable, ScheduleEvent {
     public void setEmprestimo(Emprestimo emprestimo) {
         this.emprestimo = emprestimo;
     }
-    
-    
-    
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -65,7 +55,6 @@ public class Reserva implements Serializable, ScheduleEvent {
     @ManyToOne
     private Centro centro;
     String motivo;
-
 
     @ManyToMany(fetch = FetchType.EAGER)
     protected List<Recurso> recursos = new ArrayList<Recurso>();
@@ -277,7 +266,5 @@ public class Reserva implements Serializable, ScheduleEvent {
     public boolean isEditable() {
         return true;
     }
-
-   
 
 }

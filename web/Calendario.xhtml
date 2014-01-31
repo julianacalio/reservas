@@ -29,6 +29,9 @@
 
 
                 <h:form id="form1">
+
+
+
                     <p:dataTable  id="dtSala" var="sala" value="#{calendarioController.salaDataModel}" widgetVar="wdgListSala" 
                                   selection="#{calendarioController.novaSala}"  selectionMode="single" >  
 
@@ -43,7 +46,7 @@
                                      update=":form:schedule"/>
                 </h:form>
                 <br/>
-             
+
                 <br/>
                 <h:form id="form2">
                     <p:dataTable   id="dtEquipamento" var="equipamento" value="#{calendarioController.equipamentoDataModel}" widgetVar="wdgListEquipamento" 
@@ -167,14 +170,13 @@
                                              update=":form2:dtEquipamento,:form1:dtSala"/>  
                             <p:commandButton id="cancelButton"  value="Cancelar"  oncomplete="detalhesReserva.hide();"  
                                              rendered="#{calendarioController.reserva.iid == null}"/> 
-                            
-                            <p:commandButton id="CriarEmprestimoButton"  value="Criar Emprestimo"  oncomplete="detalhesReserva.hide();"  
-                                             rendered="#{calendarioController.reserva.emprestimo == null}"
-                                             actionListener="#{calendarioController.criarEmprestimo()}" /> 
-                            
-                            <p:commandButton id="VerEmprestimoButton"  value="Ver Emprestimo"  oncomplete="detalhesReserva.hide();"  
-                                             rendered="#{calendarioController.reserva.emprestimo != null}"
-                                             actionListener="#{calendarioController.verEmprestimo()}" /> 
+
+                            <p:commandButton id="criarEmprestimoButton"  value="Criar Emprestimo"  oncomplete="detalhesReserva.hide();"  
+                                             action="#{calendarioController.criaEmprestimo()}" rendered="#{calendarioController.possuiEmprestimo()}"/> 
+
+                            <p:commandButton id="verEmprestimoButton"  value="Ver Emprestimo"  oncomplete="detalhesReserva.hide();"  
+                                             rendered="#{calendarioController.reserva.emprestimo != null}" action="#{calendarioController.verEmprestimo()}"/> 
+
 
                         </h:panelGrid>  
                     </p:dialog>
@@ -249,13 +251,26 @@
                         <p:panel style="display: block;text-align: center">
                             <h:outputLabel value="O recurso principal não pode ser removido."  />
                             <br/>
-
                             <p:commandButton   value="OK" oncomplete="recursoNaoApagavel.hide();myschedule.update();"    />  
-
                         </p:panel>
                     </p:dialog>
 
-
+                    <p:dialog  widgetVar="criarEmprestimo" header="Criar Emprestimo"  >
+                        <p:panel style="display: block;text-align: center">
+                            <h:panelGrid columns="2">
+                                  <h:outputLabel value="Pessoa Retirou"  />
+                                  <p:inputText value="#{calendarioController.emprestimo.responsavelRetirada}"/>
+                                
+                                <h:outputLabel value="Data Retirada"  />
+                                <p:calendar id="dataRetirada" value="#{calendarioController.emprestimo.retirada}" 
+                                            minHour="07" timeOnly="false" pattern="dd/MM/yyyy H:mm" showButtonPanel="true" 
+                                            locale="br"     >  
+                                </p:calendar>
+                                <p:commandButton   value="OK" oncomplete="criarEmprestimo.hide();myschedule.update();"  actionListener="#{calendarioController.salvaEmprestimo()}"  /> 
+                                <p:commandButton   value="Cancelar" oncomplete="criarEmprestimo.hide();myschedule.update();"    /> 
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:dialog>
 
                 </h:form>  
             </p:layoutUnit>  

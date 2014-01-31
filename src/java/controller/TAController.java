@@ -143,9 +143,9 @@ public class TAController implements Serializable {
 
     public String destroy() {
         current = (TA) taDataModel.getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+       // selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
-        recreatePagination();
+        //recreatePagination();
         recreateModel();
         return "List";
 
