@@ -6,9 +6,9 @@
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         
         <!-- inicio da configuracao para servidor de aplicacoes local-->
-<!--        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/reservas?autoReconnect=true</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/reservas?autoReconnect=true</property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">root</property>-->
+        <property name="hibernate.connection.password">root</property>
         <!-- fim da configuracao para servidor de aplicacoes local-->
     
         <!-- inicio da configuracao para o openShift -->
@@ -18,9 +18,9 @@
         <!-- fim da configuracao para o openShift -->
           <!-- inicio da configuracao para o openShift -->
           
-        <property name="hibernate.connection.url">jdbc:mysql://127.5.203.130:3306/ufabc?autoReconnect=true</property>
+<!--        <property name="hibernate.connection.url">jdbc:mysql://127.5.203.130:3306/ufabc?autoReconnect=true</property>
         <property name="hibernate.connection.username">adminj9cHIjx</property>
-        <property name="hibernate.connection.password">sfcvr9HnPsx7</property>
+        <property name="hibernate.connection.password">sfcvr9HnPsx7</property>-->
         <!-- fim da configuracao para o openShift -->
         <property name="hibernate.show_sql">false</property>
         <property name="hibernate.format_sql">false</property>

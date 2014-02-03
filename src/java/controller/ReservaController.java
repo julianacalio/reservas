@@ -1,5 +1,6 @@
 package controller;
 
+import email.Email;
 import facade.ReservaFacade;
 import model.Reserva;
 
@@ -27,7 +28,7 @@ import util.ReservaDataModel;
 @Named("reservaController")
 @SessionScoped
 public class ReservaController implements Serializable {
-
+    
     private Reserva current;
     private ReservaDataModel reservaDataModel;
     private DataModel items = null;
@@ -37,18 +38,18 @@ public class ReservaController implements Serializable {
     private facade.TAFacade taFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
-
+    
     public ReservaController() {
     }
-
+    
     public Reserva getCurrent() {
         return current;
     }
-
+    
     public void setCurrent(Reserva current) {
         this.current = current;
     }
-
+    
     public ReservaDataModel getReservaDataModel() {
         /////
         //  if (reservaDataModel == null) {
@@ -63,9 +64,9 @@ public class ReservaController implements Serializable {
         // }
         return reservaDataModel;
     }
-
-    public void onEdit(RowEditEvent event) { 
-        current = (Reserva)event.getObject();
+    
+    public void onEdit(RowEditEvent event) {        
+        current = (Reserva) event.getObject();
         updateEmprestimo();
     }
     
@@ -73,7 +74,7 @@ public class ReservaController implements Serializable {
         current = (Reserva) reservaDataModel.getRowData();
         reservaFacade.merge(current);
     }
-
+    
     public List<Pessoa> completeReservante(String query) {
         List<TA> tas = taFacade.findAll();
         List<Pessoa> sugestoes = new ArrayList<Pessoa>();
@@ -85,11 +86,11 @@ public class ReservaController implements Serializable {
         }
         return sugestoes;
     }
-
+    
     public void setReservaDataModel(ReservaDataModel reservaDataModel) {
         this.reservaDataModel = reservaDataModel;
     }
-
+    
     public Reserva getSelected() {
         if (current == null) {
             current = new Reserva();
@@ -97,11 +98,11 @@ public class ReservaController implements Serializable {
         }
         return current;
     }
-
+    
     private ReservaFacade getFacade() {
         return reservaFacade;
     }
-
+    
     public PaginationHelper getPagination() {
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
@@ -109,7 +110,7 @@ public class ReservaController implements Serializable {
                 public int getItemsCount() {
                     return getFacade().count();
                 }
-
+                
                 @Override
                 public DataModel createPageDataModel() {
                     return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
@@ -118,34 +119,34 @@ public class ReservaController implements Serializable {
         }
         return pagination;
     }
-
+    
     public String prepareList() {
         recreateModel();
         return "Emprestimo";
     }
-
+    
     public void onCellEdit(CellEditEvent event) {
         Object oldValue = event.getOldValue();
         Object newValue = event.getNewValue();
         updateEmprestimo();
-        if(newValue != null && !newValue.equals(oldValue)) {  
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);  
-            FacesContext.getCurrentInstance().addMessage(null, msg);  
-        }  
+        if (newValue != null && !newValue.equals(oldValue)) {            
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);            
+            FacesContext.getCurrentInstance().addMessage(null, msg);            
+        }        
     }
-
+    
     public String prepareView() {
         current = (Reserva) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
-
+    
     public String prepareCreate() {
         current = new Reserva();
         selectedItemIndex = -1;
         return "Create";
     }
-
+    
     public String create() {
         try {
             getFacade().save(current);
@@ -156,25 +157,26 @@ public class ReservaController implements Serializable {
             return null;
         }
     }
-
+    
     public String prepareEdit() {
         current = (Reserva) reservaDataModel.getRowData();
         //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
-
+    
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage("Emprestimo Atualizado",null);
-           
+            (new Thread(new Email(current,3))).start();
+            JsfUtil.addSuccessMessage("Emprestimo Atualizado", null);
+            
             return "Emprestimo";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
             return null;
         }
     }
-
+    
     public String destroy() {
         current = (Reserva) reservaDataModel.getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
@@ -183,7 +185,7 @@ public class ReservaController implements Serializable {
         recreateModel();
         return "List";
     }
-
+    
     public String destroyAndView() {
         performDestroy();
         recreateModel();
@@ -196,7 +198,7 @@ public class ReservaController implements Serializable {
             return "List";
         }
     }
-
+    
     private void performDestroy() {
         try {
             getFacade().remove(current);
@@ -205,7 +207,7 @@ public class ReservaController implements Serializable {
             JsfUtil.addErrorMessage(e, "PersistenceErrorOccured");
         }
     }
-
+    
     private void updateCurrentItem() {
         int count = getFacade().count();
         if (selectedItemIndex >= count) {
@@ -220,49 +222,49 @@ public class ReservaController implements Serializable {
             current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
-
+    
     public DataModel getItems() {
         if (items == null) {
             items = getPagination().createPageDataModel();
         }
         return items;
     }
-
+    
     private void recreateModel() {
         items = null;
     }
-
+    
     private void recreatePagination() {
         pagination = null;
     }
-
+    
     public String next() {
         getPagination().nextPage();
         recreateModel();
         return "List";
     }
-
+    
     public String previous() {
         getPagination().previousPage();
         recreateModel();
         return "List";
     }
-
+    
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(reservaFacade.findAll(), false);
     }
-
+    
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(reservaFacade.findAll(), true);
     }
-
+    
     public Reserva getReserva(java.lang.Long id) {
         return reservaFacade.find(id);
     }
-
+    
     @FacesConverter(forClass = Reserva.class)
     public static class ReservaControllerConverter implements Converter {
-
+        
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
@@ -272,19 +274,19 @@ public class ReservaController implements Serializable {
                     getValue(facesContext.getELContext(), null, "reservaController");
             return controller.getReserva(getKey(value));
         }
-
+        
         java.lang.Long getKey(String value) {
             java.lang.Long key;
             key = Long.valueOf(value);
             return key;
         }
-
+        
         String getStringKey(java.lang.Long value) {
             StringBuilder sb = new StringBuilder();
             sb.append(value);
             return sb.toString();
         }
-
+        
         @Override
         public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
             if (object == null) {
@@ -298,5 +300,5 @@ public class ReservaController implements Serializable {
             }
         }
     }
-
+    
 }
