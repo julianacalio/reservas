@@ -56,7 +56,7 @@ public class SendMail {
 
         //Cria um autenticador que sera usado a seguir
         SimpleAuth auth;
-        auth = new SimpleAuth("reservasdesalas.cmcc@gmail.com", "#cmcc2014");
+        auth = new SimpleAuth("reservasdesalas.cmcc@gmail.com", "#cmcc2014");//login,senha
 
 		//Session - objeto que ira realizar a conexão com o servidor
 		/*Como há necessidade de autenticação é criada uma autenticacao que
