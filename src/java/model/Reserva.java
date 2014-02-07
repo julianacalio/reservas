@@ -27,6 +27,8 @@ public class Reserva implements Serializable, ScheduleEvent {
     public GrupoReserva getGrupoReserva() {
         return grupoReserva;
     }
+    
+    private String styleClass;
 
     public void setGrupoReserva(GrupoReserva grupoReserva) {
         this.grupoReserva = grupoReserva;
@@ -259,12 +261,17 @@ public class Reserva implements Serializable, ScheduleEvent {
 
     @Override
     public String getStyleClass() {
-        return null;
+        return styleClass;
     }
 
     @Override
     public boolean isEditable() {
         return true;
+    }
+
+    public void setStyleClass(String styleClass) {
+
+        this.styleClass = styleClass;
     }
 
 }

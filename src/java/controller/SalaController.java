@@ -4,6 +4,7 @@ import facade.SalaFacade;
 import model.Sala;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
@@ -22,6 +23,9 @@ import util.SalaDataModel;
 @Named(value = "salaController")
 @SessionScoped
 public class SalaController implements Serializable {
+
+    // Precisa ser definido depois uma maneira melhor de fazer
+    List<String> cores;
 
     private Sala current;
     private DataModel items = null;
@@ -42,6 +46,42 @@ public class SalaController implements Serializable {
             salaDataModel = new SalaDataModel(salas);
         }
         return salaDataModel;
+    }
+
+    public List<String> getCores() {
+        cores = new ArrayList<String>();
+        cores.add("");
+        cores.add("aquamarine");
+        cores.add("blanchedalmond");
+        cores.add("brown");
+        cores.add("burlywood");
+        cores.add("cadetblue");
+        cores.add("chocolate");
+        cores.add("coral");
+        cores.add("cornflowerblue");
+        cores.add("darkgoldenrod");
+        cores.add("darkgreen");
+        cores.add("darkmagenta");
+        cores.add("darkslateblue");
+        cores.add("dodgerblue");
+        cores.add("green");
+        cores.add("hotpink");
+        cores.add("indianred");
+        cores.add("lightpink");
+        cores.add("lightsalmon");
+        cores.add("lightgreen");
+        cores.add("lightskyblue");
+        cores.add("moccasin");
+        cores.add("orange");
+        cores.add("olive");
+        cores.add("olivedrab");
+        cores.add("palegoldenrod");
+        cores.add("palegreen");
+        cores.add("peachpuff");
+        cores.add("peru");
+        cores.add("rosybrown");
+        cores.add("greenyellow");
+        return cores;
     }
 
     public void setSalaDataModel(SalaDataModel salaDaraModel) {

@@ -55,6 +55,10 @@
                                 <h:selectOneMenu id="centro" value="#{salaController.selected.centro}" title="centro" >
                                     <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
                                 </h:selectOneMenu>
+                                 <h:outputLabel value="cor" for="cor" />
+                                <h:selectOneMenu id="cor" value="#{salaController.selected.cor}" title="cor" >
+                                    <f:selectItems value="#{salaController.cores}"/>
+                                </h:selectOneMenu>
                             </h:panelGrid>
                         </p:panel>
                         <p:separator/>

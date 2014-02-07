@@ -27,6 +27,18 @@ import javax.persistence.ManyToOne;
 @DiscriminatorColumn(name = "RECURSO_DETAILS_TYPE", discriminatorType = DiscriminatorType.STRING)
 public class Recurso implements Serializable {
 
+    private String cor;
+
+    public String getCor() {
+        return cor;
+    }
+
+    public void setCor(String cor) {
+        this.cor = cor;
+    }
+    
+    
+    
 //    @ManyToOne
 //    private Recurso reserva;
 //

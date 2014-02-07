@@ -29,17 +29,189 @@ body {
 }
 
 #ck{
-    
+
 }
 
 #cancelButton{
-    
+
 }
 
 .ui-widget .ui-icon-xls {
     background-image: url(images/book2.png);
 }
 
-  .ui-widget {  
-               font-size: 16px !important;  
-           }  
+.ui-widget {  
+    font-size: 16px !important;  
+}  
+
+
+.aquamarine-event, .aquamarine-event .fc-event-skin, .aquamarine-event a{
+    background-color: aquamarine;
+    color: black;
+    border-color: greenyellow;
+}
+
+.blanchedalmond-event, .blanchedalmond-event .fc-event-skin, .blanchedalmond-event a{
+    background-color: blanchedalmond;
+    color: black;
+    border-color: greenyellow;
+}
+
+.brown-event, .brown-event .fc-event-skin, .brown-event a{
+    background-color: brown;
+    color: black;
+    border-color: greenyellow;
+}
+.burlywood-event, .burlywood-event .fc-event-skin, .burlywood-event a{
+    background-color: burlywood;
+    color: black;
+    border-color: greenyellow;
+}
+.cadetblue-event, .cadetblue-event .fc-event-skin, .cadetblue-event a{
+    background-color: cadetblue;
+    color: black;
+    border-color: greenyellow;
+}
+.chocolate-event, .chocolate-event .fc-event-skin, .chocolate-event a{
+    background-color: chocolate;
+    color: black;
+    border-color: greenyellow;
+}
+
+.coral-event, .coral-event .fc-event-skin, .coral-event a{
+    background-color: coral;
+    color: black;
+    border-color: greenyellow;
+}
+
+.cornflowerblue-event, .cornflowerblue-event .fc-event-skin, .cornflowerblue-event a{
+    background-color: cornflowerblue;
+    color: black;
+    border-color: greenyellow;
+}
+
+.darkgoldenrod-event, .darkgoldenrod-event .fc-event-skin, .darkgoldenrod-event a{
+    background-color: darkgoldenrod;
+    color: black;
+    border-color: greenyellow;
+}
+
+.darkgreen-event, .darkgreen-event .fc-event-skin, .darkgreen-event a{
+    background-color: darkgreen;
+    color: black;
+    border-color: greenyellow;
+}
+
+.darkmagenta-event, .darkmagenta-event .fc-event-skin, .darkmagenta-event a{
+    background-color: darkmagenta;
+    color: black;
+    border-color: greenyellow;
+}
+
+.darkslateblue-event, .darkslateblue-event .fc-event-skin, .darkslateblue-event a{
+    background-color: darkslateblue;
+    color: black;
+    border-color: greenyellow;
+}
+
+.dodgerblue-event, .dodgerblue-event .fc-event-skin, .dodgerblue-event a{
+    background-color: dodgerblue;
+    color: black;
+    border-color: greenyellow;
+}
+
+.green-event, .green-event .fc-event-skin, .green-event a{
+    background-color: green;
+    color: black;
+    border-color: greenyellow;
+}
+
+.hotpink-event, .hotpink-event .fc-event-skin, .hotpink-event a{
+    background-color: hotpink;
+    color: black;
+    border-color: greenyellow;
+}
+
+.indianred-event, .indianred-event .fc-event-skin, .indianred-event a{
+    background-color: indianred;
+    color: black;
+    border-color: greenyellow;
+}
+
+.lightpink-event, .lightpink-event .fc-event-skin, .lightpink-event a{
+    background-color: lightpink;
+    color: black;
+    border-color: greenyellow;
+}
+
+.lightsalmon-event, .lightsalmon-event .fc-event-skin, .lightsalmon-event a{
+    background-color: lightsalmon;
+    color: black;
+    border-color: greenyellow;
+}
+
+.lightgreen-event, .lightgreen-event .fc-event-skin, .lightgreen-event a{
+    background-color: lightgreen;
+    color: black;
+    border-color: greenyellow;
+}
+
+.lightskyblue-event, .lightskyblue-event .fc-event-skin, .lightskyblue-event a{
+    background-color: lightskyblue;
+    color: black;
+    border-color: greenyellow;
+}
+
+.moccasin-event, .moccasin-event .fc-event-skin, .moccasin-event a{
+    background-color: moccasin;
+    color: black;
+    border-color: greenyellow;
+}
+
+.orange-event, .orange-event .fc-event-skin, .orange-event a{
+    background-color: orange;
+    color: black;
+    border-color: greenyellow;
+}
+
+.olive-event, .olive-event .fc-event-skin, .olive-event a{
+    background-color: olive;
+    color: black;
+    border-color: greenyellow;
+}
+
+.olivedrab-event, .olivedrab-event .fc-event-skin, .olivedrab-event a{
+    background-color: olivedrab;
+    color: black;
+    border-color: greenyellow;
+}
+
+.palegoldenrod-event, .palegoldenrod-event .fc-event-skin, .palegoldenrod-event a{
+    background-color: palegoldenrod;
+    color: black;
+    border-color: greenyellow;
+}
+
+.palegreen-event, .palegreen-event .fc-event-skin, .palegreen-event a{
+    background-color: palegreen;
+    color: black;
+    border-color: greenyellow;
+}
+
+.peachpuff-event, .peachpuff-event .fc-event-skin, .peachpuff-event a{
+    background-color: peachpuff;
+    color: black;
+    border-color: greenyellow;
+}
+
+.peru-event, .peru-event .fc-event-skin, .peru-event a{
+    background-color: peru;
+    color: black;
+    border-color: greenyellow;
+}
+
+.rosybrown-event, .rosybrown-event .fc-event-skin, .rosybrown-event a{
+    background-color: rosybrown;
+    color: black;
+    border-color: greenyellow;
+}
