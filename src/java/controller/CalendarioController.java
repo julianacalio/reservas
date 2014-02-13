@@ -32,12 +32,10 @@ import model.GrupoReserva;
 import model.Pessoa;
 import model.Reserva;
 import model.Sala;
-import model.TA;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 
 import org.primefaces.model.ScheduleModel;
