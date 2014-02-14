@@ -17,7 +17,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -37,20 +36,13 @@ import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleModel;
-
 import org.primefaces.model.ScheduleModel;
 import util.DateTools;
 import util.EquipamentoDataModel;
 import util.RecursoDataModel;
 import util.SalaDataModel;
 
-//        org.primefaces.component.calendar.Calendar c = new org.primefaces.component.calendar.Calendar();
-//        Collection<String> eventos = c.getEventNames();
-//
-//        org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu s = new org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu();
-//        Collection<String> eventos2 = s.getEventNames();
-//        
-//        org.primefaces.component.datatable.DataTable d = new org.primefaces.component.datatable.DataTable();
+
 @Named("calendarioController")
 @SessionScoped
 public class CalendarioController implements Serializable {
@@ -218,6 +210,7 @@ public class CalendarioController implements Serializable {
 
     public void verEmprestimo() {
         try {
+            //Redireciona para a tela com a lista de emprestimos
             FacesContext.getCurrentInstance().getExternalContext().redirect("view/emprestimo/Emprestimo.xhtml?faces-redirect=true");
         } catch (IOException ex) {
             Logger.getLogger(CalendarioController.class.getName()).log(Level.SEVERE, null, ex);
@@ -327,8 +320,7 @@ public class CalendarioController implements Serializable {
                 eventModel = new DefaultScheduleModel();
 
                 for (Reserva res : current.getReservas()) {
-                    //res.setStyleClass(current.getCor() + "-event");
-
+      
                     res.setStyleClass(current.getCor() + "-event");
 
                     eventModel.addEvent(res);
@@ -716,7 +708,7 @@ public class CalendarioController implements Serializable {
     }
 
     public void onValueChangeHoraFim() {
-        int a = 2;
+       
     }
 
     public void onReservaMove(ScheduleEntryMoveEvent event) {
@@ -783,6 +775,10 @@ public class CalendarioController implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
+    /**
+     * Retira a seleção da sala ou equipamento que esteja selecionado na tela 
+     * do calendário.
+     */
     public void clearSelection() {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("wdgListSala.clearSelection()");
@@ -797,6 +793,13 @@ public class CalendarioController implements Serializable {
         return recursoFacade.find(id);
     }
 
+     /**
+     * Busca todos os equipamentos que não estão reservados dentro de um
+     * intervalo de datas especificado.
+     * @param inicio Data inicial da busca por equipamentos livres.
+     * @param fim Data final da busca por equipamentos livres.
+     * @return Equipamentos livres.
+     */
     public List<Equipamento> getEquipamentosLivres(Date inicio, Date fim) {
 
         List<Equipamento> equipamentosLivre = new ArrayList<Equipamento>();
@@ -809,6 +812,13 @@ public class CalendarioController implements Serializable {
         return equipamentosLivre;
     }
 
+    /**
+     * Busca todos os recursos que não estão reservados dentro de um
+     * intervalo de datas especificado.
+     * @param inicio Data inicial da busca por recursos livres.
+     * @param fim Data final da busca por recursos livres.
+     * @return Recursos livres.
+     */
     public List<Recurso> getRecursosLivres(Date inicio, Date fim) {
         List<Recurso> recursosLivres = recursoFacade.findAll();
         List<Reserva> reservasOcupadas = reservaFacade.findAllBetween(inicio, fim);
@@ -820,6 +830,12 @@ public class CalendarioController implements Serializable {
         return recursosLivres;
     }
 
+    /**
+     * Busca todos os recursos que estão ocupados entre uma data de origem e uma data de fim
+     * @param inicio Data inicial dos recursos ocupados.
+     * @param fim Data final dos recursos ocupados.
+     * @return Recursos ocupados dentro do intervalo especificado.
+     */
     public List<Recurso> getRecursosOcupados(Date inicio, Date fim) {
         Set<Reserva> reservasOcupadas = new HashSet<Reserva>(reservaFacade.findAllBetween(inicio, fim));
         List<Recurso> recursosOcupados = new ArrayList<Recurso>();
@@ -830,10 +846,11 @@ public class CalendarioController implements Serializable {
     }
 
     /**
-     * Retorna os recursos que foram selecionados pela nova reserva e ja estao reservados no horario da nova reserva no banco de dados.
+     * Retorna os recursos que foram selecionados pela nova reserva e ja estao reservados no horario da nova 
+     * reserva no banco de dados.
      *
-     * @param reserva Reserva que possui uma lista de recursos que serão analisados
-     * @return Lista de recursos que ja estao reservados no horario da reserva
+     * @param reserva Reserva que possui uma lista de recursos que serão analisados.
+     * @return Lista de recursos que ja estao reservados no horario da reserva.
      */
     private List<Recurso> getRecursosOcupadosDaReserva(Reserva reserva) {
         List<Recurso> recursosSelecionados = reserva.getRecursos();
@@ -850,6 +867,19 @@ public class CalendarioController implements Serializable {
         return recursos;
     }
 
+    /**
+     * Recebe um lista de dias da semana em formato numérico (Dom = 0, Seg = 1, Ter = 2, etc) e uma 
+     * data para servir como referência. O método retorna os dias do mês que representam aqueles dias
+     * da semana passados. Por exemplo: Ao receber os parâmetros ([2,4,6] , 14/02/2014). Está sendo
+     * passado os dias da semana terça, quinta e sabado e o dia 14/02/2014. Analisando o calendario
+     * de 2014 o dia 14/02/2014 acontece em uma sexta feira, logo os dias da semana passados como
+     * parâmetros representam: terca = 11/02/2014, quinta = 13/02/2014 e sabado = 15/02/2014.
+     * @param diasDaSemana Lista de dias da semana (dom = 0, seg = 1, ter = 2, qua = 3
+     * qui = 4, sex = 5. sab = 6.
+     * @param dataSelecionada Data para servir como referência para determinar em qual
+     * semana do ano está sendo requisito os dias pedidos.
+     * @return Dias do mês que representam os dias da semana pedidos.
+     */
     public List<Date> getDatasSelecionadas(List<Integer> diasDaSemana, Date dataSelecionada) {
 
         Calendar calendario = Calendar.getInstance();

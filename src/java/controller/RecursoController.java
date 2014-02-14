@@ -2,16 +2,12 @@ package controller;
 
 import facade.RecursoFacade;
 import model.Recurso;
-
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
-
-
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

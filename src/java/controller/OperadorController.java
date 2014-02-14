@@ -2,10 +2,7 @@ package controller;
 
 import facade.OperadorFacade;
 import model.Operador;
-
-
 import java.io.Serializable;
-import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;

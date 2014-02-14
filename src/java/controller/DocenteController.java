@@ -4,7 +4,6 @@ import facade.DocenteFacade;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;

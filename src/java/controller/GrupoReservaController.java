@@ -1,12 +1,7 @@
 package controller;
 
 import facade.GrupoReservaFacade;
-import facade.ReservaFacade;
-import model.Reserva;
-
-
 import java.io.Serializable;
-import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -17,9 +12,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
-import model.Centro;
 import model.GrupoReserva;
-import model.Sala;
 
 @Named("grupoReservaController")
 @SessionScoped

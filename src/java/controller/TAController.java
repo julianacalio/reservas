@@ -2,7 +2,6 @@ package controller;
 
 import facade.TAFacade;
 import model.TA;
-
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;

@@ -2,9 +2,7 @@ package controller;
 
 import model.Centro;
 import facade.CentroFacade;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;

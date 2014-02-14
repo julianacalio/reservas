@@ -2,7 +2,6 @@ package controller;
 
 import facade.EquipamentoFacade;
 import model.Equipamento;
-
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;

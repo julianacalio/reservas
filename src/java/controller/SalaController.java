@@ -2,7 +2,6 @@ package controller;
 
 import facade.SalaFacade;
 import model.Sala;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
