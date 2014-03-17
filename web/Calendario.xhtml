@@ -109,8 +109,10 @@
                             </p:calendar>
 
                             <h:outputLabel for="title" value="Motivo:" />  
-                            <p:inputText id="title" value="#{calendarioController.reserva.motivo}"   />  
-
+                            <p:inputText id="title" value="#{calendarioController.reserva.motivo}" validatorMessage="Para digitar o motivo use somente caracteres de a-z ou números de 0-9" >   
+                            <f:validateRegex pattern="^[a-zçãõéóúêáíA-Z0-9]+$" />   
+                            </p:inputText>
+                            
                             <h:outputLabel for="ck" value="Equipamentos:"  />
                             <p:selectCheckboxMenu id="ck"   value="#{calendarioController.selectedEquipamentos}"  
                                                   converter="equi" label="Adicionar Equipamentos" filter="true" 
