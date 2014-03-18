@@ -6,6 +6,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
+import org.hibernate.annotations.Cascade;
 
 /**
  *
@@ -25,7 +27,7 @@ import javax.persistence.OneToMany;
 @DiscriminatorColumn(name = "PESSOA_DETAILS_TYPE",discriminatorType = DiscriminatorType.STRING)
 public class Pessoa implements Serializable {
 
-    @OneToMany(mappedBy = "reservante")
+    @OneToMany(mappedBy = "reservante",cascade = CascadeType.REMOVE)
     private List<Reserva> reservas;
     protected String email;
 
@@ -37,6 +39,7 @@ public class Pessoa implements Serializable {
         this.email = email;
     }
 
+    
     public List<Reserva> getReservas() {
         return reservas;
     }

@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.CascadeType;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -30,7 +30,7 @@ public class Emprestimo implements Serializable {
 
     private String responsavelDevolucao;
     
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Pessoa responsavelRecebimento;
     private String observacao;
 
