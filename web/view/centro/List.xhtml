@@ -16,18 +16,31 @@
 
                 <p:layoutUnit position="north" style="text-align:center" size="70"  resizable="true" closable="true" collapsible="true">  
                     <!--<h:graphicImage value="resources/images/cmcc.png" />-->
-                     <style type="text/css">
+                    <style type="text/css">
                         /*                                                                .ui-widget{font-size:90% !important;}*/
-                        .ui-layout-unit-content{background-image:url('resources/images/cinza4.jpg');}
+                        .ui-layout-unit-content{background-image:url('resources/images/grey-back.jpg');}
                     </style>
                     <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 37px;font-weight: bold"/>
                 </p:layoutUnit>  
 
-                <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">  
-                    <h:outputText value="South unit content." />  
-                </p:layoutUnit>  
 
-                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
+                <!--                <p:layoutUnit position="west" size="200" header="Links Rápidos"  resizable="true" closable="true" collapsible="true"  effect="drop"  style="text-align: center">  
+                                    <p:commandLink id="linkListDocente" action="/view/docente/List" immediate="true" value="Lista de Docentes"/>  
+                                    <br/>
+                                    <p:commandLink id="linkListTA" action="/view/TA/List" immediate="true" value="Lista de TAs"/>  
+                                    <br/>
+                                    <p:commandLink id="linkListSala" action="/view/sala/List"  value="Lista de Salas" immediate="true"/>  
+                                    <br/>
+                                    <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" immediate="true" value="Lista de Equipamentos"/>  
+                                    <br/>
+                                    <p:separator/>
+                                    <h:link outcome="/index" value="Gerenciar Dados"  />
+                                    <p:separator/>
+                                    <h:link outcome="/Calendario" value="Calendario"  />
+                                    <p:separator/>
+                                </p:layoutUnit>   -->
+
+                <p:layoutUnit position="west" size="180" header="Recursos" style="text-align: center" resizable="true" closable="true" collapsible="true" >  
                     <p:commandLink id="linkListDocente" action="/view/docente/List" immediate="true" value="Lista de Docentes"/>  
                     <br/>
                     <p:commandLink id="linkListTA" action="/view/TA/List" immediate="true" value="Lista de TAs"/>  
@@ -41,7 +54,8 @@
                     <p:separator/>
                     <h:link outcome="/Calendario" value="Calendario"  />
                     <p:separator/>
-                </p:layoutUnit>   
+
+                </p:layoutUnit>  
 
 
 
@@ -51,58 +65,69 @@
                     <p:panel >
                         <p:dataTable id="db" var="item"  value="#{centroController.centroDataModel}" selectionMode="single"  paginator="true" rows="3"  
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-                                     rowsPerPageTemplate="3,5,10,15" style="text-align: center">  
+                                     rowsPerPageTemplate="3,5,10,15" style="text-align: center; width: 600px" styleClass="panelCenter">  
 
                             <f:facet name="header">  
                                 Lista de Centros  
                             </f:facet>   >
 
-<!--                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="id"/>
-                                </f:facet>
-                                <h:outputText value="#{item.id}"/>
-                            </p:column>-->
-
-                            <p:column headerText="nome">  
+                            <p:column headerText="nome" width="40%">  
                                 <f:facet name="header">
                                     <h:outputText value="Nome"/>
                                 </f:facet>
                                 <h:outputText value="#{item.nome}"/>
                             </p:column>  
 
-                            <p:column headerText="">
+                            <p:column headerText="" width="24%">
                                 <f:facet name="header">
                                     <h:outputText value=""/>
                                 </f:facet>
 
-                                <p:commandLink action="#{centroController.prepareEdit()}" value="Editar" immediate="true" />
+
+                                <p:commandButton style="width: 95px;height: 30px; font-size: small"
+                                                 action="#{centroController.prepareEdit()}" value="Editar" immediate="true" 
+                                                 update="db" icon="ui-icon-pencil"/>
+
                             </p:column>
 
-                            <p:column headerText="">
+                            <p:column headerText="" width="24%">
                                 <f:facet name="header">
                                     <h:outputText value=""/>
                                 </f:facet>
-                                <p:commandLink action="#{centroController.destroy}" value="Deletar" immediate="true" update="db"/>
+
+                                <p:commandButton style="width: 97px;height: 30px; font-size: small"
+                                                 action="#{centroController.destroy()}" value="Deletar" immediate="true" 
+                                                 update="db" icon="ui-icon-trash"/>
+
 
                             </p:column>
 
                         </p:dataTable> 
                     </p:panel>
 
-                    <p:panel id="panelCentro" header="Criar Novo Centro" style="display: block; text-align: left" >
-                        <p:panel footer="">
-                            <h:panelGrid columns="2" id="pnGrCriarCentro">
-                                <h:outputLabel value="Nome" for="tamanho_m2"  />
+                    <p:separator/>
+
+                    <p:panel  style=" height: 285px">
+                        <p:panel id="panelCentro" header="Criar Novo Centro" style="display: block; text-align: left; width: 600px; position: relative; top: 20px" styleClass="panelCenter" >
+                            <!--                            <p:panel  style=" width: 550px" styleClass="panelCenter">-->
+                            <h:panelGrid columns="2" id="pnGrCriarCentro" style=" border-color: transparent">
+                                <h:outputLabel value="Nome:* " for="tamanho_m2"  />
                                 <h:inputText id="tamanho_m2" value="#{centroController.selected.nome}" title="tamanho" required="true" requiredMessage="Por favor digite um nome para o Centro"/>
                             </h:panelGrid>
 
                             <p:separator/>
-                            <p:commandLink action="#{centroController.create()}"  value="Salvar" update="msgs,db,pnGrCriarCentro"  /> 
+
+                            <p:commandButton style="width: 97px; height: 30px; font-size: small; position: relative; "  
+                                             ajax="false"  value="Salvar" actionListener="#{centroController.create()}"
+                                             update="msgs,db,pnGrCriarCentro" icon="ui-icon-disk"> 
+                            </p:commandButton>
+
+                            <!--                            </p:panel>-->
 
                         </p:panel>
-
                     </p:panel>
+
+
 
                 </p:layoutUnit>  
 

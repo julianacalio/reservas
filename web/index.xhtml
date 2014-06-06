@@ -6,7 +6,7 @@
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
 
-        <title>Gerenciar</title>
+        <title>Gerenciar Dados</title>
 
     </h:head>
     <h:body onload="#{loginBean.isLogado()}">
@@ -19,15 +19,13 @@
 
             <p:layout fullPage="true">  
 
-                <p:layoutUnit style="text-align:center" position="north" size="75"  resizable="true" closable="true" collapsible="true" >  
+                <p:layoutUnit style="text-align:center" position="north" size="130" >  
                     <h:form id ="f2">
-
-                        <!--                    <h:graphicImage value="resources/images/cmcc.png" />-->
+                        <p:graphicImage library="images" cache="true" name="cmcc.png" />
                         <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 37px;font-weight: bold"/>
                     </h:form>
                     <style type="text/css">
-
-                        .ui-layout-unit-content{background-image:url('resources/images/cinza4.jpg');}
+                        .ui-layout-unit-content{background-image:url('resources/images/grey-back.jpg');}
                     </style>
                 </p:layoutUnit>  
 
@@ -39,8 +37,15 @@
                 </p:layoutUnit>  
 
 
-                <p:layoutUnit position="center" >  
-                    <p:panel style="display: block; text-align: center">
+                <p:layoutUnit position="center" style=" border-color: transparent; color: transparent">  
+
+                    <!--                    <p:panel style="line-height:200px;padding: 5% 0;position: relative;"/>
+                                        <p:panelGrid columns="1" styleClass="centered">
+                                            
+                                        </p:panelGrid>
+                                        </p:panel>-->
+
+                    <p:panel style="display: block; text-align: center; width: 300px;position: relative; top: 60px" styleClass="panelCenter">
 
                         <p:commandLink id="linkCentro" action= "/view/centro/List"   >  
                             <p:commandButton value="Centros" id="btnCentro" style="width: 160px"/>

@@ -72,6 +72,13 @@ body {
     color: black;
     border-color: greenyellow;
 }
+
+.centered {
+position:relative;
+height: 100px;
+margin:0 auto;
+padding: 10% 0;
+}
 .chocolate-event, .chocolate-event .fc-event-skin, .chocolate-event a{
     background-color: chocolate;
     color: black;
@@ -196,6 +203,10 @@ body {
     background-color: palegreen;
     color: black;
     border-color: greenyellow;
+}
+
+.panelCenter {
+    margin: 0 auto;
 }
 
 .peachpuff-event, .peachpuff-event .fc-event-skin, .peachpuff-event a{

@@ -65,6 +65,8 @@ public class LoginBean implements Serializable {
 
     public void isLogado() {
 
+        loggedIn = true;
+        
         if (!loggedIn) {
             try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml?faces-redirect=true");
