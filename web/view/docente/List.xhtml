@@ -4,10 +4,9 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-
-
-
+    
     <h:head>
+        <link href='http://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'/>
         <title>Docente</title>
     </h:head>
     <h:body onload="#{loginBean.isLogado()}">
@@ -19,34 +18,60 @@
 
                 <p:layoutUnit position="north" style="text-align:center" size="70"  resizable="true" closable="true" collapsible="true">  
                     <!--<h:graphicImage value="resources/images/cmcc.png" >  </h:graphicImage>-->
-                     <style type="text/css">
+                    <style type="text/css">
                         /*                                                                .ui-widget{font-size:90% !important;}*/
-                        .ui-layout-unit-content{background-image:url('resources/images/cinza4.jpg');}
+                        .ui-layout-unit-content{background-image:url('resources/images/grey-back.jpg');}
                     </style>
-                    <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 37px;font-weight: bold"/>
+                    <div style="color: #2E8B57 ;font-family: 'Play', serif;font-size: 24px; position: relative; top: 10px">Calendário de Alocação de Salas e Equipamentos</div>
+<!--                    <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 37px;font-weight: bold"/>-->
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
-                    <p:commandLink id="linkListCentro" action="/view/centro/List" immediate="true" value="Lista de Centros"/>  
+                    <!--                    <p:commandLink id="linkListCentro" action="/view/centro/List" immediate="true" value="Lista de Centros"/>  
+                                        <br/>
+                                        <p:commandLink id="linkListTA" action="/view/TA/List" immediate="true" value="Lista de TAs"/>  
+                                        <br/>
+                                        <p:commandLink id="linkListSala" action="/view/sala/List"  value="Lista de Salas" immediate="true"/>  
+                                        <br/>
+                                        <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" immediate="true" value="Lista de Equipamentos"/>  
+                                        <br/>
+                                        <p:separator/>
+                                        <h:link outcome="/index" value="Gerenciar Dados"  />
+                                        <p:separator/>
+                                        <h:link outcome="/Calendario" value="Calendario"  />
+                                        <p:separator/>-->
+
+
+
+                    <p:commandButton  value="Centros" id="btnCentro"  style="width: 140px; position: relative; top: 5px"  action="/view/centro/List" immediate="true"/>
                     <br/>
-                    <p:commandLink id="linkListTA" action="/view/TA/List" immediate="true" value="Lista de TAs"/>  
+
+                    <p:commandButton  value="TAs" id="btnTA" style="width: 140px; position: relative; top: 10px" action= "/view/TA/List" immediate="true"/>
                     <br/>
-                    <p:commandLink id="linkListSala" action="/view/sala/List"  value="Lista de Salas" immediate="true"/>  
+
+                    <p:commandButton value="Salas" id="btnSala" style="width: 140px;position: relative; top: 15px" action= "/view/sala/List" immediate="true"/>
                     <br/>
-                    <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" immediate="true" value="Lista de Equipamentos"/>  
-                    <br/>
-                    <p:separator/>
-                    <h:link outcome="/index" value="Gerenciar Dados"  />
-                    <p:separator/>
-                    <h:link outcome="/Calendario" value="Calendario"  />
-                    <p:separator/>
+
+                    <p:commandButton value="Equipamentos" id="btnEquipamento" style="width: 140px;position: relative; top: 20px" action= "/view/equipamento/List" immediate="true"/>
+
+                    <p:separator style="position: relative; top: 25px"/>
+
+
+                    <p:commandButton value="Calendário" id="btnCalendario" style="width: 140px; position: relative; top: 30px" action="/Calendario" immediate="true" /> 
+                    <p:separator style="position: relative; top: 35px"/>
+
+                    <p:commandButton value="Gerenciar Dados" id="btnDados" style="width: 140px; position: relative; top: 40px; font-size: smaller" action="/index" immediate="true" /> 
+
+
+
+
                 </p:layoutUnit>   
 
 
                 <p:layoutUnit position="center" >  
 
                     <p:panel >
-                        <p:dataTable id="db" var="item"   value="#{docenteController.docenteDataModel}" selectionMode="single"  paginator="true" rows="10"  
+                        <p:dataTable id="db" var="item"   value="#{docenteController.docenteDataModel}" selectionMode="single"  paginator="true" rows="5"  
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                      rowsPerPageTemplate="5,10,15" style="text-align: center">  
                             <f:facet name="header">  
@@ -54,7 +79,7 @@
                             </f:facet>   >
 
 
-                            <p:column headerText="nome" sortBy="#{item.nome}" style="text-align: left" filterBy="#{item.nome}" >  
+                            <p:column headerText="nome" sortBy="#{item.nome}" style="text-align: left" filterBy="#{item.nome}"  >  
                                 <f:facet name="header">
                                     <h:outputText value="Nome"/>
                                 </f:facet>
@@ -82,18 +107,30 @@
                                 <h:outputText value="#{item.email}" style="text-align: left"/>
                             </p:column>
 
-                            <p:column headerText="">
+                            <p:column headerText="" >
                                 <f:facet name="header">
                                     <h:outputText value=""/>
                                 </f:facet>
-                                <p:commandLink action="#{docenteController.prepareEdit()}" value="Editar" immediate="true"  />
+
+
+                                <p:commandButton style="width: 95px;height: 30px; font-size: small"
+                                                 action="#{docenteController.prepareEdit()}" value="Editar" immediate="true" 
+                                                 update="db" icon="ui-icon-pencil"/>
+
+
+
                             </p:column>
 
-                            <p:column headerText="">
+                            <p:column headerText="" >
                                 <f:facet name="header">
                                     <h:outputText value=""/>
                                 </f:facet>
-                                <p:commandLink action="#{docenteController.destroy()}" value="Deletar" immediate="true" update="db,:form1:msgs"/>
+
+
+
+                                <p:commandButton style="width: 97px;height: 30px; font-size: small"
+                                                 action="#{docenteController.destroy()}" value="Deletar" immediate="true" ajax="true"
+                                                 update="db,:form1:msgs" icon="ui-icon-trash"/>
                             </p:column>
 
                         </p:dataTable> 
@@ -101,23 +138,37 @@
                         <br/>
                     </p:panel>
                     <p:panel header="Criar Novo Docente"  >
-                        <p:panel footer="" style="display: block; text-align: left ">
+                        <p:panel  style="display: block; text-align: left ">
                             <h:panelGrid columns="5" id="pnGrCriarDocente" style="display: block; text-align: left">
-                                <h:outputLabel value="Nome" for="nome" />
+                                <h:outputLabel value="Nome:* " for="nome" />
                                 <h:inputText id="nome" value="#{docenteController.selected.nome}" title="nome" />
-                                <h:outputLabel value="Matrícula" for="matricula" />
+
+
+
+                                <h:outputLabel value="Matrícula: " for="matricula" />
                                 <h:inputText id="matricula" value="#{docenteController.selected.matricula}" title="matricula" />
+
                                 <br/>
-                                <h:outputLabel value="Centro" for="centro"  />
+                                <h:outputLabel value="Centro: " for="centro"  />
                                 <h:selectOneMenu id="centro" value="#{docenteController.selected.centro}" title="centro" required="true" requiredMessage="Selecione um Centro para este Docente"  >
                                     <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
                                 </h:selectOneMenu>
-                                <h:outputLabel value="email" for="email"  />
+
+
+                                <h:outputLabel value="E-mail" for="email"  />
                                 <h:inputText id="email" value="#{docenteController.selected.email}" title="email" />
 
                             </h:panelGrid>
+                            
                             <p:separator/>
-                            <p:commandLink action="#{docenteController.create()}" value="Salvar"  update="msgs,db,pnGrCriarDocente"  /> 
+
+                            <p:commandButton style="width: 97px; height: 30px; font-size: small; position: relative; "  
+                                             ajax="true"  value="Salvar" actionListener="#{docenteController.create()}"
+                                             update="msgs,db,pnGrCriarDocente" icon="ui-icon-disk"> 
+                            </p:commandButton>
+
+                            
+                            
 
                         </p:panel>
 

@@ -81,6 +81,7 @@ public class CentroController implements Serializable {
 
     public String prepareList() {
         recreateModel();
+        current = null;
         return "List";
     }
 

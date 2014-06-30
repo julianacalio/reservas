@@ -5,6 +5,9 @@
 package model;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -40,6 +43,8 @@ public class Servidor extends Pessoa implements Serializable {
     public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
+    
+   
 
 
     @Override

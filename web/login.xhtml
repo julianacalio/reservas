@@ -34,7 +34,7 @@
 
                     <f:facet name="footer">  
                         <p:commandButton id="loginButton" value="Login" update="growl"   
-                                         actionListener="#{loginBean.login}"   
+                                         actionListener="#{loginBean.doLogin()}"   
                                          oncomplete="handleLoginRequest(xhr, status, args)}" action="#{loginBean.page}" />  
                     </f:facet>   
 

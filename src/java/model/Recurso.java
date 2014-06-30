@@ -28,6 +28,8 @@ import javax.persistence.ManyToOne;
 public class Recurso implements Serializable {
 
     private String cor;
+    
+    private String cor2;
 
     public String getCor() {
         return cor;
@@ -35,6 +37,14 @@ public class Recurso implements Serializable {
 
     public void setCor(String cor) {
         this.cor = cor;
+    }
+
+    public String getCor2() {
+        return cor2;
+    }
+
+    public void setCor2(String cor2) {
+        this.cor2 = cor2;
     }
     
     

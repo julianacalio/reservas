@@ -49,5 +49,6 @@
         <mapping class="model.Reserva"/>
         <mapping class="model.TA"/>
         <mapping class="model.Emprestimo"/>
+        <mapping class="model.Usuario"/>
     </session-factory>
 </hibernate-configuration>

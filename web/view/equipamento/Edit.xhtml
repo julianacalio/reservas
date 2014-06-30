@@ -6,6 +6,7 @@
       xmlns:f="http://java.sun.com/jsf/core">
 
     <h:head>
+        <link href='http://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'/>
 
     </h:head>
     <h:body onload="#{loginBean.isLogado()}">
@@ -17,39 +18,61 @@
 
                 <p:layoutUnit style="text-align:center" position="north" size="75"  resizable="true" closable="true" collapsible="true" >  
                     <!--<h:graphicImage value="resources/images/cmcc.png" />-->
-                     <style type="text/css">
+                    <style type="text/css">
                         /*                                                                .ui-widget{font-size:90% !important;}*/
-                        .ui-layout-unit-content{background-image:url('resources/images/cinza4.jpg');}
+                        .ui-layout-unit-content{background-image:url('resources/images/grey-back.jpg');}
                     </style>
-                    <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 37px;font-weight: bold"/>
+                    <div style="color: #2E8B57 ;font-family: 'Play', serif;font-size: 24px; position: relative; top: 10px">Calendário de Alocação de Salas e Equipamentos</div>
+                    <!--                    <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 37px;font-weight: bold"/>-->
                 </p:layoutUnit> 
 
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
-                    <p:commandLink id="linkListCentro" action="/view/centro/List" immediate="true" value="Lista de Centros"/>  
+                    <!--                    <p:commandLink id="linkListCentro" action="/view/centro/List" immediate="true" value="Lista de Centros"/>  
+                                        <br/>
+                                        <p:commandLink id="linkListDocente" action="/view/docente/List" immediate="true" value="Lista de Docentes"/>  
+                                        <br/>
+                                        <p:commandLink id="linkListTA" action="/view/TA/List" immediate="true" value="Lista de TAs"/> 
+                                        <br/>
+                                        <p:commandLink id="linkListSala" action="/view/sala/List"  value="Lista de Salas" immediate="true"/>  
+                                        <br/>
+                                        <p:separator/>
+                                        <h:link outcome="/index" value="Gerenciar Dados"  />
+                                        <p:separator/>
+                                        <h:link outcome="/Calendario" value="Calendario"  />
+                                        <p:separator/>-->
+
+                    <p:commandButton  value="Centros" id="btnCentro"  style="width: 140px; position: relative; top: 5px"  action="/view/centro/List" immediate="true"/>
                     <br/>
-                    <p:commandLink id="linkListDocente" action="/view/docente/List" immediate="true" value="Lista de Docentes"/>  
+
+                    <p:commandButton  value="Docentes" id="btnDocentes" style="width: 140px; position: relative; top: 10px" action= "/view/docente/List" immediate="true"/>
                     <br/>
-                    <p:commandLink id="linkListTA" action="/view/TA/List" immediate="true" value="Lista de TAs"/> 
+
+                    <p:commandButton  value="TAs" id="btnTA" style="width: 140px; position: relative; top: 15px" action= "/view/TA/List" immediate="true"/>
                     <br/>
-                    <p:commandLink id="linkListSala" action="/view/sala/List"  value="Lista de Salas" immediate="true"/>  
+
+                    <p:commandButton value="Salas" id="btnSala" style="width: 140px;position: relative; top: 20px" action= "/view/sala/List" immediate="true"/>
                     <br/>
-                    <p:separator/>
-                    <h:link outcome="/index" value="Gerenciar Dados"  />
-                    <p:separator/>
-                    <h:link outcome="/Calendario" value="Calendario"  />
-                    <p:separator/>
+
+
+
+                    <p:separator style="position: relative; top: 25px"/>
+
+
+                    <p:commandButton value="Calendário" id="btnCalendario" style="width: 140px; position: relative; top: 30px" action="/Calendario" immediate="true" /> 
+                    <p:separator style="position: relative; top: 35px"/>
+
+                    <p:commandButton value="Gerenciar Dados" id="btnDados" style="width: 140px; position: relative; top: 40px; font-size: smaller" action="/index" immediate="true" /> 
+
                 </p:layoutUnit> 
 
                 <p:layoutUnit position="center"> 
                     <p:panel header="Editar dados do equipamento" style="text-align: left">
                         <h:panelGrid columns="2">
-                            <h:outputLabel value="patrimonio" for="patrimonio" />
+                            <h:outputLabel value="Patrimônio: " for="patrimonio" />
                             <h:inputText id="patrimonio" value="#{equipamentoController.selected.patrimonio}" title="patrimonio" />
-                            <h:outputLabel value="descrição" for="descricao" />
+                            <h:outputLabel value="Descrição: " for="descricao" />
                             <h:inputText id="descricao" value="#{equipamentoController.selected.descricao}" title="descricao" />
-                            <h:outputLabel value="id" for="id" />
-<!--                            <h:inputText id="id" value="#{equipamentoController.selected.id}" title="id" />
-                            <h:outputLabel value="centro" for="centro" />-->
+                            <h:outputLabel value="Centro: " for="centro" />
                             <h:selectOneMenu id="centro" value="#{equipamentoController.selected.centro}" title="centro" >
                                 <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
                             </h:selectOneMenu>
@@ -57,11 +80,14 @@
 
                         <p:separator/>
 
-                        <p:commandLink action="#{equipamentoController.update}" value="Atualizar Equipamento"/>
+                        <p:commandButton style="width: 230px;height: 30px"
+                                         actionListener="#{equipamentoController.update()}" value="Atualizar equipamento" 
+                                         update="msgs" icon="ui-icon-pencil"/>
 
                         <p:separator/>
 
-                        <p:commandLink action="#{equipamentoController.prepareList}" value="Mostrar todos os equipamentos" immediate="true"/>
+                        <p:commandButton style="width: 280px;height: 30px; font-size: small"
+                                         action="#{equipamentoController.prepareList}" value="Mostrar todos os equipamentos" immediate="true"/>
                     </p:panel>
                 </p:layoutUnit>  
 

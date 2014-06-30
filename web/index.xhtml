@@ -2,9 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
+        <link href='http://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'/>
 
         <title>Gerenciar Dados</title>
 
@@ -19,14 +19,14 @@
 
             <p:layout fullPage="true">  
 
-                <p:layoutUnit style="text-align:center" position="north" size="130" >  
-                    <h:form id ="f2">
-                        <p:graphicImage library="images" cache="true" name="cmcc.png" />
-                        <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 37px;font-weight: bold"/>
-                    </h:form>
+                <p:layoutUnit position="north" style="text-align:center" size="70" resizable="true" closable="true" collapsible="true">  
+                    <!--                    <h:graphicImage value="resources/images/cmcc.png" >  </h:graphicImage>-->
                     <style type="text/css">
+                        /*                                                                .ui-widget{font-size:90% !important;}*/
                         .ui-layout-unit-content{background-image:url('resources/images/grey-back.jpg');}
                     </style>
+                    <div style="color: #2E8B57 ;font-family: 'Play', serif;font-size: 24px; position: relative; top: 10px">Calendário de Alocação de Salas e Equipamentos</div>
+                    <!--                    <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 37px;font-weight: bold"/>-->
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="south" size="100"  resizable="true" closable="true" collapsible="true">  
@@ -37,13 +37,7 @@
                 </p:layoutUnit>  
 
 
-                <p:layoutUnit position="center" style=" border-color: transparent; color: transparent">  
-
-                    <!--                    <p:panel style="line-height:200px;padding: 5% 0;position: relative;"/>
-                                        <p:panelGrid columns="1" styleClass="centered">
-                                            
-                                        </p:panelGrid>
-                                        </p:panel>-->
+                <p:layoutUnit position="center"> 
 
                     <p:panel style="display: block; text-align: center; width: 300px;position: relative; top: 60px" styleClass="panelCenter">
 
@@ -54,7 +48,7 @@
                         <p:separator/>
 
                         <p:commandLink id="linkDocente" action= "/view/docente/List"   >  
-                            <p:commandButton value="Docente" id="btnDocente"  style="width: 160px" >
+                            <p:commandButton value="Docentes" id="btnDocente"  style="width: 160px" >
                                 <!--  <h:graphicImage value="resources/images/book2.png" />  -->
                             </p:commandButton>
                         </p:commandLink>
@@ -80,14 +74,22 @@
                         <p:separator/>
 
                         <p:commandLink id="linkCalendario" action="/Calendario"    >  
-                            <p:commandButton value="Calendario" id="btnCalendario" style="width: 160px" /> 
+                            <p:commandButton value="Calendário" id="btnCalendario" style="width: 160px" /> 
                         </p:commandLink>
 
                         <p:separator/>
 
                         <p:commandLink id="linkEmpretimo" action="/view/emprestimo/Emprestimo"    >  
-                            <p:commandButton value="Emprestimo" id="btnEmprestimo" style="width: 160px" /> 
+                            <p:commandButton value="Empréstimos" id="btnEmprestimo" style="width: 160px" /> 
                         </p:commandLink>
+
+                        <p:separator rendered="#{loginBean.usuarioLogado.adm}"/>
+
+                        <p:commandLink  rendered="#{loginBean.usuarioLogado.adm}"  id="linkUsuario" action="/view/usuario/List">
+                            <p:commandButton value="Usuários" id ="btnUsuario" style="width: 160px" />
+                        </p:commandLink>
+
+
                     </p:panel>
 
                 </p:layoutUnit>  

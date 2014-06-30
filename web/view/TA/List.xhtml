@@ -8,6 +8,7 @@
 
 
     <h:head>
+        <link href='http://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'/>
         <title>TA</title>
     </h:head>
     <h:body onload="#{loginBean.isLogado()}">
@@ -21,13 +22,14 @@
                     <!--                    <h:graphicImage value="resources/images/cmcc.png" >  </h:graphicImage>-->
                      <style type="text/css">
                         /*                                                                .ui-widget{font-size:90% !important;}*/
-                        .ui-layout-unit-content{background-image:url('resources/images/cinza4.jpg');}
+                        .ui-layout-unit-content{background-image:url('resources/images/grey-back.jpg');}
                     </style>
-                    <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 37px;font-weight: bold"/>
+                    <div style="color: #2E8B57 ;font-family: 'Play', serif;font-size: 24px; position: relative; top: 10px">Calendário de Alocação de Salas e Equipamentos</div>
+<!--                    <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 37px;font-weight: bold"/>-->
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
-                    <p:commandLink id="linkListCentro" action="/view/centro/List" immediate="true" value="Lista de Centros"/>  
+<!--                    <p:commandLink id="linkListCentro" action="/view/centro/List" immediate="true" value="Lista de Centros"/>  
                     <br/>
                     <p:commandLink id="linkListDocente" action="/view/docente/List" immediate="true" value="Lista de Docentes"/>  
                     <br/>
@@ -39,14 +41,38 @@
                     <h:link outcome="/index" value="Gerenciar Dados"  />
                     <p:separator/>
                     <h:link outcome="/Calendario" value="Calendario"  />
-                    <p:separator/>
+                    <p:separator/>-->
+                    
+                    
+                    <p:commandButton  value="Centros" id="btnCentro"  style="width: 140px; position: relative; top: 5px"  action="/view/centro/List" immediate="true"/>
+                    <br/>
+
+                    <p:commandButton  value="Docentes" id="btnDocentes" style="width: 140px; position: relative; top: 10px" action= "/view/docente/List" immediate="true"/>
+                    <br/>
+
+                    <p:commandButton value="Salas" id="btnSala" style="width: 140px;position: relative; top: 15px" action= "/view/sala/List" immediate="true"/>
+                    <br/>
+
+                    <p:commandButton value="Equipamentos" id="btnEquipamento" style="width: 140px;position: relative; top: 20px" action= "/view/equipamento/List" immediate="true"/>
+
+                    <p:separator style="position: relative; top: 25px"/>
+
+
+                    <p:commandButton value="Calendário" id="btnCalendario" style="width: 140px; position: relative; top: 30px" action="/Calendario" immediate="true" /> 
+                    <p:separator style="position: relative; top: 35px"/>
+
+                    <p:commandButton value="Gerenciar Dados" id="btnDados" style="width: 140px; position: relative; top: 40px; font-size: smaller" action="/index" immediate="true" /> 
+
+                    
+                    
+                    
                 </p:layoutUnit>   
 
 
                 <p:layoutUnit position="center" >  
 
                     <p:panel >
-                        <p:dataTable id="db" var="item"   value="#{tAController.TADataModel}" selectionMode="single"  paginator="true" rows="10"  
+                        <p:dataTable id="db" var="item"   value="#{tAController.TADataModel}" selectionMode="single"  paginator="true" rows="5"  
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                      rowsPerPageTemplate="5,10,15" style="text-align: center">  
                             <f:facet name="header">  
@@ -91,14 +117,19 @@
                                 <f:facet name="header">
                                     <h:outputText value=""/>
                                 </f:facet>
-                                <p:commandLink action="#{tAController.prepareEdit()}" value="Editar" immediate="true"  />
+                                <p:commandButton style="width: 95px;height: 30px; font-size: small"
+                                                 action="#{tAController.prepareEdit()}" value="Editar" immediate="true" 
+                                                 update="db" icon="ui-icon-pencil"/>
+                                
                             </p:column>
 
                             <p:column headerText="">
                                 <f:facet name="header">
                                     <h:outputText value=""/>
                                 </f:facet>
-                                <p:commandLink action="#{tAController.destroy()}" value="Deletar" immediate="true" update="db,:form1:msgs"/>
+                                <p:commandButton style="width: 97px;height: 30px; font-size: small"
+                                                 action="#{tAController.destroy()}" value="Deletar" immediate="true" ajax="true"
+                                                 update="db,:form1:msgs" icon="ui-icon-trash"/>
                             </p:column>
 
                         </p:dataTable> 
@@ -106,7 +137,7 @@
                         <br/>
                     </p:panel>
                     <p:panel header="Criar Novo Tecnico Adminstrativo"  >
-                        <p:panel footer="" style="display: block; text-align: left ">
+<!--                        <p:panel footer="" style="display: block; text-align: left ">-->
                             <h:panelGrid columns="5" id="pnGrCriarTA" style="display: block; text-align: left">
                                 <h:outputLabel value="Nome" for="nome" />
                                 <h:inputText id="nome" value="#{tAController.selected.nome}" title="nome" />
@@ -122,9 +153,12 @@
 
                             </h:panelGrid>
                             <p:separator/>
-                            <p:commandLink action="#{tAController.create()}" value="Salvar"  update="msgs,db,pnGrCriarTA"  /> 
-
-                        </p:panel>
+                            <p:commandButton style="width: 97px; height: 30px; font-size: small; position: relative; "  
+                                             ajax="true"  value="Salvar" actionListener="#{tAController.create()}"
+                                             update="msgs,db,pnGrCriarTA" icon="ui-icon-disk"> 
+                            </p:commandButton>
+                            
+<!--                        </p:panel>-->
 
                     </p:panel>
 

@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <link href='http://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'/>
+        <title>Usuários</title>
+    </h:head>
+    <h:body onload="#{loginBean.isLogado()}">
+
+        <h:outputStylesheet library="css" name="style.css"  />
+
+        <h:form id="form1"> 
+            <p:layout fullPage="true">  
+
+                <p:layoutUnit position="north" style="text-align:center" size="70" resizable="true" closable="true" collapsible="true">  
+                    <!--                    <h:graphicImage value="resources/images/cmcc.png" >  </h:graphicImage>-->
+                    <style type="text/css">
+                        /*                                                                .ui-widget{font-size:90% !important;}*/
+                        .ui-layout-unit-content{background-image:url('resources/images/grey-back.jpg');}
+                    </style>
+                    <div style="color: #2E8B57 ;font-family: 'Play', serif;font-size: 24px; position: relative; top: 10px">Calendário de Alocação de Salas e Equipamentos</div>
+                    <!--                    <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 37px;font-weight: bold"/>-->
+
+
+
+                    <h:commandLink value="Logout" style="position: relative; left: 650px; bottom: 30px; color: #2E8B57" 
+                                   action="#{loginBean.doLogout()}" immediate="true"/>
+
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
+
+
+                    <p:commandButton  value="Centros" id="btnCentro"  style="width: 140px; position: relative; top: 5px"  action="/view/centro/List" immediate="true"/>
+                    <br/>
+
+                    <p:commandButton  value="TAs" id="btnTA" style="width: 140px; position: relative; top: 10px" action= "/view/TA/List" immediate="true"/>
+                    <br/>
+
+                    <p:commandButton  value="Docentes" id="btnDocentes" style="width: 140px; position: relative; top: 15px" action= "/view/docente/List" immediate="true"/>
+                    <br/>
+
+                    <p:commandButton value="Salas" id="btnSala" style="width: 140px;position: relative; top: 20px" action= "/view/sala/List" immediate="true"/>
+                    <br/>
+
+                    <p:commandButton value="Equipamentos" id="btnEquipamento" style="width: 140px;position: relative; top: 25px" action= "/view/equipamento/List" immediate="true"/>
+
+                    <p:separator style="position: relative; top: 30px"/>
+
+
+                    <p:commandButton value="Calendário" id="btnCalendario" style="width: 140px; position: relative; top: 35px" action="/Calendario" immediate="true" /> 
+
+                    <p:separator style="position: relative; top: 40px"/>
+
+                    <p:commandButton value="Gerenciar Dados" id="btnDados" style="width: 140px; position: relative; top: 45px; font-size: smaller" action="/index" immediate="true" /> 
+
+
+
+
+                </p:layoutUnit>   
+
+
+                <p:layoutUnit position="center" >  
+
+                    <p:panel >
+                        <p:dataTable id="db" var="item"   value="#{usuarioController.usuarioDataModel}" selectionMode="single"  paginator="true" rows="5"  
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                     rowsPerPageTemplate="5,10,15" style="text-align: center; width: 750px" styleClass="panelCenter">  
+                            <f:facet name="header">  
+                                Lista de Usuários 
+                            </f:facet>   >
+
+
+                            <p:column headerText="nome" sortBy="#{item.ta.nome}" style="text-align: left"  >  
+                                <f:facet name="header">
+                                    <h:outputText value="Nome"/>
+                                </f:facet>
+                                <h:outputText value="#{item.ta.nome}"/>
+                            </p:column>  
+
+                            <p:column headerText="login">  
+                                <f:facet name="header">
+                                    <h:outputText value="Login"/>
+                                </f:facet>
+                                <h:outputText value="#{item.login}"/>
+                            </p:column>  
+
+                            <!--                            <p:column headerText="senha">  
+                                                            <f:facet name="header">
+                                                                <h:outputText value="Senha"/>
+                                                            </f:facet>
+                                                            <h:outputText value="#{item.senha}"/>
+                                                        </p:column>  -->
+
+                            <!--                            <p:column headerText="adm">  
+                                                            <f:facet name="header">
+                                                                <h:outputText value="Usuario administrador"/>
+                                                            </f:facet>
+                                                            <h:outputText value="#{item.adm}"/>
+                                                        </p:column>-->
+
+                            <p:column headerText="">
+                                <f:facet name="header">
+                                    <h:outputText value=""/>
+                                </f:facet>
+                                <p:commandButton style="width: 97px;height: 30px; font-size: small"
+                                                 action="#{usuarioController.delete()}" value="Deletar" immediate="true" ajax="true"
+                                                 update="db,:form1:msgs" icon="ui-icon-trash"/>
+                            </p:column>
+
+                        </p:dataTable> 
+                        <br/>
+                        <br/>
+                    </p:panel>
+                    <p:panel style="height: 270px">
+                        <p:panel header="Criar Novo Usuário" style="text-align: center; width: 750px" styleClass="panelCenter" >
+                            <!--                        <p:panel footer="" style="display: block; text-align: left ">-->
+                            <h:panelGrid columns="5" id="pnGrCriarUsuario" style="display: block; text-align: left">
+
+
+
+                                <br/>
+
+                                <h:outputLabel value="Login: " for="login" />
+                                <h:inputText id="login" value="#{usuarioController.usuario.login}" title="login" />
+
+                                <h:outputLabel value="Senha: " for="senha" />
+                                <h:inputText id="senha" value="#{usuarioController.usuario.senha}" title="senha" />
+                                <br/>
+
+                                <h:outputText value="Usuário Administrador: " />
+                                <p:selectBooleanCheckbox value="#{usuarioController.usuario.adm}" />
+
+
+
+                                <h:outputLabel value="TA: " for="ta"  />
+                                <h:selectOneMenu id="ta" value="#{usuarioController.usuario.ta}"  required="true" requiredMessage="Selecione um TA para esse usuário"  >
+                                    <f:selectItems value="#{tAController.itemsAvailableSelectOne}"/>
+                                </h:selectOneMenu>
+
+
+                            </h:panelGrid>
+                            <p:separator/>
+                            <p:commandButton style="width: 97px; height: 30px; font-size: small; position: relative; "  
+                                             ajax="true"  value="Salvar" actionListener="#{usuarioController.salvarNoBanco()}"
+                                             update="msgs,db,pnGrCriarUsuario" icon="ui-icon-disk"> 
+                            </p:commandButton>
+
+                            <!--                        </p:panel>-->
+
+                        </p:panel>
+
+
+                    </p:panel>
+
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="south" style="text-align:center" size="80"  resizable="true" closable="true" collapsible="true">  
+                    <p:messages id="msgs" showDetail="true"/>   
+                </p:layoutUnit>  
+
+            </p:layout>  
+
+        </h:form> 
+
+
+    </h:body>
+</html>
+
