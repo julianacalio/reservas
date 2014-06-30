@@ -228,3 +228,17 @@ padding: 10% 0;
     color: black;
     border-color: greenyellow;
 }
+
+.ui-top {
+    background-image: url('resources/images/grey-back.jpg');
+}
+
+.ui-center {
+    
+    background-image: none;
+    background-color:  appworkspace;
+}
+
+
+
+
