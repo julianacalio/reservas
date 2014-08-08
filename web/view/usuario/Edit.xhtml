@@ -66,13 +66,13 @@
                         <h:panelGrid columns="2" id="pnGrEditarSenha" style="text-align: left"  >
                             
                             <h:outputLabel value="Senha atual" for="senhaAtual" />
-                            <h:inputText id="senhaAtual" value="oldPassword"/>
+                            <h:inputSecret id="senhaAtual" value="#{oldPassword}"/>
                             
                             <h:outputLabel value="Nova senha" for="novaSenha" />
-                            <h:inputText id="novaSenha" value="newPassword"/>
+                            <h:inputSecret id="novaSenha" value="#{newPassword}"/>
                             
                             <h:outputLabel value="Digite a senha novamente" for="novaSenha2" />
-                            <h:inputText id="novaSenha2" value="newPassword2"/>
+                            <h:inputSecret id="novaSenha2" value="#{newPassword2}"/>
                             
                     
                         </h:panelGrid>
@@ -81,12 +81,9 @@
                         
                         <p:commandButton style="width: 170px;height: 30px"
                                          actionListener="#{loginBean.saveNewPassword(oldPassword, newPassword, newPassword2)}" value="Atualizar senha" 
-                                         update="msgs" icon="ui-icon-pencil"/>
+                                         update="msgs" icon="ui-icon-pencil" ajax="false"/>
                         
-                        <p:separator/>
-                        
-                        <p:commandButton style="width: 200px;height: 30px; font-size: small"
-                                         action="#{tAController.prepareList()}" value="Mostrar todos os TAs" immediate="true"/>
+                      
                         
                         
                     </p:panel>

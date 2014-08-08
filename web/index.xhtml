@@ -93,6 +93,14 @@
                         <p:commandLink  rendered="#{loginBean.usuarioLogado.adm}"  id="linkUsuario" action="/view/usuario/List">
                             <p:commandButton value="Usuários" id ="btnUsuario" style="width: 160px" />
                         </p:commandLink>
+                        
+                        <p:separator/>
+
+                        <p:commandLink  id="linkSenha" action="/view/usuario/Edit">
+                            <p:commandButton value="Alterar senha" id ="btnSenha" style="width: 160px" />
+                        </p:commandLink>
+                        
+                        
 
 
                     </p:panel>

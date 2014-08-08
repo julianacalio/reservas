@@ -1,6 +1,7 @@
 package controller;
 
 import static controller.HibernateUtil.getSessionFactory;
+import facade.UsuarioFacade;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -9,6 +10,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -23,6 +25,10 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class LoginBean implements Serializable {
 
+    @EJB
+    private UsuarioFacade usuarioFacade;
+    
+    
     private String username;
     
     public String getUsername() {
@@ -41,16 +47,6 @@ public class LoginBean implements Serializable {
 
     public void setPassword(String password) {
         this.password = convertStringToMd5(password);
-    }
-    
-    private String oldPassword;
-
-    public String getOldPassoword() {
-        return oldPassword;
-    }
-
-    public void setOldPassoword(String oldPassword) {
-        this.oldPassword = convertStringToMd5(oldPassword);
     }
     
     private boolean loggedIn;
@@ -72,6 +68,8 @@ public class LoginBean implements Serializable {
     public void setUsuarioLogado(Usuario usuarioLogado) {
         this.usuarioLogado = usuarioLogado;
     }
+    
+    private int indicadorSenha;
     
 
     /**
@@ -161,27 +159,35 @@ public class LoginBean implements Serializable {
     
     public void saveNewPassword(String oldPassword, String newPassword, String newPassword2){
         
-        RequestContext context = RequestContext.getCurrentInstance();
+        //RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msg;
         
-        if(!(this.password.equals(convertStringToMd5(oldPassword)))){
-            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Senha antiga não corresponde ", "Tente novamente");
-        }
-        else{
-            if(!(newPassword.equals(newPassword2))){
-                msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Novas senhas não correspondem ", "Tente novamente");
-            }
-            else{
+        //oldPassword = convertStringToMd5(oldPassword);
+        
+//        if(!(this.password.equals(oldPassword))){
+//            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Senha antiga não corresponde ", "Tente novamente");
+//            this.indicadorSenha = 0;
+//        }
+//        else{
+//            if(!(newPassword.equals(newPassword2))){
+//                msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Novas senhas não correspondem ", "Tente novamente");
+//                this.indicadorSenha = 0;
+//            }
+//            else{
                 this.usuarioLogado.setSenha(newPassword);
+                usuarioFacade.edit(usuarioLogado);
                 msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Senha alterada com sucesso!", this.usuarioLogado.getNome());
-            }
+                this.indicadorSenha = 1;
+//            }
             
-        }
+//        }
+        
+        FacesContext.getCurrentInstance().addMessage(null, msg);
         
     }
-    public String pageSenha(int indicador){
+    public String pageSenha(){
         
-        if(indicador == 1){
+        if(this.indicadorSenha == 1){
             return "/index";
         }
         else{
