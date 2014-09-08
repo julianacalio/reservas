@@ -1,7 +1,5 @@
 package model;
 
-import controller.LoginBean;
-import controller.UsuarioController;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -63,7 +61,7 @@ public class Usuario implements Serializable {
     }
 
     public void setSenha(String senha) {
-        this.senha = LoginBean.convertStringToMd5(senha);
+        this.senha = senha;
     }
 
     private boolean adm;
