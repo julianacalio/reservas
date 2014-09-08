@@ -14,7 +14,7 @@ import javax.persistence.Id;
  * @author charles
  */
 public class Aluno extends Pessoa implements Serializable{
-     private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
