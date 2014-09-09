@@ -89,19 +89,24 @@
                                 <h:outputText value="#{item.login}"/>
                             </p:column>  
 
-                            <!--                            <p:column headerText="senha">  
-                                                            <f:facet name="header">
-                                                                <h:outputText value="Senha"/>
-                                                            </f:facet>
-                                                            <h:outputText value="#{item.senha}"/>
-                                                        </p:column>  -->
 
-                            <!--                            <p:column headerText="adm">  
-                                                            <f:facet name="header">
-                                                                <h:outputText value="Usuario administrador"/>
-                                                            </f:facet>
-                                                            <h:outputText value="#{item.adm}"/>
-                                                        </p:column>-->
+                            <p:column headerText="adm">  
+                                <f:facet name="header">
+                                    <h:outputText value="Usuario administrador"/>
+                                </f:facet>
+                                <h:outputText value="#{item.ehAdm}"/>
+                            </p:column>
+                            
+                            
+                            <p:column headerText="">
+                                <f:facet name="header">
+                                    <h:outputText value=""/>
+                                </f:facet>
+                                <p:commandButton style="width: 95px;height: 30px; font-size: small"
+                                                 action="#{usuarioController.prepareEdit()}" value="Editar" immediate="true" 
+                                                 update="db" icon="ui-icon-pencil"/>
+                                
+                            </p:column>
 
                             <p:column headerText="">
                                 <f:facet name="header">
@@ -125,22 +130,21 @@
 
                                 <br/>
 
-                                <h:outputLabel value="Login: " for="login" />
-                                <h:inputText id="login" value="#{usuarioController.usuario.login}" title="login" />
+                                <!--                                <h:outputLabel value="Login: " for="login" />
+                                                                <h:inputText id="login" value="#{usuarioController.usuario.login}" title="login" />-->
 
-                                <h:outputLabel value="Senha: " for="senha" />
-                                <h:inputText id="senha" value="#{usuarioController.usuario.senha}" title="senha" />
-                                <br/>
+                                <h:outputLabel value="TA: " for="ta"  />
+                                <h:selectOneMenu id="ta" value="#{usuarioController.usuario.ta}"  required="true" requiredMessage="Selecione um TA para esse usuário"  >
+                                    <f:selectItems value="#{tAController.itemsAvailableSelectOne}"/>
+                                </h:selectOneMenu>
+
 
                                 <h:outputText value="Usuário Administrador: " />
                                 <p:selectBooleanCheckbox value="#{usuarioController.usuario.adm}" />
 
 
 
-                                <h:outputLabel value="TA: " for="ta"  />
-                                <h:selectOneMenu id="ta" value="#{usuarioController.usuario.ta}"  required="true" requiredMessage="Selecione um TA para esse usuário"  >
-                                    <f:selectItems value="#{tAController.itemsAvailableSelectOne}"/>
-                                </h:selectOneMenu>
+
 
 
                             </h:panelGrid>

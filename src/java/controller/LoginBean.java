@@ -16,11 +16,16 @@ import static javax.naming.Context.PROVIDER_URL;
 import static javax.naming.Context.SECURITY_AUTHENTICATION;
 import static javax.naming.Context.SECURITY_CREDENTIALS;
 import static javax.naming.Context.SECURITY_PRINCIPAL;
+import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.DirContext;
+import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
+import model.Usuario;
 import org.primefaces.context.RequestContext;
 
 @Named("loginBean")
@@ -29,6 +34,8 @@ public class LoginBean implements Serializable {
 
     @EJB
     private UsuarioFacade usuarioFacade;
+
+    private Usuario usuario;
 
     private String username;
 
@@ -86,11 +93,20 @@ public class LoginBean implements Serializable {
             } catch (NamingException ex) {
                 Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-            loggedIn = true;
-            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bem-vindo(a)!", nome);
-            
+
+            usuario = usuarioFacade.findByLogin(username);
+
+            if (usuario != null) {
+                loggedIn = true;
+                msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bem-vindo(a)!", nome);
+            }
+            else{
+                loggedIn = false;
+                msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Invalid credentials");
+            }
+
         } else {
-        
+
             loggedIn = false;
             msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Invalid credentials");
         }
@@ -128,6 +144,7 @@ public class LoginBean implements Serializable {
         loggedIn = false;
         username = "";
         password = "";
+        usuario = null;
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
@@ -179,6 +196,27 @@ public class LoginBean implements Serializable {
                 //System.err.println("ERROR: " + ex.getMessage());
                 return null;
             }
+        }
+
+        public String getUID(String nome) {
+
+            DirContext contexto = getContextoLDAP();
+
+            Attributes atributos = new BasicAttributes(true);
+            atributos.put(new BasicAttribute("cn"));
+            String filter = "cn=" + nome;
+            NamingEnumeration answer;
+            try {
+                answer = contexto.search("ou=users,dc=ufabc,dc=edu,dc=br", filter, null);
+                SearchResult sr = (SearchResult) answer.next();
+                return sr.getName().substring(4);
+            } catch (NamingException ex) {
+                Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+//        System.out.println("Result: " + sr.getName().substring(4));
+//        return "";
+            return null;
         }
 
     }

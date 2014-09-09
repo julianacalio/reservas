@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 @Entity
 
@@ -54,15 +55,15 @@ public class Usuario implements Serializable {
         this.login = login;
     }
 
-    private String senha;
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
+//    private String senha;
+//
+//    public String getSenha() {
+//        return senha;
+//    }
+//
+//    public void setSenha(String senha) {
+//        this.senha = senha;
+//    }
 
     private boolean adm;
 
@@ -73,6 +74,20 @@ public class Usuario implements Serializable {
     public void setAdm(boolean adm) {
         this.adm = adm;
     }
+    
+    @Transient
+    private String ehAdm;
+
+    public String getEhAdm() {
+        ehAdm = adm ? "Sim" : "Não"; 
+        return ehAdm;
+    }
+
+    public void setEhAdm(String ehAdm) {
+        this.ehAdm = ehAdm;
+    }
+    
+    
 
     @Override
     public int hashCode() {

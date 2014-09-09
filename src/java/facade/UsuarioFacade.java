@@ -7,9 +7,17 @@
 package facade;
 
 import controller.HibernateUtil;
+import static controller.HibernateUtil.getSessionFactory;
+import controller.UsuarioController;
+import java.util.List;
 import javax.ejb.Stateless;
 import model.Usuario;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -27,6 +35,28 @@ public class UsuarioFacade extends AbstractFacade<Usuario>{
   
         return HibernateUtil.getSessionFactory();
         
+    }
+    
+    
+    public Usuario findByLogin(String login) {
+
+
+            try {
+                Session session = getSessionFactory().openSession();
+                Query query = session.createQuery("from Usuario u where u.login = :login ");
+                query.setParameter("login", login);
+                List resultado = query.list();
+
+                if (resultado.size() == 1) {
+                    Usuario userFound = (Usuario) resultado.get(0);
+                    return userFound;
+                } else {
+                    return null;
+                }
+            } catch (HibernateException e) {
+                return null;
+            }
+
     }
     
     

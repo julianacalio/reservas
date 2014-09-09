@@ -1,5 +1,6 @@
 package controller;
 
+import controller.LoginBean.LDAP;
 import facade.UsuarioFacade;
 import java.io.Serializable;
 import java.util.List;
@@ -11,6 +12,12 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
+import javax.naming.NamingEnumeration;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.BasicAttributes;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.SearchResult;
 import model.Usuario;
 import util.UsuarioDataModel;
 
@@ -28,6 +35,8 @@ public class UsuarioController implements Serializable {
     @EJB
     private UsuarioFacade usuarioFacade;
     private UsuarioDataModel usuarioDataModel;
+    
+    private int selectedItemIndex;
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
@@ -71,6 +80,19 @@ public class UsuarioController implements Serializable {
         return usuario;
     }
     
+    
+    public Usuario getSelected() {
+        if (usuario == null) {
+            usuario = new Usuario();
+            selectedItemIndex = -1;
+        }
+        return usuario;
+    }
+    
+    
+//    public String ehAdm(){
+//        return usuario.isAdm() ? "Sim" : "Não"; 
+//    }
    
     
 
@@ -86,6 +108,9 @@ public class UsuarioController implements Serializable {
     public void salvarNoBanco() {
 
         try {
+             
+            LDAP ldap = new LoginBean().new LDAP();
+            usuario.setLogin(ldap.getUID(usuario.getNome()));
             usuarioFacade.save(usuario);
             JsfUtil.addSuccessMessage("Usuario " + usuario.getLogin() + " criado com sucesso!");
             usuario = null;
@@ -96,6 +121,8 @@ public class UsuarioController implements Serializable {
         }
 
     }
+    
+    
 
     public Usuario buscar(Long id) {
 

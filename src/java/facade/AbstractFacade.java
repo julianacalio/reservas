@@ -1,11 +1,13 @@
 package facade;
 
 import java.util.List;
+import model.Reserva;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 public abstract class AbstractFacade<T> {
 
@@ -95,6 +97,9 @@ public abstract class AbstractFacade<T> {
         session.close();
         return entity;
     }
+    
+    
+    
 
     /**
      * Busca todas as entidades do banco de dados.
