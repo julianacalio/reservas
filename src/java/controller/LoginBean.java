@@ -37,6 +37,16 @@ public class LoginBean implements Serializable {
 
     private Usuario usuario;
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
+    
+
     private String username;
 
     public String getUsername() {
@@ -128,6 +138,7 @@ public class LoginBean implements Serializable {
 
         if (!loggedIn) {
             try {
+                
                 FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml?faces-redirect=true");
             } catch (IOException ex) {
                 Logger.getLogger(CalendarioController.class.getName()).log(Level.SEVERE, null, ex);
@@ -136,7 +147,7 @@ public class LoginBean implements Serializable {
 
     }
 
-    public void doLogout() {
+    public String doLogout() {
 
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msg;
@@ -147,12 +158,18 @@ public class LoginBean implements Serializable {
         usuario = null;
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
-
-        try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml?faces-redirect=true");
-        } catch (IOException ex) {
-            Logger.getLogger(CalendarioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        
+//
+//        try {
+//            FacesContext.getCurrentInstance().getExternalContext().redirect("/login.xhtml?faces-redirect=true");
+////            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+////        ec.redirect(ec.getRequestContextPath() + "/" + "login.xhtml");
+//        return;
+//        } catch (IOException ex) {
+//            Logger.getLogger(CalendarioController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        
+        return "/login";
 
     }
 
