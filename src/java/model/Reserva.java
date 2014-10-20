@@ -17,6 +17,7 @@ import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import org.primefaces.model.ScheduleEvent;
 import util.DateTools;
+import util.TratamentoStrings;
 
 @Entity
 public class Reserva implements Serializable, ScheduleEvent {
@@ -83,6 +84,8 @@ public class Reserva implements Serializable, ScheduleEvent {
     }
 
     public void setMotivo(String motivo) {
+        motivo = motivo.replace("'", " ");
+        motivo = TratamentoStrings.addSlashes(motivo);
         this.motivo = motivo;
     }
     @Transient
