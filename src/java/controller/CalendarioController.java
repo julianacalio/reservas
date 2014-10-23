@@ -42,7 +42,6 @@ import util.EquipamentoDataModel;
 import util.RecursoDataModel;
 import util.SalaDataModel;
 
-
 @Named("calendarioController")
 @SessionScoped
 public class CalendarioController implements Serializable {
@@ -78,7 +77,8 @@ public class CalendarioController implements Serializable {
     private boolean reservaSemanal;
     private List<Reserva> reservasImpossiveis = new ArrayList<Reserva>();
     private Date dataFinalReservaSemanal;
-    private boolean isShowAll;
+    private boolean isShowAllSalas;
+    private boolean isShowAllEquipamentos;
 
     public CalendarioController() {
 
@@ -295,7 +295,7 @@ public class CalendarioController implements Serializable {
 
     public ScheduleModel getEventModel() {
 
-        if (isShowAll) {
+        if (isShowAllSalas) {
             eventModel = new DefaultScheduleModel();
             List<Recurso> r = new ArrayList<Recurso>();
             r.addAll(salaFacade.findAll());
@@ -306,24 +306,57 @@ public class CalendarioController implements Serializable {
                 }
             }
 
-            isShowAll = false;
+            isShowAllSalas = false;
         } else {
-            if (eventModel == null) {
-                if (current == null) {
-                    return null;
-                }
-
-                if (pessoas == null) {
-                    pessoas = pessoaFacade.findAll();
-                }
-
+            if (isShowAllEquipamentos) {
                 eventModel = new DefaultScheduleModel();
+                List<Recurso> r = new ArrayList<Recurso>();
+                List<Long> ids = new ArrayList<Long>();
+                r.addAll(equipamentoFacade.findAll());
+                
+//                List<Reserva> reservasEquipamentos = reservaFacade.findAllRecurso("Equipamento");
+//                for(Reserva r : reservasEquipamentos){
+////                    r.setStyleClass(opcaoRepeticaoEscolhida);
+//                    eventModel.addEvent(r);
+//                }
+                
+                
+//                Reserva reservaAnterior = r.get(0).getReservas().get(0);
+//                eventModel.addEvent(reservaAnterior);
+                ids.add(r.get(0).getReservas().get(0).getIid());
+                for (Recurso recurso : r) {
+                    for (Reserva res : recurso.getReservas()) {
+                        
+                        if(!ids.contains(res.getIid())){
+                            System.out.println(res);
+                            res.setStyleClass(recurso.getCor() + "-event");
+                           eventModel.addEvent(res); 
+                           ids.add(res.getIid());
+                        }
+                        
+                        
+                    }
+                }
 
-                for (Reserva res : current.getReservas()) {
-      
-                    res.setStyleClass(current.getCor() + "-event");
+                isShowAllEquipamentos = false;
+            } else {
+                if (eventModel == null) {
+                    if (current == null) {
+                        return null;
+                    }
 
-                    eventModel.addEvent(res);
+                    if (pessoas == null) {
+                        pessoas = pessoaFacade.findAll();
+                    }
+
+                    eventModel = new DefaultScheduleModel();
+
+                    for (Reserva res : current.getReservas()) {
+
+                        res.setStyleClass(current.getCor() + "-event");
+
+                        eventModel.addEvent(res);
+                    }
                 }
             }
         }
@@ -546,7 +579,16 @@ public class CalendarioController implements Serializable {
     }
 
     public void selecionaVisualizacaoTodasSalas() {
-        isShowAll = true;
+        isShowAllSalas = true;
+        current = null;
+        novaSala = null;
+        novoEquipamento = null;
+        limpaSelecaoTabelaEquipamento();
+        limpaSelecaoTabelaSala();
+    }
+    
+    public void selecionaVisualizacaoTodosEquipamentos() {
+        isShowAllEquipamentos = true;
         current = null;
         novaSala = null;
         novoEquipamento = null;
@@ -708,7 +750,7 @@ public class CalendarioController implements Serializable {
     }
 
     public void onValueChangeHoraFim() {
-       
+
     }
 
     public void onReservaMove(ScheduleEntryMoveEvent event) {
@@ -776,8 +818,8 @@ public class CalendarioController implements Serializable {
     }
 
     /**
-     * Retira a seleção da sala ou equipamento que esteja selecionado na tela 
-     * do calendário.
+     * Retira a seleção da sala ou equipamento que esteja selecionado na tela do
+     * calendário.
      */
     public void clearSelection() {
         RequestContext context = RequestContext.getCurrentInstance();
@@ -793,9 +835,10 @@ public class CalendarioController implements Serializable {
         return recursoFacade.find(id);
     }
 
-     /**
+    /**
      * Busca todos os equipamentos que não estão reservados dentro de um
      * intervalo de datas especificado.
+     *
      * @param inicio Data inicial da busca por equipamentos livres.
      * @param fim Data final da busca por equipamentos livres.
      * @return Equipamentos livres.
@@ -813,8 +856,9 @@ public class CalendarioController implements Serializable {
     }
 
     /**
-     * Busca todos os recursos que não estão reservados dentro de um
-     * intervalo de datas especificado.
+     * Busca todos os recursos que não estão reservados dentro de um intervalo
+     * de datas especificado.
+     *
      * @param inicio Data inicial da busca por recursos livres.
      * @param fim Data final da busca por recursos livres.
      * @return Recursos livres.
@@ -831,7 +875,9 @@ public class CalendarioController implements Serializable {
     }
 
     /**
-     * Busca todos os recursos que estão ocupados entre uma data de origem e uma data de fim
+     * Busca todos os recursos que estão ocupados entre uma data de origem e uma
+     * data de fim
+     *
      * @param inicio Data inicial dos recursos ocupados.
      * @param fim Data final dos recursos ocupados.
      * @return Recursos ocupados dentro do intervalo especificado.
@@ -846,10 +892,11 @@ public class CalendarioController implements Serializable {
     }
 
     /**
-     * Retorna os recursos que foram selecionados pela nova reserva e ja estao reservados no horario da nova 
-     * reserva no banco de dados.
+     * Retorna os recursos que foram selecionados pela nova reserva e ja estao
+     * reservados no horario da nova reserva no banco de dados.
      *
-     * @param reserva Reserva que possui uma lista de recursos que serão analisados.
+     * @param reserva Reserva que possui uma lista de recursos que serão
+     * analisados.
      * @return Lista de recursos que ja estao reservados no horario da reserva.
      */
     private List<Recurso> getRecursosOcupadosDaReserva(Reserva reserva) {
@@ -868,16 +915,19 @@ public class CalendarioController implements Serializable {
     }
 
     /**
-     * Recebe um lista de dias da semana em formato numérico (Dom = 0, Seg = 1, Ter = 2, etc) e uma 
-     * data para servir como referência. O método retorna os dias do mês que representam aqueles dias
-     * da semana passados. Por exemplo: Ao receber os parâmetros ([2,4,6] , 14/02/2014). Está sendo
-     * passado os dias da semana terça, quinta e sabado e o dia 14/02/2014. Analisando o calendario
-     * de 2014 o dia 14/02/2014 acontece em uma sexta feira, logo os dias da semana passados como
-     * parâmetros representam: terca = 11/02/2014, quinta = 13/02/2014 e sabado = 15/02/2014.
-     * @param diasDaSemana Lista de dias da semana (dom = 0, seg = 1, ter = 2, qua = 3
-     * qui = 4, sex = 5. sab = 6.
-     * @param dataSelecionada Data para servir como referência para determinar em qual
-     * semana do ano está sendo requisito os dias pedidos.
+     * Recebe um lista de dias da semana em formato numérico (Dom = 0, Seg = 1,
+     * Ter = 2, etc) e uma data para servir como referência. O método retorna os
+     * dias do mês que representam aqueles dias da semana passados. Por exemplo:
+     * Ao receber os parâmetros ([2,4,6] , 14/02/2014). Está sendo passado os
+     * dias da semana terça, quinta e sabado e o dia 14/02/2014. Analisando o
+     * calendario de 2014 o dia 14/02/2014 acontece em uma sexta feira, logo os
+     * dias da semana passados como parâmetros representam: terca = 11/02/2014,
+     * quinta = 13/02/2014 e sabado = 15/02/2014.
+     *
+     * @param diasDaSemana Lista de dias da semana (dom = 0, seg = 1, ter = 2,
+     * qua = 3 qui = 4, sex = 5. sab = 6.
+     * @param dataSelecionada Data para servir como referência para determinar
+     * em qual semana do ano está sendo requisito os dias pedidos.
      * @return Dias do mês que representam os dias da semana pedidos.
      */
     public List<Date> getDatasSelecionadas(List<Integer> diasDaSemana, Date dataSelecionada) {

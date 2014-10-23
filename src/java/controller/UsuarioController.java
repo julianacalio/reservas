@@ -12,12 +12,6 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
-import javax.naming.NamingEnumeration;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttribute;
-import javax.naming.directory.BasicAttributes;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.SearchResult;
 import model.Usuario;
 import util.UsuarioDataModel;
 
@@ -26,7 +20,8 @@ import util.UsuarioDataModel;
 public class UsuarioController implements Serializable {
 
     public UsuarioController() {
-        usuario = new Usuario();
+//        usuario = new Usuario();
+        this.loginManual = false;
     }
 
     //Guarda o usuario atual
@@ -35,8 +30,18 @@ public class UsuarioController implements Serializable {
     @EJB
     private UsuarioFacade usuarioFacade;
     private UsuarioDataModel usuarioDataModel;
-    
+
     private int selectedItemIndex;
+
+    private boolean loginManual;
+
+    public boolean isLoginManual() {
+        return loginManual;
+    }
+
+    public void setLoginManual(boolean loginManual) {
+        this.loginManual = loginManual;
+    }
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
@@ -64,7 +69,6 @@ public class UsuarioController implements Serializable {
 
     }
 
-
     public void recriarModelo() {
         this.usuarioDataModel = null;
     }
@@ -73,14 +77,12 @@ public class UsuarioController implements Serializable {
         return JsfUtil.getSelectItems(usuarioFacade.findAll(), true);
     }
 
-    public Usuario getUsuario() {
-        if (usuario == null) {
-            usuario = new Usuario();
-        }
-        return usuario;
-    }
-    
-    
+//    public Usuario getUsuario() {
+//        if (usuario == null) {
+//            usuario = new Usuario();
+//        }
+//        return usuario;
+//    }
     public Usuario getSelected() {
         if (usuario == null) {
             usuario = new Usuario();
@@ -88,14 +90,10 @@ public class UsuarioController implements Serializable {
         }
         return usuario;
     }
-    
-    
+
 //    public String ehAdm(){
 //        return usuario.isAdm() ? "Sim" : "Não"; 
 //    }
-   
-    
-
 //    public String prepareCreate(int i) {
 //        usuario = new Usuario();
 //        if(i == 1){
@@ -105,24 +103,39 @@ public class UsuarioController implements Serializable {
 //        return "Create";
 //        }
 //    }
+    public void getLoginLDAP() {
+
+        LDAP ldap = new LoginBean().new LDAP();
+        this.usuario.setLogin(ldap.getUID(usuario.getNome()));
+
+    }
+
     public void salvarNoBanco() {
 
         try {
-             
+
             LDAP ldap = new LoginBean().new LDAP();
-            usuario.setLogin(ldap.getUID(usuario.getNome()));
+//            usuario = new Usuario();
+
+            if (this.loginManual) {
+                
+
+            } else {
+                usuario.setLogin(ldap.getUID(usuario.getNome()));
+            }
+
             usuarioFacade.save(usuario);
             JsfUtil.addSuccessMessage("Usuario " + usuario.getLogin() + " criado com sucesso!");
             usuario = null;
             recriarModelo();
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "Ocorreu um erro de persistência");
+            JsfUtil.addErrorMessage(e, "Ocorreu um erro de persistência, insira o login manualmente");
+            this.loginManual = true;
+            usuario.setLogin("Insira o login");
 
         }
 
     }
-    
-    
 
     public Usuario buscar(Long id) {
 
@@ -153,7 +166,7 @@ public class UsuarioController implements Serializable {
             usuario = null;
             JsfUtil.addSuccessMessage("Usuario Deletado");
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "Ocorreu um erro de persistência");
+            JsfUtil.addErrorMessage(e, "Ocorreu um erro de persistência" + e.getMessage());
         }
 
         recriarModelo();
@@ -171,21 +184,20 @@ public class UsuarioController implements Serializable {
         //docenteFacade.edit(usuario);
         return "View";
     }
-    
+
     public String prepareList() {
         this.usuarioDataModel = null;
-        
-        
-            return "view/usuario/List";
-        
+
+        return "view/usuario/List";
+
     }
-    
-    public String prepareListAutorizada(){
+
+    public String prepareListAutorizada() {
         this.usuarioDataModel = null;
-            return "view/usuario/ListAutorizada";
-        
+        return "view/usuario/ListAutorizada";
+
     }
-    
+
 //    public String prepareCreate(boolean podeCriar){
 //        
 //        if(podeCriar){
@@ -195,18 +207,11 @@ public class UsuarioController implements Serializable {
 //            return "/login";
 //        }
 //    }
-    
-    public String prepareCreate(){
-     
-            return "/view/usuario/Create";
-        
+    public String prepareCreate() {
+
+        return "/view/usuario/Create";
+
     }
-
-    
-     
-    
-
-
 
     @FacesConverter(forClass = Usuario.class)
     public static class UsuarioControllerConverter implements Converter {

@@ -130,22 +130,24 @@
 
                                 <br/>
 
-                                <!--                                <h:outputLabel value="Login: " for="login" />
-                                                                <h:inputText id="login" value="#{usuarioController.usuario.login}" title="login" />-->
 
-                                <h:outputLabel value="TA: " for="ta"  />
-                                <h:selectOneMenu id="ta" value="#{usuarioController.usuario.ta}"  required="true" requiredMessage="Selecione um TA para esse usuário"  >
+
+                                <h:outputLabel value="TA: " for="ta" rendered="#{!usuarioController.loginManual}" />
+                                <h:selectOneMenu id="ta" value="#{usuarioController.selected.ta}"  
+                                                 required="true" 
+                                                 requiredMessage="Selecione um TA para esse usuário" 
+                                                 rendered="#{!usuarioController.loginManual}" >
                                     <f:selectItems value="#{tAController.itemsAvailableSelectOne}"/>
                                 </h:selectOneMenu>
+                                
+                                <h:outputLabel value="Login" rendered="#{usuarioController.loginManual}"/>
+                                <h:inputText value="#{usuarioController.selected.login}" title="login" rendered="#{usuarioController.loginManual}"/>
 
 
                                 <h:outputText value="Usuário Administrador: " />
-                                <p:selectBooleanCheckbox value="#{usuarioController.usuario.adm}" />
-
-
-
-
-
+                                <p:selectBooleanCheckbox value="#{usuarioController.selected.adm}" />
+                                
+                                
 
                             </h:panelGrid>
                             <p:separator/>

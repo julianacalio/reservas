@@ -30,7 +30,7 @@ public class Usuario implements Serializable {
         this.ID = ID;
     }
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.REFRESH)
     private TA ta;
 
     public TA getTa() {

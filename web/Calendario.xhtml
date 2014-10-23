@@ -61,7 +61,10 @@
                         <p:column headerText="Equipamentos" >  
                             #{equipamento.descricao} 
                         </p:column>  
-                    </p:dataTable>  
+                    </p:dataTable> 
+                    
+                    <p:commandButton id="mostrarEquipamentos"  value="Todos Equipamentos" actionListener="#{calendarioController.selecionaVisualizacaoTodosEquipamentos()}" 
+                                     update=":form:schedule"  style=" position: relative;top: 10px"/>
 
                     <p:separator/>
 <!--                <h:link outcome="/index" value="Gerenciar Dados" style="text-align: center"  onclick="#{calendarioController.inicializarVariaveis()}"/>-->

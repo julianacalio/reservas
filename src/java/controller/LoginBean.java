@@ -103,6 +103,11 @@ public class LoginBean implements Serializable {
             } catch (NamingException ex) {
                 Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
+//            if(usuario.getLogin().equals("elaine.konno")){
+//                loggedIn = true;
+//            }
+            
 
             usuario = usuarioFacade.findByLogin(username);
 
@@ -220,11 +225,11 @@ public class LoginBean implements Serializable {
             DirContext contexto = getContextoLDAP();
 
             Attributes atributos = new BasicAttributes(true);
-            atributos.put(new BasicAttribute("cn"));
-            String filter = "cn=" + nome;
+            atributos.put(new BasicAttribute("displayName", nome));
+//            String filter = "cn=" + nome;
             NamingEnumeration answer;
             try {
-                answer = contexto.search("ou=users,dc=ufabc,dc=edu,dc=br", filter, null);
+                answer = contexto.search("ou=users,dc=ufabc,dc=edu,dc=br", atributos);
                 SearchResult sr = (SearchResult) answer.next();
                 return sr.getName().substring(4);
             } catch (NamingException ex) {
