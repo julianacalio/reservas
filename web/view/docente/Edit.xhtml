@@ -72,15 +72,15 @@
                     <p:panel header="Editar Dados do Docente" style=" text-align: left">
                         <h:panelGrid columns="2" id="pnGrCriarDocente" style="text-align: left"  >
                             <h:outputLabel value="Nome" for="nome" />
-                            <h:inputText id="nome" value="#{docenteController.selected.nome}" title="nome" />
+                            <h:inputText size="30" id="nome" value="#{docenteController.selected.nome}" title="nome" />
                             <h:outputLabel value="Matrícula" for="matricula" />
-                            <h:inputText id="matricula" value="#{docenteController.selected.matricula}" title="matricula"  />
+                            <h:inputText size="30" id="matricula" value="#{docenteController.selected.matricula}" title="matricula"  />
                             <h:outputLabel value="Centro" for="centro"  />
                             <h:selectOneMenu id="centro" value="#{docenteController.selected.centro}" title="centro" required="true" requiredMessage="Selecione um Centro para este Docente"  >
                                 <f:selectItems value="#{centroController.itemsAvailableSelectOne}"/>
                             </h:selectOneMenu>
                             <h:outputLabel value="email" for="email"  />
-                            <h:inputText id="email" value="#{docenteController.selected.email}" title="email" />
+                            <h:inputText size="30" id="email" value="#{docenteController.selected.email}" title="email" />
                         </h:panelGrid>
 
                         <p:separator/>

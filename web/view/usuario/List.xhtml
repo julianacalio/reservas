@@ -151,11 +151,17 @@
 
                             </h:panelGrid>
                             <p:separator/>
+                            <h:panelGrid id="painelBotoes" columns="2">
                             <p:commandButton style="width: 97px; height: 30px; font-size: small; position: relative; "  
                                              ajax="true"  value="Salvar" actionListener="#{usuarioController.salvarNoBanco()}"
-                                             update="msgs,db,pnGrCriarUsuario" icon="ui-icon-disk"> 
+                                             update="msgs,db,pnGrCriarUsuario,painelBotoes" icon="ui-icon-disk"> 
                             </p:commandButton>
-
+                            
+                            <p:commandButton id="botaoCancelar" rendered="#{usuarioController.loginManual}" style="width: 112px; height: 30px; font-size: small; position: relative; left: 10px "  
+                                             ajax="true"  value="Cancelar" actionListener="#{usuarioController.cancelarSalvar()}"
+                                             icon="ui-icon-close" update="pnGrCriarUsuario,msgs,painelBotoes" > 
+                            </p:commandButton>
+                                </h:panelGrid>
                             <!--                        </p:panel>-->
 
                         </p:panel>

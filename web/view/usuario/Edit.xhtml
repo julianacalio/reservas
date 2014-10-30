@@ -67,14 +67,22 @@
 
                             <h:outputLabel value="Login: " for="loginAtual" />
                             <h:inputText id="loginAtual" value="#{usuarioController.selected.login}"/>
+                            
+                            <h:outputText value="Usuário Administrador: " />
+                                <p:selectBooleanCheckbox value="#{usuarioController.selected.adm}" />
 
                         </h:panelGrid>
 
                         <p:separator/>
 
-                        <p:commandButton style="width: 170px;height: 50px"
+                        <p:commandButton style="width: 200px;height: 30px"
                                          actionListener="#{usuarioController.editar()}" value="Atualizar usuário" 
                                          update="msgs" icon="ui-icon-pencil" ajax="true"/>
+                        
+                        <p:separator/>
+                        
+                        <p:commandButton style="width: 200px;height: 30px; font-size: small"
+                                         action="#{usuarioController.prepareList()}" value="Mostrar Usuários" immediate="true"/>
 
                     </p:panel>
 

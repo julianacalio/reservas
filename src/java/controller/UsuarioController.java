@@ -21,7 +21,7 @@ public class UsuarioController implements Serializable {
 
     public UsuarioController() {
 //        usuario = new Usuario();
-        this.loginManual = false;
+
     }
 
     //Guarda o usuario atual
@@ -103,6 +103,14 @@ public class UsuarioController implements Serializable {
 //        return "Create";
 //        }
 //    }
+    public String prepareList() {
+
+        this.loginManual = false;
+        this.usuarioDataModel = null;
+        this.usuario = null;
+        return "/view/usuario/List";
+    }
+
     public void getLoginLDAP() {
 
         LDAP ldap = new LoginBean().new LDAP();
@@ -118,7 +126,6 @@ public class UsuarioController implements Serializable {
 //            usuario = new Usuario();
 
             if (this.loginManual) {
-                
 
             } else {
                 usuario.setLogin(ldap.getUID(usuario.getNome()));
@@ -127,13 +134,21 @@ public class UsuarioController implements Serializable {
             usuarioFacade.save(usuario);
             JsfUtil.addSuccessMessage("Usuario " + usuario.getLogin() + " criado com sucesso!");
             usuario = null;
+            this.loginManual = false;
             recriarModelo();
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "Ocorreu um erro de persistência, insira o login manualmente");
+            JsfUtil.addErrorMessage(e, "Ocorreu um erro, insira o login manualmente");
             this.loginManual = true;
             usuario.setLogin("Insira o login");
 
         }
+
+    }
+
+    public void cancelarSalvar() {
+
+        this.loginManual = false;
+        this.usuario = null;
 
     }
 
@@ -185,13 +200,12 @@ public class UsuarioController implements Serializable {
         return "View";
     }
 
-    public String prepareList() {
-        this.usuarioDataModel = null;
-
-        return "view/usuario/List";
-
-    }
-
+//    public String prepareList() {
+//        
+//
+//        return "view/usuario/List";
+//
+//    }
     public String prepareListAutorizada() {
         this.usuarioDataModel = null;
         return "view/usuario/ListAutorizada";

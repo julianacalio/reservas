@@ -90,7 +90,7 @@
                         
                         <p:separator rendered="#{loginBean.usuario.adm}"/>
 
-                        <p:commandLink id="linkUsuario" action="/view/usuario/List" rendered="#{loginBean.usuario.adm}" >  
+                        <p:commandLink id="linkUsuario" action="#{usuarioController.prepareList()}" rendered="#{loginBean.usuario.adm}" >  
                             <p:commandButton value="Usuários" id="btnUsuario" style="width: 160px" /> 
                         </p:commandLink>
                         
