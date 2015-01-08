@@ -77,7 +77,8 @@ public class SendMail {
             //Setando o assunto
             msg.setSubject(subject);
             //Setando o conteúdo/corpo do email
-            msg.setContent(message, "text/plain; charset=iso-8859-1");
+//            msg.setContent(message, "text/plain; charset=iso-8859-1");
+            msg.setContent(message, "text/html; charset=iso-8859-1");
 
         } catch (MessagingException e) {
             System.out.println(">> Erro: Completar Mensagem");

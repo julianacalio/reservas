@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import util.TratamentoStrings;
 
 /**
  *
@@ -36,10 +37,9 @@ public class Equipamento extends Recurso implements Serializable {
     }
 
     public void setDescricao(String descricao) {
+        descricao = TratamentoStrings.addSlashes(descricao);
         this.descricao = descricao;
     }
-
-   
 
     @Override
     public int hashCode() {

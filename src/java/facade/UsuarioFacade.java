@@ -7,17 +7,13 @@
 package facade;
 
 import controller.HibernateUtil;
-import static controller.HibernateUtil.getSessionFactory;
-import controller.UsuarioController;
 import java.util.List;
 import javax.ejb.Stateless;
 import model.Usuario;
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 
 /**
  *

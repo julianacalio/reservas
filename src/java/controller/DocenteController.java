@@ -152,6 +152,7 @@ public class DocenteController implements Serializable {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage("Docente Atualizado", current.getNome());
             //return "View";
+            current = null;
             return "Edit";
         } catch (EJBException ex) {
             if ((ex.getCausedByException() instanceof ConstraintViolationException)) {
@@ -159,9 +160,11 @@ public class DocenteController implements Serializable {
             } else {
                 JsfUtil.addErrorMessage("Erro de Persistência", ex.getMessage());
             }
+            current = null;
             return null;
         } catch (Exception e) {
             JsfUtil.addErrorMessage("Erro de Persistência", e.getMessage());
+            current = null;
             return null;
         }
     }

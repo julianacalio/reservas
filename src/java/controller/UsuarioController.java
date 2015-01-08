@@ -119,6 +119,7 @@ public class UsuarioController implements Serializable {
     }
 
     public void salvarNoBanco() {
+        
 
         try {
 
@@ -128,9 +129,20 @@ public class UsuarioController implements Serializable {
             if (this.loginManual) {
 
             } else {
+                
+                String email = usuario.getTa().getEmail();
+                if(email.contains("ufabc") || email.contains("aluno.ufabc")){
+                    usuario.setLogin(email.substring(0, email.lastIndexOf("@")));
+                }
+                else{
+//                    login = ldap.getUID(usuario.getNome());
                 usuario.setLogin(ldap.getUID(usuario.getNome()));
+                }
+                
+                
             }
-
+            
+//            usuario.setLogin(login);
             usuarioFacade.save(usuario);
             JsfUtil.addSuccessMessage("Usuario " + usuario.getLogin() + " criado com sucesso!");
             usuario = null;

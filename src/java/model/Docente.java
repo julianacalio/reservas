@@ -18,18 +18,6 @@ public class Docente extends Servidor implements Serializable {
 
     private static final long serialVersionUID = 1L;
    
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "docente")
-//    private List<Turma> turmas;
-//
-//    public List<Turma> getTurmas() {
-//        return turmas;
-//    }
-//
-//    public void setTurmas(List<Turma> turmas) {
-//        this.turmas = turmas;
-//    }
-
-  
     @Override
     public int hashCode() {
         int hash = 0;

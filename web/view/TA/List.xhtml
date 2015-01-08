@@ -31,19 +31,7 @@
                 </p:layoutUnit>  
 
                 <p:layoutUnit position="west" size="200" header="Links Rápidos" resizable="true" closable="true" collapsible="true" effect="drop" style="text-align: center">  
-<!--                    <p:commandLink id="linkListCentro" action="/view/centro/List" immediate="true" value="Lista de Centros"/>  
-                    <br/>
-                    <p:commandLink id="linkListDocente" action="/view/docente/List" immediate="true" value="Lista de Docentes"/>  
-                    <br/>
-                    <p:commandLink id="linkListSala" action="/view/sala/List"  value="Lista de Salas" immediate="true"/>  
-                    <br/>
-                    <p:commandLink id="linkListEquipamento" action="/view/equipamento/List" immediate="true" value="Lista de Equipamentos"/>  
-                    <br/>
-                    <p:separator/>
-                    <h:link outcome="/index" value="Gerenciar Dados"  />
-                    <p:separator/>
-                    <h:link outcome="/Calendario" value="Calendario"  />
-                    <p:separator/>-->
+
                     
                     
                     <p:commandButton  value="Centros" id="btnCentro"  style="width: 140px; position: relative; top: 5px"  action="/view/centro/List" immediate="true"/>
@@ -76,18 +64,13 @@
                     <p:panel >
                         <p:dataTable id="db" var="item"   value="#{tAController.TADataModel}" selectionMode="single"  paginator="true" rows="5"  
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-                                     rowsPerPageTemplate="5,10,15" style="text-align: center">  
+                                     rowsPerPageTemplate="5,10,15" style="text-align: center" >  
                             <f:facet name="header">  
                                 Lista de Técnicos Adminstrativos  
                             </f:facet>   >
-<!--                            <p:column >
-                                <f:facet name="header">
-                                    <h:outputText value="id"/>
-                                </f:facet>
-                                <h:outputText value="#{item.id}"/>
-                            </p:column>-->
 
-                            <p:column headerText="nome" sortBy="#{item.nome}" style="text-align: left"  >  
+
+                            <p:column  headerText="nome" sortBy="#{item.nome}" style="text-align: left">  
                                 <f:facet name="header">
                                     <h:outputText value="Nome"/>
                                 </f:facet>
@@ -108,7 +91,7 @@
                                 <h:outputText value="#{item.centro.nome}"/>
                             </p:column>  
 
-                            <p:column headerText="email" style = "text-align: left">  
+                            <p:column headerText="email" >  
                                 <f:facet name="header">
                                     <h:outputText value="email"/>
                                 </f:facet>

@@ -118,6 +118,7 @@
                                 <p:ajax event="dateSelect"  update="ck"/>
                             </p:calendar>
 
+                            
 
                             
                             <h:outputLabel for="title" value="Motivo:" />  
@@ -172,7 +173,7 @@
                             </h:panelGrid>
 
                             <p:commandButton id="addButton"  value="Salvar" actionListener="#{calendarioController.salvaReserva}" 
-                                             oncomplete="myschedule.update();detalhesReserva.hide();" update=":form2:dtEquipamento,messages" 
+                                             oncomplete="myschedule.update();detalhesReserva.hide();" update=":form2:dtEquipamento,messages,form:schedule" 
                                              rendered="#{calendarioController.reserva.iid == null}" />
                             <p:commandButton id="updateButton"  value="Atualizar" actionListener="#{calendarioController.updateReserva}" 
                                              oncomplete="myschedule.update();detalhesReserva.hide();" update=":form2:dtEquipamento,messages" 
@@ -268,8 +269,8 @@
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog  widgetVar="criarEmprestimo" header="Criar Emprestimo"  >
-                        <p:panel style="display: block;text-align: center">
+                    <p:dialog  widgetVar="criarEmprestimo" header="Criar Emprestimo" draggable="false"  >
+                        <p:panel style="text-align: center">
                             <h:panelGrid columns="2">
                                 <h:outputLabel value="Pessoa Retirou"  />
                                 <p:inputText value="#{calendarioController.emprestimo.responsavelRetirada}"/>

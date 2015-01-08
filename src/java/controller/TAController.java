@@ -3,6 +3,7 @@ package controller;
 import facade.TAFacade;
 import model.TA;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
@@ -15,6 +16,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import model.Reserva;
 import org.hibernate.exception.ConstraintViolationException;
 import util.TADataModel;
 
@@ -29,6 +31,9 @@ public class TAController implements Serializable {
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private TADataModel taDataModel;
+    
+    @EJB
+    private facade.ReservaFacade reservaFacade;
 
     public TAController() {
     }
@@ -126,6 +131,7 @@ public class TAController implements Serializable {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage("Técnico Administrativo Atualizado", current.getNome());
             //return "View";
+            current = null;
             return "Edit";
         } catch (EJBException ex) {
             if ((ex.getCausedByException() instanceof ConstraintViolationException)) {
@@ -133,9 +139,11 @@ public class TAController implements Serializable {
             } else {
                 JsfUtil.addErrorMessage("Erro de Persistência", ex.getMessage());
             }
+            current = null;
             return null;
         } catch (Exception e) {
             JsfUtil.addErrorMessage("Erro de Persistência", e.getMessage());
+            current = null;
             return null;
         }
     }
@@ -164,7 +172,20 @@ public class TAController implements Serializable {
     }
 
     private void performDestroy() {
-        try {
+        
+        List<Reserva> reservas = reservaFacade.findByReservante(current);
+        Date  date = new Date();
+        for(Reserva r: reservas){
+            String data = r.getDataInicio();
+            date = r.getStartDate();
+        }
+        
+//        if(reservas != null){
+//            
+//        }
+        
+//        else{
+            try {
             getFacade().remove(current);
             JsfUtil.addSuccessMessage("Técnico Administrativo deletado: ", current.getNome());
             current = null;
@@ -178,6 +199,7 @@ public class TAController implements Serializable {
         } catch (Exception e) {
             JsfUtil.addErrorMessage("PersistenceErrorOccured", e.getMessage());
         }
+//        }   
     }
 
     private void updateCurrentItem() {

@@ -32,12 +32,7 @@
                                    action="#{loginBean.doLogout()}" immediate="true"/>
                 </p:layoutUnit>  
 
-                <!--                <p:layoutUnit position="south" size="100"  resizable="true" closable="true" collapsible="true">  
-                
-                                    <h3 id="abc">
-                
-                                    </h3>
-                                </p:layoutUnit>  -->
+             
 
 
                 <p:layoutUnit position="center"> 
@@ -84,18 +79,19 @@
 
                         <p:separator/>
 
-                        <p:commandLink id="linkEmpretimo" action="/view/emprestimo/Emprestimo"    >  
+                        <p:commandLink id="linkEmpretimo" action="/view/emprestimo/Emprestimo"  >  
                             <p:commandButton value="Empréstimos" id="btnEmprestimo" style="width: 160px" /> 
                         </p:commandLink>
                         
-                        <p:separator rendered="#{loginBean.usuario.adm}"/>
+                        <p:separator rendered="#{loginBean.usuario.adm}"  />
 
-                        <p:commandLink id="linkUsuario" action="#{usuarioController.prepareList()}" rendered="#{loginBean.usuario.adm}" >  
+                        <p:commandLink id="linkUsuario" action="/view/usuario/List" rendered="#{loginBean.usuario.adm}"  >  
                             <p:commandButton value="Usuários" id="btnUsuario" style="width: 160px" /> 
                         </p:commandLink>
                         
                         
 
+                        
                     </p:panel>
 
                 </p:layoutUnit>  

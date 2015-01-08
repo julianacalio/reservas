@@ -1,26 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import java.io.Serializable;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-/**
- *
- * @author charles
- */
+
 @Entity
 @DiscriminatorValue("Operador")
 public class Operador extends Servidor implements Serializable {
 
-//    @OneToMany(mappedBy = "operador")
-//    private List<Reserva> reservas;
-    
-   
-    
     private String senha;
 
     public String getSenha() {

@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import util.TratamentoStrings;
 
 @Entity
 public class Emprestimo implements Serializable {
@@ -34,9 +35,6 @@ public class Emprestimo implements Serializable {
     private Pessoa responsavelRecebimento;
     private String observacao;
 
-  
-    
-    
     
     public Long getId() {
         return id;
@@ -67,6 +65,7 @@ public class Emprestimo implements Serializable {
     }
 
     public void setResponsavelRetirada(String responsavelRetirada) {
+        responsavelRetirada = TratamentoStrings.addSlashes(responsavelRetirada);
         this.responsavelRetirada = responsavelRetirada;
     }
 
@@ -75,6 +74,7 @@ public class Emprestimo implements Serializable {
     }
 
     public void setResponsavelDevolucao(String responsavelDevolucao) {
+        responsavelDevolucao = TratamentoStrings.addSlashes(responsavelDevolucao);
         this.responsavelDevolucao = responsavelDevolucao;
     }
 
@@ -83,6 +83,7 @@ public class Emprestimo implements Serializable {
     }
 
     public void setResponsavelRecebimento(Pessoa responsavelRecebimento) {
+        
         this.responsavelRecebimento = responsavelRecebimento;
     }
 
@@ -91,6 +92,7 @@ public class Emprestimo implements Serializable {
     }
 
     public void setObservacao(String observacao) {
+        observacao = TratamentoStrings.addSlashes(observacao);
         this.observacao = observacao;
     }
 

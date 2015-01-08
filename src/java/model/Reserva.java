@@ -22,6 +22,10 @@ import util.TratamentoStrings;
 @Entity
 public class Reserva implements Serializable, ScheduleEvent {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long iid;
+    
     @ManyToOne(fetch = FetchType.EAGER)
     private GrupoReserva grupoReserva;
 
@@ -47,9 +51,8 @@ public class Reserva implements Serializable, ScheduleEvent {
     }
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long iid;
+    
+    
     @ManyToOne
     private Operador operador;
 
@@ -84,7 +87,7 @@ public class Reserva implements Serializable, ScheduleEvent {
     }
 
     public void setMotivo(String motivo) {
-        motivo = motivo.replace("'", " ");
+        
         motivo = TratamentoStrings.addSlashes(motivo);
         this.motivo = motivo;
     }
@@ -126,6 +129,8 @@ public class Reserva implements Serializable, ScheduleEvent {
     public void setInicio(Date inicio) {
         this.inicio = inicio;
     }
+    
+    
 
     public Date getFim() {
         return fim;
@@ -145,6 +150,11 @@ public class Reserva implements Serializable, ScheduleEvent {
 
     public String getDataInicio() {
         return DateTools.getData(inicio);
+    }
+    
+    @Transient
+    public int getDiaSemana(){
+        return DateTools.getDiaSemana(inicio);
     }
 
     public String getDataFim() {
@@ -178,6 +188,8 @@ public class Reserva implements Serializable, ScheduleEvent {
     private Date fim;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date realizacao;
+    
+    
 
     public Long getIid() {
         return iid;

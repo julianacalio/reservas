@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import java.io.Serializable;
@@ -23,7 +19,8 @@ public class Servidor extends Pessoa implements Serializable {
 
     private static final long serialVersionUID = 1L;
    
-    @Column(unique = true)
+
+    @Column(unique = false)
     protected String matricula;
     @ManyToOne
     protected Centro centro;
@@ -41,12 +38,18 @@ public class Servidor extends Pessoa implements Serializable {
     }
 
     public void setMatricula(String matricula) {
-        this.matricula = matricula;
+
+        if (matricula.equals("")) {
+            this.matricula = null;
+        } else {
+            this.matricula = matricula;
+
+        }
     }
+        
+        
     
-   
-
-
+ 
     @Override
     public int hashCode() {
         int hash = 0;

@@ -33,14 +33,37 @@ public class Email implements Runnable {
         String destinatario = reserva.getReservante().getEmail();
         String assunto = "Confirmação de Reserva";
         String msgReservaFeita = "Prezado(a) " + reserva.getReservante().getNome()
-                + "  \n\n\nReservamos "
+                + "  <br/><br/>Reservamos "
                 + getDescricaoRecursos(reserva.getRecursos())
                 + " para o dia " + DateTools.getData(reserva.getInicio())
                 + " no período das " + DateTools.getHora(reserva.getInicio())
-                + " às " + DateTools.getHora(reserva.getFim()) + "\n\nAtenciosamente\n"
-                + "Divisão Acadêmica do CMCC\n(11)4996-7950 ";
+                + " às " + DateTools.getHora(reserva.getFim()) + "<br/><br/>Atenciosamente<br/>"
+                + "Divisão Acadêmica do CMCC<br/>(11)4996-7950 ";
+        
+        
+        int diaSemana = DateTools.getDiaSemana(reserva.getInicio());
+        int hora = DateTools.getHoras(reserva.getInicio());
+        List<Recurso> recursos = reserva.getRecursos();
+        
+        if(diaSemana == 7 || diaSemana == 1 || hora < 9 || hora > 18){
+            
+            msgReservaFeita += "<br/><br/><br/><b><FONT COLOR=\"red\">Obs: O horário de atendimento da Divisão Acadêmica é de segunda a sexta das"
+                    + " 9h às 18h. Para reservas fora desse período, por favor, retirar a chave da sala no setor"
+                    + " de segurança do respectivo bloco. </FONT></b>";
+            
+            if(recursos.size() > 1){
+            msgReservaFeita += "<b><FONT COLOR=\"red\">O(s) equipamento(s) deve(m) ser retirado(s) no"
+                    + " horário de funcionamento da Divisão Acadêmica</FONT></b>";
+            }
+            
+        }
+        
+        
 
         sendMail.sendMail(remetente, destinatario, assunto, msgReservaFeita);
+        
+        
+        
     }
 
     public void enviaMsgReservaFeita(List<Reserva> reserva) {
@@ -60,6 +83,9 @@ public class Email implements Runnable {
                 + " às " + DateTools.getHora(reserva.getEmprestimo().getRetirada())
                 + "\n\nAtenciosamente\n"
                 + "Divisão Acadêmica do CMCC\n(11)4996-7950 ";
+        
+        
+        
 
         sendMail.sendMail(remetente, destinatario, assunto, msgRecursoPego);
     }

@@ -8,14 +8,12 @@ import controller.HibernateUtil;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
-//import javax.el.Expression;
 import model.GrupoReserva;
+import model.Pessoa;
 import model.Reserva;
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
@@ -133,6 +131,56 @@ public class ReservaFacade extends AbstractFacade<Reserva> {
         session.close();
         return results;      
     }
+    
+    public List<Reserva> load(int first, int count) {
+        
+        
+        Session session = getSessionFactory().openSession();
+        Criteria crit = session.createCriteria(Reserva.class);
+        crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
+        crit.createAlias("this.emprestimo", "e");
+        crit.addOrder(Order.desc("e.retirada"));
+//        crit.add(Restrictions.isNotNull("e"));
+        crit.setFirstResult(first);
+        crit.setMaxResults(count);
+        //crit.setMaxResults(50);
+        List results = crit.list();
+//        int tamanho = results.size();
+        session.close();
+        return results;
+
+    }
+    
+    public int countDistinct(){
+        
+        Session session = getSessionFactory().openSession();
+        Criteria crit = session.createCriteria(Reserva.class);
+        crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        
+        crit.createAlias("this.emprestimo", "e");
+        crit.addOrder(Order.desc("e.retirada"));
+        List results = crit.list();
+        
+        session.close();
+        return results.size();
+        
+        
+    }
+    
+    
+        public List<Reserva> findByReservante(Pessoa reservante) {
+        Session session = getSessionFactory().openSession();
+        Criteria criteria = session.createCriteria(Reserva.class);
+
+//        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//faz um select distinct
+        criteria.add(Restrictions.eq("reservante", reservante));
+        List results = criteria.list();
+        session.close();
+        return results;    
+    }
+    
+    
+    
     
 
     /**

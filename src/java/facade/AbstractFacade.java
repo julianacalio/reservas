@@ -1,13 +1,14 @@
 package facade;
 
 import java.util.List;
-import model.Reserva;
+import java.util.Map;
+import javax.persistence.criteria.Root;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import org.primefaces.model.SortOrder;
 
 public abstract class AbstractFacade<T> {
 
@@ -133,6 +134,9 @@ public abstract class AbstractFacade<T> {
         session.close();
         return results;
     }
+    
+    
+    
 
     /**
      * Conta quanto itens dessa entidade possui o banco de dados.
@@ -146,5 +150,7 @@ public abstract class AbstractFacade<T> {
         session.close();
         return count;
     }
+    
+   
 
 }

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import java.io.Serializable;
@@ -16,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
+import util.TratamentoStrings;
 
 /**
  *
@@ -57,6 +54,7 @@ public class Pessoa implements Serializable {
     }
 
     public void setNome(String nome) {
+        nome = TratamentoStrings.addSlashes(nome);
         this.nome = nome;
     }
 

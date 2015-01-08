@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import util.TratamentoStrings;
 
 /**
  *
@@ -62,6 +63,7 @@ public class Centro implements Serializable {
     }
 
     public void setNome(String nome) {
+        nome = TratamentoStrings.addSlashes(nome);
         this.nome = nome;
     }
 

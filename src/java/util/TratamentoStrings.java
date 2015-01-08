@@ -20,6 +20,7 @@ public static String addSlashesSearchMode(String s) {
 }
 
 public static String addSlashes(String s) {
+    s = s.replace("'", " ");
     return addSlashes(s, true);
 }
 

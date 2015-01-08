@@ -107,6 +107,11 @@ public class DateTools {
         Calendar c = prepareCalendar(data);
         return c.get(Calendar.DAY_OF_MONTH);
     }
+    
+    public static int getDiaSemana(Date data){
+        Calendar c = prepareCalendar(data);
+        return c.get(Calendar.DAY_OF_WEEK);
+    }
 
     public static int getMes(Date data) {
         Calendar c = prepareCalendar(data);
@@ -134,6 +139,8 @@ public class DateTools {
         String year = String.valueOf(c.get(Calendar.YEAR));
         year = fillWithZero(year);
         return day + "/" + month + "/" + year;
+        
+        
     }
 
     public static String fillWithZero(String numero) {

@@ -1,5 +1,6 @@
 package controller;
 
+//import facade.UsuarioFacade;
 import facade.UsuarioFacade;
 import java.io.IOException;
 import java.io.Serializable;
@@ -26,6 +27,7 @@ import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
 import model.Usuario;
+//import model.Usuario;
 import org.primefaces.context.RequestContext;
 
 @Named("loginBean")
@@ -126,6 +128,15 @@ public class LoginBean implements Serializable {
             msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Invalid credentials");
         }
 
+//        if(username.equals("elaine") && password.equals("elaine.konno")){
+//            loggedIn = true;
+//            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bem-vindo(a)!", null);
+//        }
+//        else{
+//            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Credenciais inválidas");
+//        }
+        
+        
         FacesContext.getCurrentInstance().addMessage(null, msg);
         context.addCallbackParam("loggedIn", loggedIn);
 
@@ -149,6 +160,7 @@ public class LoginBean implements Serializable {
                 Logger.getLogger(CalendarioController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+//        this.loggedIn = true;
 
     }
 
