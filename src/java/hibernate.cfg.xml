@@ -7,15 +7,15 @@
         
         <!--         inicio da configuracao para servidor de aplicacoes local
         -->        
-<!--        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/Reservas?autoReconnect=true</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/Reservas?autoReconnect=true</property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">root</property>-->
+        <property name="hibernate.connection.password">root</property>
         <!-- fim da configuracao para servidor de aplicacoes local-->
         
         
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/Reservas?autoReconnect=true</property>
+<!--        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/Reservas?autoReconnect=true</property>
         <property name="hibernate.connection.username">estagio</property>
-        <property name="hibernate.connection.password">est12agi34O!</property>
+        <property name="hibernate.connection.password">est12agi34O!</property>-->
         
     
         <!-- inicio da configuracao para o openShift -->
