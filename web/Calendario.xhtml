@@ -10,7 +10,6 @@
     </h:head>
     <h:body onload="#{loginBean.isLogado()}">
 
-
         <h:outputStylesheet library="css" name="style.css"  />
         <p:layout fullPage="true" >  
             <p:dialog header="Sobre" draggable="false"  modal="true"  appendToBody="true" widgetVar="dlg2" height="220" resizable="false">
@@ -25,23 +24,16 @@
                 <h:outputText escape="false" value="Colaboradores:" /> <br/>
                 <h:outputText escape="false" value="Elaine Konno Rocha" /> <br/>
                         
-                    </p:dialog>
+            </p:dialog>
             <p:layoutUnit position="north" style="text-align:center" size="60"   resizable="true"  closable="true" collapsible="true"  >  
-                
-                
+                                
                 <h:form id ="f2" >
-                    <!--<h:graphicImage value="resources/images/cmcc.png" />-->
-                    <!--                    <p:outputLabel value="Calendário de Alocação de Salas e Equipamentos" style="color: green;font-size: 100px;font-weight: bold"/>-->
-                     
-                    
-            
-                    
 
                     <h:commandLink   onclick="PF('dlg2').show(); return false;" value="Sobre" 
-                                   style="position: relative; right: 650px ;color: #2E8B57; top: 10px"/>
+                                     style="position: relative; right: 650px ;color: #2E8B57; top: 10px"></h:commandLink>
                     
                     
-                    <h:commandLink value="Logout" style="position: relative; left: 650px;color: #2E8B57; top: 20px" 
+                    <h:commandLink value="Logout" style="position: relative; left: 650px;color: #2E8B57; top: 10px" 
                                    action="#{loginBean.doLogout()}" immediate="true"/>
                 </h:form>
                 <style type="text/css">

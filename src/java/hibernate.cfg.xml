@@ -7,19 +7,19 @@
         
         <!--         inicio da configuracao para servidor de aplicacoes local
         -->        
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/Reservas?autoReconnect=true</property>
+<!--        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/Reservas?autoReconnect=true</property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">root</property>
+        <property name="hibernate.connection.password">root</property>-->
         <!-- fim da configuracao para servidor de aplicacoes local-->
         
         
-<!--        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/Reservas?autoReconnect=true</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/Reservas?autoReconnect=true</property>
         <property name="hibernate.connection.username">estagio</property>
-        <property name="hibernate.connection.password">est12agi34O!</property>-->
+        <property name="hibernate.connection.password">est12agi34O!</property>
         
     
         <!-- inicio da configuracao para o openShift -->
-        <!--        <property name="hibernate.connection.url">jdbc:mysql://127.4.25.130:3306/reservas?autoReconnect=true</property>
+<!--        <property name="hibernate.connection.url">jdbc:mysql://127.4.25.130:3306/reservas?autoReconnect=true</property>
         <property name="hibernate.connection.username">adminsTRurCq</property>
         <property name="hibernate.connection.password">n-7DySC-Z4Gh</property>-->
         <!-- fim da configuracao para o openShift -->
@@ -31,15 +31,17 @@
         <property name="hibernate.connection.password">sfcvr9HnPsx7</property>-->
         <!-- fim da configuracao para o openShift -->
         
+      
+        
         <!-- inicio da configuracao para o openShift Ju-->
 <!--        <property name="hibernate.connection.url">jdbc:mysql://127.4.101.2:3306/ufabc?autoReconnect=true</property>
         <property name="hibernate.connection.username">adminHEufh4H</property>
         <property name="hibernate.connection.password">9FQKCCXnV1KV</property>-->
         <!-- fim da configuracao para o openShift Ju-->
          
-        <property name="hibernate.show_sql">true</property>
+<!--        <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
-        <property name="hibernate.use_sql_comments">false</property>
+        <property name="hibernate.use_sql_comments">false</property>-->
         <property name="hibernate.hbm2ddl.auto">update</property>
         <!-- inmportant to specify c3p0 as your connection provider -->
         <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>

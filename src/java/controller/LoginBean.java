@@ -1,6 +1,7 @@
 package controller;
 
 //import facade.UsuarioFacade;
+//import facade.UsuarioFacade;
 import facade.UsuarioFacade;
 import java.io.IOException;
 import java.io.Serializable;
@@ -27,6 +28,7 @@ import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
 import model.Usuario;
+//import model.Usuario;;
 //import model.Usuario;
 import org.primefaces.context.RequestContext;
 
@@ -135,7 +137,7 @@ public class LoginBean implements Serializable {
 //        else{
 //            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Credenciais inválidas");
 //        }
-        
+//        
         
         FacesContext.getCurrentInstance().addMessage(null, msg);
         context.addCallbackParam("loggedIn", loggedIn);
@@ -175,16 +177,7 @@ public class LoginBean implements Serializable {
         usuario = null;
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
-//        
-//
-//        try {
-//            FacesContext.getCurrentInstance().getExternalContext().redirect("/login.xhtml?faces-redirect=true");
-////            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-////        ec.redirect(ec.getRequestContextPath() + "/" + "login.xhtml");
-//        return;
-//        } catch (IOException ex) {
-//            Logger.getLogger(CalendarioController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+
         
         return "/login";
 

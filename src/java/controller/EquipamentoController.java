@@ -101,7 +101,7 @@ public class EquipamentoController implements Serializable {
         try {
             getFacade().save(current);
             JsfUtil.addSuccessMessage("Equipamento Criado: ", current.getDescricao());
-            current = null;
+//            current = null;
             return prepareList();
         } catch (EJBException ex) {
             if ((ex.getCausedByException() instanceof ConstraintViolationException)) {

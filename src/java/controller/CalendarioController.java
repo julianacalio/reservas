@@ -311,30 +311,22 @@ public class CalendarioController implements Serializable {
             if (isShowAllEquipamentos) {
                 eventModel = new DefaultScheduleModel();
                 List<Recurso> r = new ArrayList<Recurso>();
-                List<Long> ids = new ArrayList<Long>();
+//                List<Long> ids = new ArrayList<Long>();
                 r.addAll(equipamentoFacade.findAll());
-                
-//                List<Reserva> reservasEquipamentos = reservaFacade.findAllRecurso("Equipamento");
-//                for(Reserva r : reservasEquipamentos){
-////                    r.setStyleClass(opcaoRepeticaoEscolhida);
-//                    eventModel.addEvent(r);
-//                }
-                
-                
-//                Reserva reservaAnterior = r.get(0).getReservas().get(0);
-//                eventModel.addEvent(reservaAnterior);
-                ids.add(r.get(0).getReservas().get(0).getIid());
+
+//                ids.add(r.get(0).getReservas().get(0).getIid());
                 for (Recurso recurso : r) {
                     for (Reserva res : recurso.getReservas()) {
-                        
-                        if(!ids.contains(res.getIid())){
-                            System.out.println(res);
-                            res.setStyleClass(recurso.getCor() + "-event");
-                           eventModel.addEvent(res); 
-                           ids.add(res.getIid());
-                        }
-                        
-                        
+
+//                        if(!ids.contains(res.getIid())){
+//                            System.out.println(res);
+//                            res.setStyleClass(recurso.getCor() + "-event");
+//                           eventModel.addEvent(res); 
+//                           ids.add(res.getIid());
+//                        }
+                        res.setStyleClass(recurso.getCor() + "-event");
+                        eventModel.addEvent(res);
+
                     }
                 }
 

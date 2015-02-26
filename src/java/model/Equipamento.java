@@ -28,8 +28,15 @@ public class Equipamento extends Recurso implements Serializable {
     }
 
     public void setPatrimonio(String patrimonio) {
-        this.patrimonio = patrimonio;
+        
+        if(patrimonio.equals("")){
+            this.patrimonio = null;
+        }
+        else{
+            this.patrimonio = patrimonio;
+        }
     }
+    
     private String descricao;
 
     public String getDescricao() {
